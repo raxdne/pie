@@ -13,6 +13,7 @@
   <xsl:variable name="str_write" select="''"/>
   <xsl:output method="html"/>
   <xsl:include href="../../Utils.xsl"/>
+
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
@@ -36,7 +37,7 @@
                 </xsl:element>
               </xsl:element>
             </xsl:element>
-	    <xsl:apply-templates select="pie|block|section"/>
+	    <xsl:apply-templates select="file|pie|block|section|list|task|p"/>
             <xsl:element name="tr">
               <xsl:element name="th">
 		<xsl:attribute name="style">text-align: right;</xsl:attribute>
@@ -48,37 +49,38 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="pie|block|section">
-    <xsl:if test="child::task|child::list/descendant::task">
-      <xsl:if test="child::h">
-	<!-- separate header row -->
-	<xsl:element name="tr">
-	  <xsl:element name="th">
-            <xsl:if test="count(ancestor-or-self::section) &lt; 2">
-              <xsl:attribute name="class">transition</xsl:attribute>
-            </xsl:if>
-	    <xsl:element name="span">
-	      <xsl:call-template name="MENUSET"/>
-              <xsl:for-each select="ancestor-or-self::section">
-		<xsl:if test="child::h">
-		  <xsl:value-of select="h"/>
-		  <xsl:text> :: </xsl:text>
-		</xsl:if>
-              </xsl:for-each>
-	    </xsl:element>
-	  </xsl:element>
-	</xsl:element>
-      </xsl:if> 
-      <xsl:element name="tr">
-	<xsl:element name="td">
-	  <xsl:for-each select="child::task|child::list/descendant::task">
-	    <xsl:call-template name="TASK">
-	      <xsl:with-param name="flag_line" select="true()"/>
-	    </xsl:call-template>
+  
+  <xsl:template match="pie|block|section|list|task|p">
+    <xsl:apply-templates select="block|section|list|task|p"/>
+  </xsl:template>
+  
+  <xsl:template match="task[child::h]">
+    <xsl:element name="tr">
+      <xsl:element name="td">
+	<xsl:call-template name="TASK">
+	  <xsl:with-param name="flag_line" select="true()"/>
+	</xsl:call-template>
+      </xsl:element>
+    </xsl:element>
+    <xsl:apply-templates select="block|section|list|task|p"/>
+  </xsl:template>
+
+  <xsl:template match="section[child::task and child::h]">
+    <!-- separate header row -->
+    <xsl:element name="tr">
+      <xsl:element name="th">
+	<xsl:element name="span">
+	  <xsl:call-template name="MENUSET"/>
+          <xsl:for-each select="ancestor-or-self::section">
+	    <xsl:if test="position() &gt; 1">
+	      <xsl:text> :: </xsl:text>
+	    </xsl:if>
+	    <xsl:copy-of select="child::h/descendant::text()"/>
 	  </xsl:for-each>
 	</xsl:element>
       </xsl:element>
-    </xsl:if>
-    <xsl:apply-templates select="block|section"/>
+    </xsl:element>
+    <xsl:apply-templates select="block|section|list|task|p"/>
   </xsl:template>
+
 </xsl:stylesheet>

@@ -30,6 +30,9 @@
         <xsl:element name="node">
           <xsl:attribute name="TEXT">
             <xsl:value-of select="ap:Text/@PlainText"/>
+	    <xsl:for-each select="ap:TextLabels/ap:TextLabel">
+              <xsl:value-of select="concat(' #',translate(@TextLabelName,' ','_'))"/>
+	    </xsl:for-each>
           </xsl:attribute>
           <xsl:if test="$flag_folded and ap:SubTopics and ap:TopicViewGroup/ap:Collapsed/@Collapsed">
             <xsl:attribute name="FOLDED">

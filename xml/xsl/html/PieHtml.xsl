@@ -787,7 +787,7 @@
 	    <xsl:attribute name="maxlength">25</xsl:attribute>
 	    <xsl:attribute name="size">30</xsl:attribute>
 	  </xsl:element>
-	  <xsl:for-each select="pie/meta/t/t[@count &gt; 1 or starts-with(text(),'#') or starts-with(text(),'@')]"> <!--  -->
+	  <xsl:for-each select="pie/meta/t/t"> <!--  -->
 	    <xsl:sort order="ascending" data-type="text" select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 	    <xsl:sort order="descending" data-type="number" select="@count"/>
 	    <xsl:element name="span">

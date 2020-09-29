@@ -45,7 +45,6 @@ document.createUI = function () {
 
 	urlParamsReset.delete('hl');
 	urlParamsReset.delete('pattern');
-	window.location.hash = undefined;
 	
 	var strQuery = urlParamsReset.toString();
 	if (strQuery == '') {
@@ -82,6 +81,7 @@ document.createUI = function () {
 	} else { // no previous pattern
 	    strPattern = '';
 	}
+	putsConsole('Old pattern: ' + strPattern);
 	
 	if (strValue == undefined || strValue == '') {
 	    putsConsole('Empty');
@@ -119,9 +119,15 @@ document.createUI = function () {
 
 	    urlParamsTag.set('pattern',strPatternNew);
 	    urlParamsTag.set('hl',strValue);
-	    strUrlNew = document.URL.substr(0, document.URL.length - document.location.search.length) + '?' + urlParamsTag.toString();
+
+	    var strQuery = urlParamsTag.toString();
+	    if (strQuery == '') {
+		strUrlNew = window.location.pathname;
+	    } else {
+		strUrlNew = window.location.pathname + '?' + strQuery;
+	    }
+
 	    putsConsole('New URL: ' + strUrlNew);
-	    window.location.hash = undefined;
 	    window.location.assign(strUrlNew);
 	}
     });
@@ -190,6 +196,35 @@ document.markTextStrRecursive = function (node,regexp) {
 //
 // 
 //
+document.upElement = function (strXpath, fNew) {
+    
+    var urlParams = new URLSearchParams(document.location.search);
+
+    // window.location.hash = '';
+    putsConsole( "Old URL: " + window.document.URL);
+	
+    if (urlParams.has('xpath')) {
+	urlParams.set('xpath',urlParams.get('xpath').replace(/\/\*\[[^\]*]\]$/i,''));
+    } else {
+	urlParams.set('xpath',strXpath.replace(/\/\*\[[^\]*]\]$/i,''));
+    }
+    urlParams.delete('hl');
+
+    var strQuery = urlParams.toString();
+    if (strQuery == '') {
+	strUrlNew = window.location.pathname;
+    } else {
+	strUrlNew = window.location.pathname + '?' + strQuery;
+    }
+
+    putsConsole('New URL: ' + strUrlNew);
+    window.location.assign(strUrlNew);
+}
+
+
+//
+// 
+//
 document.topElement = function (strXpath, fNew) {
 
     var urlParams = new URLSearchParams(window.location.search);
@@ -218,14 +253,17 @@ document.topElement = function (strXpath, fNew) {
 // reload document with parent anchor
 //
 document.topElementNew = function (strLocator, strXpath) {
+    
+    if (strLocator != undefined) {
+	var urlParams = new URLSearchParams();
+	
+	urlParams.set('cxp','PiejQDefault');
+	
+	if (strXpath != undefined) {
+	    urlParams.set('xpath',strXpath);
+	}
 
-    if (strLocator == undefined) {
-    } else if (strXpath == undefined) {
-	var strUrl = '?' + 'path=' + strLocator + '&' + 'cxp=PiejQDefault';
-	window.location.assign(strUrl);
-    } else {
-	var strUrl = '?' + 'path=' + strLocator + '&' + 'cxp=PiejQDefault' + '&' + 'xpath=' + strXpath;
-	window.location.assign(strUrl);
+	window.location.assign('?' + urlParams.toString());
     }
     
     // TODO: highlight according div element

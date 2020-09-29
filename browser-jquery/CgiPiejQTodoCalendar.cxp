@@ -26,11 +26,11 @@
                       <cxp:xml eval="yes">
                         <cxp:include name="PieTransformation.cxp" search="yes"/>
                       </cxp:xml>
+		      <cxp:xsl name="OpenTasks.xsl"/>
                     </cxp:xml>
                   </cxp:col>
                 </cxp:calendar>
               </cxp:xml>
-              <cxp:xsl name="RemoveDoneElements.xsl"/>
               <cxp:xsl name="CalendarTable.xsl" appendcgi="yes">
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
 		<cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodoCalendar&amp;tag='"/>

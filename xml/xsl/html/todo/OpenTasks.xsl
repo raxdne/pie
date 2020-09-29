@@ -30,13 +30,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
     <xsl:choose>
       <!-- in valids -->
       <xsl:when test="self::task[@done or @class = 'done' or @state = 'done']"/>
-      <!-- 
-      <xsl:when test="self::section and not(descendant::task[not(attribute::done)])"/>
-           -->
-      <xsl:otherwise>
+      <xsl:when test="self::h[parent::section]">
+	<xsl:element name="{name()}">
+	  <xsl:value-of select="text()"/>
+	</xsl:element>
+      </xsl:when>
+      <xsl:when test="self::task">
+	<xsl:element name="{name()}">
+	  <xsl:copy-of select="@*|h"/>
+	</xsl:element>
+      </xsl:when>
+      <xsl:when test="self::section">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

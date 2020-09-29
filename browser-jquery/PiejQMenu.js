@@ -2,31 +2,78 @@
 //
 //
 //
-function requestContent(objEditor,strQuery) {
+function getToolsStr(strNameEditor) {
 
-    // TODO: update to URLSearchParams()
-    
-    var arrQuery = splitToArray(RFC1738Decode(strQuery));
-    var requestMeta;
-    var strHTML = '<a onclick="' + 'insertDate(editor)' + '" title="Insert picked date.">'
-     				    + '<img src="/pie/icons/x-office-calendar.png" title="Insert picked date"/>'
-     				    + '</a> ';
+    var strResult = '<p style="font-size:150%">';
+
+    strResult += '<a onclick="' + 'insertDate(' + strNameEditor + ')' + '" title="Insert picked date.">'
+     	+ '<img src="/pie/icons/x-office-calendar.png" title="Insert picked date"/>'
+     	+ '</a> ';
 
     var strUTF = '✔ ✘ „“ ‚‘ “” () [] {} ‒ ← ↑ → ↓ ↔ ↕ ↖ ↗ ↘ ↙ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕ ⇖ ⇗ ⇘ ⇙ ⇚ ⇛'; // UTF-8 characters to show,
 
     var arrUTF = strUTF.split(/ +/);
+
     for (var i=0; i < arrUTF.length; i++) {
-	strHTML += '<a onclick="'
+	strResult += '<a onclick="'
 	    + 'javascript:insertString(editor,\'' + arrUTF[i] + '\')' + '">' + arrUTF[i] + '</a> ';
     }
 
-//    var arrSnippets = [{id:'task', code:'<task><h></h></task>', offset:-5},
-//		       {id:'section', code:'<section><h></h></section>', offset:-5}];
+    strResult += '<a target="_blank" href="http://de.wikipedia.org/wiki/Portal:Unicode">W</a>';
+
+    strResult += '</p>';
+
+    return strResult;
+}
+
+
+//
+//
+//
+function addShortcuts(objEditor,strPath) {
+
+    objEditor.commands.addCommand({
+	name: 'mySaveCommand',
+	bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+	exec: function(objEditor) {
+	    saveText(objEditor,strPath);
+	},
+	readOnly: false // false if this command should not apply in readOnly mode
+    });
+
+    // https://ace.c9.io/demo/keyboard_shortcuts.html
+    objEditor.commands.addCommand({
+	name: "showKeyboardShortcuts",
+	bindKey: {win: "Ctrl-Alt-h", mac: "Command-Alt-h"},
+	exec: function(objEditor) {
+            ace.config.loadModule("ace/ext/keybinding_menu", function(module) {
+		module.init(objEditor);
+		objEditor.showKeyboardShortcuts()
+            })
+	}
+    });
+
+}
+
+
+//
+//
+//
+function requestContent(objEditor,strQuery) {
+
+    // TODO: update to URLSearchParams()
     
-    objEditor.setValue("Loading " + arrQuery['path'] + (arrQuery['xpath'] != undefined ? arrQuery['xpath'] : ''));
+    var urlParams = new URLSearchParams(document.location.search);
+
+    objEditor.setValue("Loading " + urlParams.get('path') + (urlParams.has('xpath') ? urlParams.get('xpath') : ''));
     objEditor.setReadOnly(true);
 
-    requestMeta = $.getJSON(strQuery.replace(/&(amp;)*cxp=PiejQEditor/i,'&cxp=MetaJson'));
+    var urlParamsMeta = urlParams;
+    //urlParamsMeta.delete('cxp');
+    urlParamsMeta.set('cxp','MetaJson');
+    //putsConsole( "Meta URL: " + urlParamsMeta.toString());
+    
+    var requestMeta = $.getJSON('?' + urlParamsMeta.toString());
 
     requestMeta.done( function(objInfo) {
 	var requestContent;
@@ -50,14 +97,13 @@ function requestContent(objEditor,strQuery) {
 
 	if (flagXML) {
 	    // TODO: disable content caching
-	    flagXPath = arrQuery['xpath'] != undefined;
-	    if (flagXPath) {
+	    if (urlParams.has('xpath')) {
 		requestContent = $.ajax({
 		    url: '/cxproc/exe',
 		    type: 'GET',
-		    data: {path: arrQuery['path'],
-			   xpath: arrQuery['xpath'],
-			   encoding: arrQuery['encoding'],
+		    data: {path: urlParams.get('path'),
+			   xpath: urlParams.get('xpath'),
+			   encoding: urlParams.get('encoding'),
 			   r: Math.random()},
 		    dataType: 'text'
 		});
@@ -65,21 +111,20 @@ function requestContent(objEditor,strQuery) {
 		requestContent = $.ajax({
 		    url: '/cxproc/exe',
 		    type: 'GET',
-		    data: {path: arrQuery['path'],
-			   encoding: arrQuery['encoding'],
+		    data: {path: urlParams.get('path'),
+			   encoding: urlParams.get('encoding'),
 			   r: Math.random()},
 		    dataType: 'text'
 		});
 	    }
 	} else {
 	    requestContent = $.ajax({
-		url: '/' + arrQuery['path'],
+		url: '/' + urlParams.get('path'),
 		type: 'GET',
 		data: {r: Math.random()},
 		dataType: 'text'
 	    });
 	}
-
 
 	//
 	requestContent.done(function( strContent ) {
@@ -103,14 +148,12 @@ function requestContent(objEditor,strQuery) {
 	    objEditor.focus();
 
 	    if (objInfo.write == undefined || objInfo.write == false) {
-		$('#strContent').before(' <b>' + '!!! File ' + arrQuery['path'] + ' is READONLY !!!' + '</b>');
+		$('#strContent').before(' <b>' + '!!! File ' + urlParams.get('path') + ' is READONLY !!!' + '</b>');
 		return;
-	    } else if (flagXPath) {
-		strEvent = 'javascript:saveXpath(editor,\'' + arrQuery['path'] + '\',\'' + arrQuery['xpath'] + '\')';
 	    } else if (flagXML) {
-		strEvent = 'javascript:saveXpath(editor,\'' + arrQuery['path'] + '\')';
+		strEvent = 'javascript:saveXpath(editor,\'' + urlParams.get('path') + '\')';
 	    } else {
-		strEvent = 'javascript:saveText(editor,\'' + arrQuery['path'] + '\')';
+		strEvent = 'javascript:saveText(editor,\'' + urlParams.get('path') + '\')';
 	    }
 	    objEditor.setReadOnly(false);
 
@@ -118,23 +161,13 @@ function requestContent(objEditor,strQuery) {
      				    + '<img src="/pie/icons/document-save.png" title="Save"/>'
      				    + '</a>');
 
-	    $('#strContent').before(' <b>' + arrQuery['path'] + (arrQuery['xpath'] == undefined ? '' : arrQuery['xpath']) + '</b>');
+	    $('#strContent').before(' <b>' + urlParams.get('path') + (urlParams.has('xpath') ? urlParams.get('xpath') : '') + '</b>');
 
 	    // indicator for content changes (TODO: change to a variable with change event?)
 	    $('#strContent').before(' <a id="flagChange">|</a>');
 	    objEditor.on("change", function(e) {
 		$('#flagChange').append("*");
 	    });
-
-	    // if (flagXML) {
-	    // 	strHTML += '<br> ';
-	    // 	arrSnippets.forEach(function(obj) {
-	    // 	    strHTML += '<a onclick="'
-	    // 		+ 'javascript:insertString(editor,\'' + obj.code + '\')' + '">' + obj.id + '</a> ';
-	    // 	});
-	    // }
-	    
-	    $('#strContent').after('<p style="font-size:150%">' + strHTML + '<a target="_blank" href="http://de.wikipedia.org/wiki/Portal:Unicode">W</a></p>');
 
 	});
 
@@ -197,33 +230,6 @@ function insertDate(objEditor) {
 
 
 //
-//
-//
-function splitToArray(strArg) {
-
-    var arrResult = [];
-    var arrURL = strArg.replace(/^.*\?/, '').split(/&(amp;)*/);
-
-    if (arrURL == undefined) {
-        putsConsole("URL error" + strArg);
-    } else {
-        for (var i = 0; i < arrURL.length; i++) {
-            if (arrURL[i] == undefined || arrURL[i] == '') {
-                putsConsole("URL error" + i);
-            } else if (arrURL[i].match(/^.+=.+$/)) {
-                var arrValue = arrURL[i].split(/=/);
-                arrResult[arrValue[0]] = arrValue[1];
-                putsConsole(arrValue[0] + ': ' + arrResult[arrValue[0]]);
-            } else {
-                putsConsole("URL error" + i);
-            }
-        }
-    }
-    return arrResult;
-}
-
-
-//
 // 
 //
 function saveXpath(objEditor,strPath,strXpath) {
@@ -237,7 +243,7 @@ function saveXpath(objEditor,strPath,strXpath) {
 	objEditor.focus();
 	return;
     } else {
-	putsConsole( "Save content to " + strPath);
+	putsConsole( "Save content to '" + strPath + "'");
     }
 
     if (strXpath == undefined || strXpath == '' || strXpath == '/') {
@@ -296,10 +302,6 @@ function saveXpath(objEditor,strPath,strXpath) {
 //
 function saveText(objEditor,strPath) {
 
-    var request;
-
-    putsConsole( "Save content to " + strPath);
-
     if (strPath == undefined || strPath == '' || strPath == '/') {
 	putsConsole( "No path value '" + strPath + "'");
 	objEditor.focus();
@@ -307,10 +309,10 @@ function saveText(objEditor,strPath) {
     } else if (objEditor.getValue() == '') {
 	putsConsole( "Delete content at " + strPath);
     } else {
-	putsConsole( "Save content to " + strPath);
+	putsConsole( "Save content to '" + strPath + "'");
     }
 
-    request = $.ajax({
+    var request = $.ajax({
 	url: '/cxproc/exe',
 	type: 'POST',
 	data: {path: strPath, cxp: 'SaveContentXml', strContent: objEditor.getValue()}
@@ -395,22 +397,13 @@ function callbackSection(key, options) {
     if (key == 'view') {
 	window.document.viewElement(strFile,strXpath);
     } else if (key == 'frame') {
-	//window.open(window.location);
 	window.document.topElement(arrLocator[2],true);
     } else if (key == 'hide') {
 	options.$trigger.parent().parent().parent().css({'display': 'none'});
     } else if (key == 'top') {
 	window.document.topElement(arrLocator[2],false);
     } else if (key == 'up') {
-	putsConsole( "Old URL: " + window.document.URL);
-	if (window.document.URL.match(/xpath=/i)) {
-	    var strURLNew = window.document.URL.replace(/#.*$/i,'').replace(/&xpath=[^&]*/i,'');
-	    putsConsole( "Pre URL: " + strXpath);
-	    strURLNew += '&xpath=' + strXpath.replace(/\/\*\[[^\]*]\]$/i,'');
-	    putsConsole( "New URL: " + strURLNew);
-	    window.location.assign(strURLNew);
-	}
-    } else {
+	window.document.upElement(arrLocator[2],false);
     }
 }
 
@@ -419,7 +412,7 @@ function callbackSection(key, options) {
 //
 // 
 //
-function callbackTask(key, options) {
+function _callbackTask(key, options) {
 
     var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
     //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
@@ -498,25 +491,9 @@ function callbackTask(key, options) {
 // 
 //
 function callbackContent(key, options) {
-	
-    var strLocator = window.document.URL.toString().replace(/#.*$/,''); // remove current anchor reference
     
-    if (key == 'reload') {
-	var scroll = $(window).scrollTop();
-	if (strLocator.match(/\?/)) {
-	    // CGI URL
-	    window.location.assign(strLocator.replace(/\&+pos=[0-9]+/,'').replace(/#.*$/,'').concat('&pos=' + scroll));
-	} else {
-	    // direct file URL
-	    window.location.assign(strLocator.replace(/\&+pos=[0-9]+/,'').concat('?pos=' + scroll));
-	}
-	//window.location.reload(true);
-    } else if (key == 'frame') {
+    if (key == 'frame') {
 	window.open(window.location);
-    } else if (key == 'additor') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQAdditor').replace(/\&hl=[0-9_]+/i,''));
-    } else if (key == 'editor') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQEditor'));
     } else if (key == 'cleanup') {
 	pieCleanup();
     } else if (key == 'toc') {
@@ -527,29 +504,6 @@ function callbackContent(key, options) {
 	$(window).scrollTop(0);
     } else if (key == 'link') {
 	$('#links').css({'display': 'block'});
-    } else if (key == 'layout') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQDefault').replace(/\&(tag|xpath|pattern)=[^\&]*/g, ''));
-    } else if (key == 'calendar') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('#yesterday'));
-    } else if (key == 'calendar_month') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
-    } else if (key == 'todo') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQTodo'));
-    } else if (key == 'ganttcalendar') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQGanttCalendar'));
-    } else if (key == 'todocalendar') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQTodoCalendar').concat('#yesterday'));
-    } else if (key == 'todomatrix') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQTodoMatrix'));
-    } else if (key == 'todocontact') {
-	window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQTodoContact'));
-    } else if (key == 'treemap') {
-	window.open(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQTodoTreemap'));
-    } else if (key == 'presentation') {
-	window.open(strLocator.replace(/PiejQ[a-z]+/i,'PresentationIndex'));
-    } else if (key == 'mindmap') {
-	//window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQMindmap'));
-	alert('TODO: mindmap in Browser (DDD?)')
     } else if (key == 'contextYear') {
 	switchContext('year');
     } else if (key == 'contextMonth') {
@@ -563,7 +517,48 @@ function callbackContent(key, options) {
     } else if (key == 'contextPrev') {
 	goPrev();
     } else {
-	window.location.assign(strLocator.replace(/#.*$/,'').replace(/(jQ|Ui)[a-z]+/i,'jQFormat'));
+	var urlParams = new URLSearchParams(document.location.search);
+	var strHashNew = '';
+	
+	if (key == 'reload') {
+	} else if (key == 'layout') {
+	    urlParams.delete('tag');
+	    urlParams.delete('xpath');
+	    urlParams.delete('pattern');
+	    urlParams.set('cxp','PiejQDefault');
+	} else if (key == 'editor') {
+	    urlParams.set('cxp','PiejQEditor');
+	} else if (key == 'calendar') {
+	    urlParams.set('cxp','PiejQCalendar');
+	    strHashNew = '#yesterday';
+	} else if (key == 'calendar_month') {
+	    //window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
+	} else if (key == 'todo') {
+	    urlParams.set('cxp','PiejQTodo');
+	} else if (key == 'todocalendar') {
+	    urlParams.set('cxp','PiejQTodoCalendar');
+	} else if (key == 'todomatrix') {
+	    urlParams.set('cxp','PiejQTodoMatrix');
+	} else if (key == 'todocontact') {
+	    urlParams.set('cxp','PiejQTodoContact');
+	} else if (key == 'treemap') {
+	    urlParams.set('cxp','PiejQTodoTreemap');
+	} else if (key == 'presentation') {
+	    urlParams.set('cxp','PresentationIndex');
+	} else {
+	    urlParams.set('cxp','PiejQFormat');
+	}
+	urlParams.delete('hl');
+
+	var strQuery = urlParams.toString();
+	if (strQuery == '') {
+	    strUrlNew = window.location.pathname;
+	} else {
+	    strUrlNew = window.location.pathname + '?' + strQuery;
+	}
+
+	putsConsole('New URL: ' + strUrlNew + strHashNew);
+	window.location.assign(strUrlNew + strHashNew);
     }
 }
 		    
@@ -666,7 +661,7 @@ $(function(){
 	    trigger: 'right',
 	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
 	    autoHide: true,
-	    callback: callbackTask,
+	    callback: _callbackTask,
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
@@ -725,7 +720,7 @@ $(function(){
 	    trigger: 'right',
 	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
 	    autoHide: true,
-	    callback: callbackTask,
+	    callback: _callbackTask,
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",

@@ -56,9 +56,16 @@ var div = d3.select("div#content").append("div")
     .style("left", margin.left + "px")
     .style("top", margin.top + "px");
 
-var strURL = "?path=%CGIPATH%&amp;cxp=Format&amp;b=application/json%2Btree&amp;xpath=%CGIXPATH%&amp;pattern=%CGITAG%&amp;t_0=%CGIMIN%&amp;t_1=%CGIMAX%&amp;r=" + Math.random();
+    var urlParamsFormat = new URLSearchParams(document.location.search);
 
-d3.json(strURL, function(error, root) {
+    urlParamsFormat.set('cxp','Format');
+    urlParamsFormat.set('b','application/json+tree');
+    urlParamsFormat.set('t_0','%CGIMIN%');
+    urlParamsFormat.set('t_1','%CGIMAX%');
+    urlParamsFormat.delete('hl');
+    urlParamsFormat.delete('pos');
+    
+d3.json('?' + urlParamsFormat.toString(), function(error, root) {
   var node = div.datum(root).selectAll(".node")
       .data(treemap.nodes)
       .enter().append("div")

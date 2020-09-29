@@ -21,33 +21,13 @@
             <script language="Javascript" type="text/javascript"> 
 var editor = ace.edit("strContent");
 
-editor.setFontSize(12);
+// editor.setFontSize(12);
 editor.setTheme("ace/theme/katzenmilch");
 
 requestContent(editor,'%SCRIPT%?%QUERY%');
 
-editor.commands.addCommand({
-    name: 'mySaveCommand',
-    bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
-    exec: function(editor) {
-      saveText(editor,'%CGIPATH%');
-    },
-    readOnly: false // false if this command should not apply in readOnly mode
-    });
-
-// https://ace.c9.io/demo/keyboard_shortcuts.html
-editor.commands.addCommand({
-    name: "showKeyboardShortcuts",
-    bindKey: {win: "Ctrl-Alt-h", mac: "Command-Alt-h"},
-    exec: function(editor) {
-        ace.config.loadModule("ace/ext/keybinding_menu", function(module) {
-            module.init(editor);
-            editor.showKeyboardShortcuts()
-        })
-    }
-    })
-
-editor.execCommand("showKeyboardShortcuts")
+addShortcuts(editor,'%CGIPATH%');
+// editor.execCommand("showKeyboardShortcuts")
 
 // TODO: Syntax Highlighting + Code Folding https://ace.c9.io/#nav=higlighter
     
@@ -55,6 +35,8 @@ editor.execCommand("showKeyboardShortcuts")
 // $( window ).unload(function() {
 //   alert( "Handler for .unload() called." );
 // });
+
+$('#strContent').after(getToolsStr('editor'));
 
 </script>
       </body>

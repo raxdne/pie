@@ -112,13 +112,13 @@ a.geb {
  background-color:#00FF00;
 }
 
-span.htag, span.htag-todo, span.htag-req, span.htag-target, span.htag-bug {
+span.htag, span.htag-todo, span.htag-req, span.htag-target, span.htag-bug, span.htag-test {
   border-radius: 5px;
   background: #ffffaa;
 }
 
 span.htag-bug {
-  background: #ffc000;
+  background: #ff4000;
 }
 
 /* 

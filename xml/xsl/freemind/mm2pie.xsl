@@ -75,66 +75,6 @@
       <xsl:value-of select="@TEXT"/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="node[not(descendant::font[@BOLD='true']) and icon[@BUILTIN='list']]">
-    <!-- task node -->
-    <xsl:element name="task">
-      <xsl:call-template name="CREATEATTRIBUTES"/>
-      <xsl:element name="h">
-        <xsl:choose>
-          <xsl:when test="@LINK">
-            <!-- node with a link -->
-            <xsl:element name="link">
-              <xsl:attribute name="href">
-                <xsl:choose>
-                  <xsl:when test="starts-with(@LINK,'\\')">
-                    <xsl:value-of select="concat('file://',translate(@LINK,'\','/'))"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="@LINK"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:attribute>
-              <xsl:value-of select="@TEXT"/>
-            </xsl:element>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="@TEXT"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:element>
-      <xsl:for-each select="child::node[child::icon[contains(@BUILTIN, 'male')]]">
-        <xsl:call-template name="APPENDCONTACTS">
-	  <xsl:with-param name="str_idref" select="@TEXT"/>
-	</xsl:call-template>
-      </xsl:for-each>
-      <xsl:apply-templates select="child::node[not(icon[contains(@BUILTIN, 'male')])]"/>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template name="APPENDCONTACTS">
-    <xsl:param name="str_idref"/>
-    <xsl:if test="string-length($str_idref) &gt; 0">
-      <xsl:variable name="this_idref">
-	<xsl:choose>
-	  <xsl:when test="contains($str_idref,';')">
-            <!-- multiple ID refs -->
-	    <xsl:value-of select="substring-before($str_idref,';')"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="$str_idref"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:variable>
-      <xsl:element name="contact">
-	<xsl:attribute name="idref">
-          <xsl:value-of select="normalize-space(translate($this_idref,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))"/>
-	</xsl:attribute>
-	<xsl:apply-templates/>
-      </xsl:element>
-      <xsl:call-template name="APPENDCONTACTS">
-	<xsl:with-param name="str_idref" select="substring-after($str_idref,';')"/>
-      </xsl:call-template>
-    </xsl:if>
-  </xsl:template>
   <xsl:template match="node">
     <!-- regular node -->
     <xsl:variable name="depth" select="count(ancestor::node)"/>
@@ -222,17 +162,17 @@
               </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
+          <xsl:if test="child::node">
+            <xsl:element name="list">
+              <xsl:if test="child::node/child::attribute[@NAME='enum' and @VALUE='yes']">
+		<xsl:attribute name="enum">
+                  <xsl:text>yes</xsl:text>
+		</xsl:attribute>
+              </xsl:if>
+              <xsl:apply-templates/>
+            </xsl:element>
+          </xsl:if>
         </xsl:element>
-        </xsl:if>
-        <xsl:if test="child::node">
-          <xsl:element name="list">
-            <xsl:if test="child::node/child::attribute[@NAME='enum' and @VALUE='yes']">
-              <xsl:attribute name="enum">
-                <xsl:text>yes</xsl:text>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates/>
-          </xsl:element>
         </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
@@ -291,7 +231,7 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
-  <xsl:template match="*|@*|text()|comment()|meta">
+  <xsl:template match="*|@*|text()|comment()|meta|t">
     <!-- ignore other elements --> 
   </xsl:template>
 </xsl:stylesheet>

@@ -100,6 +100,7 @@
         <xsl:attribute name="TEXT">
           <xsl:call-template name="FORMATTASKPREFIX"/>
           <xsl:value-of select="string(h)"/>
+	  <xsl:call-template name="FORMATIMPACT"/>
         </xsl:attribute>
         <xsl:if test="h/@ref">
           <xsl:attribute name="LINK">
@@ -186,18 +187,9 @@
 	<xsl:when test="not(child::*)">
           <!-- ignore the list without child elements -->
 	</xsl:when>
-	<xsl:when test="preceding-sibling::*[position() = 1 and name() = 'p']">
-          <!-- ignore the list  -->
-	</xsl:when>
-	<xsl:when test="parent::section and preceding-sibling::h and not(following-sibling::*)">
-          <!-- this list is the second and last child of the parent section element -->
-          <xsl:apply-templates select="*"/>
-	</xsl:when>
 	<xsl:otherwise>
           <!-- there are more childs of the parent section element -->
-          <xsl:element name="node">
-            <xsl:apply-templates select="*"/>
-          </xsl:element>
+          <xsl:apply-templates select="*"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:if>
@@ -227,17 +219,27 @@
     </xsl:element>
   </xsl:template>
   <xsl:template match="link">
-    <xsl:value-of select="."/>
+    <xsl:value-of select="text()"/>
   </xsl:template>
   <xsl:template match="p">
     <xsl:if test="$flag_p">
       <xsl:element name="node">
         <xsl:attribute name="TEXT">
-          <xsl:apply-templates/>
+          <xsl:for-each select="child::*|text()">
+	    <xsl:choose>
+	      <xsl:when test="self::list">
+		<!-- ignore the list element here -->
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="normalize-space(.)"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:for-each>
+	  <xsl:call-template name="FORMATIMPACT"/>
         </xsl:attribute>
         <xsl:if test="link/@href">
           <xsl:attribute name="LINK">
-            <xsl:value-of select="link/@href"/>
+            <xsl:value-of select="link[1]/@href"/>
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="@hidden &gt; 0">
@@ -250,10 +252,7 @@
         <xsl:if test="$flag_attr">
           <xsl:call-template name="CREATEATTRIBUTES"/>
         </xsl:if>
-        <xsl:for-each select="following-sibling::*[position() = 1 and name() = 'list']">
-          <!-- the following list childs are childs of current node --> 
-          <xsl:apply-templates select="p"/>
-        </xsl:for-each>
+        <xsl:apply-templates select="list"/>
       </xsl:element>
     </xsl:if>
   </xsl:template>
@@ -333,7 +332,7 @@
   <xsl:template match="block">
     <xsl:apply-templates/>
   </xsl:template>
-  <xsl:template match="*">
+  <xsl:template match="*|text()|@*">
     <!-- ignore other elements --> 
   </xsl:template>
   <xsl:template name="CREATEATTRIBUTES">

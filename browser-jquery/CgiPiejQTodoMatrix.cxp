@@ -23,7 +23,7 @@
               <cxp:xml eval="yes">
 		<cxp:include name="PieTransformation.cxp" search="yes"/>
               </cxp:xml>
-              <cxp:xsl name="RemoveDoneElements.xsl"/>
+	      <cxp:xsl name="OpenTasks.xsl"/>
               <cxp:xsl name="TodoMatrix.xsl">
                 <cxp:variable name="diff_delta_0" select="%CGIMIN%"/>
                 <cxp:variable name="diff_delta_1" select="%CGIMAX%"/>
