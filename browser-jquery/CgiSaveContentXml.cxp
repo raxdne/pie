@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%BACKUPDIR%" env="CXP_BACKUPS" default="Backup/"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CONTENT%" cgi="strContent" encoding="rfc1738"/>
+  <cxp:subst string="%TAGTIME%" now="%Y%m%d_%H%M%S"/>
+  <cxp:subst string="%BACKUPFILE%" to="%BACKUPDIR%%CGIPATH%_%TAGTIME%"/>
+  <!-- make a backup copy first -->
+  <cxp:copy from="%CGIPATH%" to="%BACKUPFILE%"/>
+  <!-- save content into plain text file -->
+  <cxp:plain name="%CGIPATH%" response="OK">%CONTENT%</cxp:plain>
+</cxp:make>

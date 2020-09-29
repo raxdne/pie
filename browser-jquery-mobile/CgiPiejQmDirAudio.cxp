@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path" argv="2" default=""/>
+  <cxp:subst string="%CGIURLPATH%" cgi="path" argv="2" default="" escaping="yes"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQmHead.xhtml" search="yes"/>
+      <body>
+        <cxp:xhtml>
+          <cxp:xml>
+            <cxp:dir depth="2" verbosity="3" urlencode="yes">
+              <cxp:dir name="%CGIPATH%"/>
+            </cxp:dir>
+          </cxp:xml>
+          <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+            <!-- s. https://demos.jquerymobile.com/1.4.5/ -->
+            <xsl:output method="html" encoding="UTF-8"/>
+            <xsl:variable name="str_path_top" select="'%CGIURLPATH%'"/>
+            <xsl:template match="/">
+              <xsl:element name="html">
+                <xsl:element name="body">
+                  <xsl:apply-templates/>
+                </xsl:element>
+              </xsl:element>
+            </xsl:template>
+            <xsl:template match="pie">
+              <xsl:element name="div">
+                <xsl:element name="div">
+                  <xsl:attribute name="data-role">page</xsl:attribute>
+                  <xsl:attribute name="id">p0</xsl:attribute>
+                  <xsl:element name="div">
+                    <xsl:attribute name="data-role">header</xsl:attribute>
+                    <xsl:attribute name="data-add-back-btn">true</xsl:attribute>
+                    <xsl:element name="h1">
+                      <xsl:value-of select="dir/@name"/>
+                    </xsl:element>
+                  </xsl:element>
+                  <xsl:element name="div">
+                    <xsl:attribute name="data-role">content</xsl:attribute>
+                    <xsl:element name="ul">
+                      <xsl:attribute name="data-role">listview</xsl:attribute>
+                      <xsl:apply-templates select="dir/*">
+                        <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
+                        <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
+                        <xsl:with-param name="path_prefix">
+                          <xsl:value-of select="$str_path_top"/>
+                        </xsl:with-param>
+                      </xsl:apply-templates>
+                    </xsl:element>
+                  </xsl:element>
+                  <xsl:call-template name="NAVIGATION"/>
+                </xsl:element>
+              </xsl:element>
+            </xsl:template>
+            <xsl:template match="dir|file">
+              <!--  -->
+              <xsl:param name="path_prefix" select="''"/>
+              <!--  -->
+              <xsl:variable name="str_path">
+                <xsl:choose>
+                  <xsl:when test="$path_prefix = ''">
+                    <xsl:value-of select="@urlname"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="concat($path_prefix,'/',@urlname)"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="@hidden = 'yes' or starts-with(@name,'_')"/>
+                <xsl:when test="@read='no' or @error"/>
+                <xsl:when test="@name = '' or @name = 'tmp' or @name = 'temp' or @name = 'Temp'"/>
+                <xsl:when test="self::file[not(@size) or @size &lt; 100]"/>
+                <xsl:when test="self::dir[@execute='no']"/>
+                <xsl:when test="self::dir or self::file[contains(@type,'audio')]">
+                  <xsl:element name="li">
+                    <xsl:choose>
+                      <xsl:when test="child::dir or child::file">
+                        <!-- the sub directories are links -->
+                        <xsl:element name="a">
+                          <xsl:attribute name="onclick">
+                            <xsl:value-of select="concat('javascript:window.location.assign(','&quot;','?','cxp=','PiejQmDirAudio','&amp;','path=',$str_path,'&quot;',');')"/>
+                          </xsl:attribute>
+                          <xsl:value-of select="@name"/>
+                        </xsl:element>
+                      </xsl:when>
+                      <xsl:when test="self::file[contains(@type,'audio')]">
+                        <xsl:attribute name="data-icon">audio</xsl:attribute>
+                        <xsl:element name="a">
+                          <xsl:attribute name="onclick">
+                            <xsl:value-of select="concat('javascript:window.location.assign(','&quot;','?path=',$str_path,'&amp;','cxp=PlayList','&amp;','title=',translate(@name,' &amp;','_'),'&quot;',');')"/>
+                          </xsl:attribute>
+                          <xsl:choose>
+                            <xsl:when test="info/title">
+                              <xsl:value-of select="concat(info/artist,' - ',info/album,' - ',info/title)"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:value-of select="@name"/>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:element>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <!-- empty sub directories without links -->
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:element>
+		</xsl:when>
+                <xsl:otherwise>
+                  <!--  -->
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:template>
+            <xsl:template name="NAVIGATION">
+              <xsl:element name="div">
+                <xsl:attribute name="data-role">footer</xsl:attribute>
+                <xsl:element name="div">
+                  <xsl:attribute name="data-role">navbar</xsl:attribute>
+                  <xsl:element name="ul">
+                    <xsl:element name="li">
+                      <xsl:element name="a">
+                        <xsl:attribute name="data-icon">home</xsl:attribute>
+                        <xsl:if test="dir/@name != '.'">
+                          <xsl:attribute name="onclick">
+                            <xsl:text>javascript:window.location.assign('/');</xsl:text>
+                          </xsl:attribute>
+                        </xsl:if>
+                        <xsl:text>Home</xsl:text>
+                      </xsl:element>
+                    </xsl:element>
+                    <xsl:element name="li">
+                      <xsl:element name="a">
+                        <xsl:attribute name="data-icon">bullets</xsl:attribute>
+                        <xsl:if test="dir/@name != '.'">
+                          <xsl:attribute name="onclick">
+                            <xsl:value-of select="concat('javascript:window.location.assign(','&quot;','?path=',$str_path_top,'&amp;','cxp=PlayList','&amp;','title=',translate(dir/@name,' &amp;','_'),'&quot;',');')"/>
+                          </xsl:attribute>
+                        </xsl:if>
+                        <xsl:text>Playlist</xsl:text>
+                      </xsl:element>
+                    </xsl:element>
+                    <xsl:element name="li">
+                      <xsl:element name="a">
+                        <xsl:attribute name="data-icon">info</xsl:attribute>
+                        <xsl:attribute name="href">
+                          <xsl:value-of select="concat('?','cxp=PieUiPowered')"/>
+                        </xsl:attribute>
+                        <xsl:text>Powered by ...</xsl:text>
+                      </xsl:element>
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:element>
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </cxp:xhtml>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

@@ -1,0 +1,406 @@
+
+/* this is the CSS for txt2x: txt2x.css
+
+  replace patterns:               draft
+    background-color:#ffffff;
+    basis font-size:12px;
+    link color:#001dc1;
+    li margin-top:30px;
+
+ */
+
+body {
+  color:#ffffff;
+  background-color:#333333;
+  margin: 5px 5px 5px 5px;
+  clear:both;
+  font-size:200%;
+  font-weight:400;
+  line-height:1.5em;
+  padding-bottom:.3em;
+  padding-top:15px;
+  font-family:Roboto, Arial, sans-serif;
+}
+
+/* Header tags
+
+ */
+
+h1,h2,h3,h4 {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+ font-weight:bold;
+}
+
+h1 {
+  font-size:200%;
+}
+
+h2 {
+  font-size:160%;
+}
+
+h3 {
+  font-size:140%;
+}
+
+h4 {
+  font-size:100%;
+}
+
+/* Links
+
+ */
+a {
+  text-decoration:none;
+}
+
+a:active {
+  color:#ff0000;
+}
+
+a:link {
+   color:#AA5522;
+}
+
+a:visited {
+  color:#772200;
+}
+
+a.datum {
+}
+a.highlight {
+  /* text-decoration:underline; */
+ font-weight:bold;
+}
+.done {
+  /* color:#aaaaaa; */
+ /*  text-decoration:line-through; */
+}
+
+/* 
+
+ */
+b.em {
+  font-size:100%;
+  font-weight:normal;
+  text-decoration:underline;
+}
+
+/* settings for tables
+ */
+
+table {
+  border-collapse:separate;
+  border-spacing:1px;
+  empty-cells:show;
+  background-color:#bbbbbb;
+/*   background-color:#666666; */
+/*   border-collapse:separate; */
+/*   border-spacing:1px; */
+/*   empty-cells:show; */
+  /*  table-layout:fixed; */
+
+  /* 
+ margin: 5px 5px 5px 5px;
+ margin: 5px 5px 5px 5px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+}
+
+table.vcard {
+  margin: 5px 5px 5px 5px;
+  background-color:#ffffff;
+}
+
+table.unlined {
+  background-color:#ffffff;
+}
+
+tr {
+}
+
+/* data cells */
+td {
+  /*  border:1px solid #222222;*/
+  vertical-align:top;
+  background-color:#222222;
+}
+.empty {
+  background-color:#ffffff;
+  margin-bottom:0px;
+}
+.c11 {
+  background-color:#ffcccc;
+}
+.c12 {
+  background-color:#eeffee;
+}
+.c21 {
+  background-color:#ffeeee;
+}
+.c22 {
+  background-color:#ffffff;
+}
+.PRIO {
+  background-color:#ff0000;
+}
+.state {
+  text-align:center;
+}
+.transition {
+  text-align:center;
+  background-color:#e0e0e0;
+}
+.Sa,.sat,.So,.sun {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#444444;
+  font-weight:bold;
+}
+.summary {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#444444;
+}
+.today {
+  background-color:#555555;
+}
+
+table.formicons {
+  background-color:#ffffff;
+  border-spacing:3px;
+  width: 100%;
+}
+td.formicon {
+  text-align:left;
+  width: 27px;
+}
+.separator {
+  width: 10px;
+}
+.filename {
+  text-align:right;
+}
+
+td.SLIDE {
+  margin: 15px 15px 15px 15px;
+  background-color:#00FF00;
+}
+
+/* header cells */
+th {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#d9d9d9;
+  color:#000000;
+  font-weight:bold;
+}
+.title {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#e0e0e0;
+  font-weight:bold;
+}
+.header {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#d9d9d9;
+  font-weight:bold;
+}
+th.marker {
+  margin-bottom:0px;
+  text-align:center;
+  background-color:#d9d9d9;
+  font-weight:bold;
+}
+ 
+/* lists */
+ul {
+  list-style-type:square;
+}
+
+li {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  margin-left:0px;
+  /* text-indent:0.1cm; */
+}
+
+/* misc tags
+
+*/
+p {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  /* text-indent:0.1cm; */
+ margin: 2px 2px 1px 1px;
+}
+.p1 {
+  background-color:#004444;
+}
+.p2 {
+}
+.p3 {
+}
+.done {
+ color:#aaaaaa;
+/*  text-decoration:line-through; */
+}
+.target {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#fffea1;
+}
+.abstract {
+ font-style:italic;
+  margin-bottom:0px;
+  text-align:center;
+}
+.outlook {
+ color:#666666;
+ /*  text-decoration:line-through; */
+}
+
+pre {
+  font-family:Courier,monospace;
+ margin: 2px 2px 5px 20px;
+}
+
+dt {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+ font-weight:bold;
+ margin: 5px 5px 5px 5px;
+}
+
+dd {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+ margin: 2px 2px 2px 2px;
+  */
+}
+
+img {
+ border:none
+}
+
+input,textarea,select {
+}
+.additor {
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+  padding:2px;
+}
+
+p.pieTab {
+  line-height: 1.75;
+}
+
+span.pieTab {
+  vertical-align: top;
+ display: inline-block;
+ width: 7em;
+  text-align:right;
+ padding:5px;
+  font-weight:bold;
+}
+
+input.pieTab {
+  vertical-align: top;
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+ padding:2px;
+}
+
+select.pieTab {
+  vertical-align: top;
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+ padding:2px;
+}
+
+textarea.pieTab {
+  vertical-align: top;
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+ padding:2px;
+}
+
+/* 
+p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
+}
+ */
+
+div.task {
+  background-color:#EEEEEE;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+div.taskDone {
+  background-color:#EEEEEE;
+  color:#AAAAAA;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+div.task1 {
+  background-color:#ffcccc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+div.task2 {
+  background-color:#ccffcc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+div.task3 {
+  background-color:#ccccff;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+div.target {
+  vertical-align: top;
+  background-color:#fffea1;
+ padding:1px;
+  margin: 2px 2px 0px 0px;
+}
+

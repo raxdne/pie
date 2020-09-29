@@ -1,0 +1,36 @@
+
+* Test dates
+
+First of April ... 2020-04-01
+
+Weekdays 2020*w15wed
+
+Sequence of dates 20200501,05,11,0602 ++
+
+Range of dates 20200515#19
+
+Range with steps 20200515#0615.4
+
+Repeat x5
+
+relative dates 20200501+44
+
+Christian calendar (relative to Easter) 2020@e+15
+
+Days 20200630
+
+Months 202006
+
+Years 2020
+
+** UTC Time 20200701Z13:01:05
+
+** German dates
+
+2.1.2007 AAA
+
+3.01.2007 BBB
+
+04.1.2007 CCC
+
+05.01.2007 DDD

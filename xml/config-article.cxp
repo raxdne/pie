@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:description>
+  Show content as an article HTML
+  
+  argument: source file
+  
+  </cxp:description>
+  <cxp:subst string="%SOURCE%" argv="2"/>
+  <cxp:subst string="%SOURCEDIR%" dir="%SOURCE%"/>
+  <cxp:subst string="%ENVTMP%" argv="3" env="TMP" default="/tmp"/>
+  <cxp:subst string="%TMP%" to="%ENVTMP%/cxproc"/>
+  <cxp:subst string="%START%" type="%SOURCE%"/>
+  <cxp:subst string="%AUTHOR%" env="CXP_AUTHOR" default="Tenbusch Alexander"/>
+  <cxp:subst string="%MAIN%" to="article"/>
+  <cxp:subst string="%T%" now="%Y%m%d-%MAIN%"/>
+  <cxp:system message="Convert '%SOURCE%' to '%TMP%/%T%'"/>
+  <cxp:system mkdir="%TMP%/%T%"/>
+  <cxp:copy from="%SOURCE%" to="%TMP%/%T%"/>
+  <cxp:copy from="html/pie.css" to="%TMP%/%T%" search="yes"/>
+  <cxp:xhtml name="%TMP%/%T%/%MAIN%.html" view="yes">
+    <cxp:xml name="%TMP%/%T%/%MAIN%.pie">
+      <cxp:xml eval="yes">
+        <!--  -->
+      <cxp:pathtable start="%START%" target="application/pie+proc+xml" type="xml">
+          <cxp:xml>
+            <cxp:xml name="PieTransformations.xml" search="yes"/>
+            <cxp:xsl name="PieValidate.xsl"/>
+          </cxp:xml>
+        </cxp:pathtable>
+        <cxp:xsl name="XmlPathTableCxp.xsl">
+          <cxp:variable name="str_path" select="'%SOURCE%'"/>
+        </cxp:xsl>
+      <!--  -->
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+        <xsl:output method="xml"/>
+        <xsl:template match="/">
+          <xsl:element name="{name(make/*[1])}">
+            <xsl:copy-of select="make/*[1]/*"/>
+          </xsl:element>
+        </xsl:template>
+      </xsl:stylesheet>
+      </cxp:xml>
+    </cxp:xml>
+    <cxp:xsl name="pie2html.xsl">
+      <cxp:variable name="level_hidden" select="2"/>
+      <cxp:variable name="flag_tree" select="true()"/>
+      <cxp:variable name="flag_slidecap" select="false()"/>
+      <cxp:variable name="flag_fig" select="true()"/>
+      <cxp:variable name="flag_xpath" select="false()"/>
+    </cxp:xsl>
+  </cxp:xhtml>
+  <!--  -->
+  <cxp:each name="%N%">
+    <cxp:from>
+      <cxp:plain>
+        <cxp:xml>
+          <cxp:dir name="%SOURCEDIR%" imatch="\.(gif|png|jpg)$" depth="9"/>
+        </cxp:xml>
+        <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+          <xsl:output method="text"/>
+          <xsl:template match="/">
+            <xsl:for-each select="//file">
+              <xsl:value-of select="/pie/dir/@prefix"/>
+              <xsl:for-each select="ancestor::dir">
+                <xsl:value-of select="concat('/',@name)"/>
+              </xsl:for-each>
+              <xsl:value-of select="concat('/',@name,' ')"/>
+            </xsl:for-each>
+          </xsl:template>
+        </xsl:stylesheet>
+      </cxp:plain>
+    </cxp:from>
+    <cxp:system message="Copying image '%N%'"/>
+    <cxp:copy from="%N%" to="%TMP%/%T%/"/>
+  </cxp:each>
+</cxp:make>

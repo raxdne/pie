@@ -1,0 +1,86 @@
+/* this is the CSS for txt2x: txt2x.css
+
+  replace patterns:               draft
+    background-color:#ffffff;
+    basis font-size:12px;
+    link color:#001dc1;
+    li margin-top:30px;
+
+ */
+
+body {
+  /* background-color:#ffffff; */
+  font-family:Arial,sans-serif;
+  /* font-family:Courier; */
+  font-size:9pt;
+}
+
+div.block {
+  -moz-column-count: 3;
+  -moz-column-gap: 15px;
+  -moz-column-rule: 1px solid black;
+  -webkit-column-count: 3;
+  -webkit-column-gap: 15px;
+  -webkit-column-rule: 1px solid black;
+}
+
+h1.title {
+  /* background-color:#ffffff; */
+  font-family:Courier;
+  font-size:140%;
+  text-align:right;
+}
+
+h2 {
+  /* background-color:#ffffff; */
+  font-family:Arial,sans-serif;
+  /* font-family:Courier; */
+  font-size:120%;
+  text-align:center;
+  font-style:italic;
+}
+
+ol {
+ margin: 1px 1px 1px -20px;
+}
+
+p,li {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  /* text-indent:0.1cm; */
+ margin: 9px 6px 3px 10px;
+}
+
+img {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  /* text-indent:0.1cm; */
+ margin: 9px 2px 3px 10px;
+}
+
+a {
+  text-decoration:none;
+}
+
+a:active {
+  color:#ff0000;
+}
+
+a:link {
+  /* color:#AA5522; */
+}
+
+a:visited {
+  /* color:#772200; */
+}
+

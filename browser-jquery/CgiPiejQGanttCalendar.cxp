@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIYEAR%" cgi="year" now="%Y"/>
+  <cxp:subst string="%CGIFORM%" cgi="form" default="true()"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGICONTEXT%" cgi="context" default="week"/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+	<script type="text/javascript">$(document).ready(function() { $("#ganttTable").tablesorter(); } );</script> 
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:calendar type="%CGICONTEXT%" columns="yes">
+                  <cxp:col id="tasks" name="Tasks">
+                    <cxp:xml>
+		      <cxp:xml eval="yes">
+			<cxp:include name="PieTransformation.cxp" search="yes"/>
+		      </cxp:xml>
+		      <cxp:xsl name="PieValidate.xsl"/>
+		      <cxp:xsl name="ProjectFilter.xsl">
+			<cxp:variable name="str_pidref" select="''"/>
+		      </cxp:xsl>
+                    </cxp:xml>
+                  </cxp:col>
+                </cxp:calendar>
+              </cxp:xml>
+              <cxp:xsl name="CalendarGantt.xsl">
+                <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+  		<cxp:variable name="str_year" select="'%CGIYEAR%'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

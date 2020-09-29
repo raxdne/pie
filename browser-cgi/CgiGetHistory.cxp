@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <div id="content">
+	    <cxp:xhtml>
+	      <cxp:xml>
+		<pie url="no" italics="no" tags="no" figure="no" offset="no">
+		  <import name=".history" type="line"/>
+		</pie>
+	      </cxp:xml>
+	      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+		<xsl:output method="html"/>
+		<xsl:template match="/">
+		  <xsl:element name="html">
+		    <xsl:element name="body">
+		      <xsl:element name="ol">
+			<xsl:for-each select="//p">
+			  <xsl:sort order="descending" data-type="number" select="position()"/>
+			  <xsl:choose>
+			    <xsl:when test="following-sibling::p = .">
+			      <!-- ignore redundant entries -->
+			    </xsl:when>
+			    <xsl:otherwise>
+			      <xsl:element name="li">
+				<xsl:element name="a">
+				  <xsl:attribute name="href">
+				    <xsl:copy-of select="."/>
+				  </xsl:attribute>
+				  <xsl:value-of select="substring-after(.,'?')"/>
+				</xsl:element>
+			      </xsl:element>
+			    </xsl:otherwise>
+			  </xsl:choose>
+			</xsl:for-each>
+		      </xsl:element>
+		    </xsl:element>
+		  </xsl:element>
+		</xsl:template>
+	      </xsl:stylesheet>
+	    </cxp:xhtml>
+	    <p style="text-align:right">%TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

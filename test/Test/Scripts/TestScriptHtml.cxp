@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<cxp:description>Test Script HTML</cxp:description>
+    <cxp:xhtml name="-">
+<cxp:script>
+var objNow = Date();
+var strResult = '&lt;html&gt;&lt;body&gt;';
+
+for (i=0,j=8592; i &lt; 100; i++) {
+  strResult += '&lt;p&gt;' + 'TEST &amp;#' + (i + j) + '; &lt;/p&gt;' + '\n';
+}
+strResult += '&lt;/body&gt;' + '&lt;/html&gt;' + '\n';
+
+strResult;
+</cxp:script>
+    </cxp:xhtml>
+</cxp:make>

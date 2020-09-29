@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:description>Test HTML Redir</cxp:description>
+  <cxp:xhtml name="-">
+    <cxp:xhtml name="http://www.heise.de/newsticker/"/>
+    <cxp:xpath name="//div[@id='archiv_woche']"/>
+  </cxp:xhtml>
+</cxp:make>

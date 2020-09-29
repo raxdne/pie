@@ -1,0 +1,405 @@
+;; Speicherung <Article.txt 18.1.2014 17:25:23 developer>
+
+* >>Beschreibung von PKn<< (%DATUM%, %HOME%)
+
+** Entwicklung einer PK als technische Problemstellung
+
+Die Suche nach einer in einer bestimmten Situation geeigneten PK kann
+als ein allgemeines technisches Problem konstruktionsmethodisch nach
+[pahl97a] und der VDI-Richtlinie 2221 angegangen werden
+(s.a. Abb. vdi2221). Die folgenden Betrachtungen beziehen sich auf die
+Entwicklung von PKn nicht aber auf die Entwicklung der eigentlichen
+Produkte. Es wird lediglich die Herangehensweise übernommen
+(Methodik).
+
+TODO: [tenbusch00a]
+
+*** Planen und Klären der Aufgabe
+
+Da es an dieser Stelle nicht um eine einzelne konkrete
+Aufgabenstellung geht, können nur allgemeine Anforderungen an PKn
+berücksichtigt werden.
+
+#begin_of_pre
+!!!NUR TEST!!!
+#end_of_pre
+
+%%%% Anforderungen an PKn
+
+In der Mehrzahl der Fälle sollte eine PK
+
+- schnell und mit begrenztem Aufwand abzuwickeln sein,
+
+- wirtschaftlich vertretbar sein,
+
+- zu ausreichend genauen Ergebnissen führen,
+
+- mit wenigen Medienwechseln auskommen und
+
+- nicht zu unbeabsichtigten Informationsverlusten oder Unterbrechungen
+  im Datenfluß führen.
+
+Je nach Situation in der sich eine Aufgabe stellt, sind konkretere,
+zusätzliche Anforderungen oder Schwerpunkte zu erwarten.
+
+*** Konzipieren
+
+%%%% Funktionszusammenhang
+
+TODO: Abb. Images/black-box-pk.png PK in Black-Box-Darstellung
+
+Für eine Betrachtung des Funktionszusammenhanges (Gesamtfunktion und
+Teilfunktionen zur Verarbeitung von Stoff-, Energie- und
+Signal-Größen) ist eine PK in Abb. black-box-pk als Black-Box
+dargestellt.
+
+Typische Beispiele für Ein- und Ausgangsgrößen sind CAD-Daten,
+Designstudien oder einfach nur eine Vorstellung vom zu entwickelnden
+Produkt. Eine Analyse ergibt, dass die zu betrachtenden PKn für die
+Verarbeitung von verschiedenen Formen der Geometriebeschreibung des
+Produktes gebildet werden. Aus diesem Umstand ergibt sich auch die
+Wahl der Bezeichnung >geometriedaten-bestimmte PKn<.
+
+Für den Funktionszusammenhang ergibt sich die Folgerung, daß die drei
+Einzelgrößen Stoff-, Energie- und Signal zwar verarbeitet werden, sie
+aber nur die >Medien< für die Speicherung der Geometriedaten
+darstellen. Die Herstellung physischer Modelle erfordert sowohl
+Material und Energie als auch Informationen über deren Form.  Für die
+Verarbeitung rechnerinterner Modelle sind ebenfalls Material
+(Rechner-HW), Ernergie (Betrieb) und Signale (Übertragung,
+Speicherung) erforderlich. Die Geometriedaten werden in
+unterschiedliche systemabhängige Signale kodiert. Die Form der
+Kodierung, Einzelheiten der Übertragung oder der HW spielen aber für
+die Funktionsbetrachtung keine Rolle.  Gedankliche Modelle sind
+ebenfalls nur schwer mit den drei Größen zu beschreiben.
+
+; Überleitung
+
+; Def. Modell:
+
+; [dietrych82a] S. 149 ff., S. 70ff. [geuer96a], [stuermer89a] S. 23
+
+>>Ein Modell ist ein materielles oder immaterielles Gebilde, das
+  geschaffen wird, um ein Original zu repräsentieren und so einen
+  bestimmten Zweck erreichen zu können.<< [mueller92a]
+
+Im Rahmen dieser Betrachtungen wird nur das >>Partialmodell<<
+Geometrie betrachtet. In Anlehnung an die Definition werden
+nachfolgend Geometriebeschreibungen in ideeller (gedanklicher), in
+reeller (physischer) oder in virtueller (rechnerinterner) Form
+vereinfachend als Modelle (geometrische Modelle, Geometriemodelle)
+bezeichnet.
+
+Dieses Partialmodell stellt einen sehr wichtigen Bestandteil des
+>>Produktdarstellenden Modells<< dar. Durch schrittweise
+Transformation in einer Reihe von Prozessen wird das Geometriemodell
+z.B. von einer internen (ideellen) Repräsentation (Produktidee) in
+eine vollständige Beschreibung mit einer externen Form
+(z.B. Funktionsprototyp) überführt. Betrachtungen zu den verschiedenen
+Repräsentationsformen folgen in einem der nächsten Abschnitte.
+
+TODO: Unterschied Information und Daten?
+
+Abb. Images/abstraktionsebenen.png Funktions-, Prozess- und
+Technologiezusammenhang
+
+Während eine komplette PK eine Gesamtfunktion erfüllt, lassen sich die
+Verarbeitungsschritte für die Modelle durch Teilfunktionen
+beschreiben. Aus der Berücksichtigung der ideellen, reellen und
+virtuellen Modellen als Ein- und Ausgangsmodelle ergeben sich 9
+Kombinationsmöglichkeiten, denen die Teilfunktionen entsprechend
+Abb. abstraktionsebenen zugeordnet werden können.
+
+#warning Kombination
+
+Damit läßt sich jede PK durch eine Aneinanderreihung (Kombination)
+einer Menge aus den 9 Teilfunktionen beschreiben.
+
+#warning theoretische Menge = ...
+
+%%%% Prozeßzusammenhang
+
+Abb. Images/pk-funktion.png Beispiel für eine Funktionsstruktur
+
+; Def. Prozeß
+
+Das in Abb. pk-funktion dargestellte Beispiel zeigt, daß eine
+Betrachtung des Funktionszusammenhanges nicht detailliert genug für
+die angestrebte Beschreibung der PKn ist. Um prinzipielle Lösungen für
+die einzelnen Teilfunktionen zu finden, wird der >Prozesszusammenhang<
+eingeführt (s. Abb. abstraktionsebenen).
+
+Ein Prozess stellt eine Lösung für eine Teilfunktion dar. Zum Beispiel
+kann der Teilfunktion >Daten erfassen< der Prozess
+>3D-Digitalisierung< als eine mögliche Lösung zugeordnet werden, die
+CAD-Modellierung erfüllt die Funktion >Vorstellung modellieren< und
+ein Rapid-Prototyping-Prozess stellt ein >Daten realisieren< dar.
+
+Die oben aufgeführten Formen der Geometriebeschreibung werden so
+unterteilt, daß sie die Ein- und Ausgangsmodelle für die Prozesse
+darstellen.
+
+Eine im Prozeßzusammenhang beschriebene PK stellt das Konzept dar. Auf
+den Prozeßzusammenhang und die einzelnen Modelle und Prozesse wird in
+einem der kommenden Abschnitte eingegangen.
+
+*** Entwerfen
+
+%%%% Technologiezusammenhang
+
+Im >Technologiezusammenhang< wird das Konzept mit der Auswahl
+geeigneter Technologien (Maschinen, Software, ...) für die einzelnen
+Prozesse und den Formen der einzelnen Geometriemodelle (Material,
+Detaillierung, Datenformate, Datenträger) konkretisiert.
+
+Für die physischen Modelle werden die Anforderungen (Material,
+Genauigkeit, Oberflächengüte, ...) und für die rechnerinternen Modelle
+werden die Dateiformate (IGES, VDA-FS, STEP, ...) festgelegt. Eine
+detailliert ausgearbeitete PK wird als Ergebnis der Technologieplanung
+auch als >Technologiekette< bezeichnet (s. [klocke98a]).
+
+*** Ausarbeiten
+
+%%%% Organisationszusammenhang
+
+Unterhalb der Technologie-Ebene liegt noch die Organisatorische
+Ebene. Sie beinhaltet alle Informationen, die sich auf die
+Organisation der zu realisierenden Technologiekette beziehen. Dazu
+zählen
+
+- die Auswahl geeigneter Dienstleister,
+
+- die Angebotseinholung,
+
+- die Auswertung der Angebote,
+
+- die Wahl der Auftragnehmer und
+
+- die organisatorische Überwachung der Abarbeitung (Termine, Preise,
+  Qualität).
+
+*** Zusammenfassung
+
+Die ausgewählte Variante stellt ein >Konzept< für eine bestimmte PK
+dar. Die Möglichkeiten der Realisierung werden erst im darunter
+liegenden Technologie-Zusammenhang betrachtet
+(s.a. Abb. abstraktionsebenen). In einer Art >Gestaltung< wird dann
+für jeden Prozess der Kette die zu verwendende Technologie bis hin zu
+Geräten, Software und Dienstleistern geplant.
+
+Die getrennte Betrachtung von Funktions-, Prozess- und
+Technologie-Zusammenhang erlaubt eine ausreichend detaillierte
+Konzipierung der PK, ohne an der großen Lösungsmenge oder an
+Technologiedetails zu scheitern.
+
+Die Einteilung der Prozesse ist allgemein gehalten und kann erweitert
+und angepasst werden. Grenzen zwischen den Prozessen können
+u.U. verwaschen, wenn zusätzliche Funktionalitäten in Systeme
+integriert werden (z.B. Flächenrückführung im CAD-System).
+
+** Funktionszusammenhang
+
+%%% Einleitung
+
+- 3 Modellgruppen
+
+-- ideell
+
+-- virtuell
+
+-- reell
+
+- 9 Teilfunktionen
+
+- Verarbeitung des Partialmodells Geometrie
+
+*** Modelle im KEP
+
+; Welche Rolle spielen die Geometriedaten?
+
+Die Bedeutung von Modellen im Konstruktionsprozeß wird an
+verschiedenen Stellen betont
+[mueller92a,sachse95a,pahl97a,tomiyama98a]. Während der PE wird eine
+Vielzahl von Modellen gebildet, bis die Produktbeschreibung
+vollständig ist.
+
+; nur geometrische Modelle
+
+%%%% Funktionen von Modellen
+
+; [mueller92a] S. 321
+
+; psycholog./konstruktionsmethodisch [sachse95a,sachse96a]
+
+In [sachse95a,sachse96a] wird die konstruktionsunterstützende Rolle
+von frühen, einfach zu fertigenden Modellen (>>Early low cost
+prototyping<<) an Hand einer Studie dargestellt. Dabei werden nur
+Reale Modelle berücksichtigt.
+
+Im Entwurfsprozeß werden den Modellen folgende Funktionen
+zugeschrieben:
+
+- Analysehilfe (Vermeidung von Denkfehlern, Begreifen von Modellen)
+
+- Evaluationshilfe
+
+- Speicherhilfe (Gedächtnisentlastung)
+
+- Lösungshilfe
+
+- Kommunikationshilfe
+
+- Dokumentationshilfe
+
+; [sachse99a]
+
+; Wie wirken sich Modelle auf den Verlauf einer PE aus?
+
+Modelle können
+
+- örtliche und zeitliche Unabhängigkeit vergrößern (Global
+  Engineering, Verteilte PE s. [hallbauer97a,weber98a]),
+
+- [sachse95a,sachse96a,sachse99a]
+
+%%%% Formen der Beschreibung
+
+; [abeln97a] S. 64
+
+>>Im technischen Bereich sind für die hinreichend vollständige formale
+Beschreibung (Modellbildung) von Objekten im allgemeinen
+
+- geometrische,
+
+- technologische,
+
+- organisatorische und
+
+- funktionale Angaben
+
+erforderlich.<< [abeln97a]
+
+- Beschreibung des Modellaufbaus (History, [krause97c],
+  Fertigungsanweisungen, EXPRESS)
+
+- Produktmodell [erb96a] S. 14 ff.
+
+- Partialmodelle [erb96a] S. 18 ff.
+
+- Rolle von Teilmodellen im Konstruktionsprozeß [vajna00a,vajna00b]
+
+- FEM-Modell
+  http://www.sfb396.uni-erlangen.de/extern/Projekte/BereichA/A2/datenfluss/datenfluss.html
+
+%%%% Vervollständigung der Modelle durch PE
+
+in frühen Phasen bilden die Modelle nur Teilaspkete ab, weil die
+Festlegung der Details noch nicht sinnvoll ist, auch mehrere
+verschiedene Modelle sinnvoll, parallel
+
+Freiheitsgrade nehmen immer weiter ab, Modelle werden immer konkreter
+(aufwendiger) s.S. 71 [geuer96a]
+
+%%%% Reduktion auf Einzelaspekte
+
+; nicht nur virtuelle Modelle
+
+- Verbesserung der Übersichtlichkeit
+
+- unabhängige Entwicklung (auch Geheimhaltung)
+
+- Wechsel zwischen Vervollständigung und Reduktion
+
+%%%% charakteristische Probleme mit Modellen
+
+- Redundanz, Gültigkeit, Aktualisierung, Verzweigungen
+
+- Verfügbarkeit
+
+- Aufwand
+
+- Diese Modelle werden mit Hilfe von verschiedenen Datenträgern
+bzw. -formaten (Werkstoff, Dateiformate, ...)  gespeichert.
+
+Daraus ergibt sich der Konflikt bei der Nutzung von Reellen,
+Virtuellen und Idellen Modellen. Sie weisen jedes für sich Vor- und
+Nachteile auf. Das Problem ist die verlustarme, schnelle Überführung
+von Modellen aus einer >Welt< in eine andere (Transformation).
+
+%%%% allg. Taxonomie der Modelle?
+
+- sehr verschiedene Aspekte
+
+- s. [sachse96a] S. 2 f., S. 6 f.
+
+- [dietrych82a] S. 149 ff.
+
+Aspekte zur Einteilung
+
+- Entwicklung
+
+-- Funktion/Zweck
+
+-- Konkretisierung
+
+- Zeitpunkt im KEP
+
+- Herstellung
+
+-- Materialien
+
+-- Herstellungsverfahren (Technologiekette) [kaschka99a,geuer96a]
+
+-- Fertigungsgenauigkeit
+
+- Organisation
+
+-- Speicherung (Archivierung)
+
+-- Zugriffsmöglichkeiten
+
+**** Ideelle Modelle
+
+Der Begriff >Mentales Modell< >>... ist leider sehr unscharf
+... Grundsätzlich meint dieser Begriff, daß sich Menschen intern
+Modelle von Ausschnitten der Realität aufbauen. Mentale Modelle sind
+eine umfassende Repräsentation der Strukturen und Prozesse eines
+Realitätsbereichs. Sie integrieren sprachliches, bildhaftes und
+handlungsbezogenes Wissen, wobei eine ganzheitlich-analoge Form der
+Repräsentation im Vordergrund steht. Mentale Modelle erlauben die
+innere Simulation äußerer Vorgänge.<< ([edelmann94a] S. 262)
+
+Nach [edelmann94a] Dreifache Repräsentation
+
+- handlungsmäßige Darstellung
+
+- bildhafte Darstellung
+
+- symbolhafte Darstellung
+
+; Def. nach [pahl97a] ?
+
+- Speicherung (Umfang, Zeit)
+
+-- sowohl Bild/Raum als auch Entstehung/Herstellung
+
+-- mit einer Vielzahl weiterer Verknüpfungen
+
+- erforderliche Fähigkeiten
+
+Ein Teil der Prozesse stellt zwar reine Datenverarbeitung dar,
+z.B. Umwandlung von Dateiformaten, der überwiegende Teil ist jedoch
+mit Interaktion durch den Bearbeiter verbunden. Für jeden Prozeß, der
+diese Interaktion erfordert oder darin besteht, z.B. CAD-Modellierung,
+ist es erforderlich, daß sich die Bearbeiter ein Mentales Modell von
+der Geometrie oder von Teilaspekten gebildet haben (s. Modellbildung).
+
+Neben den reinen Geometriedaten werden auch sprachliche Informationen
+in mündlicher oder schriftlicher Form weitergereicht/gespeichert. Mit
+jeder Rückfrage während der Bearbeitung werden zusätzliche
+Informationen angefordert.
+
+- sind >>unvollständig, nicht fest begrenzt und unwissenschaftlich
+  aufgebaut<< [stuermer89a] S. 27 nach (Genter & Stevens: Mental
+  Models, 1983)
+

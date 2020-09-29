@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" default="ERROR"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGISUB%" cgi="sub" default="dir"/>
+  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <cxp:xhtml>
+            <cxp:xsl name="CgiPieUi.xsl">
+              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              <cxp:variable name="str_type" select="'inode/directory'"/>
+              <cxp:variable name="sub" select="'%CGISUB%'"/>
+              <cxp:variable name="flag_sub" select="false()"/>
+            </cxp:xsl>
+          </cxp:xhtml>
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xsl name="CgiPieUi.xsl">
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_type" select="'inode/directory'"/>
+		<cxp:variable name="write" select="'%CGIPERM%'"/>
+                <cxp:variable name="sub" select="'dir'"/>
+		<cxp:variable name="flag_sub" select="true()"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

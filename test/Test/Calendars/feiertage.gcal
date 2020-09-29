@@ -1,0 +1,27 @@
+
+; Osterfeiertage
+0000@e-52 Gumpiger Dunschtig
+0000@e-48 Rosenmontag
+0000@e-46 Aschermittwoch
+0000@e-3 Gründonnerstag
+0000@e-2 + Karfreitag
+0000@e Ostersonntag
+0000@e+1 + Ostermontag
+0000@e+39 + Himmelfahrt
+0000@e+50 + Pfingstmontag
+0000@e+60 + Fronleichnam
+
+; feste Tage
+00000101 + Neujahr
+00000106 + Heilige Drei Könige
+00000501 + Tag der Arbeit
+00000502 +    
+00001003 + Tag der dt. Einheit
+00001101 + Allerheiligen
+
+00001206 Nikolaus
+
+00001224 Heiligabend
+00001225 + Erster Weihnachtsfeiertag
+00001226 + Zweiter Weihnachtsfeiertag
+00001231 Silvester

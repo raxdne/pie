@@ -1,0 +1,68 @@
+
+* Test of Blocks
+
+** Test 11
+
+XML entities & or < or > ... \u2114 &#x21D2;
+
+#begin_of_pre
+AAAAAAAAAAAAAA & BBBBBBBBBBBBBbbbb & CCCCCCCCCCCCCCCCCCCCC
+#end_of_pre
+
+#begin_of_skip
+SKIP 1 SKIP 1 SKIP
+#end_of_skip
+
+ZZZZ
+
++ YYY
+
++ XXX
+
++ UUU
+
+#begin_of_csv
+sep=,
+
+** Test 2a,Test 2b, TEST 2c
+A,B,C
+D,E,F
+H,I,J
+
+#end_of_csv
+
+* Test 3
+
+#begin_of_script
+128 * 2
+#end_of_script
+
+#begin_of_cxp
+<plain>
+  <xml>
+    <dir name="abc"/>
+  </xml>
+  <xsl name="dir2plain.xsl"/>
+</plain> 
+#end_of_cxp
+
+#import("dummy.log",log)
+
+#begin_of_line
+* h1
+p1
+p2
+p3
+p4
+* h2
+p21
+#end_of_line
+
+par1 par1 par1 par1 par1 par1 par1 par1 par1
+
+par2 par2 par2 par2 par2 par2 par2 par2 par2
+
+#import("TestBlocks.txt")
+
+#begin_of_skip
+SKIP 2 SKIP 2 SKIP

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGISUB%" cgi="sub" default="search"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <cxp:xhtml>
+            <cxp:xsl name="CgiPieUi.xsl">
+              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              <cxp:variable name="str_type" select="'inode/directory'"/>
+              <cxp:variable name="sub" select="'%CGISUB%'"/>
+              <cxp:variable name="flag_sub" select="false()"/>
+            </cxp:xsl>
+          </cxp:xhtml>
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xsl name="CgiPieUiDirSearch.xsl">
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

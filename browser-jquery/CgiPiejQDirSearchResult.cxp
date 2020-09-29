@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path" default=""/>
+  <cxp:subst string="%NEEDLE%" cgi="needle" default=""/>
+  <cxp:subst string="%PATTERNNAME%" cgi="patternname" default="^.+(pie|xml|txt|cal|mm|htm|html)$"/>
+  <cxp:system message="Search for file with lines matching '%NEEDLE%' in '%CGIPATH%' ..."/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:dir igrep="%NEEDLE%" imatch="%PATTERNNAME%" depth="10" verbosity="3" urlencode="yes">
+                  <cxp:dir name="%CGIPATH%"/>
+                </cxp:dir>
+              </cxp:xml>
+              <cxp:xsl name="HtmlDirGrepResult.xsl">
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="flag_sub" select="false()"/>
+                <cxp:variable name="str_cxp" select="'PiejQDefault'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

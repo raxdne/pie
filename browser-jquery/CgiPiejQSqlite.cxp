@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING" />
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME" />
+  <cxp:subst string="%CGIPATH%" cgi="path" />
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes" />
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S" />
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes" />
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:file name="%CGIPATH%" verbosity="5" />
+              </cxp:xml>
+              <cxp:xsl name="sqlite2html.xsl" />
+            </cxp:xhtml>
+            <hr/>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+        <a name="bottom"/>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

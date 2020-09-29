@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CCGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <div id="additArea"/>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

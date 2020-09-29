@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="2">
+  <cxp:subst string="%DOCDIR%" env="CXP_ROOT" />
+  <cxp:subst string="%CGIPATH%" cgi="path" />
+  <cxp:system message="Play in '%CGIPATH%'" />
+  <cxp:copy from="%DOCDIR%/%CGIPATH%" to="-"/>
+</cxp:make>

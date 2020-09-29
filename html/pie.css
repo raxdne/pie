@@ -1,0 +1,561 @@
+
+/* this is the CSS for txt2x: txt2x.css
+
+  replace patterns:               draft
+    background-color:#ffffff;
+    basis font-size:12px;
+    link color:#001dc1;
+    li margin-top:30px;
+
+ */
+
+body,table {
+  background-color:#ffffff;
+  font-family: Arial,sans-serif;
+  /* font-family:Courier; */
+  font-size:12px;
+  margin: 5px 5px 5px 5px;
+}
+
+/* sections tags
+
+ */
+
+section {
+  border-left: 1px dotted #aaaaaa;
+}
+
+section > * {
+  margin: 0px 0px 0px 2px;
+}
+
+section > *:not(.header) {
+  margin: 0.5em 0.5em 0.5em 2em;
+}
+
+/* Header tags
+
+ */
+
+h1,h2,h3,h4 {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+ font-weight:bold;
+}
+
+h1 {
+  font-size:200%;
+}
+
+h2 {
+  font-size:160%;
+}
+
+h3 {
+  font-size:140%;
+}
+
+h4 {
+  font-size:100%;
+}
+
+h5 {
+  font-size:90%;
+}
+
+h6 {
+  font-size:80%;
+}
+
+/* Links
+
+ */
+a {
+  text-decoration:none;
+}
+
+a:active {
+  color:#ff0000;
+}
+
+a:link {
+  /* color:#AA5522; */
+}
+
+a:visited {
+  /* color:#772200; */
+}
+
+a.datum {
+  background-color:#00FF00;
+}
+a.error {
+  background-color:#FF0000;
+}
+a.warning {
+  background-color:#00FFFF;
+}
+a.ok {
+  background-color:#00FF00;
+}
+a.done {
+ color:#aaaaaa;
+ /*  text-decoration:line-through; */
+}
+a.geb {
+ color:#000000;
+ background-color:#00FF00;
+}
+
+span.htag, span.htag-todo, span.htag-req, span.htag-target, span.htag-bug {
+  border-radius: 5px;
+  background: #ffffaa;
+}
+
+span.htag-bug {
+  background: #ffc000;
+}
+
+/* 
+
+ */
+b.em {
+  font-size:100%;
+  font-weight:normal;
+  text-decoration:underline;
+}
+
+/* settings for tables
+ */
+
+table {
+  width: 95%;
+  border-collapse: collapse;
+  empty-cells:show;
+  margin-left:auto;
+  margin-right:auto;
+  border: 1px solid grey;
+}
+
+table.vcard {
+  margin: 5px 5px 5px 5px;
+  background-color:#ffffff;
+}
+
+table.unlined {
+  background-color:#ffffff;
+}
+
+tr {
+}
+
+/* data cells */
+td {
+  border: 1px solid grey;
+  vertical-align:top;
+}
+.empty {
+  margin-bottom:0px;
+}
+.c11 {
+  background-color:#ffcccc;
+}
+.c12 {
+  background-color:#eeffee;
+}
+.c21 {
+  background-color:#ffeeee;
+}
+.c22 {
+  background-color:#ffffff;
+}
+.state {
+  text-align:center;
+}
+.transition {
+  text-align:center;
+  background-color:#e0e0e0;
+}
+.Sa,.sat,.So,.sun {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#f0f0f0;
+  font-weight:bold;
+}
+.summary {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#fffed2;
+}
+.today {
+  background-color:#e0e0ff;
+}
+.gantt-low {
+  background-color:#BBffBB;
+  vertical-align:middle;
+  text-align:center;
+}
+.gantt {
+  background-color:#ffffBB;
+  vertical-align:middle;
+  text-align:center;
+}
+.gantt-high {
+  background-color:#ffBBBB;
+  vertical-align:middle;
+  text-align:center;
+}
+
+table.formicons {
+  border-spacing:3px;
+}
+td.formicon {
+  text-align:left;
+  width: 27px;
+}
+.separator {
+  width: 10px;
+}
+.filename {
+  text-align:right;
+}
+
+td.SLIDE {
+  margin: 15px 15px 15px 15px;
+  background-color:#00FF00;
+}
+
+/* header cells */
+th {
+  border: 1px solid grey;
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#d9d9d9;
+  color:#000000;
+  font-weight:bold;
+}
+th.title {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#e0e0e0;
+  font-weight:bold;
+}
+th.header {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#d9d9d9;
+  font-weight:bold;
+}
+th.marker {
+  margin-bottom:0px;
+  text-align:center;
+  background-color:#d9d9d9;
+  font-weight:bold;
+}
+
+div.contact {
+ height: 150px;
+  writing-mode: bt-rl;
+}
+
+div.tag {
+ margin: 3px 3px 3px 3px;
+ text-align:right;
+}
+
+span.tag {
+ margin: 3px 3px 3px 3px;
+ background-color:#FFFEA1;
+}
+span.tagGreen {
+ margin: 3px 3px 3px 3px;
+ background-color:#88FF88;
+}
+span.tagYellow {
+ margin: 3px 3px 3px 3px;
+ background-color:#FFFF88;
+}
+span.tagRed {
+ margin: 3px 3px 3px 3px;
+ background-color:#FF8888;
+}
+
+/* lists */
+ul, ol {
+ margin: 0px 0px 0px 0px;
+ padding: 0px 0px 0px 3em;
+}
+
+ul {
+  list-style-type:square;
+}
+
+li {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  margin-left:0px;
+  /* text-indent:0.1cm; */
+}
+
+/* misc tags
+
+*/
+p {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  /* text-indent:0.1cm; */
+ margin: 3px 2px 3px 1px;
+}
+.target {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#fffea1;
+}
+.abstract {
+ font-style:italic;
+  margin-bottom:0px;
+  text-align:center;
+}
+.outlook {
+ color:#666666;
+ /*  text-decoration:line-through; */
+}
+
+li.hidden,p.hidden {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  /* text-indent:0.1cm; */
+  /* margin: 5px 5px 2px 2px; */
+  /* background-color:#00ff00; */
+  margin-top:5px;
+  margin-bottom:5px;
+ font-family:Courier;
+ font-size:120%;
+}
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+dt {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+ font-weight:bold;
+ margin: 5px 5px 5px 5px;
+}
+
+dd {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+ margin: 2px 2px 2px 2px;
+  */
+}
+
+img {
+ margin: 10px 10px 20px 20px;
+ border:none
+}
+.localsize {
+  /* width: 90%; */
+ margin: 5px 5px 10px 10px;
+ border:none
+}
+
+input,textarea,select {
+}
+.additor {
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+  padding:2px;
+}
+
+p.pieTab {
+  line-height: 1.75;
+}
+
+span.pieTab {
+  vertical-align: top;
+ display: inline-block;
+ width: 7em;
+  text-align:right;
+ padding:5px;
+  font-weight:bold;
+}
+
+input.pieTab {
+  vertical-align: top;
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+ padding:2px;
+}
+
+select.pieTab {
+  vertical-align: top;
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+ padding:2px;
+}
+
+textarea.pieTab {
+  vertical-align: top;
+  background-color:#EEEEEE;
+  border-width:1px; 
+  border-color:#BBBBBB;
+  border-style:solid;
+ padding:2px;
+}
+
+/* 
+p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
+}
+ */
+
+*.task, *.todo, *.test, *.bug, *.req, *.target {
+  background-color:#EEEEEE;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+*.p1, *.h1, *.fig1, *.task1 {
+  background-color:#ffcccc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+*.p2, *.h2, *.fig2, *.task2 {
+  background-color:#ccffcc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+*.p3, *.h3, *.fig3, *.task3 {
+  background-color:#ccccff;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+*.section-done,*.htag-done,*.task-done,*.p-done,*.h-done {
+  color:#AAAAAA;
+  background-color:#EEEEEE;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+/*  text-decoration:line-through; */
+}
+
+/* 
+ */
+*.invalid {
+  text-decoration: line-through;
+}
+
+*.highlight-block {
+  border-right-color:#ff4444;
+  border-right-style: solid;
+  border-right-width: 8px;
+  padding-right: 5px;
+}
+
+*.highlight {
+  background-color:#88ff88;
+}
+
+/* text marker like styles
+ */
+span.marker-red {
+  background-color:#ff8888;
+}
+span.marker-yellow {
+  background-color:#ffff00;
+}
+span.marker-green {
+  background-color:#88ff88;
+}
+span.u {
+  text-decoration:underline;
+}
+span.b {
+  font-weight:bold;
+}
+span.i {
+  font-style:italic;
+}
+span.date {
+  font-style:italic;
+}
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777;
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+

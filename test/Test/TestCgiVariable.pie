@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pie>
+  <subst string="%CGIID%" cgi="id" default="ABC"/>
+  <subst string="%ARGV%" argv="2" default="ARGV"/>
+  <subst string="%OS%" host="os" default="Unknown"/>
+  <subst string="%ENV%" env="SERVER_SOFTWARE" default="Unknown"/>
+  <subst string="%TODAY%" now="%Y-%m-%d"/>
+  <section>
+    <h>PIE/Substitution test</h>
+    <section>
+      <h>Substitution test via CGI</h>
+      <p>%CGIID%</p>
+    </section>
+    <section>
+      <h>Substitution test via command line argument</h>
+      <p>%ARGV%</p>
+    </section>
+    <section>
+      <h>Substitution test via host information</h>
+       <p>%OS%</p>
+    </section>
+    <section>
+      <h>Substitution test via Server Environment</h>
+      <p>%ENV%</p>
+    </section>
+    <section>
+      <h>Substitution test via Time</h>
+      <p>%TODAY%</p>
+    </section>
+  </section>
+</pie>

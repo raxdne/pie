@@ -1,0 +1,1308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pie xmlns:pkg="http://www.tenbusch.info/pkg" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" class="petrinet">
+  <section id="transformations">
+    <stelle id="text/plain+calendar" type="text/plain">
+      <h>Text plain calendar</h>
+    </stelle>
+    <stelle id="text/csv" type="text/csv" disposition="attachement;filename=cxproc.csv">
+      <h>Text CSV</h>
+    </stelle>
+    <stelle id="text/csv+nwa" type="text/csv" disposition="attachement;filename=cxproc.csv">
+      <h>Text CSV Nutzwertanalyse</h>
+    </stelle>
+    <stelle id="text/csv+weight" type="text/csv" disposition="attachement;filename=cxproc.csv">
+      <h>Text CSV Weight</h>
+    </stelle>
+    <stelle id="text/dot" type="text/plain" disposition="attachement;filename=cxproc.dot_">
+      <h>Text Graphviz</h>
+    </stelle>
+    <stelle id="text/plain" type="text/plain">
+      <h>Text plain</h>
+    </stelle>
+    <stelle id="text/plain+import" type="text/plain">
+      <h>Text plain Import</h>
+      <p>A XML conformant UTF-8 text</p>
+    </stelle>
+    <stelle id="text/plain+import+clean" type="text/plain">
+      <h>Text plain clean Import</h>
+      <p>A XML conformant UTF-8 text</p>
+    </stelle>
+    <stelle id="text/markdown" type="text/markdown" disposition="attachement;filename=cxproc.md">
+      <h>Text Markdown</h>
+      <p>A Markdown text</p>
+    </stelle>
+    <stelle id="text/plain+tree" type="text/plain">
+      <h>Text plain tree</h>
+      <p>An unicode tree layout.</p>
+    </stelle>
+    <stelle id="text/plain+lines" type="text/plain">
+      <h>Text plain lines</h>
+      <p>A simple line layout.</p>
+    </stelle>
+    <stelle id="text/calendar" type="text/calendar" disposition="attachement;filename=cxproc.ics">
+      <h>Text ICS Calendar</h>
+      <make>
+	<xml>
+	  <file verbosity="4" name="PATH"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="text/calendar+todo" type="text/calendar" disposition="attachement;filename=cxproc.ics">
+      <h>Text ICS ToDo Calendar</h>
+    </stelle>
+    <stelle id="text/project" type="text/plain">
+      <h>Text Project</h>
+    </stelle>
+    <stelle id="text/vcard" type="text/vcard" disposition="attachement;filename=cxproc.vcf">
+      <h>Text vcard</h>
+    </stelle>
+    <stelle id="application/rss+xml" type="application/rss+xml">
+      <h>XML RSS</h>
+      <make>
+	<xml name="PATH" locator="yes"/>
+      </make>
+    </stelle>
+    <stelle id="application/dict+plain" type="text/plain">
+      <h>Text Dictionary wordlist</h>
+    </stelle>
+    <stelle id="application/pie+xml" type="application/xml">
+      <h>XML PIE</h>
+      <p>A PIE document with import instructions for every usable file in this directory tree.</p>
+      <make>
+	<xml name="PATH" locator="yes"/>
+      </make>
+    </stelle>
+    <stelle id="application/pie+proc+xml" type="text/xml">
+      <h>XML PIE processed</h>
+      <p>A PIE document containing the transformed content of every usable file in this directory tree.</p>
+    </stelle>
+    <stelle id="application/pie+cal+xml" type="text/xml">
+      <!--  disposition="attachement;filename=cxproc.pie" -->
+      <h>XML PIE Calendar</h>
+    </stelle>
+    <stelle id="application/pie+clean+xml" type="text/xml" disposition="attachement;filename=cxproc.pie">
+      <!--   -->
+      <h>XML PIE cleaned (non-valid and empty elements, done tasks, ...)</h>
+    </stelle>
+    <stelle id="application/mm+xml" type="application/mm+xml" disposition="attachement;filename=cxproc.mm">
+      <h>XML Freemind</h>
+      <make>
+	<xml name="PATH" locator="yes"/>
+      </make>
+    </stelle>
+    <stelle id="application/mm+proc+xml" type="application/mm+xml" disposition="attachement;filename=cxproc.mm">
+      <h>XML Freemind processed</h>
+    </stelle>
+    <stelle id="application/mmap+xml" type="application/mmap+xml" disposition="attachement;filename=cxproc.mmap">
+      <h>Mindmanager native</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="application/xmmap+xml" type="application/xmmap+xml" disposition="attachement;filename=cxproc.xmmap">
+      <h>XML Mindmanager</h>
+      <make>
+	<xml name="PATH" locator="yes"/>
+      </make>
+    </stelle>
+    <stelle id="application/xmind+xml" type="application/xmind+xml" disposition="attachement;filename=cxproc.xmind">
+      <h>Xmind</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <!--  -->
+    <stelle id="application/fo+xml" type="application/fo+xml" disposition="attachement;filename=cxproc.fo">
+      <h>XML FO</h>
+      <make>
+	<xml name="PATH" locator="yes"/>
+      </make>
+    </stelle>
+    <stelle id="application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" disposition="attachement;filename=cxproc.xml">
+      <h>MS Office Word (XML)</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="application/vnd.openxmlformats-officedocument.presentationml.presentation" type="application/vnd.openxmlformats-officedocument.presentationml.presentation" disposition="attachement;filename=cxproc.xml">
+      <h>MS Office PowerPoint (XML)</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disposition="attachement;filename=cxproc.xml">
+      <h>MS Office Excel (XML)</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="text/html" type="text/html">
+      <!--  disposition="attachement;filename=cxproc.html" -->
+      <h>HTML Default layout</h>
+      <p>An article like layout.</p>
+      <make>
+	<xml name="PATH" locator="yes"/>
+      </make>
+    </stelle>
+    <stelle id="application/x-latex" type="application/x-latex" disposition="attachement;filename=cxproc.tex">
+      <h>Text LaTeX</h>
+      <p>Include to a LaTeX file.</p>
+    </stelle>
+    <stelle id="text/html+simple" type="text/html">
+      <h>HTML Simple layout</h>
+      <p>A full content simple layout with header and content.</p>
+    </stelle>
+    <stelle id="text/html+tab" type="text/html">
+      <h>HTML Table layout</h>
+      <p>A full content table layout with header and content rows.</p>
+    </stelle>
+    <stelle id="text/html+indent" type="text/html">
+      <h>HTML Indent layout</h>
+      <p>A text only layout build of nested lists, no CSS.</p>
+    </stelle>
+    <stelle id="text/html+todo" type="text/html">
+      <h>HTML Todo layout</h>
+    </stelle>
+    <stelle id="text/html+todo+contact" type="text/html">
+      <h>HTML Todo contact</h>
+    </stelle>
+    <stelle id="text/html+project+contact" type="text/html">
+      <h>HTML Project contact</h>
+    </stelle>
+    <stelle id="text/html+todo+effort" type="text/html">
+      <h>HTML Todo effort</h>
+    </stelle>
+    <stelle id="text/html+todo+report" type="text/html">
+      <h>HTML Todo report</h>
+    </stelle>
+    <stelle id="text/html+tag" type="text/html">
+      <h>HTML Tag layout</h>
+    </stelle>
+    <stelle id="text/html+touch" type="text/html">
+      <h>HTML Touch layout</h>
+    </stelle>
+    <stelle id="text/html+jquery-mobile" type="text/html">
+      <h>HTML jquery-mobile layout</h>
+    </stelle>
+    <stelle id="text/html+usecases" type="text/html">
+      <h>HTML UseCase table layout</h>
+    </stelle>
+    <stelle id="text/html+psp" type="text/html">
+      <h>HTML PSP</h>
+    </stelle>
+    <stelle id="text/html+compact" type="text/html">
+      <h>HTML Compact</h>
+    </stelle>
+    <stelle id="text/html+abstract" type="text/html">
+      <h>HTML Abstract</h>
+    </stelle>
+    <stelle id="text/html+calendar" type="text/html">
+      <h>HTML Calendar layout</h>
+      <p>An Calendar table layout.</p>
+    </stelle>
+    <stelle id="text/html+gantt" type="text/html">
+      <h>HTML Gantt layout</h>
+      <p>A full Gantt table layout with header and content rows.</p>
+    </stelle>
+    <stelle id="application/vnd.oasis.opendocument.text" type="application/openoffice">
+      <h>OpenOffice Document</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="application/vnd.oasis.opendocument.spreadsheet" type="application/openoffice">
+      <h>OpenOffice Spreadsheet</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="application/vnd.oasis.opendocument.presentation" type="application/openoffice">
+      <h>OpenOffice Presentation</h>
+      <make>
+	<xml locator="yes">
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </stelle>
+    <stelle id="text/plain+wiki" type="text/plain">
+      <h>Text Wiki</h>
+    </stelle>
+    <stelle id="text/plain+dirpath" type="text/plain">
+      <h>Text Paths</h>
+    </stelle>
+    <stelle id="application/json+tree" type="application/json">
+      <h>JSON Tree</h>
+    </stelle>
+    <stelle id="inode/directory" type="inode/directory">
+      <h>Filesystem Directory</h>
+      <p>XML of parsed directory content</p>
+    </stelle>
+    <stelle id="application/file+xml" type="text/xml">
+      <h>XML File</h>
+      <p>XML of parsed file content</p>
+    </stelle>
+    <stelle id="application/dir+xml" type="text/xml">
+      <h>XML Directory</h>
+    </stelle>
+    <stelle id="application/dir+html" type="text/html">
+      <h>HTML Directory</h>
+    </stelle>
+    <stelle id="application/dir+html+jqm" type="text/html">
+      <h>HTML jQuery Mobile Directory</h>
+    </stelle>
+    <stelle id="application/vnd.garmin.tcx+xml" type="text/xml">
+      <h>Training Center XML</h>
+      <make>
+	<xml name="PATH"/>
+      </make>
+    </stelle>
+    <!--  -->
+    <transition id="ShellMakeDir">
+      <h>ShellMakeDir</h>
+      <make>
+	<xsl name="ShellMakeDir.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2jsontree">
+      <h>pie2jsontree</h>
+      <make>
+	<xsl name="TodoTreeMap.xsl">
+	  <variable name="t_0" select="-7"/>
+	  <variable name="t_1" select="3"/>
+	  <variable name="int_level" select="1"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="mm2gcal">
+      <h>mm2gcal</h>
+      <make>
+	<xsl name="mm2gcal.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2tree">
+      <h>pie2tree</h>
+      <make>
+	<xsl name="PieRemoveBlockNodes.xsl"/>
+	<xsl name="pie2tree.xsl">
+	  <variable name="str_tagtime" select="TAGTIME"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="tcx2csv">
+      <h>tcx2csv</h>
+      <make>
+	<xsl name="tcx2csv.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2csv">
+      <h>mm2csv</h>
+      <make>
+	<xsl name="mm2csv.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2short">
+      <h>mm2short</h>
+      <make>
+	<xsl name="mm2short.xsl">
+	  <variable name="h_max" select="5"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="mm2nwa">
+      <h>mm2nwa</h>
+      <make>
+	<xsl name="mm_strip_folded.xsl"/>
+	<xsl name="NWA.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2dot">
+      <h>mm2dot</h>
+      <make>
+	<xsl name="mm2dot.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2tree">
+      <h>mm2tree</h>
+      <make>
+	<xsl name="mm2tree.xsl">
+	  <variable name="flag_spacing" select="false()"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="mm2lines">
+      <h>mm2lines</h>
+      <make>
+	<xsl name="mm2lines.xsl">
+	  <variable name="str_sep" select="' / '"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="mm2touch">
+      <h>mm2touch</h>
+      <make>
+	<xsl name="mm2touch.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2usecases">
+      <h>mm2usecases</h>
+      <make>
+	<xsl name="mm2usecases.xsl">
+	  <variable name="str_pathdir" select="'%CGIPATHDIR%'"/>
+	  <!-- draft
+	  <variable name="str_tag" select="'Sundown'"/>
+	  -->
+	  <variable name="flag_task" select="true()"/>
+	  <variable name="flag_req" select="true()"/>
+	  <variable name="flag_attr" select="true()"/>
+	  <variable name="flag_links" select="true()"/>
+	  <variable name="int_depth_max" select="-1"/>
+	  <variable name="flag_empty" select="false()"/>
+	  <variable name="flag_bat" select="false()"/>
+	  <variable name="flag_ext" select="false()"/>
+	  <variable name="flag_unfold" select="true()"/>
+	  <!-- publish
+	  <variable name="flag_task" select="true()"/>
+	  <variable name="flag_req" select="true()"/>
+	  <variable name="flag_attr" select="false()"/>
+	  <variable name="flag_links" select="true()"/>
+	  <variable name="int_depth_max" select="8"/>
+	  <variable name="flag_empty" select="false()"/>
+	  <variable name="flag_bat" select="false()"/>
+	  <variable name="flag_ext" select="false()"/>
+	  <variable name="flag_unfold" select="true()"/>
+	  -->
+	</xsl>
+      </make>
+    </transition>
+    <transition id="rss2pie">
+      <h>rss2pie</h>
+      <make>
+	<xsl name="rss202pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2rss" color="red">
+      <h>pie2rss</h>
+      <make>
+	<xsl name="pie202rss.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2gcal">
+      <h>pie2gcal</h>
+      <make>
+	<xsl name="pie2gcal.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2weight">
+      <h>pie2weight</h>
+      <make>
+	<xsl name="TextWeightCsv.xsl">
+	  <variable name="int_depth" select="2"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2htmlshort">
+      <h>pie2htmlshort</h>
+      <make>
+	<xsl name="pie2htmlshort.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2htmlsimple">
+      <h>pie2htmlsimple</h>
+      <make>
+	<xsl name="pie2htmlsimple.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2html">
+      <h>pie2html</h>
+      <make>
+	<xsl name="pie2html.xsl">
+	  <variable name="file_css" select="''"/>
+	  <variable name="file_plain" select="'%CGIPATH%'"/>
+	  <variable name="flag_toc" select="true()"/>
+	  <variable name="flag_tags" select="true()"/>
+	  <variable name="flag_llist" select="true()"/>
+	  <variable name="str_tag" select="'%CGITAG%'"/>
+	  <variable name="str_link_prefix" select="'/%CGIPATHDIR%'"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2jqm">
+      <h>pie2jqm</h>
+      <make>
+	<xsl name="pie2jqm.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2tab">
+      <h>pie2tab</h>
+      <make>
+	<xsl name="pie2tab.xsl">
+	  <variable name="file_css" select="''"/>
+	  <variable name="flag_done" select="true()"/>
+	  <variable name="flag_details" select="true()"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="mm2tab">
+      <h>mm2tab</h>
+      <make>
+	<xsl name="mm2tab.xsl">
+	  <variable name="file_css" select="''"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2indent">
+      <h>pie2indent</h>
+      <make>
+	<xsl name="pie2indent.xsl">
+	  <variable name="file_css" select="''" />
+	  <variable name="flag_done" select="false()"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2todo">
+      <h>pie2todo</h>
+      <make>
+	<xsl name="TodoTable.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2todocontact" valid="no">
+      <h>pie2todocontact</h>
+      <make>
+	<xsl name="RemoveDoneElements.xsl"/>
+	<xsl name="TodoContactTable.xsl">
+	  <variable name="file_norm" select="'%CGIPATH%'"/>
+	  <variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQDefault&amp;tag='"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2projectcontact" valid="no">
+      <h>pie2projectcontact</h>
+      <make>
+	<xsl name="ContactProjects.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2todoeffort" valid="no">
+      <h>pie2todoeffort</h>
+      <make>
+	<xsl name="TodoEffortTable.xsl" />
+      </make>
+    </transition>
+    <transition id="pie2todoreport" valid="no">
+      <h>pie2todoreport</h>
+      <make>
+	<xsl name="TodoReportTable.xsl" />
+      </make>
+    </transition>
+    <transition id="tablecalendar">
+      <h>tablecalendar</h>
+      <make>
+	<xsl name="CalendarTable.xsl" appendcgi="yes">
+	  <variable name="file_css" select="'/pie/html/pie.css'"/>
+  	  <variable name="str_year" select="''"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="ganttcalendar" valid="no">
+      <h>ganttcalendar</h>
+      <make>
+	<xsl name="CalendarGantt.xsl">
+	  <variable name="file_css" select="'/pie/html/pie.css'"/>
+  	  <variable name="str_year" select="''"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2psp">
+      <h>PIE to PSP</h>
+      <make>
+	<xsl name="PrologPSP.xsl">
+	  <variable name="file_plain" select="'%CGIPATH%'"/>
+	  <variable name="flag_toc" select="true()"/>
+	  <variable name="flag_tags" select="true()"/>
+	  <variable name="flag_llist" select="true()"/>
+	  <variable name="str_tag" select="'%CGITAG%'"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2tag">
+      <h>PIE to Tags</h>
+      <make>
+	<xsl name="TagTable.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2project" valid="no">
+      <h>PIE to Project</h>
+      <make>
+	<xsl name="PrologMSProjectDraft.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2abstract">
+      <h>PIE to Abstract</h>
+      <make>
+	<xsl name="pie2p.xsl"/>
+      </make>
+    </transition>
+    <transition id="html2pie" valid="no">
+      <h>html2pie</h>
+      <make>
+	<xsl name="html2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2txt">
+      <h>pie2txt</h>
+      <make>
+	<xsl name="pie2txt.xsl">
+	  <variable name="str_tagtime" select="TAGTIME"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2cleantxt">
+      <h>pie2cleantxt</h>
+      <make>
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" valid="yes">
+	<xsl:output method="xml" encoding="UTF-8"/>  
+	<xsl:template match="@*|node()">
+	  <xsl:choose>
+	    <xsl:when test="@hidden"/>
+	    <xsl:when test="@done"/>
+	    <xsl:when test="@valid = 'no'"/>
+	    <xsl:otherwise>
+	      <xsl:copy>
+		<xsl:apply-templates select="@*|node()"/> 
+	      </xsl:copy>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:template>  
+      </xsl:stylesheet>
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" valid="yes">
+	<xsl:output method="xml" encoding="UTF-8"/>  
+	<xsl:template match="@*|node()">
+	  <xsl:choose>
+	    <xsl:when test="self::section[(count(descendant::task) + count(descendant::p) + count(descendant::list) + count(descendant::pre) + count(descendant::fig) + count(descendant::table)) &lt; 1]"/>
+	    <xsl:otherwise>
+	      <xsl:copy>
+		<xsl:apply-templates select="@*|node()"/> 
+	      </xsl:copy>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:template>  
+      </xsl:stylesheet>
+	<xsl name="pie2txt.xsl">
+	  <variable name="str_tagtimeYY" select="TAGTIME"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2md">
+      <h>pie2md</h>
+      <make>
+	<xsl name="pie2md.xsl">
+	  <variable name="str_tagtime" select="TAGTIME"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2latex">
+      <h>pie2latex</h>
+      <make>
+	<xsl name="pie2latex.xsl"/>
+      </make>
+    </transition>
+    <transition id="import">
+      <h>import</h>
+      <make>
+	<xml>
+	  <xml>
+	    <xml xpath="yes">
+	      <pie xpath="XPATH" url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+		<import name="PATH" locator="yes"/>
+	      </pie>
+	    </xml>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	  <xsl name="RemoveHiddenLevel.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importmm">
+      <h>importmm</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import type="cxp">
+		<xml>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="4"/>
+		  </xml>
+		  <xsl name="mm_strip_folded.xsl"/>
+		  <xsl name="mm2pie.xsl"/>
+		</xml>
+	      </import>
+	    </pie>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importxmmap">
+      <h>importxmmap</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import type="cxp">
+		<xml>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="xmmap2mm.xsl"/>
+		  <xsl name="mm_strip_folded.xsl"/>
+		  <xsl name="mm2pie.xsl"/>
+		</xml>
+	      </import>
+	    </pie>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importodt">
+      <h>importodt</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import type="cxp">
+		<plain>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="odt2txt.xsl"/>
+		</plain>
+	      </import>
+	    </pie>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	  <xsl name="RemoveHiddenLevel.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="odt2plain">
+      <h>odt2plain</h>
+      <make>
+	<plain>
+	  <xml locator="yes">
+	    <file name="PATH" verbosity="4"/>
+	  </xml>
+	  <xsl name="odt2txt.xsl"/>
+	</plain>
+      </make>
+    </transition>
+    <transition id="importodp">
+      <h>importodp</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import type="cxp">
+		<plain>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="odp2txt.xsl"/>
+		</plain>
+	      </import>
+	    </pie>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	  <xsl name="RemoveHiddenLevel.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importdocx">
+      <h>importdocx</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" import="yes" validation="yes">
+	      <import type="cxp">
+		<plain>
+		  <xml>
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="docx2txt.xsl"/>
+		</plain>
+	      </import>
+	    </pie>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	  <xsl name="RemoveHiddenLevel.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="docx2plain">
+      <h>docx2plain</h>
+      <make>
+	<plain>
+	  <xml locator="yes">
+	    <file name="PATH" verbosity="5"/>
+	  </xml>
+	  <xsl name="docx2txt.xsl"/>
+	</plain>
+      </make>
+    </transition>
+    <transition id="importpptx">
+      <h>importpptx</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import type="cxp">
+		<plain>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="pptx2txt.xsl"/>
+		</plain>
+	      </import>
+	    </pie>
+	  </xml>
+	  <xsl name="ExtractDuration.xsl"/>
+	  <xsl name="RemoveHiddenLevel.xsl"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="pptx2plain">
+      <h>pptx2plain</h>
+      <make>
+	<plain>
+	  <xml locator="yes">
+	    <file name="PATH" verbosity="5"/>
+	  </xml>
+	  <xsl name="pptx2txt.xsl"/>
+	</plain>
+      </make>
+    </transition>
+    <transition id="importcsv">
+      <h>importcsv</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import name="PATH" locator="yes" type="csv"/>
+	    </pie>
+	  </xml>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importcal">
+      <h>importcal</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <import name="PATH" locator="yes" type="log"/>
+	    </pie>
+	  </xml>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importvcard">
+      <h>importvcard</h>
+      <make>
+	<xml>
+	  <xml xpath="yes">
+	    <pie url="yes" tags="no" pattern="TAG" figure="no" offset="yes" validation="yes">
+	      <import name="PATH" locator="yes" type="vcf"/>
+	    </pie>
+	  </xml>
+	  <xsl xpath="XPATH"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importtocalendar">
+      <h>import to calendar</h>
+      <make>
+	<xml>
+	  <calendar columns="yes" type="day" subst="yes">
+	    <col id="legend" name="Legende">
+	      <xml>
+		<pie>
+		  <p date="00000000">%a %d.%m. (%j)</p>
+		  <p date="0000*w99mon">KW %V/%Y</p>
+		  <p date="0000*w99">%V/%Y</p>
+		  <p date="000000">%Y-%m</p>
+		  <p date="0000">%Y</p>
+		</pie>
+	      </xml>
+	    </col>
+	    <col id="content" name="Content">
+	      <xml>
+		<xml xpath="yes">
+		  <pie xpath="XPATH" url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
+		    <import name="PATH" locator="yes"/>
+		  </pie>
+		</xml>
+		<xsl name="RemoveHiddenLevel.xsl"/>
+	      </xml>
+	    </col>
+	  </calendar>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importmmtocalendar">
+      <h>import Freemind to calendar</h>
+      <make>
+	<xml>
+	  <calendar columns="yes" type="day" subst="yes">
+	    <col id="legend" name="Legende">
+	      <xml>
+		<pie>
+		  <p date="00000000">%a %d.%m. (%j)</p>
+		  <p date="0000*w99mon">KW %V/%Y</p>
+		  <p date="0000*w99">%V/%Y</p>
+		  <p date="000000">%Y-%m</p>
+		  <p date="0000">%Y</p>
+		</pie>
+	      </xml>
+	    </col>
+	    <col id="content" name="Content">
+	      <xml>
+		<xml xpath="yes">
+		  <file name="PATH" locator="yes" verbosity="4"/>
+		  <xsl name="mm2pie.xsl"/>
+		</xml>
+		<xsl name="PieValidate.xsl" />
+		<xsl name="ExtractDuration.xsl"/>
+	      </xml>
+	    </col>
+	  </calendar>
+	</xml>
+      </make>
+    </transition>
+    <transition id="importcaltocalendar">
+      <h>import plain calendar to calendar</h>
+      <make>
+	<xml>
+	  <calendar columns="yes">
+	    <col id="content">
+	      <xml>
+		<xml xpath="yes">
+		  <pie figure="no" url="yes" tags="yes" validation="yes">
+		    <import name="PATH" locator="yes" type="log"/>
+		  </pie>
+		</xml>
+		<xsl name="RemoveHiddenLevel.xsl"/>
+	      </xml>
+	    </col>
+	  </calendar>
+	</xml>
+      </make>
+    </transition>
+    <transition id="parseFile">
+      <h>Parse File</h>
+      <make>
+	<xml>
+	  <file name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="parseDir">
+      <h>Parse Directory</h>
+      <make>
+	<xml>
+	  <dir name="PATH" verbosity="5"/>
+	</xml>
+      </make>
+    </transition>
+    <transition id="dir2imports">
+      <h>dir2imports</h>
+      <make>
+	<xsl name="dir2imports.xsl"/>
+      </make>
+    </transition>
+    <transition id="dir2pieimports">
+      <h>dir2pieimports</h>
+      <make>
+	<xsl name="dir2pieimports.xsl"/>
+      </make>
+    </transition>
+    <transition id="dir2mm">
+      <h>dir2mm</h>
+      <make>
+	<xsl name="dir2mm.xsl"/>
+      </make>
+    </transition>
+    <transition id="dir2jqm">
+      <h>dir2jqm</h>
+      <make>
+	<xsl name="CgiPiejQmDir.xsl"/>
+      </make>
+    </transition>
+    <transition id="dir2html">
+      <h>dir2html</h>
+      <make>
+	<xsl name="dir2html.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2mm">
+      <h>pie2mm</h>
+      <make>
+	<xsl name="pie2mm.xsl">
+	  <variable name="flag_attr" select="true()"/>
+	</xsl>
+      </make>
+    </transition>
+    <transition id="pie2clean">
+      <h>pie2clean</h>
+      <make>
+	<xsl:stylesheet version="1.0">
+	  <xsl:output method="xml" encoding="utf-8"/>
+	  <xsl:template match="@*|node()">
+	    <xsl:choose>
+	      <!-- filter nodes -->
+	      <xsl:when test="@valid='no'"/>
+	      <xsl:when test="self::processing-instruction()"/>
+	      <xsl:when test="self::task[@done or @class = 'done']"/>
+	      <!-- <xsl:when test="self::task[not(@date)]"/> -->
+	      <xsl:when test="self::t"/>
+	      <xsl:when test="self::meta"/>
+	      <xsl:when test="name() = 'fxpath' or name() = 'xpath'"/>
+	      <xsl:when test="name() = 'diff'"/>
+	      <!-- <xsl:when test="name() = 'impact'"/> -->
+	      <xsl:when test="name() = 'duration'"/>
+	      <xsl:when test="name() = 'flocator'"/>
+	      <xsl:when test="@hidden"/>
+	      <xsl:when test="name() = 'block' or name() = 'htag' or name() = 'date'">
+		<xsl:apply-templates /> 
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:copy>
+		  <xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:template>
+	</xsl:stylesheet>
+	<xsl:stylesheet version="1.0">
+	  <xsl:output method="xml" encoding="utf-8"/>
+	  <xsl:template match="@*|node()">
+	    <xsl:choose>
+	      <!-- filter empty nodes -->
+	      <xsl:when test="self::section[count(child::h) = count(child::*) and not(@impact)]"/>
+	      <xsl:when test="self::list[count(child::p) &lt; 1]"/>
+	      <xsl:when test="self::task[count(child::*) &lt; 1]"/>
+	      <xsl:otherwise>
+		<xsl:copy>
+		  <xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:template>
+	</xsl:stylesheet>
+      </make>
+    </transition>
+    <transition id="pie2wiki">
+      <h>pie2wiki</h>
+      <make>
+	<xsl name="pie2mediawiki.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2dict">
+      <h>pie2dict</h>
+      <make>
+	<xsl name="pie2dict.xsl"/>
+      </make>
+    </transition>
+    <transition id="pie2fo">
+      <h>pie2fo</h>
+      <make>
+	<xsl name="pie2fo.xsl"/>
+      </make>
+    </transition>
+    <transition id="xmmap2mm">
+      <h>xmmap2mm</h>
+      <make>
+	<xsl name="xmmap2mm.xsl"/>
+	<xsl name="mm_strip_folded.xsl"/>
+      </make>
+    </transition>
+    <transition id="xmind2mm">
+      <h>xmind2mm</h>
+      <make>
+	<xsl name="xmind2mm.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2xmmap">
+      <h>mm2xmmap</h>
+      <make>
+	<xsl name="mm2xmmap.xsl"/>
+      </make>
+    </transition>
+    <transition id="mm2mm">
+      <h>mm2mm</h>
+      <make>
+	<xsl xpath="XPATH"/>
+	<xsl name="mm_strip_folded.xsl"/>
+	<xsl name="mm_cleanup.xsl"/>
+      </make>
+    </transition>
+    <transition id="XlsX2pie">
+      <h>XlsX2pie</h>
+      <make>
+	<xsl name="XlsX2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="DocX2Pie">
+      <h>DocX2Pie</h>
+      <make>
+	<xsl name="DocX2Pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="odt2htmlYYY" valid="no">
+      <h>odt2html</h>
+      <make>
+	<xsl name="odt2html.xsl"/>
+      </make>
+    </transition>
+    <transition id="odt2pie" valid="no">
+      <h>odt2pie</h>
+      <make>
+	<xsl xpath="XPATH"/>
+	<xsl name="odt2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="ods2pie">
+      <h>ods2pie</h>
+      <make>
+	<xsl xpath="XPATH"/>
+	<xsl name="ods2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="odp2pie">
+      <h>odp2pie</h>
+      <make>
+	<xsl xpath="XPATH"/>
+	<xsl name="odp2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="ics2pie">
+      <h>ics2pie</h>
+      <make>
+	<xsl name="xCal2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="exportcalendar">
+      <h>exportcalendar</h>
+      <make>
+	<xsl name="piecalendar2ics.xsl"/>
+      </make>
+    </transition>
+    <transition id="exportcalendartodo">
+      <h>exportcalendartodo</h>
+      <make>
+	<xsl name="piecalendar2icsvevent.xsl"/>
+      </make>
+    </transition>
+    <!--  -->
+    <relation from="application/mm+xml" to="mm2mm"/>
+    <relation to="application/mm+proc+xml" from="mm2mm"/>
+    <relation from="application/mm+proc+xml" to="mm2gcal"/>
+    <relation from="mm2gcal" to="text/plain+calendar"/>
+    <relation from="application/pie+proc+xml" to="ShellMakeDir"/>
+    <relation from="application/dir+xml" to="ShellMakeDir"/>
+    <relation from="application/mm+proc+xml" to="ShellMakeDir"/>
+    <relation from="ShellMakeDir" to="text/plain+dirpath"/>
+    <relation from="application/pie+proc+xml" to="pie2jsontree"/>
+    <relation from="pie2jsontree" to="application/json+tree"/>
+    <relation from="application/mm+proc+xml" to="mm2dot"/>
+    <relation from="mm2dot" to="text/dot" />
+    <relation from="application/mm+proc+xml" to="mm2tree" />
+    <relation from="mm2tree" to="text/plain+tree" />
+    <relation from="application/mm+proc+xml" to="mm2lines" />
+    <relation from="mm2lines" to="text/plain+lines" />
+    <relation from="application/vnd.garmin.tcx+xml" to="tcx2csv" />
+    <relation from="tcx2csv" to="text/csv" />
+    <relation from="application/mm+proc+xml" to="mm2csv" />
+    <relation from="mm2csv" to="text/csv" />
+    <relation from="application/mm+proc+xml" to="mm2short" />
+    <relation from="mm2short" to="text/html+compact"/>
+    <relation from="application/mm+proc+xml" to="mm2nwa"/>
+    <relation from="mm2nwa" to="text/csv+nwa"/>
+    <relation from="application/mm+proc+xml" to="mm2xmmap"/>
+    <relation from="mm2xmmap" to="application/xmmap+xml"/>
+    <relation from="application/mmap+xml" to="xmmap2mm"/>
+    <relation from="application/xmmap+xml" to="xmmap2mm"/>
+    <relation from="xmmap2mm" to="application/mm+proc+xml"/>
+    <relation from="application/mmap+xml" to="importxmmap"/>
+    <relation from="application/xmmap+xml" to="importxmmap"/>
+    <relation from="importxmmap" to="application/pie+proc+xml"/>
+    <relation from="application/xmind+xml" to="xmind2mm"/>
+    <relation from="xmind2mm" to="application/mm+proc+xml"/>
+    <!-- <relation from="application/mm+proc+xml" to="mm2html"/><relation from="mm2html" to="text/html"/>-->
+    <relation from="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" to="XlsX2pie"/>
+    <relation from="application/vnd.oasis.opendocument.text" to="odt2plain"/>
+    <relation from="odt2plain" to="text/plain+import"/>
+    <relation from="application/vnd.oasis.opendocument.text" to="importodt"/>
+    <relation from="importodt" to="application/pie+proc+xml"/>
+    <relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="docx2plain"/>
+    <relation from="docx2plain" to="text/plain+import"/>
+    <relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="importdocx"/>
+    <relation from="importdocx" to="application/pie+proc+xml"/>
+    <relation from="application/vnd.openxmlformats-officedocument.presentationml.presentation" to="importpptx"/>
+    <relation from="importpptx" to="application/pie+proc+xml"/>
+    <relation from="application/vnd.openxmlformats-officedocument.presentationml.presentation" to="pptx2plain"/>
+    <relation from="pptx2plain" to="text/plain+import"/>
+    <relation from="DocX2Pie" to="application/pie+proc+xml"/>
+    <relation from="application/vnd.oasis.opendocument.text" to="odt2html"/>
+    <relation from="odt2html" to="text/html"/>
+    <relation from="application/vnd.oasis.opendocument.text" to="odt2html"/>
+    <relation from="application/vnd.oasis.opendocument.text" to="odt2pie"/>
+    <relation from="odt2pie" to="application/pie+proc+xml"/>
+    <relation from="application/vnd.oasis.opendocument.presentation" to="odp2pie"/>
+    <relation from="odp2pie" to="application/pie+proc+xml"/>
+    <relation from="application/vnd.oasis.opendocument.spreadsheet" to="ods2pie"/>
+    <relation from="ods2pie" to="application/pie+proc+xml"/>
+    <relation from="text/calendar" to="ics2pie"/>
+    <relation from="ics2pie" to="application/pie+proc+xml"/>
+    <relation from="application/rss+xml" to="rss2pie"/>
+    <relation from="rss2pie" to="application/pie+proc+xml"/>
+    <!-- <relation from="application/pie+proc+xml" to="pie2rss"/> -->
+    <relation from="application/pie+cal+xml" to="pie2rss"/>
+    <relation from="pie2rss" to="application/rss+xml"/>
+    <relation from="application/pie+proc+xml" to="pie2gcal"/>
+    <relation from="pie2gcal" to="text/plain+calendar"/>
+    <relation from="application/mm+xml" to="importmm"/>
+    <relation from="importmm" to="application/pie+proc+xml"/>
+    <relation from="application/pie+proc+xml" to="pie2weight"/>
+    <relation from="pie2weight" to="text/csv+weight"/>
+    <relation from="application/pie+proc+xml" to="pie2html"/>
+    <relation from="pie2html" to="text/html"/>
+    <relation from="application/pie+proc+xml" to="pie2htmlsimple"/>
+    <relation from="pie2htmlsimple" to="text/html+simple"/>
+    <relation from="application/pie+proc+xml" to="pie2htmlshort"/>
+    <relation from="pie2htmlshort" to="text/html+compact"/>
+    <relation from="application/pie+proc+xml" to="pie2jqm"/>
+    <relation from="pie2jqm" to="text/html+jquery-mobile"/>
+    <relation from="application/pie+proc+xml" to="pie2latex"/>
+    <relation from="pie2latex" to="application/x-latex"/>
+    <relation from="application/pie+proc+xml" to="pie2tab"/>
+    <relation from="pie2tab" to="text/html+tab"/>
+    <relation from="application/mm+proc+xml" to="mm2tab"/>
+    <relation from="mm2tab" to="text/html+tab"/>
+    <relation from="application/pie+proc+xml" to="pie2indent"/>
+    <relation from="pie2indent" to="text/html+indent"/>
+    <relation from="application/pie+proc+xml" to="pie2todo"/>
+    <relation from="application/mm+proc+xml" to="mm2touch"/>
+    <relation from="mm2touch" to="text/html+touch"/>
+    <relation from="application/mm+proc+xml" to="mm2usecases"/>
+    <relation from="application/mm+xml" to="mm2usecases"/>
+    <relation from="mm2usecases" to="text/html+usecases"/>
+    <relation from="pie2todo" to="text/html+todo"/>
+    <relation from="application/pie+proc+xml" to="pie2todocontact"/>
+    <relation from="pie2todocontact" to="text/html+todo+contact" />
+    <relation from="application/pie+proc+xml" to="pie2projectcontact"/>
+    <relation from="pie2projectcontact" to="text/html+project+contact" />
+    <relation from="application/pie+proc+xml" to="pie2todoeffort" />
+    <relation from="pie2todoeffort" to="text/html+todo+effort" />
+    <relation from="application/pie+proc+xml" to="pie2todoreport" />
+    <relation from="pie2todoreport" to="text/html+todo+report" />
+    <relation from="application/pie+xml" to="pie2tag" />
+    <relation from="pie2tag" to="text/html+tag" />
+    <relation from="application/pie+proc+xml" to="pie2psp" />
+    <relation from="pie2psp" to="text/html+psp"/>
+    <relation from="application/pie+proc+xml" to="pie2project"/>
+    <relation from="pie2project" to="text/project"/>
+    <relation from="application/pie+proc+xml" to="pie2abstract"/>
+    <relation from="pie2abstract" to="text/html+abstract"/>
+    <relation from="application/pie+proc+xml" to="pie2mm"/>
+    <relation from="pie2mm" to="application/mm+proc+xml"/>
+    <relation from="application/pie+proc+xml" to="pie2fo"/>
+    <relation from="pie2fo" to="application/fo+xml"/>
+    <relation from="application/pie+proc+xml" to="pie2clean"/>
+    <relation from="pie2clean" to="application/pie+clean+xml"/>
+    <relation from="text/html" to="html2pie"/>
+    <relation from="html2pie" to="application/pie+proc+xml"/>
+    <relation from="application/pie+proc+xml" to="pie2txt"/>
+    <relation from="pie2txt" to="text/plain+import" />
+    <relation from="application/pie+proc+xml" to="pie2cleantxt"/>
+    <relation from="pie2cleantxt" to="text/plain+import+clean" />
+    <relation from="application/pie+proc+xml" to="pie2md"/>
+    <relation from="pie2md" to="text/markdown" />
+    <relation from="application/pie+proc+xml" to="pie2tree"/>
+    <relation from="pie2tree" to="text/plain+tree"/>
+    <relation from="application/pie+proc+xml" to="pie2wiki"/>
+    <relation from="pie2wiki" to="text/plain+wiki"/>
+    <relation from="application/pie+proc+xml" to="pie2dict"/>
+    <relation from="pie2dict" to="application/dict+plain"/>
+    <!-- -->
+    <relation from="text/markdown" to="import"/>
+    <relation from="text/plain" to="import"/>
+    <relation from="application/pie+xml" to="import"/>
+    <relation from="import" to="application/pie+proc+xml"/>
+    <relation from="text/csv" to="importcsv"/>
+    <relation from="importcsv" to="application/pie+proc+xml"/>
+    <relation from="text/vcard" to="importvcard"/>
+    <relation from="importvcard" to="application/pie+proc+xml"/>
+    <relation from="text/plain+calendar" to="importcal"/>
+    <relation from="importcal" to="application/pie+proc+xml"/>
+    <!-- -->
+    <relation from="text/plain" to="importtocalendar"/>
+    <relation from="application/mm+xml" to="importmmtocalendar"/>
+    <relation from="importmmtocalendar" to="application/pie+cal+xml"/>
+    <relation from="application/pie+xml" to="importtocalendar"/>
+    <relation from="importtocalendar" to="application/pie+cal+xml"/>
+    <relation from="text/plain+calendar" to="importcaltocalendar"/>
+    <relation from="importcaltocalendar" to="application/pie+cal+xml"/>
+    <!-- -->
+    <relation from="application/pie+cal+xml" to="ganttcalendar"/>
+    <relation from="ganttcalendar" to="text/html+gantt"/>
+    <!-- -->
+    <relation from="application/pie+cal+xml" to="tablecalendar"/>
+    <relation from="tablecalendar" to="text/html+calendar"/>
+    <!-- -->
+    <relation from="application/pie+cal+xml" to="exportcalendar"/>
+    <relation from="exportcalendar" to="text/calendar"/>
+    <relation from="application/pie+cal+xml" to="exportcalendartodo"/>
+    <relation from="exportcalendartodo" to="text/calendar+todo"/>
+    <!-- -->
+    <relation from="inode/directory" to="parseDir"/>
+    <relation from="parseDir" to="application/dir+xml"/>
+    <!-- -->
+    <relation from="text/csv" to="parseFile"/>
+    <relation from="text/calendar" to="parseFile"/>
+    <relation from="text/plain" to="parseFile"/>
+    <relation from="application/xmmap+xml" to="parseFile"/>
+    <relation from="application/mmap+xml" to="parseFile"/>
+    <relation from="application/mm+xml" to="parseFile"/>
+    <relation from="application/vnd.oasis.opendocument.text" to="parseFile"/>
+    <relation from="application/vnd.oasis.opendocument.spreadsheet" to="parseFile"/>
+    <relation from="application/vnd.oasis.opendocument.presentation" to="parseFile"/>
+    <relation from="application/vnd.openxmlformats-officedocument.presentationml.presentation" to="parseFile"/>
+    <relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="parseFile"/>
+    <relation from="parseFile" to="application/file+xml"/>
+    <!-- -->
+    <relation from="application/dir+xml" to="dir2imports"/>
+    <relation from="dir2imports" to="text/plain+import"/>
+    <relation from="application/dir+xml" to="dir2pieimports"/>
+    <relation from="dir2pieimports" to="application/pie+proc+xml"/>
+    <relation from="application/dir+xml" to="dir2mm"/>
+    <relation from="dir2mm" to="application/mm+proc+xml"/>
+    <relation from="application/dir+xml" to="dir2jqm"/>
+    <relation from="dir2jqm" to="application/dir+html+jqm"/>
+    <relation from="application/dir+xml" to="dir2html"/>
+    <relation from="dir2html" to="application/dir+html"/>
+  </section>
+</pie>

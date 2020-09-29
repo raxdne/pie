@@ -1,0 +1,213 @@
+
+#subst("TODAY",now="%Y-%m-%d")
+
+* >>Test only<< | ÄÖÜ
+
+T<C>
+
+** http://www.dummy.org/
+
+TODO: 2020-01-04 BBBB
+
+** 2020-01-01
+
+TODO: 2020-01-03 AAAA
+
+Uvw
+
+- HHHH
+
+-- TODO: qqq @me
+
+--- dlkasjdla
+
+** AA & BB | Assignee
+
+;TODO: might be done || john
+
+__EM EM__
+
+TODO: 20200317,0402,11 to be done  ✔ ||| me,myself andI
+
+yyyy & zzz 'AAA' @müller #TÄÄÄ
+
+Autolink <http://abc.de/>  http://def.com  <A.HTML> [ABC](/abc.html) 
+
+TODO: |abc.html|ABC| @mö @me @her
+
+REQ: requirement ABC
+
++ detail #Aäöü
+
++ detail B++
+
++ detail C
+
+cccc `ls -la tmp`
+
+XML entity &#x21D2; or \u21D2 (s. https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references)
+
+TEST: to be ***tested*** | redundant redundant
+
++ step A
+
++ step B ✔
+
++ step C
+
+TODO: 20200317,0402,11 to be done ||| möller abc-def_hij
+
+***    2020-04-30
+
+*** AAA @vvv++
+
+TARGET: this is my next target TODAY | me_review @john
+
+text only+++
+
+BUG: this is an important bug ++
+
+*** Nested List
+
+- A
+
+-- BB
+
+--- CCC
+
+-- DD
+
+- E
+
+*** Nested Enumerations
+
+ABC
+
++ AA
+
+-- BB
+
++++ HHHH
+
+---- GGGG
+
+---- ZZ
+
++++ MMMM
+
+-- VV
+
++ DD
+
+
+*** Nested Issues (TODO, BUG, TEST etc)
+
+TODO: fix that error
+
+- BUG: in abcdef() +++
+
+-- unclear
+
+--- BUG: data error?
+
+---- in "abc.txt"
+
+-- TEST: to be tested ✔
+
+--- use test data
+
+- TODO: update doc @müller ++
+
+-- in section "abc"
+
+**** AAAA
+
+BUG: @me minor bug @john @möll | Assignee
+
+- not reproducable
+
+- strange
+
+**** 2020-03-05 ABC
+
+**** 2020-03-07
+
+*** |http://www.demo.org/test/|TEST| ++
+
+text only 2020-03-09 @may
+
+text only 2020-03-09Z12:00:00 timezone 2020-03-09 date
+
+skype:12345
+
+tel:+0123456789 @james
+
+2020 Year
+
+202004 YearMonth mailto:me@myself.org
+
+20200401 YearMonthDay
+
+a |picture.png|AAA| @mmm nnn
+
+** #BBC
+
+*** BBB+++
+
+TODO: GTD categories '_org', '_do', '_review', '_rejected' | me_org john_do her_review he_rejected
+
+TODO: can be done #abc @meReview ✔ 
+
+TODO: removed ✘
+
+DONE: 20200120 this was done @me
+
+http://www.dummy.com/test%20abc%20%28inside%29/
+
+TODO: has to be done || you
+
+TODO: must be done ||| me_do 
+
+abc >>öäü<<
+
++ mmm+
+
++ nnn++
+
++ ooo @her+++
+
+#import("TestContent.csv")
+
+    ---- 
+
+#import("TestContent.csv")
+
+    ---- 
+
+fig. chart.png current plan @me ++
+
+![new plan](new_plan.png)
+
+get new figures @muller++
+
+@muller informed about new figures +++
+
+----
+
+** CC
+
+list
+
+- A
+
+-- AA
+
+--- AAA
+
+---- AAAA
+
+----- AAAAA
+
+* Test 2
+
+TAGS: abc|GTD|Test

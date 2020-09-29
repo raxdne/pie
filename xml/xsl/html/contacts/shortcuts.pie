@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE pie PUBLIC "-//A. Tenbusch//DTD PIE Draft//EN" "">
+<pie class="shortcuts">
+  <section>
+    <h>Shortcuts</h>
+    <p>
+      <img src="/pie/icons/x-office-address-book.png"/>
+      <link target="mainframe" href="?file=Kontakte/Adressen.pie&amp;sub=edit&amp;cxp=PieUiEditPie&amp;element=vcard">Adressen-Eintrag</link>
+    </p>
+    <p>
+      <img src="/pie/icons/x-office-address-book.png"/>
+      <link target="mainframe" href="?file=Kontakte/Adressen.pie&amp;xsl=ContactPhone">Telefonbuch</link>
+    </p>
+    <p>
+      <img src="/pie/icons/x-office-address-book.png"/>
+      <link target="mainframe" href="?file=Kontakte/Adressen.pie&amp;xsl=ContactMailAddresses">E-Mail-Adressen</link>
+    </p>
+    <p>
+      <img src="/pie/icons/x-office-address-book.png"/>
+      <link target="mainframe" href="?file=Kontakte/Adressen.pie&amp;xsl=ContactUrls">Link-Adressen</link>
+    </p>
+  </section>
+</pie>

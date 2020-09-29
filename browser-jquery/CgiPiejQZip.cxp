@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <cxp:subst string="%CGIPATH%" cgi="path" />
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S" />
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes" />
+      <body>
+        <div id="ui">
+          <div id="content-cm">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:file name="%CGIPATH%" verbosity="5" />
+              </cxp:xml>
+              <xsl:stylesheet version="1.0">
+                <xsl:output method="html" encoding="UTF-8" />
+                <!--  -->
+                <xsl:template match="/">
+                  <xsl:element name="div">
+                    <xsl:apply-templates select="pie//file[archive]"/>
+                  </xsl:element>
+                </xsl:template>
+                <xsl:template match="file[archive]">
+                  <xsl:element name="h3">
+                    <xsl:text>Archive: </xsl:text>
+                    <xsl:element name="a">
+                      <xsl:attribute name="href">
+                        <xsl:value-of select="concat('/','%CGIPATH%')"/>
+                      </xsl:attribute>
+                      <xsl:value-of select="'%CGIPATH%'"/>
+                    </xsl:element>
+                  </xsl:element>
+                  <xsl:element name="table">
+                    <xsl:attribute name="style">
+                      <xsl:text>margin: 15px 15px 15px 15px;</xsl:text>
+                    </xsl:attribute>
+                    <xsl:element name="tbody">
+                      <xsl:if test="@size">
+                        <xsl:element name="tr">
+                          <xsl:element name="td">
+                            <xsl:text>Size</xsl:text>
+                          </xsl:element>
+                          <xsl:element name="td">
+                            <xsl:value-of select="concat(@size,'B')" />
+                          </xsl:element>
+                        </xsl:element>
+                      </xsl:if>
+                      <xsl:if test="@mtime">
+                        <xsl:element name="tr">
+                          <xsl:element name="td">
+                            <xsl:text>Mtime</xsl:text>
+                          </xsl:element>
+                          <xsl:element name="td">
+                            <xsl:value-of select="@mtime2" />
+                          </xsl:element>
+                        </xsl:element>
+                      </xsl:if>
+                      <xsl:if test="@type">
+                        <xsl:element name="tr">
+                          <xsl:element name="td">
+                            <xsl:text>MIME</xsl:text>
+                          </xsl:element>
+                          <xsl:element name="td">
+                            <xsl:value-of select="@type" />
+                          </xsl:element>
+                        </xsl:element>
+                      </xsl:if>
+                      <xsl:if test="@read">
+                        <xsl:element name="tr">
+                          <xsl:element name="td">
+                            <xsl:text>Permissions</xsl:text>
+                          </xsl:element>
+                          <xsl:element name="td">
+                            <xsl:element name="tt">
+                              <xsl:choose>
+                                <xsl:when test="@read = 'yes'">
+                                  <xsl:text>r</xsl:text>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                  <xsl:text>-</xsl:text>
+                                </xsl:otherwise>
+                              </xsl:choose>
+                              <xsl:choose>
+                                <xsl:when test="@write = 'yes'">
+                                  <xsl:text>w</xsl:text>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                  <xsl:text>-</xsl:text>
+                                </xsl:otherwise>
+                              </xsl:choose>
+                              <xsl:choose>
+                                <xsl:when test="@execute = 'yes'">
+                                  <xsl:text>x</xsl:text>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                  <xsl:text>-</xsl:text>
+                                </xsl:otherwise>
+                              </xsl:choose>
+                              <xsl:choose>
+                                <xsl:when test="@hidden = 'yes'">
+                                  <xsl:text>h</xsl:text>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                  <xsl:text>-</xsl:text>
+                                </xsl:otherwise>
+                              </xsl:choose>
+                            </xsl:element>
+                          </xsl:element>
+                        </xsl:element>
+                      </xsl:if>
+                      <xsl:if test="descendant::file">
+                        <xsl:element name="tr">
+                          <xsl:element name="td">
+                            <xsl:text>Content</xsl:text>
+                          </xsl:element>
+                          <xsl:element name="td">
+                            <xsl:value-of select="concat(sum(descendant::file/@size),'B',' in ',count(descendant::file),' Files')" />
+                          </xsl:element>
+                        </xsl:element>
+                      </xsl:if>
+                    </xsl:element>
+                  </xsl:element>
+                  <xsl:element name="table">
+                    <xsl:attribute name="style">
+                      <xsl:text>margin: 15px 15px 15px 15px;</xsl:text>
+                    </xsl:attribute>
+                    <xsl:element name="tbody">
+		      <xsl:for-each select="archive//file">
+			<!-- <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name" /> -->
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:element name="a">
+                              <xsl:attribute name="href">
+				<xsl:value-of select="concat('?','path=','%CGIPATH%')" />
+				<xsl:for-each select="ancestor::dir[@urlname]">
+				  <xsl:value-of select="concat('/',@urlname)" />
+				</xsl:for-each>
+				<xsl:value-of select="concat('/',@urlname)" />
+			      </xsl:attribute>
+			      <xsl:for-each select="ancestor::dir[@name]">
+				<xsl:value-of select="concat('/',@name)" />
+			      </xsl:for-each>
+                              <xsl:value-of select="concat('/',@name)" />
+			    </xsl:element>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:attribute name="style">
+                              <xsl:text>text-align: right;</xsl:text>
+			    </xsl:attribute>
+                            <xsl:value-of select="concat(@size,'B')" />
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@mtime2" />
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:for-each>
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </cxp:xhtml>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

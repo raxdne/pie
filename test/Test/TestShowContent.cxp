@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:xml name="-">
+    <cxp:include cgi="content" />
+  </cxp:xml>
+</cxp:make>

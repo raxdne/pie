@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path" default="ERROR"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGISUB%" cgi="sub" default="format"/>
+  <cxp:subst string="%START%" to="inode/directory"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <cxp:xhtml>
+            <cxp:xsl name="CgiPieUi.xsl">
+              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              <cxp:variable name="str_type" select="'inode/directory'"/>
+              <cxp:variable name="sub" select="'%CGISUB%'"/>
+              <cxp:variable name="flag_sub" select="false()"/>
+            </cxp:xsl>
+          </cxp:xhtml>
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:pathnet start="%START%" lmax="7" type="xml">
+                  <cxp:xml name="PieTransformations.xml" search="yes"/>
+                  <cxp:xsl name="PieValidate.xsl"/>
+                </cxp:pathnet>
+                <cxp:xsl name="PieValidate.xsl"/>
+              </cxp:xml>
+              <cxp:xsl name="CgiMenuTransformations.xsl">
+                <cxp:variable name="type" select="'%START%'"/>
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

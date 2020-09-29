@@ -1,0 +1,63 @@
+
+* Microsoft IIS 10
+
+** Configuration
+
+Windows Features
+
+- ISAPI Erweiterungsmodul
+
+Services
+
+- WAS
+
+- W3SVC
+
+- ISAPI
+
+iismgr
+
+- https://forums.iis.net/t/1206998.aspx?Export+and+Import+IIS+Site+and+Application+Pool+Configuration
+
+- https://www.ryadel.com/en/exporting-importing-app-pools-and-websites-configuration-between-multiple-iis-instances/
+
+
+test using dummy executable of "src\test\test-cgi.c"
+
+Export a specific Website in an admin shell
+
+#begin_of_pre
+cd /d C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic\www
+%windir%\system32\inetsrv\appcmd list apppool "cxproc-cgi" /config /xml > apppool-cxproc-cgi.xml
+%windir%\system32\inetsrv\appcmd list site "cxproc-pie-dev" /config /xml > site-cxproc-pie-dev.xml
+#end_of_pre
+
+system-wide variables (Windows restart required) OR in "apppool-cxproc-cgi.xml"
+
+PATH must include cgi-bin 
+
+#begin_of_pre
+SET CXP_ROOT="C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic\www\html\Documents\"
+SET CXP_PATH="C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic\www\html\pie//"
+SET CXP_LOG=3
+SET CXP_LOGFILE="C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic\www\log\cxproc-pie-dev.log"
+#end_of_pre
+
+#begin_of_pre
+%windir%\system32\inetsrv\appcmd add apppool /in < apppool-cxproc-cgi.xml
+
+REM https://docs.microsoft.com/en-us/iis/configuration/system.webserver/handlers/
+%windir%\system32\inetsrv\appcmd.exe set config -section:system.webServer/handlers /+"[name='cgi-cxproc-exe',path='/cxproc/exe',verb='GET,HEAD,POST',modules='CgiModule',scriptProcessor='C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic\www\cgi-bin\cxproc-cgi.exe',resourceType='Unspecified']"
+%windir%\system32\inetsrv\appcmd.exe set config -section:system.webServer/handlers /+"[name='cgi-cxproc-cxp',path='*.cxp',verb='GET,HEAD,POST',modules='CgiModule',scriptProcessor='C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic\www\cgi-bin\cxproc-cgi.exe',requireAccess='Script',resourceType='File']"
+
+%windir%\system32\inetsrv\appcmd add site /in < site-cxproc-pie-dev.xml
+#end_of_pre
+
+https://docs.microsoft.com/en-us/iis/configuration/system.webserver/security/isapicgirestriction/add
+
+
+TODO: File alias using Rewrite module
+
+- https://docs.microsoft.com/de-de/archive/blogs/technet/mspfe/how-to-create-a-url-alias-using-iis-url-rewrite
+
+- https://docs.microsoft.com/de-de/iis/extensions/url-rewrite-module/url-rewrite-module-video-walkthrough

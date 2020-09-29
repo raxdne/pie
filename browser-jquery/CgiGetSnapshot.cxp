@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:description>Snapshot</cxp:description>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%ARCHIVE%" now="Snapshots/%Y%m%d.zip"/>
+  <cxp:system mkdir="Snapshots"/>
+  <cxp:zip name="%ARCHIVE%" level="3">
+    <cxp:xml>
+      <cxp:xml>
+        <cxp:dir>
+          <cxp:dir name="%CGIPATH%"/>
+        </cxp:dir>
+      </cxp:xml>
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+        <xsl:output method="xml"/>
+        <xsl:template match="@*|node()">
+          <xsl:choose>
+            <xsl:when test="name()='dir' and (@name = 'Snapshots' or @name = 'Backup' or @name = '.svn')"/>
+            <xsl:otherwise>
+              <xsl:copy>
+                <xsl:apply-templates select="@*"/>
+                <xsl:apply-templates select="node()"/>
+              </xsl:copy>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:template>
+      </xsl:stylesheet>
+    </cxp:xml>
+  </cxp:zip>
+  <cxp:copy from="%ARCHIVE%" to="-"/>
+</cxp:make>

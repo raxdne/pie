@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pie class="article">
+  <section>
+    <h>Test import PIE</h>
+    <import name="TestContent.txt"/>
+    <import name="TestContent.pie"/>
+  </section>
+</pie>

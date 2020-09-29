@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:zip name="-" level="3">
+    <cxp:xml>
+      <cxp:dir>
+        <cxp:dir name="%CGIPATH%" depth="2"/>
+      </cxp:dir>
+    </cxp:xml>
+  </cxp:zip>
+</cxp:make>

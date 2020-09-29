@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="3">
+  <cxp:description>CGI Variable Test</cxp:description>
+  <cxp:subst string="%PWD%" dir="pwd"/>
+  <!--  -->
+  <cxp:subst string="%HOME%" env="HOME" default="c:/temp"/>
+  <!--  -->
+  <cxp:subst string="%CGIFILE%" cgi="file"/>
+  <cxp:subst string="%CGIFILENORM%" cgi="file" env="PATH_TRANSLATED" normalize="yes"/>
+  <cxp:subst string="%CGIFILEURL%" cgi="file" escaping="yes"/>
+  <cxp:subst string="%CGIDIR%" cgi="dir"/>
+  <cxp:subst string="%CGIDIRNORM%" cgi="dir" normalize="yes"/>
+  <cxp:subst string="%CGIDIRURL%" cgi="dir" escaping="yes"/>
+  <cxp:subst string="%CGITYPE%" type="."/>
+  <cxp:subst string="%TESTTYPE%" type="Test/abc.txt"/>
+  <cxp:subst string="%TESTTYPEDIR%" type="Demo/"/>
+  <cxp:subst string="%DOCDIR%" env="CXP_ROOT"/>
+  <cxp:subst string="%BASEDIR%" dir="ofFile"/>
+  <!--  -->
+  <cxp:subst string="%y" now="Year"/>
+  <cxp:subst string="%m" now="NumOfMonth"/>
+  <cxp:subst string="%w" now="NumOfWeek"/>
+  <cxp:subst string="%d" now="DayOfMonth"/>
+  <cxp:subst string="%H" now="Hour"/>
+  <cxp:subst string="%M" now="Minute"/>
+  <cxp:subst string="%S" now="Second"/>
+  <!--  -->
+
+  <cxp:plain name="-">
+CGI subst Variables
+
+PWD="%PWD%"
+HOME="%HOME%"
+CGIFILE="%CGIFILE%"
+CGIFILENORM="%CGIFILENORM%"
+CGIFILEURL="%CGIFILEURL%"
+CGIDIR="%CGIDIR%"
+CGIDIRNORM="%CGIDIRNORM%"
+CGIDIRURL="%CGIDIRURL%"
+CGITYPE="%CGITYPE%"
+TESTTYPE="%TESTTYPE%"
+TESTTYPEDIR="%TESTTYPEDIR%"
+DOCDIR="%DOCDIR%"
+BASEDIR="%BASEDIR%"
+
+</cxp:plain>
+</cxp:make>

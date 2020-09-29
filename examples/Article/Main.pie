@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pie>
+  <subst string="PK" to="Prozesskette"/>
+  <subst string="HW" to="Hardware"/>
+  <subst string="%DATUM%" now="%Y-%m-%dT%H:%M:%S"/>
+  <subst string="%HOME%" env="HTTP_HOST"/>
+  <import name="Article.txt"/>
+</pie>

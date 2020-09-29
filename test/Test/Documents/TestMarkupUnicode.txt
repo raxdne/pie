@@ -1,0 +1,112 @@
+
+* https://unicode.org/charts/PDF/U2000.pdf
+
+** German
+
+*** >_
+
+201A ‚ SINGLE LOW-9 QUOTATION MARK
+
+*** _<
+
+2018 ‘ LEFT SINGLE QUOTATION MARK
+
+*** >>_
+
+201E „ DOUBLE LOW-9 QUOTATION MARK
+
+*** _<<
+
+201C “ LEFT DOUBLE QUOTATION MARK
+
+** French https://unicode.org/charts/PDF/U0080.pdf
+
+*** >_
+
+2039 ‹ SINGLE LEFT-POINTING ANGLE QUOTATIONMARK
+
+*** _<
+
+203A › SINGLE RIGHT-POINTING ANGLE QUOTATIONMARK
+
+*** >>_
+
+00AB « LEFT-POINTING DOUBLE ANGLE QUOTATIONMARK
+
+*** _<<
+
+00BB » RIGHT-POINTING DOUBLE ANGLE QUOTATIONMARK
+
+** English (Default)
+
+*** >_
+
+2018 ‘ LEFT SINGLE QUOTATION MARK
+
+*** _<
+
+2019 ’ RIGHT SINGLE QUOTATION MARK
+
+*** >>_
+
+201C “ LEFT DOUBLE QUOTATION MARK
+
+*** _<<
+
+201D ” RIGHT DOUBLE QUOTATION MARK
+
+* https://unicode.org/charts/PDF/U2190.pdf
+
+** <-
+
+2190 ← LEFTWARDS ARROW
+
+** ->
+
+2192 → RIGHTWARDS ARROW
+
+** <->
+
+2194 ↔ LEFT RIGHT ARROW
+
+** <=
+
+21D0 ⇐ LEFTWARDS DOUBLE ARROW
+
+** =>
+
+21D2 ⇒ RIGHTWARDS DOUBLE ARROW
+
+** <=>
+
+21D4 ⇔ LEFT RIGHT DOUBLE ARROW
+
+** --
+
+2013 – EN DASH
+
+** ---
+
+2014 — EM DASH
+
+** Dingbats
+
+CHECK_MARK ✓ U+2713 
+
+HEAVY_CHECK_MARK ✔ \u2714 
+
+MULTIPLICATION_X ✕ \u2715 
+
+HEAVY_MULTIPLICATION_X ✖ \u2716
+
+BALLOT_X ✗ \u2717
+
+HEAVY_BALLOT_X ✘ \u2718
+
+** |https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references|numeric character references|
+
+invalid: &#; or &#x; or &#144;
+
+valid: &#13; &#x21D2;  &#x2014;
+
+

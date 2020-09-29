@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%TRASHDIR%" env="CXP_TRASH" default="Trash"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIDIR%" dir="%CGIPATH%"/>
+  <!-- TODO: check value of 'path' -->
+  <cxp:plain name="-" response="OK">Move '%CGIPATH%' to '%TRASHDIR%/%CGIDIR%' </cxp:plain>
+  <cxp:copy from="%CGIPATH%" to="%TRASHDIR%/%CGIDIR%/" delete="yes"/>
+</cxp:make>

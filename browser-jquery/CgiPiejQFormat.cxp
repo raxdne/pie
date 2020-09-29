@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content-cm">
+	    <cxp:xhtml>
+	      <cxp:xml>
+		<cxp:file name="%CGIPATH%" verbosity="3"/>
+	      </cxp:xml>
+	      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+		<xsl:output method="html" encoding="UTF-8"/>
+		<xsl:template match="/">
+		  <xsl:element name="div">
+		    <xsl:apply-templates select="pie/file"/>
+		  </xsl:element>
+		</xsl:template>
+		<xsl:template match="file|dir">
+		  <xsl:element name="h2">
+		    <xsl:text>Document </xsl:text>
+		    <xsl:element name="a">
+		      <xsl:attribute name="href">
+			<xsl:text>/%CGIPATH%</xsl:text>
+		      </xsl:attribute>
+			<xsl:text>%CGIPATH%</xsl:text>
+		    </xsl:element>
+		  </xsl:element>
+		  <xsl:element name="table">
+		    <xsl:attribute name="style">
+		      <xsl:text>margin: 15px 15px 15px 15px;</xsl:text>
+		    </xsl:attribute>
+		    <xsl:element name="tbody">
+		      <xsl:if test="@size">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Size</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@size"/>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="not('%CGIXPATH%' = '' or '%CGIXPATH%' = '/' or '%CGIXPATH%' = '/*')">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Xpath</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:text>%CGIXPATH%</xsl:text>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="not('%CGITAG%' = '')"> <!-- TODO: input element for tag? -->
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Tag</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:text>%CGITAG%</xsl:text>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="@mtime">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Mtime</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@mtime2"/>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="@type">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>MIME</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@type"/>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="@read">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Permissions</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:element name="tt">
+			      <xsl:choose>
+				<xsl:when test="@read = 'yes'">
+				  <xsl:text>r</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			      <xsl:choose>
+				<xsl:when test="@write = 'yes'">
+				  <xsl:text>w</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			      <xsl:choose>
+				<xsl:when test="@execute = 'yes'">
+				  <xsl:text>x</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			      <xsl:choose>
+				<xsl:when test="@hidden = 'yes'">
+				  <xsl:text>h</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			    </xsl:element>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		    </xsl:element>
+		  </xsl:element>
+		</xsl:template>
+		<xsl:template match="node()|text()|comment()|@*"/>
+	      </xsl:stylesheet>
+	    </cxp:xhtml>
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:pathnet start="%START%" lmax="6" type="xml">
+                  <cxp:xml name="PieTransformations.xml" search="yes"/>
+                  <cxp:xsl name="PieValidate.xsl"/>
+                </cxp:pathnet>
+                <cxp:xsl name="PieValidate.xsl"/>
+              </cxp:xml>
+              <cxp:xsl name="CgiMenuTransformations.xsl">
+                <cxp:variable name="type" select="'%START%'"/>
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+                <cxp:variable name="str_tag" select="'%CGITAG%'" />
+              </cxp:xsl>
+            </cxp:xhtml>
+			<hr/>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

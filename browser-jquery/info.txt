@@ -1,0 +1,40 @@
+
+* Menu
+
+** HTMl
+
+http://stackoverflow.com/questions/4909167/how-to-add-a-custom-right-click-menu-to-a-webpage
+
+http://davidwalsh.name/html5-context-menu
+
+http://lab.jakiestfu.com/contextjs/
+
+** jQuery
+
++ http://medialize.github.io/jQuery-contextMenu/
+
++ http://ignitersworld.com/lab/contextMenu.html
+https://github.com/s-yadav/contextMenu.js
+
+-- no way to detect caller context
+
++ http://www.javascripttoolbox.com/lib/contextmenu/
+
++ http://wwwendt.de/tech/demo/jquery-contextmenu/demo/index.html
+
+*** qQuery Effect Plugins
+
+RMB-Menu http://rightclickmenu.freevar.com/
+
+** Radial/Pie
+
+http://en.wikipedia.org/wiki/Pie_menu
+
+http://www.tikku.com/jquery-radmenu-plugin#radmenu_tutorial_1
+
+http://creative-punch.net/2014/02/making-animated-radial-menu-css3-javascript/
+
+** qooxdoo
+
+http://demo.qooxdoo.org/devel/demobrowser/#widget~Menu.html
+

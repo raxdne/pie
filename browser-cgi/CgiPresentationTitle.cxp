@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:xhtml name="-">
+    <cxp:xml eval="yes">
+      <cxp:include name="PieTransformation.cxp" search="yes"/>
+    </cxp:xml>
+    <cxp:xsl name="ExtractPresentation.xsl"/>
+    <cxp:xsl name="ExtractSlide.xsl">
+      <cxp:variable name="flag_title" select="true()"/>
+      <cxp:variable name="file_css" select="'/html/presentation.css'"/>
+      <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
+      <cxp:variable name="flag_form" select="true()"/>
+      <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+    </cxp:xsl>
+  </cxp:xhtml>
+</cxp:make>

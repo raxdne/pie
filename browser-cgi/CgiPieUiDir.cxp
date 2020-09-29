@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" default="."/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:plain name=".history" mode="append" valid="no">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <cxp:xhtml>
+          <cxp:xml>
+            <cxp:dir depth="1" verbosity="2" urlencode="yes">
+              <cxp:dir name="%CGIPATH%"/>
+            </cxp:dir>
+          </cxp:xml>
+          <cxp:xsl name="CgiPieUiDir.xsl">
+            <cxp:variable name="write" select="'%CGIPERM%'"/>
+          </cxp:xsl>
+        </cxp:xhtml>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

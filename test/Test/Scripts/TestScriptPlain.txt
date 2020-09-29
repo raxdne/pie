@@ -1,0 +1,40 @@
+
+* Test script="Date();"
+
+This is a Test: script="5*5;" : postfix
+
+This is a Test: script="5*5;" sep script="5*5*5;" : postfix
+
+This is a Test: SCRIPT="5*5;" : postfix
+
+This is an script error: script="ABC;" : postfix
+
+Embedded
+
+#begin_of_script
+
+var A = 'XYZ';
+
+A + A + A;
+#end_of_script
+
+Embedded
+
+#begin_of_script
+
+var B = 128;
+
+B + B;
+#end_of_script
+
+Embedded
+
+#begin_of_script
+
+var strResult = '';
+var t = Date();
+
+for (i=0; i<100; i++) {
+    strResult = strResult + '* M' + i.toString() + '\n\n';
+    strResult = strResult + 'TODO: ' + t.toString() + ' testing | abc\n\n';
+}

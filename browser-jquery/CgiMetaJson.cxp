@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIVERBOSITY%" cgi="verbosity" default="2"/>
+  <cxp:plain name="-" type="application/json">
+    <cxp:xml>
+      <cxp:file name="%CGIPATH%" verbosity="%CGIVERBOSITY%"/>
+    </cxp:xml>
+    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+      <xsl:output method="text" encoding="UTF-8"/>
+      <xsl:template match="/pie">
+	<xsl:value-of select="concat('','')"/>
+	<xsl:apply-templates select="file"/>
+	<xsl:value-of select="concat('','')"/>
+      </xsl:template>
+      <xsl:template match="file|dir">
+	<xsl:text>{</xsl:text>
+	<xsl:value-of select="concat('&quot;type &quot;: &quot;',name(),'&quot;')"/>
+	<xsl:value-of select="concat(', &quot;name &quot;: &quot;',@name,'&quot;')"/>
+	<xsl:if test="@ext">
+	  <xsl:value-of select="concat(', &quot;ext&quot;: &quot;',@ext,'&quot;')"/>
+	</xsl:if>
+	<xsl:if test="@size">
+	  <xsl:value-of select="concat(', &quot;size&quot;: ',@size)"/>
+	</xsl:if>
+	<xsl:if test="@mtime">
+	  <xsl:value-of select="concat(', &quot;mtime&quot;: ',@mtime)"/>
+	</xsl:if>
+	<xsl:if test="@type">
+	  <xsl:value-of select="concat(', &quot;mime&quot;: &quot;',@type,'&quot;')"/>
+	</xsl:if>
+	<xsl:if test="@read">
+	  <xsl:value-of select="concat(', &quot;read&quot;: ',(@read = 'yes'))"/>
+	  <xsl:value-of select="concat(', &quot;write&quot;: ',(@write = 'yes'))"/>
+	  <xsl:value-of select="concat(', &quot;hidden&quot;: ',(@hidden = 'yes'))"/>
+	</xsl:if>
+	<xsl:text>}</xsl:text>
+      </xsl:template>
+      <xsl:template match="node()|text()|comment()|@*"/>
+    </xsl:stylesheet>
+  </cxp:plain>
+</cxp:make>

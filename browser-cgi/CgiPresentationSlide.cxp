@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
+  <cxp:subst string="%CGIINDEX%" cgi="i"/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%PREFIX%" dir="%CGIPATH%"/>
+  <cxp:xhtml name="-">
+    <cxp:xml eval="yes">
+      <cxp:include name="PieTransformation.cxp" search="yes"/>
+    </cxp:xml>
+    <cxp:xsl name="ExtractPresentation.xsl">
+      <cxp:variable name="depth_max" select="8"/>
+    </cxp:xsl>
+    <cxp:xsl name="ExtractSlide.xsl">
+      <cxp:variable name="nr_slide" select="%CGIINDEX%"/>
+      <cxp:variable name="flag_icons" select="false()"/>
+      <cxp:variable name="file_css" select="'/html/presentation.css'"/>
+      <cxp:variable name="file_js" select="''"/>
+      <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
+      <cxp:variable name="flag_form" select="true()"/>
+      <cxp:variable name="length_link" select="50"/>
+      <cxp:variable name="level_hidden" select="1"/>
+      <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+      <cxp:variable name="str_link_prefix" select="'?cxp=image&amp;frame=1222x668&amp;path=%PREFIX%'"/>
+    </cxp:xsl>
+  </cxp:xhtml>
+</cxp:make>

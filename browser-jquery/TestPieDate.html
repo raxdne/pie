@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>Tests for PieDate.js</title>
+    <script src="PieDate.js"></script>
+   </head>
+  <body>
+    <script>
+var d = new Date();
+console.log( "Date(): " + d);
+
+console.log( "Date.getInput(): " + d.getInput());
+
+d.scanURL('?day=11&month=3&year=2011');
+console.log( "Date.scanURL(): " + d);
+
+console.log( "Date.toURL(): " + d.toURL());
+
+   </script>
+
+  </body>
+</html>

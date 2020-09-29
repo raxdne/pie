@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="4" dir="ofFile">
+  <cxp:description>Test Script Plain File</cxp:description>
+  <cxp:plain name="-">
+    <cxp:script name="TestScriptPlainFile.js"/>
+  </cxp:plain>
+</cxp:make>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<pie class="shortcuts">
+  <section>
+    <h>Shortcuts</h>
+    <p>
+      <img src="/pie/icons/folder-open.png"/>
+      <link target="_blank" href="http://www.google.com/">Search</link>
+    </p>
+    <p>
+      <img src="/pie/icons/folder-open.png"/>
+      <link target="_blank" href="?cxp=info">Cxp file</link>
+    </p>
+  </section>
+</pie>

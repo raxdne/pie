@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml eval="yes">
+		<cxp:include name="PieTransformation.cxp" search="yes"/>
+              </cxp:xml>
+              <cxp:xsl name="TodoTable.xsl">
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+		<cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodo&amp;tag='"/>
+		<cxp:variable name="flag_form" select="false()"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

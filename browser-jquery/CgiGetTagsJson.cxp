@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:plain name="-">
+    <cxp:xml>
+    <pie tags="yes">
+      <import name="%CGIPATH%"/>
+    </pie>
+    </cxp:xml>
+    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+      <!--  -->
+      <xsl:key name="listtag" match="tag[not(parent::meta)]" use="."/>
+      <xsl:output method="text" encoding="UTF-8"/>
+      <xsl:template match="/">
+        <xsl:text>[</xsl:text>
+        <xsl:for-each select="//tag[generate-id(.) = generate-id(key('listtag',.))]">
+          <xsl:sort select="."/>
+          <xsl:value-of select="concat('&quot;',substring(.,1,10),'&quot;',',')"/>
+        </xsl:for-each>
+        <xsl:value-of select="concat('&quot;','&quot;')"/>
+        <xsl:text>]</xsl:text>
+      </xsl:template>
+    </xsl:stylesheet>
+  </cxp:plain>
+</cxp:make>

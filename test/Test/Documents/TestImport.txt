@@ -1,0 +1,20 @@
+
+TODO: ttttt++
+
+* Test import plain
+
+#import("TestContent.txt")
+
+#import("TestContent.pie")
+
+* Test import CSV
+
+#begin_of_csv
+sep=,
+
+* Test 2
+A,B,C
+D,E,F
+H,I,J
+
+#end_of_csv

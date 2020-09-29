@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" dir="pwd" log="1">
+  <cxp:description>
+  Show content as presentation HTML
+  
+  argument: source file
+  
+  </cxp:description>
+  <cxp:subst string="%SOURCE%" argv="2"/>
+  <cxp:subst string="%SOURCEDIR%" dir="%SOURCE%"/>
+  <cxp:subst string="%ENVTMP%" argv="3" env="TMP" default="/tmp"/>
+  <cxp:subst string="%TMP%" to="%ENVTMP%/cxproc"/>
+  <cxp:subst string="%START%" type="%SOURCE%"/>
+  <cxp:subst string="%AUTHOR%" env="USERNAME" default="Tenbusch Alexander"/>
+  <cxp:subst string="%MAIN%" to="presentation"/>
+  <cxp:subst string="%DATE%" now="%Y-%m-%d"/>
+  <cxp:subst string="%T%" now="%Y%m%d-%MAIN%"/>
+  <cxp:subst string="%LAYOUT%" to="blue_bright"/>
+  <cxp:system message="Convert '%SOURCE%' to '%TMP%/%T%'"/>
+  <cxp:system mkdir="%TMP%/%T%"/>
+  <!--  -->
+  <cxp:copy from="%SOURCE%" to="%TMP%/%T%/"/>
+  <!--  -->
+  <cxp:xml name="%TMP%/%T%/%MAIN%.pie" cache="yes">
+    <cxp:xml eval="yes">
+      <!--  -->
+      <cxp:pathtable start="%START%" target="application/pie+proc+xml" type="xml">
+        <cxp:xml>
+          <cxp:xml name="PieTransformations.xml" search="yes"/>
+          <cxp:xsl name="PieValidate.xsl"/>
+        </cxp:xml>
+      </cxp:pathtable>
+      <cxp:xsl name="XmlPathTableCxp.xsl">
+        <cxp:variable name="str_path" select="'%SOURCE%'"/>
+      </cxp:xsl>
+      <!--  -->
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+        <xsl:output method="xml"/>
+        <xsl:template match="/">
+          <xsl:element name="{name(make/*[1])}">
+            <xsl:copy-of select="make/*[1]/*"/>
+          </xsl:element>
+        </xsl:template>
+      </xsl:stylesheet>
+    </cxp:xml>
+  </cxp:xml>
+  <!--  -->
+  <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie" cache="yes">
+    <cxp:xml name="%TMP%/%T%/%MAIN%.pie"/>
+    <cxp:xsl name="SetAuthor.xsl">
+      <cxp:variable name="str_author" select="'%AUTHOR%'"/>
+      <cxp:variable name="str_date" select="'%DATE%'"/>
+    </cxp:xsl>
+    <cxp:xsl name="ExtractPresentation.xsl">
+      <cxp:variable name="depth_max" select="7"/>
+    </cxp:xsl>
+  </cxp:xml>
+  <cxp:copy from="html/pie.css" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="tipue.js" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="tipue_set.js" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/presentation.css" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/zurueck.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/weiter.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/search.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/script.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/raus.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/leer.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/folder.png" to="%TMP%/%T%" search="yes"/>
+  <cxp:copy from="%LAYOUT%/entwurf.png" to="%TMP%/%T%" search="yes"/>
+  <!--  -->
+  <cxp:each name="%N%">
+    <cxp:from>
+      <cxp:plain>
+        <cxp:xml>
+          <cxp:dir name="%SOURCEDIR%" imatch="\.(gif|png|jpg)$" depth="2"/>
+        </cxp:xml>
+        <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+          <xsl:output method="text"/>
+          <xsl:template match="/">
+            <xsl:for-each select="//file">
+              <xsl:value-of select="/pie/dir/@prefix"/>
+              <xsl:for-each select="ancestor::dir">
+                <xsl:value-of select="concat('/',@name)"/>
+              </xsl:for-each>
+              <xsl:value-of select="concat('/',@name,' ')"/>
+            </xsl:for-each>
+          </xsl:template>
+        </xsl:stylesheet>
+      </cxp:plain>
+    </cxp:from>
+    <cxp:system message="Copying image '%N%' to '%TMP%/%T%/'"/>
+    <cxp:copy from="%N%" to="%TMP%/%T%/"/>
+  </cxp:each>
+  <cxp:make>
+    <cxp:system message="Writing Title for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/index.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="ExtractSlide.xsl">
+        <cxp:variable name="flag_title" select="true()"/>
+        <cxp:variable name="name_slide" select="'%MAIN%'"/>
+        <cxp:variable name="file_css" select="'presentation.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:each name="%N%">
+      <cxp:from>
+        <cxp:plain>
+          <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+          <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+            <xsl:output method="text" encoding="UTF-8"/>
+            <xsl:template match="/">
+              <xsl:for-each select="//section[@class='slide']">
+                <xsl:value-of select="position()"/>
+                <xsl:text> </xsl:text>
+              </xsl:for-each>
+            </xsl:template>
+          </xsl:stylesheet>
+        </cxp:plain>
+      </cxp:from>
+      <cxp:system message="Writing Slide '%N%' for '%MAIN%'"/>
+      <cxp:xhtml name="%TMP%/%T%/%MAIN%-%N%.html">
+        <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+        <cxp:xsl name="ExtractSlide.xsl" cache="yes">
+          <cxp:variable name="nr_slide" select="%N%"/>
+          <cxp:variable name="name_slide" select="'%MAIN%'"/>
+          <cxp:variable name="flag_icons" select="true()"/>
+          <cxp:variable name="length_link" select="50"/>
+          <cxp:variable name="level_hidden" select="0"/>
+          <cxp:variable name="file_css" select="'presentation.css'"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+    </cxp:each>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing Search index for '%MAIN%'"/>
+    <cxp:xml name="%TMP%/%T%/tipue_data.xml">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="SearchIndex.xsl"/>
+    </cxp:xml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing Search page for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-search.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="ExtractSlide.xsl">
+        <cxp:variable name="nr_slide" select="0"/>
+        <cxp:variable name="name_slide" select="'%MAIN%'"/>
+        <cxp:variable name="flag_icons" select="true()"/>
+        <cxp:variable name="flag_search" select="false()"/>
+        <cxp:variable name="file_css" select="'presentation.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing Search result page for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-search-result.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="ExtractSlide.xsl">
+        <cxp:variable name="nr_slide" select="0"/>
+        <cxp:variable name="name_slide" select="'%MAIN%'"/>
+        <cxp:variable name="flag_icons" select="true()"/>
+        <cxp:variable name="flag_search_result" select="true()"/>
+        <cxp:variable name="file_css" select="'presentation.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing Agenda for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-agenda.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="ExtractSlide.xsl">
+        <cxp:variable name="flag_agenda" select="true()"/>
+        <cxp:variable name="name_slide" select="'%MAIN%'"/>
+        <cxp:variable name="flag_icons" select="true()"/>
+        <cxp:variable name="file_css" select="'presentation.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing Schedule for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-schedule.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="ExtractSlide.xsl">
+        <cxp:variable name="flag_toc" select="true()"/>
+        <cxp:variable name="flag_timer" select="true()"/>
+        <cxp:variable name="name_slide" select="'%MAIN%'"/>
+        <cxp:variable name="flag_navigation" select="false()"/>
+        <cxp:variable name="file_css" select="'presentation.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing ToC for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-toc.html" view="yes">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="ExtractSlide.xsl">
+        <cxp:variable name="flag_toc" select="true()"/>
+        <cxp:variable name="flag_timer" select="false()"/>
+        <cxp:variable name="name_slide" select="'%MAIN%'"/>
+        <cxp:variable name="flag_icons" select="true()"/>
+        <cxp:variable name="file_css" select="'presentation.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-script.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%.pie"/>
+      <cxp:xsl name="pie2html.xsl">
+        <cxp:variable name="toc_display" select="'block'"/>
+        <cxp:variable name="flag_toc" select="true()"/>
+        <cxp:variable name="flag_tags" select="false()"/>
+        <cxp:variable name="flag_xpath" select="false()"/>
+        <cxp:variable name="flag_llist" select="false()"/>
+        <cxp:variable name="file_css" select="'pie.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-slidescript.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="pie2html.xsl">
+        <cxp:variable name="level_hidden" select="2"/>
+        <cxp:variable name="flag_tree" select="true()"/>
+        <cxp:variable name="flag_slidecap" select="false()"/>
+        <cxp:variable name="flag_fig" select="false()"/>
+        <cxp:variable name="flag_xpath" select="false()"/>
+        <cxp:variable name="file_css" select="'pie.css'"/>
+      </cxp:xsl>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:xml name="%TMP%/%T%/%MAIN%.xmmap">
+      <cxp:xml name="%TMP%/%T%/%MAIN%.mm">
+        <cxp:xml name="%TMP%/%T%/%MAIN%.pie"/>
+        <cxp:xsl name="pie2mm.xsl"/>
+      </cxp:xml>
+      <cxp:xsl name="mm2xmmap.xsl"/>
+    </cxp:xml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:xml name="%TMP%/%T%/%MAIN%.fo" valid="no">
+      <cxp:xml name="%TMP%/%T%/%MAIN%.pie"/>
+      <cxp:xsl name="pie2fo.xsl"/>
+    </cxp:xml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:system message="Writing Raw  formatted text for '%MAIN%'"/>
+    <cxp:xhtml name="%TMP%/%T%/%MAIN%-indent.html">
+      <cxp:xml name="%TMP%/%T%/%MAIN%-slides.pie"/>
+      <cxp:xsl name="pie2indent.xsl"/>
+    </cxp:xhtml>
+  </cxp:make>
+  <cxp:make>
+    <cxp:plain name="%TMP%/%T%/%MAIN%-abstract.txt">
+      <cxp:xml name="%TMP%/%T%/%MAIN%.pie"/>
+      <cxp:xsl name="MakePlainAbstract.xsl"/>
+    </cxp:plain>
+  </cxp:make>
+  <cxp:make>
+    <cxp:plain name="%TMP%/%T%/%MAIN%-wiki.txt">
+      <cxp:xml name="%TMP%/%T%/%MAIN%.pie"/>
+      <cxp:xsl name="pie2mediawiki.xsl"/>
+    </cxp:plain>
+  </cxp:make>
+  <cxp:system message="'%SOURCE%' converted" pause="no"/>
+</cxp:make>

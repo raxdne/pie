@@ -1,0 +1,154 @@
+
+/* presentation.css
+
+  replace patterns:
+
+  background-color:#eeeef6;
+
+  basis font-size:14px;
+
+  link color:#203883;
+
+  li margin-top:30px;
+ */
+
+body,table {
+  background-color:#eeeef6;
+  font-family:lucida,Arial;
+  font-size:150%;
+  font-weight:medium;
+}
+
+a {
+  color:#203883;
+  text-decoration:none;
+}
+
+a:link {
+  color:#203883;
+}
+
+a:visited {
+  color:#203883;
+}
+
+a:active {
+  color:#ff0000;
+}
+
+
+/* navigation */
+
+td.nav {
+  margin-bottom:0px;
+  margin-top:0px;
+}
+
+a.large {
+  color:#000000;
+  font-size:160%;
+}
+
+a.symbol {
+  font-size:160%;
+  font-weight:bold;
+}
+
+a.hidden {
+  color:#eeeef6;
+  font-size:160%;
+}
+
+/* ToC slide */
+
+th.toc {
+  font-size:160%;
+}
+
+td.toc {
+  font-size:140%;
+}
+
+td.tocslide {
+  font-size:100%;
+}
+
+/* normal slide */
+
+th.slide {			/* section */
+  font-size:160%;
+}
+
+td.slide {
+}
+
+p {
+  margin-bottom:0px;
+}
+
+p,center,ol,ul,li,td,th,i,b,h4 {
+}
+
+h4 {
+  font-size:100%;
+  font-weight:bold;
+}
+
+h5 {
+  font-size:100%;
+  font-weight:bold;
+  font-style:italic;
+}
+
+/* ul */
+ul {
+  list-style-type:disk;
+  /* list-style-image:url(bullet.png); */
+  font-size:100%;
+}
+
+ol {
+  /* list-style-type:roman; */
+  font-size:100%;
+}
+
+li {
+  margin-top:30px;
+}
+
+/*********************************************************
+ settings for tables _on_ a slide 
+*/
+
+table.onslide {
+  border-collapse:separate;
+  border-spacing:1px;
+  empty-cells:show;
+/*  table-layout:fixed; */
+}
+
+/* Zellen */
+td.onslide {
+/*  border:1px solid #222222;*/
+/* background-color:#ffffff; */
+  vertical-align:top;
+}
+.empty {
+  background-color:#ffffff;
+  margin-bottom:0px;
+  text-align:left;
+}
+
+th.onslide {
+  margin-bottom:0px;
+  text-align:left;
+  background-color:#aaaaaa;
+  /* color:#000000;
+  font-size:12px;*/
+  font-weight:bold;
+}
+ 
+img {
+ border:none
+}
+

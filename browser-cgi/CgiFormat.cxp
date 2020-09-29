@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path" />
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%" />
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*" />
+  <cxp:subst string="%CGITAG%" cgi="pattern" default="" />
+  <cxp:subst string="%START%" type="%CGIPATH%" default="inode/directory" /><!-- empty '%CGIPATH%' means root directory -->
+  <cxp:subst string="%TARGET%" cgi="b" default="text/html" encoding="rfc1738" />
+  <cxp:subst string="%LMAX%" default="6"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S %CGIPATH%"/>
+  <cxp:xml eval="yes">
+    <cxp:pathtable start="%START%" target="%TARGET%" lmax="%LMAX%" type="xml">
+      <cxp:xml>
+        <cxp:xml name="PieTransformations.xml" search="yes"/>
+        <cxp:xsl name="PieValidate.xsl"/>
+      </cxp:xml>
+    </cxp:pathtable>
+    <cxp:xsl name="XmlPathTableCxp.xsl">
+      <cxp:variable name="str_path" select="'%CGIPATH%'" />
+      <cxp:variable name="str_xpath" select="'%CGIXPATH%'" />
+      <cxp:variable name="str_tag" select="'%CGITAG%'" />
+      <cxp:variable name="str_tagtime" select="'%TAGTIME%'" />
+      <cxp:variable name="str_pathdir" select="'%CGIPATHDIR%'" />
+    </cxp:xsl>
+  </cxp:xml>
+</cxp:make>

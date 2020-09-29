@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%NAME%" default="cxproc-pie-dev-t" argv="2"/>
+  <cxp:subst string="%PORT%" default="8184" argv="3"/>
+  <cxp:subst string="%SITE_ID%" default="3" argv="4"/>
+  <cxp:subst string="%CXP_PREFIX%" default="C:\User\develop\cxproc-build\trunk\x86-windows-debug-dynamic" argv="5"/>  
+  <cxp:subst string="%WWW_PREFIX%" to="%CXP_PREFIX%\www\html"/>
+  <cxp:subst string="%CGI_PREFIX%" to="%CXP_PREFIX%\www\cgi-bin"/>
+  <cxp:subst string="%LOG_PREFIX%" to="%CXP_PREFIX%\www\log"/>
+  <cxp:subst string="%PIE_PREFIX%" to="%WWW_PREFIX%\pie"/>
+  <cxp:subst string="%JQ_PREFIX%" to="%WWW_PREFIX%\code.jquery.com"/>
+
+  <cxp:system mkdir="%NAME%"/>
+    <cxp:plain name="%NAME%\%NAME%-setup.bat">mkdir %CGI_PREFIX%mkdir %WWW_PREFIX%mkdir %LOG_PREFIX%%windir%\system32\inetsrv\appcmd add apppool /in &lt; %NAME%-apppool.xmlREM https://docs.microsoft.com/en-us/iis/configuration/system.webserver/handlers/REM %windir%\system32\inetsrv\appcmd.exe set config -section:system.webServer/handlers /+"[name='cgi-cxproc-exe',path='/cxproc/exe',verb='GET,HEAD,POST',modules='CgiModule',scriptProcessor='%CGI_PREFIX%\cxproc-cgi.exe',resourceType='Unspecified']"REM %windir%\system32\inetsrv\appcmd.exe set config -section:system.webServer/handlers /+"[name='cgi-cxproc-cxp',path='*.cxp',verb='GET,HEAD,POST',modules='CgiModule',scriptProcessor='%CGI_PREFIX%\cxproc-cgi.exe',requireAccess='Script',resourceType='File']"%windir%\system32\inetsrv\appcmd add site /in &lt; %NAME%-site.xml
+
+pause</cxp:plain>  <cxp:xml name="%NAME%\%NAME%-apppool.xml" encoding="UTF-8">
+    <appcmd>
+      <APPPOOL APPPOOL.NAME="%NAME%" PipelineMode="Classic" RuntimeVersion="" state="Started">
+        <add name="%NAME%" autoStart="true" managedRuntimeVersion="" managedPipelineMode="Classic">
+          <processModel identityType="NetworkService" />
+          <recycling>
+            <periodicRestart>
+              <schedule/>
+            </periodicRestart>
+          </recycling>
+          <failure/>
+          <cpu limit="50000" action="KillW3wp" resetInterval="00:10:00" />
+          <environmentVariables>
+            <add name="CXP_ROOT" value="%WWW_PREFIX%\Documents\"/>
+            <add name="CXP_PATH" value="%PIE_PREFIX%//"/>
+            <add name="CXP_LOGFILE" value="%LOG_PREFIX%\%NAME%.log"/>
+            <add name="CXP_LOG" value="3"/>
+            <add name="CXP_READONLY" value="no"/>
+          </environmentVariables>
+        </add>
+      </APPPOOL>
+    </appcmd>
+  </cxp:xml>
+  <cxp:xml name="%NAME%\%NAME%-site.xml" encoding="UTF-8">
+    <appcmd>
+      <SITE SITE.NAME="%NAME%" SITE.ID="%SITE_ID%" bindings="http/*:%PORT%:" state="Started">
+        <site name="%NAME%" id="%SITE_ID%" serverAutoStart="true">
+          <bindings>
+            <binding protocol="http" bindingInformation="*:%PORT%:"/>
+          </bindings>
+          <limits/>
+          <logFile directory="%LOG_PREFIX%">
+            <customFields>
+
+                </customFields>
+          </logFile>
+          <traceFailedRequestsLogging/>
+          <hsts/>
+          <applicationDefaults/>
+          <virtualDirectoryDefaults/>
+          <ftpServer>
+            <connections/>
+            <security>
+              <dataChannelSecurity/>
+              <commandFiltering>
+
+                    </commandFiltering>
+              <ssl/>
+              <sslClientCertificates/>
+              <authentication>
+                <anonymousAuthentication/>
+                <basicAuthentication/>
+                <clientCertAuthentication/>
+                <customAuthentication>
+                  <providers>
+
+                            </providers>
+                </customAuthentication>
+              </authentication>
+              <customAuthorization>
+                <provider/>
+              </customAuthorization>
+            </security>
+            <customFeatures>
+              <providers>
+
+                    </providers>
+            </customFeatures>
+            <messages/>
+            <fileHandling/>
+            <firewallSupport/>
+            <userIsolation>
+              <activeDirectory/>
+            </userIsolation>
+            <directoryBrowse/>
+            <logFile/>
+          </ftpServer>
+          <application path="/" applicationPool="%NAME%"> <!-- directory aliases only, for file aliases the IIS rewrite module is required -->
+            <virtualDirectoryDefaults/>
+
+	    <!-- content directory -->
+            <virtualDirectory path="/" physicalPath="%WWW_PREFIX%\Documents"/>
+
+	    <!-- PIE -->
+            <virtualDirectory path="/pie/icons" physicalPath="%PIE_PREFIX%\browser-cgi\icons"/>
+            <virtualDirectory path="/pie/js" physicalPath="%PIE_PREFIX%\browser-jquery"/>
+            <virtualDirectory path="/pie/non-js" physicalPath="%PIE_PREFIX%\browser-cgi"/>
+            <virtualDirectory path="/pie" physicalPath="%PIE_PREFIX%"/>
+
+	    <!-- jQuery http://code.jquery.com/ -->
+            <virtualDirectory path="/jquery" physicalPath="%JQ_PREFIX%"/>
+            <virtualDirectory path="/jquery/jquery-ui" physicalPath="%JQ_PREFIX%\ui\1.12.1"/>
+            <virtualDirectory path="/jquery/mobile" physicalPath="%JQ_PREFIX%\mobile\1.4.5"/> -->
+            <virtualDirectory path="/jquery/contextMenu" physicalPath="%WWW_PREFIX%\jQuery-contextMenu\dist"/>
+            <virtualDirectory path="/jquery/tablesorter" physicalPath="%WWW_PREFIX%\tablesorter.com"/>
+
+	    <!-- ACE https://github.com/ajaxorg/ace-builds/tree/master/src-min-noconflict -->
+            <virtualDirectory path="/ace/js" physicalPath="%WWW_PREFIX%\ace-builds\src-min-noconflict"/>
+
+	    <!-- ddd https://d3js.org/ https://github.com/d3/ -->
+            <virtualDirectory path="/d3/js" physicalPath="%WWW_PREFIX%\d3"/>
+          </application>
+        </site>
+      </SITE>
+    </appcmd>
+  </cxp:xml>
+</cxp:make>

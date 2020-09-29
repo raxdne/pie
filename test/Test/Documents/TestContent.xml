@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pie>
+  <section>
+    <h>Test only</h>
+    <section>
+      <h>AA</h>
+      <section>
+        <h>AAA</h>
+        <import>
+Test import node
+
+numbered list
+
++ a
+
++ b
+
++ c
+</import>
+      </section>
+    </section>
+    <section>
+      <h>BB</h>
+      <section>
+        <h>BBB</h>
+      </section>
+    </section>
+    <section>
+      <h>CC</h>
+      <section>
+        <h>BBB</h>
+        <task date="20160401" impact="2">
+          <h>t1</h>
+          <contact idref="abc"/>
+        </task>
+        <task date="20160403" impact="2" valid="no">
+          <h>t2</h>
+          <contact idref="abc"/>
+        </task>
+        <task date="20160405" impact="2">
+          <h>t3</h>
+          <contact idref="abc"/>
+        </task>
+      </section>
+    </section>
+    <section>
+      <h>DD</h>
+      <section>
+        <h>BBB</h>
+      </section>
+    </section>
+    <section origin="20160401">
+      <h>EE</h>
+      <task origin="20160401" date="20160403">
+        <h>t4</h>
+      </task>
+    </section>
+  </section>
+</pie>

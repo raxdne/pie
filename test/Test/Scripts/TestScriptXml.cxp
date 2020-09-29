@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<cxp:description>Test Script XML</cxp:description>
+    <cxp:xml name="-">
+<cxp:script>
+var objNow = Date();
+var strResult = '&lt;pie&gt;';
+
+for (i=0; i &lt; 10; i++) {
+  strResult += '&lt;p&gt;' + 'TEST ' + i + '&lt;/p&gt;' + '\n';
+}
+strResult += '&lt;p&gt;' + objNow + '&lt;/p&gt;' + '\n';
+strResult += '&lt;/pie&gt;' + '\n';
+
+strResult;
+</cxp:script>
+    </cxp:xml>
+</cxp:make>

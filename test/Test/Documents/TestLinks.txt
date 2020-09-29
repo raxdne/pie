@@ -1,0 +1,38 @@
+; Speicherung <TestLinks.txt 18.8.2013 17:54:18 developer>
+
+* Link Test
+
+Search engines http://www.google.de http://www.froogle.de http://www.metager.de
+
+Auskunft
+
+http://www.wikipedia.org/ http://de.wikipedia.org/ 
+
+http://www.plz-postleitzahl.de 
+http://www.intersky.biz http://www.bahn.de
+
+Radio http://www.d-radio.de http://www.fritz.de http://www.bbc.co.uk
+
+Television http://www.tvtoday.de |
+http://www.tagesschau.de/newsticker.rdf http://www.tagesschau.de/ http://www.ard.de/ |
+http://www.zdf.de |
+http://www.3sat.de
+
+Papers 
+http://www.heise.de/newsticker/ http://www.paperball.de http://www.spiegel.de http://www.welt.de
+
+e-commerce
+http://www.amazon.de http://www.ebay.de http://www.ebay.com
+
+Langugage
+
+German
+http://www.duden.de http://www.canoo.net
+
+Englisch
+DICT http://dict.tu-chemnitz.de http://www.leo.org/cgi-bin/dict-search http://www.systranbox.com/systran/box Langenscheidts Handw�rterbuch Englisch
+  http://www.gmsmuc.de/look.html
+
+Linux
+http://www.linuxtoday.com/ http://slashdot.org/
+

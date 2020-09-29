@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="3" dir="ofFile">
+  <cxp:description anchor="yesterday" icon="x-office-calendar.png">Calendar Demo</cxp:description>
+  <cxp:subst string="%YEAR%" cgi="year" now="Year"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:subst string="%CONTEXT%" cgi="context" default="Year"/>
+  <cxp:description>Demo</cxp:description>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content">
+	    <cxp:xhtml>
+	    <cxp:xml>
+	      <cxp:calendar coordinate="+5231+01323/" timezone="CET" year="%YEAR%" type="day">
+		<!-- Berlin: coordinate="+5231+01323/" timezone="CET" -->
+		<!-- Shanghai: coordinate="+3112+12130" timezone="China Standard Time" -->
+		<cxp:col id="legende" name="Legende">
+		  <cxp:xml>
+		    <pie hidden="no">
+		      <import name="LegendGerman.gcal" type="log"/>
+		    </pie>
+		  </cxp:xml>
+		</cxp:col>
+		<cxp:col id="work" name="Feiertage">
+		  <cxp:xml>
+		    <pie hidden="no">
+		      <import name="HolidaysGerman.cal" type="log"/>
+		      <import name="Birthdays.cal" type="log"/>
+		    </pie>
+		  </cxp:xml>
+		</cxp:col>
+	      </cxp:calendar>
+	    </cxp:xml>
+	    <cxp:xsl name="CalendarTable.xsl" appendcgi="yes">
+	      <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+	    </cxp:xsl>
+	    </cxp:xhtml>
+	    <p style="text-align:right">%TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

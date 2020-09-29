@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" default=""/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+	<script type="text/javascript">$(document).ready(function() { $("#localTable").tablesorter(); } );</script> 
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+		<cxp:dir depth="%CGIDEPTH%" verbosity="3" urlencode="yes">
+		  <cxp:dir name="%CGIPATH%"/>
+		</cxp:dir>
+              </cxp:xml>
+              <cxp:xsl name="CgiPiejQDirVerbose.xsl">
+		<cxp:variable name="write" select="'%CGIPERM%'"/>
+		<cxp:variable name="length_link" select="256"/>
+		<cxp:variable name="str_frame" select="'piemain'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+	  </div>
+	</div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

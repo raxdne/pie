@@ -1,0 +1,19 @@
+<html>
+<body>
+  <script language="Javascript" type="text/javascript"> 
+var k = 0;
+
+for (j=0; j<1024; j++) {
+var strContent = '<p>';
+
+for (i=0; i<1024; i++) {
+strContent += '&#' + k++ + ' ';
+}
+strContent += '</p>';
+document.write(strContent);
+}
+
+
+  </script>
+</body>
+</html>

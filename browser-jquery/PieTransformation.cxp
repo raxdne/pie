@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:xml xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <!-- !!! returns the best way to transform fromat %START% to PIE/XML !!! -->
+  <cxp:pathtable start="%START%" target="application/pie+proc+xml" type="xml">
+    <cxp:xml>
+      <cxp:xml name="PieTransformations.xml" search="yes" schema="pie.rng"/>
+      <cxp:xsl name="PieValidate.xsl" />
+    </cxp:xml>
+  </cxp:pathtable>
+  <cxp:xsl name="XmlPathTableCxp.xsl">
+    <cxp:variable name="str_path" select="'%CGIPATH%'" />
+    <cxp:variable name="str_xpath" select="'%CGIXPATH%'" />
+    <cxp:variable name="str_tag" select="'%CGITAG%'" />
+    <cxp:variable name="str_pathdir" select="'%CGIPATHDIR%'" />
+  </cxp:xsl>
+  <!--  -->
+  <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:output method="xml" />
+    <xsl:template match="/">
+      <xsl:choose>
+	<xsl:when test="count(make/*) &gt; 0">
+	  <xsl:element name="{name(make/*[1])}">
+	    <!-- dont copy element attributes -->
+            <xsl:copy-of select="make/*[1]/*" />
+	  </xsl:element>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:element name="system">
+	    <xsl:attribute name="message">No path found</xsl:attribute>
+	  </xsl:element>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
+  </xsl:stylesheet>
+</cxp:xml>

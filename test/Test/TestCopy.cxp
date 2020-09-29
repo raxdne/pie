@@ -1,0 +1,10 @@
+<make>
+  <copy from="TestGood.txt" to="Dummy/AAA/BBB/ZZZ.txt" response="OK" />
+  <!--
+  <copy from="TestGood.txt" to="ZZZ.txt" />
+  <copy from="TestGood.txt" to="c:/Temp/ZZZ.txt" />
+  <copy from="-" to="ZZZ.txt" />
+  <copy from="YYYTestGood.txt" to="-" />
+  <copy from="YYYTestGood.txt" to="ZZZ.txt" />
+  -->
+</make>

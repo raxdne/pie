@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQmHead.xhtml" search="yes"/>
+      <body>
+        <cxp:xhtml>
+	  <cxp:xml eval="yes">
+	    <cxp:include name="PieTransformation.cxp" search="yes"/>
+	  </cxp:xml>
+	  <cxp:xsl name="pie2jqm.xsl">
+	    <cxp:variable name="flag_footer" select="false()"/>
+	  </cxp:xsl>
+	</cxp:xhtml>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

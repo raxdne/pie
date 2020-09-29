@@ -1,0 +1,130 @@
+
+body {
+ padding:0;
+ margin: 0.5em;
+ background: #f0f0f0;
+}
+
+div#ui {
+ padding:0;
+ margin: 0;
+}
+
+div#content, div#content-cm {
+ border: 1px solid #cdcdcd;
+ padding: 1em 1em 1em 1em;
+ margin: 0;
+ background: #ffffff;
+}
+
+ul.ui-tabs {
+ padding: 0 1em 0 1em;
+ margin: 0.2em;
+ left:2em;
+}
+
+ul.ui-dir {
+ border: 1px solid #cdcdcd;
+ padding: 0 0 0 0;
+ margin: 0;
+
+}
+
+li.ui-dir-path {
+ padding: 0.5em 0.5em 0.5em 0.3em;
+  list-style: none;
+ display: block;
+  font-size:125%;
+  font-weight:bold;
+ background: #ffffff;
+}
+
+li.ui-dir {
+ background: #eeeeee;
+ padding: 0.3em 1em 0.3em 1em;
+  list-style: none;
+ display: block;
+  margin-left: 0;
+}
+
+li.ui-dir-file {
+ padding: 0.3em 1em 0.3em 1em;
+  list-style: none;
+ vertical-align: middle;
+  margin-left: 0.0em;
+ background: #ffffff;
+}
+
+li.ui-tab {
+ background: #c7d3fc;
+ border: 1px solid #cdcdcd;
+  border-style: solid solid none;
+ padding: 0.2em 0.9em 0.2em 0.9em;
+  list-style: none;
+ display: inline;
+  margin-left: 0.8em;
+  white-space: nowrap;
+ position: relative;
+  /*  top:-1px */
+}
+
+a.ui-tab-inactive {
+ color:#aaaaaa;
+}
+
+li#ui-tab-active {
+  border-bottom-color: #ffffff;
+ background: #ffffff;
+ top:1px
+    }
+
+li.ui-file {
+ background: transparent;
+ border: none;
+ padding: 0.3em 1em 0.3em 2em;
+  list-style: none;
+ display: inline;
+ margin: 0;
+  white-space: nowrap;
+}
+
+ul.ui-tabs-sub {
+ border: 1px solid #cdcdcd;
+  border-style:  none none solid;
+ padding: 0.3em 0.3em 0.3em 0.3em;
+ left:2em;
+ margin: 0.3em;
+}
+
+li.ui-tab-sub {
+  list-style: none;
+ padding: 0.3em 0.3em 0.3em 0.3em;
+ display: inline;
+ margin: 0;
+  white-space: nowrap;
+ position: relative;
+ left:2px;
+}
+
+
+a.highlight {
+ background: #c7d3fc;
+  /* text-decoration:underline; */
+}
+
+img {
+ margin: 0;
+ border:none;
+}
+
+.context-menu-list {
+    margin:0; 
+    padding:0;
+    
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 100%;
+}
+
+.invalid {
+  text-decoration:line-through; 
+}

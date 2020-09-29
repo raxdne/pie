@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIFORM%" cgi="form" default="true()"/>
+  <cxp:subst string="%CGISUB%" cgi="sub"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <cxp:xhtml>
+            <cxp:xml>
+              <cxp:file verbosity="3" name="%CGIPATH%"/>
+            </cxp:xml>
+            <cxp:xsl name="CgiPieUi.xsl">
+              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+              <cxp:variable name="sub" select="'%CGISUB%'"/>
+              <cxp:variable name="flag_sub" select="false()"/>
+            </cxp:xsl>
+          </cxp:xhtml>
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xsl name="CgiPieUi.xsl">
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+                <cxp:variable name="sub" select="'%CGISUB%'"/>
+                <cxp:variable name="flag_sub" select="true()"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+            <cxp:xhtml>
+              <cxp:xml eval="yes">
+		<cxp:include name="PieTransformation.cxp" search="yes"/>
+              </cxp:xml>
+              <cxp:xsl name="RemoveDoneElements.xsl"/>
+              <cxp:xsl name="AccountingTasks.xsl"/>
+              <cxp:xsl name="TodoTable.xsl">
+		<cxp:variable name="flag_form" select="%CGIFORM%"/>
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PieUiTodoContact&amp;sub=todoContact'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

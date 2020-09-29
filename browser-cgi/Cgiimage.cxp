@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIFRAME%" cgi="frame" default="900x800"/>
+  <cxp:subst string="%TAG%" now="%Y-%m-%d"/>
+  <cxp:image to="-" frame="%CGIFRAME%" note="cxproc %TAG%">
+    <cxp:image src="%CGIPATH%"/>
+  </cxp:image>
+</cxp:make>

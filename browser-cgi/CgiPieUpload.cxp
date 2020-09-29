@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%CGIPATH%" cgi="pathy" default="www/test-2.pie"/>
+  <cxp:subst string="%CGIURL%" cgi="url"/>
+  <cxp:system message="PIE/XML from '%CGIURL%' to '%CGIPATH%'"/>
+
+  <cxp:plain name="/tmp/a.txt">
+    <cxp:plain name="-"/>
+  </cxp:plain>
+
+  <cxp:xml eval="yes" name="CgiPieUiDefault.cxp" search="yes"/>
+
+</cxp:make>

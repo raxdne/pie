@@ -1,0 +1,22 @@
+
+* Presentation
+
+** Opening
+
+*** Why?
+
+*** What?
+
+** Main
+
+*** Slide A
+
+*** Slide B
+
+*** Slide C
+
+*** Slide D
+
+** Closing
+
+*** Bye

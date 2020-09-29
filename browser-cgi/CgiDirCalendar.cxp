@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:calendar subst="yes">
+                  <cxp:col id="all">
+                    <cxp:xml>
+                      <p date="00000000">%Y-%m-%d</p>
+                    </cxp:xml>
+                  </cxp:col>
+                  <cxp:col id="directory" name="Directory">
+                    <cxp:xml>
+                      <cxp:dir depth="%CGIDEPTH%" verbosity="3" index="skip" urlencode="yes">
+                        <cxp:dir name="%CGIPATH%"/>
+                      </cxp:dir>
+                    </cxp:xml>
+                  </cxp:col>
+                </cxp:calendar>
+              </cxp:xml>
+              <cxp:xsl name="CalTable4.xsl">
+                <cxp:variable name="dir_icons" select="'/pie/icons'"/>
+                <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

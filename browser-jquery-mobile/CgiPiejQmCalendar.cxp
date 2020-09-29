@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
+  <cxp:subst string="%CGIYEAR%" cgi="year" default="content"/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQmHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:calendar type="day" year="%CGIYEAR%">
+                  <cxp:col id="legende" name="Legend">
+                    <cxp:xml>
+                      <pie>
+                        <p date="00000000">%Y-%m-%d %a (KW%V/%Y)</p>
+                      </pie>
+                    </cxp:xml>
+                  </cxp:col>
+                  <cxp:col id="termine" name="Tasks">
+                    <cxp:xml>
+                      <cxp:xml eval="yes">
+                        <cxp:include name="PieTransformation.cxp" search="yes"/>
+                      </cxp:xml>
+                    </cxp:xml>
+                  </cxp:col>
+                </cxp:calendar>
+              </cxp:xml>
+              <cxp:xsl name="RemoveDoneElements.xsl"/>
+              <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+                <xsl:output method="xml" encoding="UTF-8"/>
+                <xsl:template match="@*|node()">
+                  <xsl:choose>
+                    <!-- in valids -->
+                    <xsl:when test="(name()='month' or name()='week' or name()='day') and (not(descendant::col[@name='termine']/*))"/>
+                    <xsl:otherwise>
+                      <xsl:copy>
+                        <xsl:apply-templates select="@*|node()"/>
+                      </xsl:copy>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:template>
+              </xsl:stylesheet>
+              <cxp:xsl name="CalendarTable.xsl" appendcgi="yes">
+                <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+                <cxp:variable name="flag_icon" select="false()"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

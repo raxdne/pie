@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" default="/"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%START%" type="%CGIPATH%"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:subst string="%TEMPLATES%" env="CXP_TEMPLATES" default="Templates"/>
+  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content-cm">
+	    <cxp:xhtml>
+	      <cxp:xml>
+		<cxp:dir name="%CGIPATH%" verbosity="2" depth="0"/>
+	      </cxp:xml>
+	      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+		<xsl:output method="html" encoding="UTF-8"/>
+		<xsl:template match="/pie">
+		  <xsl:element name="html">
+		    <xsl:element name="body">
+		      <xsl:apply-templates/>
+		    </xsl:element>
+		  </xsl:element>
+		</xsl:template>
+		<xsl:template match="file|dir">
+		  <xsl:element name="h2">
+		    <xsl:text>Directory </xsl:text>
+		    <xsl:element name="a">
+		      <xsl:attribute name="href">
+			<xsl:text>/%CGIPATH%</xsl:text>
+		      </xsl:attribute>
+			<xsl:text>%CGIPATH%</xsl:text>
+		    </xsl:element>
+		  </xsl:element>
+		  <xsl:element name="table">
+		    <xsl:attribute name="style">
+		      <xsl:text>margin: 15px 15px 15px 15px;</xsl:text>
+		    </xsl:attribute>
+		    <xsl:element name="tbody">
+		      <xsl:if test="@size">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Size</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@size"/>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="string-length('%CGIXPATH%') &gt; 0 and not('%CGIXPATH%' = '/')">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Xpath</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:text>%CGIXPATH%</xsl:text>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="@mtime">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Mtime</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@mtime2"/>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="@type">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>MIME</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:value-of select="@type"/>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		      <xsl:if test="@read">
+			<xsl:element name="tr">
+			  <xsl:element name="td">
+			    <xsl:text>Permissions</xsl:text>
+			  </xsl:element>
+			  <xsl:element name="td">
+			    <xsl:element name="tt">
+			      <xsl:choose>
+				<xsl:when test="@read = 'yes'">
+				  <xsl:text>r</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			      <xsl:choose>
+				<xsl:when test="@write = 'yes'">
+				  <xsl:text>w</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			      <xsl:choose>
+				<xsl:when test="@execute = 'yes'">
+				  <xsl:text>x</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			      <xsl:choose>
+				<xsl:when test="@hidden = 'yes'">
+				  <xsl:text>h</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+				  <xsl:text>-</xsl:text>
+				</xsl:otherwise>
+			      </xsl:choose>
+			    </xsl:element>
+			  </xsl:element>
+			</xsl:element>
+		      </xsl:if>
+		    </xsl:element>
+		  </xsl:element>
+		</xsl:template>
+		<xsl:template match="node()|text()|comment()|@*"/>
+	      </xsl:stylesheet>
+	    </cxp:xhtml>
+
+<h3>New file from template</h3>
+<form>
+<input type="hidden" name="cxp" value="CopyTemplate"/>
+<cxp:xhtml>
+  <!-- use a dynamic list of Template directory -->
+  <cxp:dir>
+    <cxp:dir name="%TEMPLATES%" depth="1" verbosity="1"/>
+  </cxp:dir>
+  <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:output method="html" encoding="UTF-8"/>
+    <xsl:template match="/pie">
+      <xsl:element name="html">
+	<xsl:element name="body">
+	  <xsl:element name="input">
+	    <xsl:attribute name="type">submit</xsl:attribute>
+	    <xsl:attribute name="value">Create</xsl:attribute>
+	  </xsl:element>
+	  <xsl:text> new file </xsl:text>
+	  <xsl:element name="input">
+	    <xsl:attribute name="class">additor</xsl:attribute>
+	    <xsl:attribute name="name">file</xsl:attribute>
+	    <xsl:attribute name="maxlength">125</xsl:attribute>
+	    <xsl:attribute name="size">70</xsl:attribute>
+	    <xsl:attribute name="value">%CGIPATH%/New</xsl:attribute>
+	  </xsl:element>
+	  <xsl:text> from Template </xsl:text>
+	  <xsl:element name="select">
+	    <xsl:attribute name="class">additor</xsl:attribute>
+	    <xsl:attribute name="name">template</xsl:attribute>
+	    <xsl:for-each select="descendant::file">
+	      <xsl:element name="option">
+		<xsl:attribute name="value">
+		  <xsl:value-of select="concat('%TEMPLATES%/',@name)"/>
+		</xsl:attribute>
+		<xsl:value-of select="@name"/>
+	      </xsl:element>
+	    </xsl:for-each>
+	  </xsl:element>
+	</xsl:element>
+      </xsl:element>
+    </xsl:template>
+  </xsl:stylesheet>
+</cxp:xhtml>
+
+</form>
+
+<h3>New subdirectory</h3>
+<form>
+<input type="hidden" name="cxp" value="MakeDirectory"/>
+<p><input type="submit" value="Create"/> subdirectory <input class="additor" name="path" maxlength="125" size="70" value="%CGIPATH%/New"/></p>
+</form>
+	    
+<h3>Search directory</h3>
+        <form method="post">
+          <input type="hidden" name="cxp" value="PiejQDirSearchResult"/>
+          <input type="hidden" name="path" value="%CGIPATH%"/>
+          <p>
+	  <input type="submit" value="Search"/> in '%CGIPATH%' for files containing 
+	  <input class="additor" name="needle" type="text" size="30" value=""/> files named 
+	  <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|cal|mm)$"/>
+          </p>
+        </form>
+
+<h3>Actions</h3>
+<ul class="ui-menu"><ul>
+<li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=GetSnapshot">Download Zip directory from Server (Snapshot)</a></li>
+<li><a target="_blank"><i>Upload Zip directory to Server</i></a></li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=DiskUsage">DiskUsage</a></li>
+<li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirCalendar&amp;depth=10#yesterday">Calendar</a></li>
+<li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirSitemap">Sitemap</a></li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQMerge&amp;frame=800x800&amp;depth=1">Merge</a> all PIE files in current directory (*.pie, *.txt, *.mm, *.jpg, *.png).</li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=Wallpaper&amp;frame=600x600&amp;depth=1">Wallpaper of</a> all Image files in current directory.</li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQmDir">Mobile Layout</a> of current directory.</li>
+<li><a target="_blank" href="?base=%CGIPATH%&amp;cxp=gallery">Show Gallery Directory</a></li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PlayList">Audio PlayList Directory</a></li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQmDirAudio">Audio Browser Directory</a></li>
+</ul>
+
+	<cxp:xhtml>
+              <cxp:xml>
+                <cxp:pathnet start="%START%" lmax="6" type="xml">
+                  <cxp:xml name="PieTransformations.xml" search="yes"/>
+                  <cxp:xsl name="PieValidate.xsl"/>
+                </cxp:pathnet>
+                <cxp:xsl name="PieValidate.xsl"/>
+              </cxp:xml>
+              <cxp:xsl name="CgiMenuTransformations.xsl">
+                <cxp:variable name="type" select="'%START%'"/>
+                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+	    <hr/>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

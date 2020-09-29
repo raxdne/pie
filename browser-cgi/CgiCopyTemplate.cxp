@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGIFILE%" cgi="file"/>
+  <cxp:subst string="%CGITEMPLATE%" cgi="template" default=""/>
+  <cxp:subst string="%CGITEMPLATE_EXT%" ext="%CGITEMPLATE%" default="txt"/>
+  <cxp:copy from="%CGITEMPLATE%" to="%CGIFILE%.%CGITEMPLATE_EXT%"/>
+  <cxp:xhtml name="-">
+    <html>
+      <body>
+        <div id="ui">
+          <p>Copy '%CGITEMPLATE%' to '%CGIFILE%.%CGITEMPLATE_EXT%'</p>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:copy from="PieTransformations.png" to="-" search="yes"/>
+</cxp:make>

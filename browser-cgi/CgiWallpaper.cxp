@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIFRAME%" cgi="frame" default="400x400"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+        <cxp:xsl name="CgiPieUi.xsl">
+          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="flag_header" select="true()"/>
+        </cxp:xsl>
+      </cxp:xhtml>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml>
+                <cxp:dir depth="%CGIDEPTH%" verbosity="3" index="skip" urlencode="yes" imatch="\.(jpg|jpeg|png|gif|txt)$">
+                  <cxp:dir name="%CGIPATH%"/>
+                </cxp:dir>
+              </cxp:xml>
+              <cxp:xsl name="DirSortBy.xsl"/>
+              <cxp:xsl name="MergePie.xsl">
+                <cxp:variable name="dir_name" select="'%CGIPATH%'"/>
+                <cxp:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
+                <cxp:variable name="opt_cxp" select="'cxp=image&amp;frame=%CGIFRAME%&amp;path='"/>
+              </cxp:xsl>
+              <cxp:xsl name="pie2wallpaper.xsl">
+                <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+                <cxp:variable name="toc_display" select="'block'"/>
+                <cxp:variable name="str_link_prefix" select="''"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+          </div>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

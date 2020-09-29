@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:description>BadTest</cxp:description>
+  <cxp:subst string="%PWD%" dir="pwd"/>
+  <cxp:system message="TEST 1: Call copy command from a restricted context"/>
+  <cxp:copy from="/etc/motd" to="%PWD%/"/>
+  <cxp:system message="TEST 2: Change directory and call a script file"/>
+  <cxp:system chdir="/tmp"/>
+  <cxp:system call="test-system-call.sh"/>
+  <cxp:system message="TEST 3: Change directory and call a script file"/>
+  <cxp:system chdir="%PWD%"/>
+  <cxp:plain name="-">OK</cxp:plain>
+</cxp:make>

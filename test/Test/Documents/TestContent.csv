@@ -1,0 +1,30 @@
+sep=;
+* Test 1
+;ABC
+;;1234567890|abc|def
+;DEF
+;;1234567890
+;HIJ
+;;1234567890
+;KLM
+;;1234567890
+
+* Test 2
+A,B,C
+D,E,F
+H,I,J
+
+* Test 3
+"ABC";"#DEF";"X <-> Z"
+"HIJ";"@KLM";"A <=> B";
+"ABC";1234;✔
+"HIJ";786;"KLM \u2194";"";
+
+;;;;* A;;;
+A;B & C;
+D;E &#x1234; F;456
+K;L &#1234; M
+N;O &#x; P
+
+* 2020-11-12 table header 2 with date
+2020-11-02;table row with date

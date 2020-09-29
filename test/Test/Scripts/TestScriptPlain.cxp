@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<cxp:description>Test Script Plain</cxp:description>
+    <cxp:plain name="-">
+<cxp:script>
+var objNow = Date();
+var strResult = '';
+
+function abc (iArg) {
+  strResult += 'PREFIX ' + iArg + ' SUFFIX' + '\n';
+}
+
+
+for (i=0; i &lt; 10; i++) {
+  abc(i);
+}
+
+strResult + objNow;
+</cxp:script>
+    </cxp:plain>
+</cxp:make>

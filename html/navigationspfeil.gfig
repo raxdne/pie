@@ -1,0 +1,30 @@
+GFIG Version 0.1
+Name: navigationspfeil
+Version: 0.000000
+ObjCount: 4
+<OPTIONS>
+GridSpacing: 20
+GridType: RECT_GRID
+DrawGrid: TRUE
+Snap2Grid: TRUE
+LockOnGrid: TRUE
+ShowControl: TRUE
+</OPTIONS>
+<LINE>
+200 40
+200 360
+</LINE>
+<POLY>
+100 140
+<EXTRA>
+3
+</EXTRA>
+</POLY>
+<LINE>
+100 140
+200 40
+</LINE>
+<LINE>
+200 40
+300 140
+</LINE>

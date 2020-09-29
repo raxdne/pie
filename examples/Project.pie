@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pie>
+  <section>
+    <h>This is a project</h>
+    <p>Today is <subst now="%Y-%m-%d"/> on '<subst env="SERVER_NAME"/>'</p>
+    <section date="20130201" pid="project_001" begin="20120306" end="20131115">
+      <h>Sub project</h>
+      <target>
+        <h>a Target without date</h>
+      </target>
+      <task>
+        <h>a Task without date</h>
+      </task>
+      <target date="20130126" impact="1">
+        <h>This is a Target</h>
+      </target>
+      <target date="20131121" impact="1">
+        <h>This is a Target</h>
+      </target>
+      <task date="2013*w08" impact="1">
+        <h>This is a Task</h>
+      </task>
+      <task date="2013*w08" impact="1">
+        <h>This is a Task 2</h>
+        <tag>Rollout</tag>
+      </task>
+      <task date="2009" impact="2">
+        <h>This is a Task in 2009</h>
+        <contact idref="mr_a"/>
+        <contact idref="ms_b">
+          <p>20130521: ggg</p>
+        </contact>
+      </task>
+      <task date="20131010" impact="2" done="1">
+        <h>This is a done Task in 2013</h>
+      </task>
+      <task date="2013" impact="2">
+        <h>This is a Task in 2013</h>
+        <tag>Sundown</tag>
+      </task>
+    </section>
+    <section date="20130220" done="20130222" pid="project_002">
+      <h>Sub project 2</h>
+      <task>
+        <h>Kick off meeting</h>
+        <contact idref="mr_a"/>
+        <contact idref="mr_d"/>
+      </task>
+      <section type="slide">
+        <h>Test slide</h>
+        <table>
+          <tr>
+            <!-- one of (td th) -->
+            <th>Header 1</th>
+            <th>Header 2</th>
+            <th>Header 3</th>
+          </tr>
+          <tr>
+            <td>Cell 1.1</td>
+            <td>Cell 2.1</td>
+            <td>Cell 3.1</td>
+          </tr>
+          <tr>
+            <td>Cell 1.2</td>
+            <td>Cell 2.2</td>
+            <td>Cell 3.2</td>
+          </tr>
+          <tr>
+            <td>Cell 1.3</td>
+            <td>Cell 2.3</td>
+            <td>Cell 3.3</td>
+          </tr>
+        </table>
+      </section>
+      <section type="slide">
+        <h>Test slide</h>
+        <table>
+          <tr>
+            <td>Cell 1.1</td>
+            <td>Cell 2.1</td>
+            <td>Cell 3.1</td>
+          </tr>
+          <tr>
+            <td>Cell 1.2</td>
+            <td>Cell 2.2</td>
+            <td>Cell 3.2</td>
+          </tr>
+          <tr>
+            <td>Cell 1.3</td>
+            <td>Cell 2.3</td>
+            <td>Cell 3.3</td>
+          </tr>
+        </table>
+      </section>
+    </section>
+    <section pid="project_003">
+      <h>
+        <link href=".">Sub project 3</link>
+      </h>
+      <section>
+        <h>Sub sub project 3.1</h>
+        <task date="20130220">
+          <h>
+            <link href=".">Kick off meeting</link>
+          </h>
+          <contact idref="mr_a"/>
+          <contact idref="mr_d"/>
+        </task>
+      </section>
+    </section>
+  </section>
+</pie>

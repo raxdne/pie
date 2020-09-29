@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<make>
+  <description>Test Calendar</description>
+  <xhtml name="-">
+    <xml>
+      <calendar columns="yes" type="day" context="year" subst="yes">
+        <col id="legende" name="Legende">
+          <xml>
+            <pie>
+              <p date="00000000"> %a %d.%m. (%j)</p>
+	      <import name="feiertage.gcal"/>
+            </pie>
+	    <xsl name="RemoveHiddenLevel.xsl"/>
+          </xml>
+        </col>
+        <col id="content" name="Content">
+          <xml>
+            <xml xpath="yes">
+              <pie xpath="/*" url="yes" tags="yes" pattern="" figure="no" offset="yes" validation="yes">
+		<import name="../Documents/TestContent.txt"/>
+              </pie>
+	    <xsl name="RemoveHiddenLevel.xsl"/>
+            </xml>
+          </xml>
+        </col>
+        <col id="content2" name="Content 2">
+          <xml>
+              <pie>
+		<import name="../Documents/TestContent.csv"/>
+              </pie>
+          </xml>
+        </col>
+      </calendar>
+    </xml>
+    <xsl name="CalendarTable.xsl" appendcgi="yes">
+      <variable name="file_css" select="'/pie/html/pie.css'"/>
+      <variable name="str_year" select="''"/>
+    </xsl>
+  </xhtml>
+</make>

@@ -1,0 +1,212 @@
+
+* Cxproc URL test page
+
+- Document access via
+
+-- CXP
+
+-- XSL
+
+-- XPath
+
+- File access
+
+#begin_of_skip
+- Script access
+
+-- JS
+
+-- Tcl
+#end_of_skip
+
+** Processing of Plain text files
+
+*** PIE format (Emacs outline mode)
+
++ http://localhost:8183/Test/Documents/TestContent.txt
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&type=text-plain
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&xsl=pie2html
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&xpath=/pie/section/h
+
++ http://localhost:8183/cxproc/exe?path=Test/Documents/TestContent.txt&cxp=PieUiDefault
+
+;+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&js=LinkExtract
+
+*** CSV
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.csv
+
+** Processing of HTML text files
+
++ http://localhost:8183/Test/Documents/TestContent.html
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html&xpath=/html/body/h1
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html&xsl=html2pie
+
+;+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html&cxp=html2pie
+
+** Processing of XML text files
+
+*** PIE | #pieTag
+
++ http://localhost:8183/Test/Documents/TestContent.pie
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie&xsl=pie2html
+
++ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie&xpath=/pie/section/h
+
++ http://localhost:8183/cxproc/exe?path=Test/Documents/TestContent.pie&cxp=PieUiDefault
+
+;+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie&js=LinkExtract
+
+*** CXP
+
++ http://localhost:8183/cxproc/exe
+
++ http://localhost:8183/cxproc/exe?cxp=PieUiPowered
+
++ http://localhost:8183/Test/TestCgiVariable.cxp?id=abcdef&count=11
+
+*** FreeMind
+
+- http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.mm&xsl=mm2pie
+
+*** Generic
+
+*** Archive
+
+**** ZIP
+
++ ZIP
+
+-- http://localhost:8183/cxproc/exe?path=Test/Archive/TestArchive.zip/Test/SubTest/SubTest/Length_1024.txt
+
++ ODT 
+
+-- http://localhost:8183/cxproc/exe?path=Test/Documents/TestContent.odt&cxp=PieUiOdt
+
+-- http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.odt&xsl=odt2html
+
++ MMAP
+
+-- http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.mmap&cxp=PieUiDefault
+
+**** TAR
+
+- http://localhost:8183/cxproc/exe?path=Test/Archive/TestArchive.tar/Test/SubTest/folder.png
+   
+**** ISO
+
+- http://localhost:8183/cxproc/exe?path=Test/Archive/TestArchive.iso/./sub/weiter.png
+
+*** CGI parameter
+
+- http://localhost:8183/Test/TestShowContent.cxp?content=%3Cxyz%3E%3Cabc%20attr%3D%22123%22%3EHIJ%3C%2Fabc%3E%3Cdef%3E%3C%2Fdef%3E%3C%2Fxyz%3E (use utility >>urlencode<<)
+
+*** XSL
+
++ Standalone stylesheet applied to a dummy root element http://localhost:8183/cxproc/exe?xsl=Hello
+
+;+ http://localhost:8183/Test/TestCgiVariable.xsl?id=abcdef&count=11
+
+** Dir mode (incl. indexing)
+
+http://localhost:8183/cxproc/exe?path=
+
+http://localhost:8183/cxproc/exe?dir=
+
+http://localhost:8183/cxproc/exe?dir=Test
+
+http://localhost:8183/cxproc/exe?dir=Test&xsl=dir2json
+
+http://localhost:8183/cxproc/exe?dir=Test&cxp=PieUiDir
+
+;http://localhost:8183/cxproc/exe?dir=Test/Music&cxp=PlayTrack&t=1
+
+** Encoded URLs
+
+encoding error: http://localhost:8183/Test/Documents/TestContent_%fc.pie
+
+encoding OK: http://localhost:8183/Test/Documents/TestContent%20%C3%B6.pie
+
+mailto:Max.Mustermann@irgendwo.de
+
+onenote://server/share/directory/file.txt
+
+tel://491234567890
+
+ftp://ftp.server.com/directory/file%20123.txt
+
+** Test of Tag Markup | abc #myTag
+
+test | def #myParTag
+
+** Test of URL and Link Markup
+
+	http://www.xyz.com/this-ressouce-is-name/ |#aaa|AAA| http://www.uvw.ch/
+
+ pre URL |http://www.abc.de/ |ABC| post URL
+
+http://www.äböcü.de/test-äöü.html
+
+ |test.html||
+ 
+ |test.html|Test|
+
+ |#pieTag|Test|
+
+ |test.html|Test
+
+ |||
+
+ |test.html||
+ 
+   |http://www.xyz.com/this-ressouce-is-name/|| dakdölakdö
+
+ |#anchor|Test
+
+  pre URL |http://www.abc.de/ |ABC| post URL|test.html|Test|	
+  
+
+** UNC paths
+
+Drive c:
+
+Drive and Dir c:\temp
+
+C:\WINDOWS
+
+But not this: <-
+
+UNC mapping \\abc\def\ghi\
+
+kajdlkaj:\ ksjdalkd
+
+\\abcd.def.de\jfkjsdhf\iwueroiw12
+
+\\abcd.def.de\jfkjsdhf\iw%43uer%44oiw12
+
+\\abcd.def.de\jfkjsdhf\AA%20BB%20CC
+
+\\abcd.def.de\jfkjösÖdhf\AA
+
+#begin_of_skip
+
+** Processing of JavaScript
+
++ http://localhost:8183/cxproc/exe?js=Demo
+
+** Processing of Tcl script code
+
++ http://localhost:8183/cxproc/exe?tcl=Demo
+

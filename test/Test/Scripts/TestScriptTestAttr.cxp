@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <cxp:subst string="%REPLACE%" script="'DEF'"/>
+  <cxp:subst string="%TODAY%" script="Date()"/>
+  <cxp:subst string="%CALC%" script="5 * 5"/>
+  <cxp:description>Test Script Text Attribute</cxp:description>
+  <cxp:plain name="-">
+    ABC "%REPLACE%" HIJ
+
+    Now it's %TODAY%
+
+    Calculation result is %CALC%
+  </cxp:plain>
+</cxp:make>

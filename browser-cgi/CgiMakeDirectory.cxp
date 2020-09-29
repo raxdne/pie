@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
+  <cxp:subst string="%DOCDIR%" env="CXP_ROOT"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:system mkdir="%DOCDIR%/%CGIPATH%"/>
+  <cxp:xhtml name="-">
+    <html>
+      <body>
+        <div id="ui">
+          <p>Make directory '%CGIPATH%'</p>
+        </div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>
