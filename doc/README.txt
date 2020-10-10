@@ -44,15 +44,13 @@ especially for XML and GNU Emacs enthusiast.
 
 *** text processing
 
-- simple tags only (look at the code for this text href="index.txt")
-
--- prefer a good plain readability (Editor, E-Mail)
+- simple markup only for a good plain text readability (Editor, E-Mail)
 
 - single Source
 
 *** text >>development<<
 
-- different views on one document: Structure, Article, Presentation, 
+- different views on one document: Structure, Article, Presentation, Calendar
 
 -- a structure view (Tree, Mindmap, >>Mindtree<<)
 
@@ -85,41 +83,19 @@ especially for XML and GNU Emacs enthusiast.
 
 ** Examples
 
-- simple PIM site href="../examples/index.html"
-
-- structure of articles
-
--- href="../examples/Mindmap/demo-tree.html"
-
--- href="../examples/Mindmap/demo-mindtree.pdf"
-
--- href="../examples/Mindmap/demo-mindmap.png"
-
-- format and structure of articles (href="../examples/Article/demo.html")
-
-- Todo list href="../examples/Todolist/TODO.html"
-
-- Calendar href="../examples/Calendar/calendar.html"
-
 ** Frontends
 
 *** CGI
 
 *** Command line
 
-*** emacs lisp glue
-
-- lib/emacs/
-
 ** HISTORY
 
-- begin at 1997 to use hidden PDFLaTeX, officially MS Office
+- begin at 1997 with an AWK script, later porting to PERL script
 
-- Start with an AWK script, later porting to PERL script
-
-- at the end a 120 pages PhD thesis in the simple Text format
+- at the end a 120 pages thesis in the simple Text format
 
 - new tasks like Todo list, Journal, project planning
 
-- awful PERL script, create a new object oriented implementation
+- awful PERL script, create a better implementation
 

@@ -1,0 +1,35 @@
+<!doctype html public "-//IETF//DTD HTML 4.0//EN">
+<html>
+  <HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="icon" href="/cxproc/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/cxproc/favicon.ico" type="image/x-icon"/>
+    <TITLE>PIE demo pages</TITLE>
+
+    <script>
+      // s. http://stackoverflow.com/questions/21408419/switch-from-mobile-to-desktop-using-jquery
+      if (navigator.userAgent.match(/(Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i)
+           || (window.innerWidth <= 800 && window.innerHeight <= 700)) {
+        document.location = "/cxproc/exe?path=/&xsl=CgiPiejQmDir";							   
+      }
+   </script>
+      
+   </HEAD>
+
+  <FRAMESET ROWS="*" FRAMESPACE=0 FRAMEBORDER="NO" BORDER=0>
+
+    <FRAMESET COLS="190,*" FRAMESPACE=0 FRAMEBORDER="NO" BORDER=0>
+
+      <FRAME NAME="buttons" SRC="/cxproc/exe?cxp=PieUiDir" SCROLLING="AUTO">
+	  
+      <FRAME NAME="piemain" SRC="/cxproc/exe?cxp=PieUiPowered" SCROLLING="AUTO">
+	  
+    </FRAMESET>
+
+  </FRAMESET>
+
+  <body>
+    Dieser Browser unterstützt keine Frames!
+  </body>
+
+</html>
