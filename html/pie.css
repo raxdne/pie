@@ -479,17 +479,17 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   margin: 2px 2px 0px 0px;
 }
 
-*.p1, *.h1, *.fig1, *.task1 {
+*.p1, *.h1, *.fig1, *.task1, *.tr1, *.section1 {
   background-color:#ffcccc;
   padding: 1px;
   margin: 2px 2px 0px 0px;
 }
-*.p2, *.h2, *.fig2, *.task2 {
+*.p2, *.h2, *.fig2, *.task2, *.tr2, *.section2 {
   background-color:#ccffcc;
   padding: 1px;
   margin: 2px 2px 0px 0px;
 }
-*.p3, *.h3, *.fig3, *.task3 {
+*.p3, *.h3, *.fig3, *.task3, *.tr3, *.section3 {
   background-color:#ccccff;
   padding: 1px;
   margin: 2px 2px 0px 0px;

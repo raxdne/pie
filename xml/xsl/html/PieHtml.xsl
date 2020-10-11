@@ -591,6 +591,7 @@
 	    <tbody>
 	      <xsl:for-each select="tr">
 		<xsl:element name="{name()}">
+		  <xsl:call-template name="CLASSATRIBUTE"/>
 		  <xsl:element name="th">
 		    <xsl:value-of select="position()"/>
 		  </xsl:element>
