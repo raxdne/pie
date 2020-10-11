@@ -8,5 +8,5 @@ Start "HTTPD" /b "C:\UserData\Programme\Apache24\bin\httpd.exe" -w
 
 ECHO "Apache HTTPD"
 ECHO "  Default :80"
-ECHO "     Test :8182"
-ECHO "  Develop :8187"
+ECHO "     Test :8189"
+REM ECHO "  Develop :8187"
