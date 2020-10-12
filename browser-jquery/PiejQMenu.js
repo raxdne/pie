@@ -497,11 +497,21 @@ function callbackContent(key, options) {
     } else if (key == 'cleanup') {
 	pieCleanup();
     } else if (key == 'toc') {
-	$('#toc').css({'display': 'block'});
+	if ($('#toc').css('display') == 'block') {
+	    $('#toc').css({'display': 'none'});
+	} else {
+	    $('#toc').css({'display': 'block'});
+	    $(window).scrollTop(0);
+	}
 	$(window).scrollTop(0);
     } else if (key == 'tags') {
-	$('#tags').css({'display': 'block'});
-	$(window).scrollTop(0);
+	//putsConsole( "CSS: " + $('#tags').css('display'));
+	if ($('#tags').css('display') == 'block') {
+	    $('#tags').css({'display': 'none'});
+	} else {
+	    $('#tags').css({'display': 'block'});
+	    $(window).scrollTop(0);
+	}
     } else if (key == 'link') {
 	$('#links').css({'display': 'block'});
     } else if (key == 'contextYear') {

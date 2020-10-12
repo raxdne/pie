@@ -62,16 +62,14 @@
 			  </xsl:element>
 			</xsl:element>
 		      </xsl:if>
-		      <xsl:if test="not('%CGITAG%' = '')"> <!-- TODO: input element for tag? -->
-			<xsl:element name="tr">
-			  <xsl:element name="td">
-			    <xsl:text>Tag</xsl:text>
-			  </xsl:element>
-			  <xsl:element name="td">
-			    <xsl:text>%CGITAG%</xsl:text>
-			  </xsl:element>
+		      <xsl:element name="tr">
+			<xsl:element name="td">
+			  <xsl:text>Tag</xsl:text>
 			</xsl:element>
-		      </xsl:if>
+			<xsl:element name="td">
+			  <xsl:text>%CGITAG%</xsl:text> <!-- TODO: input element for tag? -->
+			</xsl:element>
+		      </xsl:element>
 		      <xsl:if test="@mtime">
 			<xsl:element name="tr">
 			  <xsl:element name="td">

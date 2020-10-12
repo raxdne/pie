@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="../PieHtml.xsl"/>
-  <xsl:variable name="file_css" select="'pie.css'"/>
+  <xsl:variable name="file_css" select="''"/>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="''"/>
   <xsl:variable name="file_ref" select="'TodoContactTable.html'"/>

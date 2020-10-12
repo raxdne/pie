@@ -8,7 +8,7 @@
   <xsl:import href="PieHtml.xsl"/>
 
   <!-- -->
-  <xsl:variable name="file_css" select="'pie.css'"/>
+  <xsl:variable name="file_css" select="''"/>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="''"/>
 

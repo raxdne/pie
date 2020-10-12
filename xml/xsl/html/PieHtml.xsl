@@ -1188,6 +1188,7 @@
     </xsl:element>
   </xsl:template>
 <xsl:template name="CREATESTYLE">
+    <!-- insert "pie\html\pie.css" -->
     <xsl:element name="style">
 /* this is the CSS for txt2x: txt2x.css
 
@@ -1205,6 +1206,22 @@ body,table {
   /* font-family:Courier; */
   font-size:12px;
   margin: 5px 5px 5px 5px;
+}
+
+/* sections tags
+
+ */
+
+section {
+  border-left: 1px dotted #aaaaaa;
+}
+
+section > * {
+  margin: 0px 0px 0px 2px;
+}
+
+section > *:not(.header) {
+  margin: 0.5em 0.5em 0.5em 2em;
 }
 
 /* Header tags
@@ -1246,10 +1263,6 @@ h6 {
   font-size:80%;
 }
 
-h7 {
-  font-size:70%;
-}
-
 /* Links
 
  */
@@ -1281,13 +1294,22 @@ a.warning {
 a.ok {
   background-color:#00FF00;
 }
-.done {
+a.done {
  color:#aaaaaa;
  /*  text-decoration:line-through; */
 }
-.geb {
+a.geb {
  color:#000000;
  background-color:#00FF00;
+}
+
+span.htag, span.htag-todo, span.htag-req, span.htag-target, span.htag-bug, span.htag-test {
+  border-radius: 5px;
+  background: #ffffaa;
+}
+
+span.htag-bug {
+  background: #ff4000;
 }
 
 /* 
@@ -1305,10 +1327,10 @@ b.em {
 table {
   width: 95%;
   border-collapse: collapse;
+  empty-cells:show;
   margin-left:auto;
   margin-right:auto;
-}
-.PIE {
+  border: 1px solid grey;
 }
 
 table.vcard {
@@ -1408,13 +1430,13 @@ th {
   color:#000000;
   font-weight:bold;
 }
-.title {
+th.title {
   margin-bottom:0px;
   text-align:left;
   background-color:#e0e0e0;
   font-weight:bold;
 }
-.header {
+th.header {
   margin-bottom:0px;
   text-align:left;
   background-color:#d9d9d9;
@@ -1455,6 +1477,11 @@ span.tagRed {
 }
 
 /* lists */
+ul, ol {
+ margin: 0px 0px 0px 0px;
+ padding: 0px 0px 0px 3em;
+}
+
 ul {
   list-style-type:square;
 }
@@ -1484,19 +1511,6 @@ p {
   */
   /* text-indent:0.1cm; */
  margin: 3px 2px 3px 1px;
-}
-.p1 {
-  background-color:#ffcccc;
-}
-.p2 {
-  background-color:#ccffcc;
-}
-.p3 {
-  background-color:#ccccff;
-}
-.done {
- color:#aaaaaa;
-/*  text-decoration:line-through; */
 }
 .target {
   margin-bottom:0px;
@@ -1530,11 +1544,36 @@ li.hidden,p.hidden {
  font-size:120%;
 }
 
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
 pre {
-  font-family:Courier,monospace;
-  margin: 4px 4px 5px 20px;
-  /* border: 1px solid #a0a0a0; */
-  border-spacing:3px;
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
 }
 
 dt {
@@ -1565,7 +1604,7 @@ img {
  border:none
 }
 .localsize {
- width: 800px;
+  /* width: 90%; */
  margin: 5px 5px 10px 10px;
  border:none
 }
@@ -1625,49 +1664,51 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 }
  */
 
-*.task {
+*.task, *.todo, *.test, *.bug, *.req, *.target {
   background-color:#EEEEEE;
   padding: 1px;
   margin: 2px 2px 0px 0px;
 }
 
-*.taskDone,*.targetDone {
+*.p1, *.h1, *.fig1, *.task1, *.tr1, *.section1 {
+  background-color:#ffcccc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+*.p2, *.h2, *.fig2, *.task2, *.tr2, *.section2 {
+  background-color:#ccffcc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+*.p3, *.h3, *.fig3, *.task3, *.tr3, *.section3 {
+  background-color:#ccccff;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+*.section-done,*.htag-done,*.task-done,*.p-done,*.h-done {
   color:#AAAAAA;
   background-color:#EEEEEE;
   padding: 1px;
   margin: 2px 2px 0px 0px;
+/*  text-decoration:line-through; */
 }
 
-*.task1 {
-  background-color:#ffdddd;
-  padding: 1px;
-  margin: 2px 2px 0px 0px;
+/* 
+ */
+*.invalid {
+  text-decoration: line-through;
 }
 
-*.task2 {
-  background-color:#ddffdd;
-  padding: 1px;
-  margin: 2px 2px 0px 0px;
-}
-
-*.task3 {
-  background-color:#ddddff;
-  padding: 1px;
-  margin: 2px 2px 0px 0px;
-}
-
-*.target {
-  vertical-align: top;
-  background-color:#fffea1;
-  padding:1px;
-  margin: 2px 2px 0px 0px;
-}
-
-*.highlight {
+*.highlight-block {
   border-right-color:#ff4444;
   border-right-style: solid;
   border-right-width: 8px;
   padding-right: 5px;
+}
+
+*.highlight {
+  background-color:#88ff88;
 }
 
 /* text marker like styles
@@ -1690,7 +1731,23 @@ span.b {
 span.i {
   font-style:italic;
 }
+span.date {
+  font-style:italic;
+}
 
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777;
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
     </xsl:element>
 </xsl:template>
   <xsl:template match="meta|t|contact">

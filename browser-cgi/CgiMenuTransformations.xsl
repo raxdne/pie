@@ -9,6 +9,11 @@
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:element name="body">
+	<xsl:comment>
+	  str_path: <xsl:value-of select="$str_path"/>
+	  str_xpath: <xsl:value-of select="$str_xpath"/>
+	  str_tag: <xsl:value-of select="$str_tag"/>
+	</xsl:comment>
         <xsl:element name="h3">
           <xsl:value-of select="concat('Transform ','&quot;',$type,'&quot;',' into')"/>
         </xsl:element>
