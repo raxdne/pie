@@ -5,3 +5,6 @@
 #import("PieViews.csv")
 
 #import("TODO.txt")
+
+TAGS: GNU|Emacs|Freemind
+

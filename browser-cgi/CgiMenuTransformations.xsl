@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:import href="../xsl/Utils.xsl"/>
+  <xsl:import href="../xml/xsl/Utils.xsl"/>
   <xsl:variable name="type" select="''"/>
   <xsl:variable name="str_path" select="''"/>
   <xsl:variable name="str_xpath" select="'/*'"/>

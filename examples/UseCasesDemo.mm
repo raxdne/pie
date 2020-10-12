@@ -3,7 +3,6 @@
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
 <node CREATED="1427135077645" ID="ID_1781859160" MODIFIED="1428728744632" TEXT="Demo project">
 <attribute NAME="assignee" VALUE="memberB"/>
-<attribute NAME="impact" VALUE="2"/>
 <node CREATED="1427135146620" ID="ID_1189490269" MODIFIED="1427135154670" POSITION="right" TEXT="General">
 <node COLOR="#338800" CREATED="1427135157499" ID="ID_1614317616" MODIFIED="1427135896823" TEXT="UseCase &#x201e;Start Environment&#x201c;">
 <attribute NAME="impact" VALUE="1"/>

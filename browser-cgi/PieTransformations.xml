@@ -625,11 +625,12 @@
 	<xml>
 	  <xml>
 	    <xml xpath="yes">
-	      <pie xpath="XPATH" url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	      <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
 		<import name="PATH" locator="yes"/>
 	      </pie>
 	    </xml>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
@@ -652,6 +653,7 @@
 	      </import>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	</xml>
       </make>
@@ -674,6 +676,7 @@
 	      </import>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	</xml>
       </make>
@@ -694,6 +697,7 @@
 	      </import>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
@@ -726,6 +730,7 @@
 	      </import>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
@@ -747,6 +752,7 @@
 	      </import>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
@@ -779,6 +785,7 @@
 	      </import>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
@@ -828,7 +835,7 @@
 	      <import name="PATH" locator="yes" type="vcf"/>
 	    </pie>
 	  </xml>
-	  <xsl xpath="XPATH"/>
+	  <xpath select="XPATH"/>
 	</xml>
       </make>
     </transition>
@@ -851,7 +858,7 @@
 	    <col id="content" name="Content">
 	      <xml>
 		<xml xpath="yes">
-		  <pie xpath="XPATH" url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
+		  <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
 		    <import name="PATH" locator="yes"/>
 		  </pie>
 		</xml>
@@ -1054,7 +1061,7 @@
     <transition id="mm2mm">
       <h>mm2mm</h>
       <make>
-	<xsl xpath="XPATH"/>
+	<xpath select="XPATH"/>
 	<xsl name="mm_strip_folded.xsl"/>
 	<xsl name="mm_cleanup.xsl"/>
       </make>
@@ -1080,21 +1087,21 @@
     <transition id="odt2pie" valid="no">
       <h>odt2pie</h>
       <make>
-	<xsl xpath="XPATH"/>
+	<xpath select="XPATH"/>
 	<xsl name="odt2pie.xsl"/>
       </make>
     </transition>
     <transition id="ods2pie">
       <h>ods2pie</h>
       <make>
-	<xsl xpath="XPATH"/>
+	<xpath select="XPATH"/>
 	<xsl name="ods2pie.xsl"/>
       </make>
     </transition>
     <transition id="odp2pie">
       <h>odp2pie</h>
       <make>
-	<xsl xpath="XPATH"/>
+	<xpath select="XPATH"/>
 	<xsl name="odp2pie.xsl"/>
       </make>
     </transition>
