@@ -125,7 +125,7 @@
 	</xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:for-each select="section[h]">
+	<xsl:for-each select="pie|block|section[h]">
 	  <xsl:call-template name="TREELINE">
 	    <xsl:with-param name="str_prefix">
 	      <xsl:value-of select="$str_prefix"/>

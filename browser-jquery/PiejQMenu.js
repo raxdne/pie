@@ -501,7 +501,6 @@ function callbackContent(key, options) {
 	    $('#toc').css({'display': 'none'});
 	} else {
 	    $('#toc').css({'display': 'block'});
-	    $(window).scrollTop(0);
 	}
 	$(window).scrollTop(0);
     } else if (key == 'tags') {
@@ -559,6 +558,11 @@ function callbackContent(key, options) {
 	    urlParams.set('cxp','PiejQFormat');
 	}
 	urlParams.delete('hl');
+
+	if (urlParams.has('pattern')) {
+	    // URL processing stops at '#' char
+	    urlParams.set('pattern',urlParams.get('pattern').replace(/\#/g,'%23'));
+	}
 
 	var strQuery = urlParams.toString();
 	if (strQuery == '') {
