@@ -536,34 +536,40 @@ function callbackContent(key, options) {
 	    urlParams.delete('pattern');
 	    urlParams.set('cxp','PiejQDefault');
 	} else if (key == 'editor') {
+	    urlParams.delete('tag');
+	    urlParams.delete('xpath');
+	    urlParams.delete('pattern');
 	    urlParams.set('cxp','PiejQEditor');
-	} else if (key == 'calendar') {
-	    urlParams.set('cxp','PiejQCalendar');
-	    strHashNew = '#yesterday';
-	} else if (key == 'calendar_month') {
-	    //window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
-	} else if (key == 'todo') {
-	    urlParams.set('cxp','PiejQTodo');
-	} else if (key == 'todocalendar') {
-	    urlParams.set('cxp','PiejQTodoCalendar');
-	} else if (key == 'todomatrix') {
-	    urlParams.set('cxp','PiejQTodoMatrix');
-	} else if (key == 'todocontact') {
-	    urlParams.set('cxp','PiejQTodoContact');
-	} else if (key == 'treemap') {
-	    urlParams.set('cxp','PiejQTodoTreemap');
-	} else if (key == 'presentation') {
-	    urlParams.set('cxp','PresentationIndex');
 	} else {
-	    urlParams.set('cxp','PiejQFormat');
-	}
-	urlParams.delete('hl');
 
-	if (urlParams.has('pattern')) {
-	    // URL processing stops at '#' char
-	    urlParams.set('pattern',urlParams.get('pattern').replace(/\#/g,'%23'));
-	}
+	    if (key == 'calendar') {
+		urlParams.set('cxp','PiejQCalendar');
+		strHashNew = '#yesterday';
+	    } else if (key == 'calendar_month') {
+		//window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
+	    } else if (key == 'todo') {
+		urlParams.set('cxp','PiejQTodo');
+	    } else if (key == 'todocalendar') {
+		urlParams.set('cxp','PiejQTodoCalendar');
+	    } else if (key == 'todomatrix') {
+		urlParams.set('cxp','PiejQTodoMatrix');
+	    } else if (key == 'todocontact') {
+		urlParams.set('cxp','PiejQTodoContact');
+	    } else if (key == 'treemap') {
+		urlParams.set('cxp','PiejQTodoTreemap');
+	    } else if (key == 'presentation') {
+		urlParams.set('cxp','PresentationIndex');
+	    } else {
+		urlParams.set('cxp','PiejQFormat');
+	    }
+	    urlParams.delete('hl');
 
+	    if (urlParams.has('pattern')) {
+		// URL processing stops at '#' char
+		urlParams.set('pattern',urlParams.get('pattern').replace(/\#/g,'%23'));
+	    }
+	}
+	
 	var strQuery = urlParams.toString();
 	if (strQuery == '') {
 	    strUrlNew = window.location.pathname;
