@@ -86,7 +86,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:choose>
       <xsl:when test="name(parent::node()) = 'list'">
 	<!-- list item -->

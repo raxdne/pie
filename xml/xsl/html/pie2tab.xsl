@@ -127,7 +127,7 @@
   <xsl:template match="table">
     <xsl:copy-of select="*"/>
   </xsl:template>
-  <xsl:template match="fig|pre|vcard">
+  <xsl:template match="fig|pre">
     <!-- para -->
     <xsl:element name="tr">
       <xsl:element name="td"></xsl:element>
@@ -147,7 +147,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:if test="$flag_done or not(@done)">
       <!-- valid task element -->
       <xsl:element name="tr">

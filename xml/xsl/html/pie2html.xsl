@@ -24,7 +24,7 @@
   <!--  -->
   <xsl:variable name="flag_xpath" select="true()"/>
   <!--  -->
-  <xsl:variable name="str_write"  select="''"/>
+  <xsl:variable name="str_write" select="''"/>
   <!--  -->
   <xsl:variable name="length_link" select="-1"/>
   <!--  -->

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 -->
   <xsl:output method="xml" encoding="utf-8"/>
   <!--  -->
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:element name="{name()}">
       <!--  -->
       <xsl:variable name="nodeset_section_date" select="ancestor::section[@date]"/>

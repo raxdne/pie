@@ -142,11 +142,6 @@ table {
   border: 1px solid grey;
 }
 
-table.vcard {
-  margin: 5px 5px 5px 5px;
-  background-color:#ffffff;
-}
-
 table.unlined {
   background-color:#ffffff;
 }
@@ -258,11 +253,6 @@ th.marker {
   font-weight:bold;
 }
 
-div.contact {
- height: 150px;
-  writing-mode: bt-rl;
-}
-
 div.tag {
  margin: 3px 3px 3px 3px;
  text-align:right;
@@ -321,19 +311,10 @@ p {
   /* text-indent:0.1cm; */
  margin: 3px 2px 3px 1px;
 }
-.target {
-  margin-bottom:0px;
-  text-align:left;
-  background-color:#fffea1;
-}
 .abstract {
  font-style:italic;
   margin-bottom:0px;
   text-align:center;
-}
-.outlook {
- color:#666666;
- /*  text-decoration:line-through; */
 }
 
 li.hidden,p.hidden {

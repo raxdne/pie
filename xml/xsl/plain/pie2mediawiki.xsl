@@ -47,17 +47,9 @@
     <xsl:apply-templates select="p|list|pre"/>
   </xsl:template>
 
-  <xsl:template match="target">
-    <!--  -->
-    <xsl:value-of select="normalize-space(concat('Ziel: ',h))"/>
-    <xsl:value-of select="$newpar"/>
-  </xsl:template>
-
-
   <xsl:template match="list">
     <xsl:apply-templates/>
   </xsl:template>
-
 
   <xsl:template match="p">
     <xsl:choose>

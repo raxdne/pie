@@ -36,7 +36,7 @@
           <xsl:value-of select="count($ns_task) + count($ns_task[@impact &lt; 3]) + count($ns_task[@impact &lt; 2])"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="count(child::task) + count(child::target) + count(child::fig) + count(child::pre) + count(child::p) + count(child::list/descendant::p)"/>
+          <xsl:value-of select="count(child::task) + count(child::fig) + count(child::pre) + count(child::p) + count(child::list/descendant::p)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

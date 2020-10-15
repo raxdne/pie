@@ -14,7 +14,7 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="section|task|target">
+  <xsl:template match="section|task">
     <xsl:element name="li">
       <xsl:call-template name="ADDSTYLE">
         <xsl:with-param name="flag_background" select="false()"/>

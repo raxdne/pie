@@ -111,7 +111,7 @@
       </xsl:choose>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="task|_target">
+  <xsl:template match="task">
     <xsl:choose>
       <xsl:when test="name(parent::node()) = 'list'">
 	<!-- list item -->
@@ -172,116 +172,6 @@
 	  <xsl:value-of select="h"/>
 	</xsl:element>
       </xsl:if>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template match="_vcard">
-    <!-- vcard -->
-    <xsl:element name="table">
-      <xsl:attribute name="class">
-	<xsl:value-of select="name(.)"/>
-      </xsl:attribute>
-      <xsl:attribute name="border">
-	<xsl:text>0</xsl:text>
-      </xsl:attribute>
-      <xsl:attribute name="width">
-	<xsl:text>40%</xsl:text>
-      </xsl:attribute>
-      <xsl:attribute name="cellspacing">
-	<xsl:text>1</xsl:text>
-      </xsl:attribute>
-      <xsl:element name="tbody">
-	<xsl:element name="tr">
-	  <xsl:element name="th">
-	    <xsl:element name="a">
-	      <xsl:attribute name="name">
-		<xsl:value-of select="@id"/>
-	      </xsl:attribute>
-	      <xsl:if test="link">
-		<xsl:attribute name="href">
-		  <xsl:value-of select="link"/>
-		</xsl:attribute>
-	      </xsl:if>
-	      <xsl:value-of select="concat(name,' ',firstname)"/>
-	      <xsl:if test="title and not(title='')">
-		<xsl:value-of select="concat(', ',title)"/>
-	      </xsl:if>
-	      <xsl:value-of select="concat(' (',@id,')')"/>
-	    </xsl:element>
-	    <xsl:if test="@idref">
-	      <xsl:text>ref:</xsl:text>
-	      <xsl:element name="a">
-		<xsl:attribute name="href">
-		  <xsl:value-of select="concat('#',@idref)"/>
-		</xsl:attribute>
-		<xsl:value-of select="@idref"/>
-	      </xsl:element>
-	    </xsl:if>
-	  </xsl:element>
-	</xsl:element>
-	<xsl:element name="tr">
-	  <xsl:element name="td">
-	    <xsl:attribute name="align">
-	      <xsl:text>right</xsl:text>
-	    </xsl:attribute>
-	    <xsl:element name="a">
-	      <xsl:attribute name="href">
-		<xsl:value-of select="concat('mailto:',mail/private)"/>
-	      </xsl:attribute>
-	      <xsl:value-of select="mail/private"/>
-	    </xsl:element>
-	    <xsl:element name="a">
-	      <xsl:attribute name="href">
-		<xsl:value-of select="concat('mailto:',mail/work)"/>
-	      </xsl:attribute>
-	      <xsl:value-of select="mail/work"/>
-	    </xsl:element>
-	  </xsl:element>
-	</xsl:element>
-	<xsl:element name="tr">
-	  <xsl:element name="td">
-	    <xsl:value-of select="concat('Tel. ',phone/private)"/>
-	    <xsl:if test="phone/mobile">
-	      <xsl:value-of select="concat(', ',phone/mobile)"/>
-	    </xsl:if>
-	    <xsl:if test="phone/work">
-	      <xsl:value-of select="concat(', ',phone/work)"/>
-	    </xsl:if>
-	  </xsl:element>
-	</xsl:element>
-	<xsl:element name="tr">
-	  <xsl:element name="td">
-	    <xsl:element name="pre">
-	      <xsl:choose>
-		<xsl:when test="@gender='w'">
-		  <xsl:text>Frau</xsl:text>
-		</xsl:when>
-		<xsl:when test="@gender='m'">
-		  <xsl:text>Herrn</xsl:text>
-		</xsl:when>
-                <xsl:otherwise>
-                </xsl:otherwise>
-	      </xsl:choose>
-	      <xsl:if test="title and not(title='')">
-		<xsl:value-of select="concat(title,' ')"/>
-	      </xsl:if>
-	      <xsl:value-of select="concat(prefix,' ',firstname,' ',name,' ',additional,' ',suffix)"/>
-	      <xsl:element name="br"/>
-	      <xsl:value-of select="address/private"/>
-	      <xsl:element name="br"/>
-	      <xsl:value-of select="address/work"/>
-	    </xsl:element>
-	  </xsl:element>
-	</xsl:element>
-	<!--
-	    <xsl:if test="p or list or img">
-	    <xsl:element name="tr">
-            <xsl:element name="td">
-            <xsl:apply-templates select="p|list|img"/>
-            </xsl:element>
-	    </xsl:element>
-	    </xsl:if>
-	-->
-      </xsl:element>
     </xsl:element>
   </xsl:template>
   <xsl:template match="list">
@@ -1167,6 +1057,7 @@
 <xsl:template name="CREATESTYLE">
     <!-- insert "pie\html\pie.css" -->
     <xsl:element name="style">
+
 /* this is the CSS for txt2x: txt2x.css
 
   replace patterns:               draft
@@ -1310,11 +1201,6 @@ table {
   border: 1px solid grey;
 }
 
-table.vcard {
-  margin: 5px 5px 5px 5px;
-  background-color:#ffffff;
-}
-
 table.unlined {
   background-color:#ffffff;
 }
@@ -1426,11 +1312,6 @@ th.marker {
   font-weight:bold;
 }
 
-div.contact {
- height: 150px;
-  writing-mode: bt-rl;
-}
-
 div.tag {
  margin: 3px 3px 3px 3px;
  text-align:right;
@@ -1489,19 +1370,10 @@ p {
   /* text-indent:0.1cm; */
  margin: 3px 2px 3px 1px;
 }
-.target {
-  margin-bottom:0px;
-  text-align:left;
-  background-color:#fffea1;
-}
 .abstract {
  font-style:italic;
   margin-bottom:0px;
   text-align:center;
-}
-.outlook {
- color:#666666;
- /*  text-decoration:line-through; */
 }
 
 li.hidden,p.hidden {
@@ -1725,6 +1597,8 @@ blockquote > :first-child {
 blockquote > :last-child {
   margin-bottom: 0;
 }
+
+
     </xsl:element>
 </xsl:template>
   <xsl:template match="meta|t">

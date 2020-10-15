@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cxp="http://www.tenbusch.info/cxproc" version="1.0">
-  <!-- -->
-  <xsl:variable name="str_url" select="'$HeadURL: http://arrakis.fritz.box:8187/cxproc/trunk/contrib/pie/xsl/info2pie.xsl $'"/>
-  <xsl:variable name="str_revision" select="'$Rev: 2515 $'"/>
   <xsl:output method="xml"/>
   <xsl:template match="/">
     <xsl:element name="pie">
@@ -112,15 +109,24 @@
             <xsl:text/>
           </xsl:element>
           <xsl:element name="p">
-            <xsl:value-of select="concat('PIE (',$str_url,', ',$str_revision,')')"/>
+            <xsl:element name="link">
+              <xsl:attribute name="href">https://github.com/raxdne/pie</xsl:attribute>
+              <xsl:text>PIE</xsl:text>
+            </xsl:element>
           </xsl:element>
-        </xsl:element>
+	</xsl:element>
       </xsl:element>
       <xsl:for-each select="cxp:runtime">
         <xsl:if test="cxp:env[@name = 'SERVER_SOFTWARE' and not(@select = '')]">
           <xsl:element name="section">
             <xsl:element name="h">Web Server</xsl:element>
             <xsl:element name="list">
+              <xsl:element name="p">
+                <xsl:element name="link">
+                  <xsl:attribute name="href">?</xsl:attribute>
+		  <xsl:text>Runtime environment</xsl:text>
+		</xsl:element>
+              </xsl:element>
               <xsl:element name="p">
                 <xsl:value-of select="concat('System time at ',cxp:env[@name='SERVER_NAME']/@select,': ',cxp:date/@year,'-',cxp:date/@month,'-',cxp:date/@day,' ',cxp:date/@hour,':',cxp:date/@minute,':',cxp:date/@second)"/>
               </xsl:element>

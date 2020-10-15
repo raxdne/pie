@@ -29,7 +29,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 <!-- <xsl:when test="self::p"/> -->
       <xsl:when test="self::pre"/>
       <xsl:when test="self::list"/>
-      <xsl:when test="self::target"/>
       <xsl:when test="self::import"/>
       <xsl:when test="self::section[@state = 2]"/>
       <xsl:when test="self::section[($str_assignee = '' or count(descendant-or-self::section[attribute::assignee = $str_assignee]) &lt; 1) and count(descendant::task) &lt; 1]"/>

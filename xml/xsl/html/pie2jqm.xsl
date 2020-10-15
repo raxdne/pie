@@ -2,9 +2,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PieHtmlMobile.xsl"/>
   <!-- -->
-  <xsl:variable name="file_css" select="'pie.css'"/>
+  <xsl:variable name="file_css" select="''"/>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="''"/>
+
   <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="true()"/>
@@ -26,11 +27,16 @@
   <xsl:variable name="level_hidden" select="0"/>
   <!-- flag for captions of slides -->
   <xsl:variable name="flag_slidecap" select="true()"/>
-  <xsl:variable name="flag_llist" select="false()"/>
-  <xsl:variable name="flag_tags" select="false()"/>
-  <xsl:variable name="str_tag" select="''"/>
-  <xsl:variable name="str_url" select="''"/>
-  <xsl:variable name="toc_display" select="'none'"/>
+
+  <xsl:variable name="flag_llist"  select="false()"/>
+
+  <xsl:variable name="flag_tags"  select="false()"/>
+
+  <xsl:variable name="str_tag"  select="''"/>
+
+  <xsl:variable name="str_url"  select="''"/>
+
+  <xsl:variable name="toc_display"  select="'none'"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="'.'"/>
 

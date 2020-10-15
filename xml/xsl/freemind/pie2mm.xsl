@@ -94,7 +94,7 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:if test="$flag_p">
       <xsl:element name="node">
         <xsl:attribute name="TEXT">

@@ -69,7 +69,7 @@
   <xsl:template match="*[@valid='no']">
     <!-- ignore this elements -->
   </xsl:template>
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:choose>
       <xsl:when test="@done">
         <!-- ignore this elements -->

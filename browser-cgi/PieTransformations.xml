@@ -173,9 +173,6 @@
     <stelle id="text/html+todo" type="text/html">
       <h>HTML Todo layout</h>
     </stelle>
-    <stelle id="text/html+todo+contact" type="text/html">
-      <h>HTML Todo contact</h>
-    </stelle>
     <stelle id="text/html+project+contact" type="text/html">
       <h>HTML Project contact</h>
     </stelle>
@@ -477,34 +474,6 @@
       <h>pie2todo</h>
       <make>
 	<xsl name="TodoTable.xsl"/>
-      </make>
-    </transition>
-    <transition id="pie2todocontact" valid="no">
-      <h>pie2todocontact</h>
-      <make>
-	<xsl name="RemoveDoneElements.xsl"/>
-	<xsl name="TodoContactTable.xsl">
-	  <variable name="file_norm" select="'%CGIPATH%'"/>
-	  <variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQDefault&amp;tag='"/>
-	</xsl>
-      </make>
-    </transition>
-    <transition id="pie2projectcontact" valid="no">
-      <h>pie2projectcontact</h>
-      <make>
-	<xsl name="ContactProjects.xsl"/>
-      </make>
-    </transition>
-    <transition id="pie2todoeffort" valid="no">
-      <h>pie2todoeffort</h>
-      <make>
-	<xsl name="TodoEffortTable.xsl" />
-      </make>
-    </transition>
-    <transition id="pie2todoreport" valid="no">
-      <h>pie2todoreport</h>
-      <make>
-	<xsl name="TodoReportTable.xsl" />
       </make>
     </transition>
     <transition id="tablecalendar">
@@ -1078,7 +1047,7 @@
 	<xsl name="DocX2Pie.xsl"/>
       </make>
     </transition>
-    <transition id="odt2htmlYYY" valid="no">
+    <transition id="odt2html" valid="no">
       <h>odt2html</h>
       <make>
 	<xsl name="odt2html.xsl"/>
@@ -1175,7 +1144,6 @@
     <relation from="DocX2Pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.text" to="odt2html"/>
     <relation from="odt2html" to="text/html"/>
-    <relation from="application/vnd.oasis.opendocument.text" to="odt2html"/>
     <relation from="application/vnd.oasis.opendocument.text" to="odt2pie"/>
     <relation from="odt2pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.presentation" to="odp2pie"/>
@@ -1219,13 +1187,6 @@
     <relation from="mm2usecases" to="text/html+usecases"/>
     <relation from="pie2todo" to="text/html+todo"/>
     <relation from="application/pie+proc+xml" to="pie2todocontact"/>
-    <relation from="pie2todocontact" to="text/html+todo+contact" />
-    <relation from="application/pie+proc+xml" to="pie2projectcontact"/>
-    <relation from="pie2projectcontact" to="text/html+project+contact" />
-    <relation from="application/pie+proc+xml" to="pie2todoeffort" />
-    <relation from="pie2todoeffort" to="text/html+todo+effort" />
-    <relation from="application/pie+proc+xml" to="pie2todoreport" />
-    <relation from="pie2todoreport" to="text/html+todo+report" />
     <relation from="application/pie+xml" to="pie2tag" />
     <relation from="pie2tag" to="text/html+tag" />
     <relation from="application/pie+proc+xml" to="pie2psp" />

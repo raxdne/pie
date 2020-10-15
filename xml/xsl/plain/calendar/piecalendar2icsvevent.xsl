@@ -17,7 +17,7 @@ PRODID:-//CXPROC PIE Calendar//DE
     <xsl:text>END:VCALENDAR
 </xsl:text>
   </xsl:template>
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:text>
 BEGIN:VEVENT
 CLASS:PUBLIC

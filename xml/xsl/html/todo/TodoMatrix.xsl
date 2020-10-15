@@ -162,7 +162,7 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="task|target">
+  <xsl:template match="task">
     <xsl:call-template name="TASK">
       <xsl:with-param name="flag_line" select="true()"/>
       <xsl:with-param name="flag_ancestor" select="true()"/>
