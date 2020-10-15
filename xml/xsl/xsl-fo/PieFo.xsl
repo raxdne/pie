@@ -91,11 +91,6 @@
             </xsl:otherwise>
           </xsl:choose>
           <xsl:value-of select="h"/>
-          <xsl:for-each select="contact">
-            <!--  -->
-            <xsl:value-of select="concat(@idref,' ')"/>
-          </xsl:for-each>
-          <!-- <xsl:text>&#10004;</xsl:text> -->
         </xsl:element>
       </xsl:if>
       <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
@@ -337,7 +332,7 @@
   <xsl:template match="*[@valid='no']">
     <!-- ignore this elements -->
   </xsl:template>
-  <xsl:template match="meta|t|tag|contact">
+  <xsl:template match="meta|t|tag">
     <!-- ignore this elements -->
   </xsl:template>
 </xsl:stylesheet>

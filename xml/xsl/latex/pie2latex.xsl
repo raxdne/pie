@@ -5,9 +5,9 @@
 
   <xsl:import href="PieLatex.xsl"/>
 
-  <xsl:variable name="file_css" select="'file:///H:/opt/cxproc/contrib/pie/html/pie.css'"/>
+  <xsl:variable name="file_css" select="''"/>
 <!-- file:///H:/opt/cxproc/contrib/pie/html/ -->
-  <xsl:variable name="file_ref" select="'../../tmp/TodoContactTable.html'"/>
+  <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_tree" select="false()"/>
   <!--  -->

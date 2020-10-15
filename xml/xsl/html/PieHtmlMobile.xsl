@@ -88,7 +88,7 @@
           <xsl:call-template name="DATESTRING"/>
           <xsl:text> / </xsl:text>
           <xsl:value-of select="@effort"/>
-          <xsl:for-each select="contact">
+          <xsl:for-each select="htag">
             <xsl:text> / </xsl:text>
             <xsl:value-of select="@idref"/>
           </xsl:for-each>

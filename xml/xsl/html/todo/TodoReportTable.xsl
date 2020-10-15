@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
   <xsl:import href="../PieHtml.xsl" />
   <xsl:variable name="dir_icons" select="'../html/icons'" />
   <xsl:variable name="flag_tips" select="true()" />
-  <xsl:variable name="file_css" select="'/html/pie.css'" />
-  <xsl:variable name="file_ref" select="'TodoContactTable.html'" />
+  <xsl:variable name="file_css" select="''" />
+  <xsl:variable name="file_ref" select="''" />
   <xsl:output method="html" encoding="UTF-8" />
   <xsl:include href="../../Utils.xsl" />
   <xsl:template match="/">
@@ -69,7 +69,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                   <xsl:apply-templates select="h" />
                 </xsl:element>
                 <xsl:element name="td">
-                  <xsl:for-each select="contact">
+                  <xsl:for-each select="htag">
                     <xsl:value-of select="concat(translate(@idref,'_-','  '),'; ')" />
                   </xsl:for-each>
                 </xsl:element>

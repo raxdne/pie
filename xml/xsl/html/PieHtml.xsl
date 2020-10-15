@@ -36,7 +36,7 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="tag|contact">
+  <xsl:template match="tag">
     <xsl:element name="div">
       <xsl:attribute name="class">
         <xsl:value-of select="name()"/>
@@ -1073,7 +1073,6 @@
     <!-- callable for task element -->
     <xsl:param name="flag_line" select="false()"/>
     <xsl:param name="flag_ancestor" select="false()"/>
-    <xsl:param name="flag_contact" select="true()"/>
     <xsl:element name="div">
       <xsl:call-template name="CLASSATRIBUTE"/>
       <xsl:call-template name="ADDSTYLE"/>
@@ -1137,18 +1136,10 @@
 	</xsl:if>
 	<!--  -->
 	<xsl:choose>
-	  <xsl:when test="not($flag_contact)"/>
 	  <xsl:when test="$flag_line">
-	    <xsl:for-each select="contact|tag">
+	    <xsl:for-each select="tag">
 	      <xsl:variable name="str">
-		<xsl:choose>
-		  <xsl:when test="self::contact">
-		    <xsl:value-of select="translate(@idref,'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ','abcdefghijklmnopqrstuvwxyzäöü')"/>
-		  </xsl:when>
-		  <xsl:otherwise>
-		    <xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ','abcdefghijklmnopqrstuvwxyzäöü')"/>
-		  </xsl:otherwise>
-		</xsl:choose>
+		<xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ','abcdefghijklmnopqrstuvwxyzäöü')"/>
 	      </xsl:variable>
 	      <xsl:text> / </xsl:text>
 	      <xsl:element name="a">
@@ -1163,22 +1154,8 @@
 	  <xsl:when test="count(child::*[not(name()='h')]) &gt; 0">
 	    <xsl:element name="div">
 	      <xsl:attribute name="style">margin: 5px 5px 5px 15px;</xsl:attribute>
-	      <xsl:if test="contact">
-		<xsl:for-each select="contact[child::*]">
-		  <xsl:element name="div">
-		    <xsl:attribute name="class">tag</xsl:attribute>
-		    <xsl:element name="a">
-		      <xsl:attribute name="href">
-			<xsl:value-of select="concat($file_ref,@idref)"/>
-		      </xsl:attribute>
-		      <xsl:value-of select="@idref"/>
-		    </xsl:element>
-		  </xsl:element>
-		  <xsl:apply-templates select="p|list|pre|text()"/>
-		</xsl:for-each>
-	      </xsl:if>
 	      <!--  -->
-	      <xsl:apply-templates select="*[not(name()='contact') and not(name()='h')]"/>
+	      <xsl:apply-templates select="*[not(name()='h')]"/>
 	    </xsl:element>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -1750,7 +1727,7 @@ blockquote > :last-child {
 }
     </xsl:element>
 </xsl:template>
-  <xsl:template match="meta|t|contact">
+  <xsl:template match="meta|t">
     <!-- ignore this elements -->
   </xsl:template>
 </xsl:stylesheet>

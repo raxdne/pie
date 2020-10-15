@@ -12,6 +12,10 @@
 </xsl:text>
 </xsl:variable>
 
+  <xsl:template match="processing-instruction('tag-regexp')">
+    <xsl:value-of select="concat('TAGS: ',.,$newpar)"/>
+  </xsl:template>
+
   <xsl:template match="hr">
     <!-- para -->
         <xsl:text>____</xsl:text>
@@ -152,7 +156,7 @@
 
   <xsl:template name="FORMATPREFIX">
     <xsl:choose>
-      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'contact' or name(parent::*) = 'task'">
+      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'p' or name(parent::*) = 'task'">
         <!-- list item -->
         <xsl:choose>
           <xsl:when test="parent::list/attribute::enum = 'yes'">
@@ -164,10 +168,6 @@
           <xsl:when test="parent::task">
             <!-- eumerated item -->
             <xsl:text>-</xsl:text>
-          </xsl:when>
-          <xsl:when test="parent::contact">
-            <!-- eumerated item -->
-            <xsl:text>--</xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <!-- list item -->

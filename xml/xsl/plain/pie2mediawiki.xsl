@@ -44,23 +44,13 @@
     <xsl:call-template name="TIMESTRING"/>
     <xsl:value-of select="normalize-space(h)"/>
     <xsl:value-of select="$newpar"/>
-    <xsl:apply-templates select="p|list|pre|contact"/>
+    <xsl:apply-templates select="p|list|pre"/>
   </xsl:template>
 
   <xsl:template match="target">
     <!--  -->
     <xsl:value-of select="normalize-space(concat('Ziel: ',h))"/>
     <xsl:value-of select="$newpar"/>
-  </xsl:template>
-
-
-  <xsl:template match="contact">
-    <!--  -->
-    <xsl:if test="child::*">
-      <xsl:value-of select="concat(@idref,':')"/>
-      <xsl:value-of select="$newpar"/>
-      <xsl:apply-templates select="p|list|pre"/>
-    </xsl:if>
   </xsl:template>
 
 
@@ -71,7 +61,7 @@
 
   <xsl:template match="p">
     <xsl:choose>
-      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'contact' or name(parent::*) = 'task'">
+      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'task'">
         <!-- list item -->
         <xsl:choose>
           <xsl:when test="parent::list/attribute::enum = 'yes'">
@@ -80,7 +70,7 @@
               <xsl:text>#</xsl:text>
             </xsl:for-each>
           </xsl:when>
-          <xsl:when test="parent::contact or parent::task">
+          <xsl:when test="parent::task">
             <!-- eumerated item -->
             <xsl:text>*</xsl:text>
           </xsl:when>

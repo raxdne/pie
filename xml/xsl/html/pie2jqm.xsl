@@ -5,7 +5,7 @@
   <xsl:variable name="file_css" select="'pie.css'"/>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="''"/>
-  <xsl:variable name="file_ref" select="'TodoContactTable.html'"/>
+  <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="true()"/>
   <!--  -->

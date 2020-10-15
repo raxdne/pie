@@ -5,7 +5,7 @@
   <xsl:variable name="file_css" select="'news.css'"/>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="''"/>
-  <xsl:variable name="file_ref" select="'../../tmp/TodoContactTable.html'"/>
+  <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="false()"/>
   <!--  -->

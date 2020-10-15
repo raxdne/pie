@@ -179,7 +179,7 @@
 	  </xsl:if>
         </xsl:element>
         <xsl:element name="td">
-          <xsl:for-each select="child::contact[@idref]">
+          <xsl:for-each select="child::htag">
             <xsl:if test="position() &gt; 1">
               <xsl:text>; </xsl:text>
             </xsl:if>

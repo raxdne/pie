@@ -39,14 +39,6 @@
     <xsl:value-of select="normalize-space(concat('Ziel: ',h))"/>
     <xsl:value-of select="$newpar"/>
   </xsl:template>
-  <xsl:template match="contact">
-    <!--  -->
-    <xsl:if test="child::*">
-      <xsl:value-of select="concat(@idref,':')"/>
-      <xsl:value-of select="$newpar"/>
-      <xsl:apply-templates select="p|list|pre"/>
-    </xsl:if>
-  </xsl:template>
   <xsl:template match="list">
     <xsl:apply-templates/>
     <xsl:if test="not(parent::list)">
@@ -55,7 +47,7 @@
   </xsl:template>
   <xsl:template match="p">
     <xsl:choose>
-      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'contact' or name(parent::*) = 'task'">
+      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'task'">
         <!-- list item -->
         <xsl:if test="count(ancestor::list) &gt; 1">
           <xsl:for-each select="ancestor::list[position() &gt; 1]">
@@ -128,7 +120,7 @@
 
   <xsl:template name="FORMATPREFIX">
     <xsl:choose>
-      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'contact' or name(parent::*) = 'task'">
+      <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'task'">
         <!-- list item -->
         <xsl:choose>
           <xsl:when test="parent::list/attribute::enum = 'yes'">
@@ -140,10 +132,6 @@
           <xsl:when test="parent::task">
             <!-- eumerated item -->
             <xsl:text>-</xsl:text>
-          </xsl:when>
-          <xsl:when test="parent::contact">
-            <!-- eumerated item -->
-            <xsl:text>--</xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <!-- list item -->

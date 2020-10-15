@@ -146,38 +146,7 @@
             </xsl:choose>
           </xsl:attribute>
         </xsl:element>
-        <xsl:for-each select="child::contactYYY[child::*]">
-          <xsl:element name="node">
-            <xsl:attribute name="TEXT">
-              <xsl:value-of select="@idref"/>
-            </xsl:attribute>
-            <xsl:element name="icon">
-              <xsl:attribute name="BUILTIN">
-                <xsl:text>male2</xsl:text>
-              </xsl:attribute>
-            </xsl:element>
-            <xsl:choose>
-              <xsl:when test="child::text()">
-		<xsl:element name="node">
-		  <xsl:attribute name="TEXT">
-		    <xsl:value-of select="normalize-space(*)"/>
-		  </xsl:attribute>
-		</xsl:element>
-              </xsl:when>
-              <xsl:otherwise>
-		<xsl:apply-templates/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:element>
-        </xsl:for-each>
-        <xsl:for-each select="contact/pYYY">
-          <xsl:element name="node">
-            <xsl:attribute name="TEXT">
-              <xsl:value-of select="normalize-space(.)"/>
-            </xsl:attribute>
-          </xsl:element>
-        </xsl:for-each>
-        <xsl:apply-templates select="child::*[not(name()='h') and not(name()='contact')]"/>
+        <xsl:apply-templates select="child::*[not(name()='h')]"/>
       </xsl:element>
     </xsl:if>
   </xsl:template>

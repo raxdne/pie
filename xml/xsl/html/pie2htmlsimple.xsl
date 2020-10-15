@@ -106,11 +106,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="contactYYY[child::*]">
-    <!-- list item -->
-    <xsl:copy-of select="*"/>
-  </xsl:template>
-
   <xsl:template match="list">
     <xsl:if test="child::*[not(@hidden)]">
       <xsl:choose>

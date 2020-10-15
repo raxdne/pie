@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 -->
   <xsl:import href="./PieHtml.xsl"/>
   <xsl:variable name="file_css" select="'pie.css'"/>
-  <xsl:variable name="file_ref" select="'TodoContactTable.html'"/>
+  <xsl:variable name="file_ref" select="''"/>
   <!--  -->
   <xsl:variable name="flag_form" select="true()"/>
   <xsl:variable name="level_hidden" select="0"/>
@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       </xsl:for-each>
     </xsl:element>
     <xsl:element name="hr"/>
-    <!-- Contact/Todo lists -->
+    <!-- Todo lists -->
       <xsl:for-each select="//t[generate-id(.) = generate-id(key('listtag',.))]">
       <xsl:sort select="."/>
       <xsl:element name="p">

@@ -4,7 +4,7 @@
   <xsl:variable name="file_css" select="''"/>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="''"/>
-  <xsl:variable name="file_ref" select="'TodoContactTable.html'"/>
+  <xsl:variable name="file_ref" select="''"/>
   <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
   <!--  -->

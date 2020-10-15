@@ -43,22 +43,18 @@
     <xsl:value-of select="$newpar"/>
     <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
   </xsl:template>
+  
   <xsl:template match="task">
-    <xsl:call-template name="FORMATPREFIX"/>
     <xsl:call-template name="FORMATTASK"/>
     <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
     <xsl:apply-templates select="*[not(name()='h')]"/>
   </xsl:template>
-  <xsl:template match="contact">
-    <!--  -->
-    <xsl:if test="child::*">
-      <xsl:value-of select="concat('- ',@idref,':')"/>
-      <xsl:value-of select="$newpar"/>
-      <xsl:apply-templates select="p|list|pre"/>
-    </xsl:if>
-  </xsl:template>
+
   <xsl:template match="list">
+    <xsl:if test="name(parent::*) = 'p'">
+      <xsl:value-of select="$newpar"/>
+    </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -68,6 +64,7 @@
     <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
   </xsl:template>
+  
   <xsl:template match="table">
     <xsl:text>#begin_of_csv
 </xsl:text>
