@@ -41,6 +41,12 @@
             </xsl:otherwise>
           </xsl:choose>
           <!-- text value -->
+          <xsl:element name="link">
+            <xsl:if test="properties/url/text">
+              <xsl:attribute name="href">
+              <xsl:value-of select="concat(' ',properties/url/text)"/>
+              </xsl:attribute>
+            </xsl:if>
            <xsl:choose>
             <xsl:when test="properties/summary/text">
               <xsl:value-of select="concat(' ',properties/summary/text)"/>
@@ -51,6 +57,7 @@
             <xsl:otherwise>
             </xsl:otherwise>
           </xsl:choose>
+         </xsl:element>
        </xsl:when>
         <xsl:otherwise>
           <!-- there is no time value -->
