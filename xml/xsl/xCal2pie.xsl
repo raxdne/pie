@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:output method="xml" version="1.0"/>
+  <xsl:variable name="int_offset" select="number(1)"/> <!-- TODO: handle different UTC timezones and DST 'iCalendar/vcalendar/properties/x-wr-timezone' -->
   <xsl:template match="iCalendar">
     <xsl:element name="pie">
       <xsl:apply-templates/>
@@ -9,8 +10,9 @@
   <xsl:template match="vevent">
     <xsl:element name="p">
       <xsl:variable name="str_date" select="substring-before(properties/dtstart/date-time,'T')"/>
-      <xsl:variable name="str_time" select="substring-after(properties/dtstart/date-time,'T')"/>
-      <xsl:choose>
+      <xsl:variable name="str_time_start" select="substring-after(properties/dtstart/date-time,'T')"/>
+      <xsl:variable name="str_time_end" select="substring-after(properties/dtend/date-time,'T')"/>
+     <xsl:choose>
         <xsl:when test="string-length($str_date) &gt; 0">
           <!-- there is a time value -->
           <xsl:choose>
@@ -27,17 +29,17 @@
           </xsl:choose>
           <!-- time value without zone -->
           <xsl:choose>
-            <xsl:when test="contains($str_time,'Z')">
+            <xsl:when test="contains($str_time_start,'Z')">
               <!-- date with UTC time, or absolute time -->
-              <xsl:value-of select="concat(substring($str_time,1,2)+2,'.',substring($str_time,3,2),'-',substring(substring-after(properties/dtend/date-time,'T'),1,2)+2,'.',substring(substring-after(properties/dtend/date-time,'T'),3,2))"/>
+              <xsl:value-of select="concat(number(substring($str_time_start,1,2)) + $int_offset,'.',substring($str_time_start,3,2),'-',number(substring($str_time_end,1,2)) + $int_offset,'.',substring($str_time_end,3,2))"/>
             </xsl:when>
             <xsl:when test="contains(properties/dtend/parameters/tzid,'W. Europe Standard Time')">
               <!--  -->
-              <xsl:value-of select="concat(substring($str_time,1,2),'.',substring($str_time,3,2),'-',substring(substring-after(properties/dtend/date-time,'T'),1,2),'.',substring(substring-after(properties/dtend/date-time,'T'),3,2))"/>
+              <xsl:value-of select="concat(substring($str_time_start,1,2),'.',substring($str_time_start,3,2),'-',substring($str_time_end,1,2),'.',substring($str_time_end,3,2))"/>
             </xsl:when>
             <!-- TODO: handling of other time zones, s. @tzid -->
             <xsl:otherwise>
-              <xsl:value-of select="concat(substring($str_time,1,2),'.',substring($str_time,3,2),'-',substring(substring-after(properties/dtend/date-time,'T'),1,2),'.',substring(substring-after(properties/dtend/date-time,'T'),3,2))"/>
+              <xsl:value-of select="concat(substring($str_time_start,1,2),'.',substring($str_time_start,3,2),'-',substring($str_time_end,1,2),'.',substring($str_time_end,3,2))"/>
             </xsl:otherwise>
           </xsl:choose>
           <!-- text value -->
