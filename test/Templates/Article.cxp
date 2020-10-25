@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+	<cxp:description anchor="bottom">Article Skeleton</cxp:description>
+	<cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+	<cxp:xhtml name="-">
+		<html>
+			<cxp:xhtml>
+				<cxp:xsl name="CgiPieUi.xsl">
+					<cxp:variable name="str_path" select="'%CGIPATH%'"/>
+					<cxp:variable name="flag_header" select="true()"/>
+				</cxp:xsl>
+			</cxp:xhtml>
+			<body>
+				<div id="ui">
+					<div id="content">
+						<cxp:xhtml>
+							<cxp:xml>
+								<pie>
+								<import>
+								* This is a Test
+								
+								** Sub section
+								
+								</import>
+									<import name="Empty.txt" />
+								</pie>
+							</cxp:xml>
+							<cxp:xsl name="pie2html.xsl">
+								<cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+								<cxp:variable name="file_ref" select="''"/>
+							</cxp:xsl>
+						</cxp:xhtml>
+						<p style="text-align:right">%TAGTIME%</p>
+					</div>
+				</div>
+			</body>
+		</html>
+	</cxp:xhtml>
+</cxp:make>
