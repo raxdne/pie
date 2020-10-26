@@ -2,8 +2,16 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:output method="xml" version="1.0"/>
   <xsl:variable name="int_offset" select="number(1)"/> <!-- TODO: handle different UTC timezones and DST 'iCalendar/vcalendar/properties/x-wr-timezone' -->
-  <xsl:template match="iCalendar">
+  <xsl:template match="/">
     <xsl:element name="pie">
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+  <xsl:template match="iCalendar">
+    <xsl:element name="block">
+      <xsl:comment>
+        <xsl:value-of select="parent::file/@name"/>
+      </xsl:comment>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
