@@ -24,7 +24,7 @@
               <cxp:xsl name="MergePie.xsl">
                 <cxp:variable name="dir_name" select="'%CGIPATH%'"/>
                 <cxp:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
-                <cxp:variable name="opt_cxp" select="'cxp=image&amp;frame=%CGIFRAME%&amp;path='"/>
+                <!-- <cxp:variable name="opt_cxp" select="'cxp=image&amp;frame=%CGIFRAME%&amp;path='"/> -->
               </cxp:xsl>
               <cxp:xsl name="pie2wallpaper.xsl">
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>

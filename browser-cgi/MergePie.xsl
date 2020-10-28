@@ -1,29 +1,42 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:include href="../xsl/freemind/mm2pie.xsl"/>
+
   <xsl:variable name="opt_cxp" select="''"/>
   <xsl:output method="xml" version="1.0"/>
-  <xsl:template match="/">
+
+  <xsl:template match="/pie">
     <xsl:element name="pie">
-      <xsl:apply-templates select="pie/*"/>
+      <xsl:apply-templates />
     </xsl:element>
   </xsl:template>
-  <xsl:template match="dir|pie">
-    <xsl:choose>
-      <xsl:when test="name()='dir' and child::file">
+
+  <xsl:template match="dir">
+    <xsl:element name="block">
+      <xsl:if test="child::file">
         <xsl:element name="section">
           <xsl:element name="h">
             <xsl:value-of select="@name"/>
           </xsl:element>
           <xsl:apply-templates/>
         </xsl:element>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates/>
-      </xsl:otherwise>
-    </xsl:choose>
+      </xsl:if>
+    </xsl:element>
   </xsl:template>
-  <xsl:template match="file[@type='text/plain' or starts-with(@type,'image')]">
+
+  <xsl:template match="file">
+    <xsl:element name="block">
+      <xsl:attribute name="context">
+        <xsl:value-of select="@name"/>
+      </xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="pie">
+    <xsl:copy-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="file[starts-with(@type,'image')]">
     <xsl:variable name="file_path">
       <xsl:for-each select="ancestor::dir">
         <xsl:if test="@prefix">
@@ -89,5 +102,5 @@
        </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="*"/>
+
 </xsl:stylesheet>

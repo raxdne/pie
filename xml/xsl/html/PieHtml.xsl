@@ -390,8 +390,10 @@
 	</xsl:choose>
       </xsl:attribute>
       <xsl:choose>
-	<xsl:when test="$str_link_prefix='' or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
-	  <!-- use @src -->
+	<xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
+	  <xsl:attribute name="src">
+	    <xsl:value-of select="@src"/>
+	  </xsl:attribute>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:attribute name="src">

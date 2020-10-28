@@ -2,6 +2,7 @@
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
   <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
+  <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
@@ -11,29 +12,31 @@
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
   <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
-  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
       <body>
-        <script type="text/javascript">$(document).ready(function() { $("#localTable").tablesorter(); } );</script> 
         <div id="ui">
           <div id="content">
             <cxp:xhtml>
-              <cxp:pie pattern="%CGITAG%" url="yes" tags="yes" figure="yes" offset="no" locator="yes" validation="yes">
-		<import type="cxp">
-		  <cxp:xml>
-                    <cxp:dir depth="%CGIDEPTH%" verbosity="5" urlencode="yes">
-                      <cxp:dir name="%CGIPATH%"/>
-                    </cxp:dir>
-		  </cxp:xml>
-		  <cxp:xsl name="MergePie.xsl">
-                    <cxp:variable name="dir_name" select="'%CGIPATH%'"/>
-                    <cxp:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
-                    <cxp:variable name="opt_cxp" select="'cxp=image&amp;frame=%CGIFRAME%&amp;path='"/>
-		  </cxp:xsl>
-		</import>
-	      </cxp:pie>
+	      <cxp:xml>
+		<pie pattern="%CGITAG%" url="yes" tags="yes" figure="yes" offset="no" locator="yes" validation="yes">
+		  <import type="cxp">
+		    <cxp:xml>
+		      <cxp:xml>
+			<cxp:dir depth="%CGIDEPTH%" verbosity="4" urlencode="yes" imatch="\.(txt|pie|md|csv|jpg|jpeg|png|gif)$">
+			  <cxp:dir name="%CGIPATH%"/>
+			</cxp:dir>
+		      </cxp:xml>
+		      <cxp:xsl name="MergePie.xsl">
+			<cxp:variable name="dir_name" select="'%CGIPATH%'"/>
+			<cxp:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
+			<!-- <cxp:variable name="opt_cxp" select="'cxp=image&amp;frame=%CGIFRAME%&amp;path='"/> -->
+		      </cxp:xsl>
+		    </cxp:xml>
+		  </import>
+		</pie>
+	      </cxp:xml>
               <cxp:xsl name="pie2html.xsl">
                 <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQDefault&amp;tag='"/>
                 <cxp:variable name="file_norm" select="'%CGIPATH%'"/>

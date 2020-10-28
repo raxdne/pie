@@ -94,7 +94,32 @@
       <xsl:attribute name="style">display:inline-block;margin:10px; padding:10px; vertical-align:middle;border:1px solid gray; background-color:#E0E0E0</xsl:attribute>
       <xsl:element name="div">
 	<xsl:attribute name="style">display:inline-block; padding:4px;</xsl:attribute>
-	<xsl:apply-templates select="img"/>
+	<xsl:for-each select="img">
+	  <xsl:variable name="str_href">
+	    <xsl:choose>
+	      <xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
+		<xsl:value-of select="@src"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:variable>
+	  <xsl:element name="a">
+	    <xsl:attribute name="href">
+	      <xsl:value-of select="$str_href"/>
+	    </xsl:attribute>
+	    <xsl:element name="img">
+	      <xsl:copy-of select="@*"/>
+	      <xsl:attribute name="width">
+		<xsl:value-of select="200"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="src">
+		<xsl:value-of select="$str_href"/>
+	      </xsl:attribute>
+	    </xsl:element>
+	  </xsl:element>
+	</xsl:for-each>
       </xsl:element>
       <xsl:element name="div">
       <xsl:attribute name="style">display:inline-block; width:20em; padding:4px; vertical-align:top</xsl:attribute>

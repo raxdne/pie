@@ -14,7 +14,7 @@
           <div id="content">
             <cxp:xhtml>
               <cxp:xml>
-		<cxp:dir depth="%CGIDEPTH%" verbosity="3" urlencode="yes">
+		<cxp:dir depth="%CGIDEPTH%" verbosity="2" urlencode="yes">
 		  <cxp:dir name="%CGIPATH%"/>
 		</cxp:dir>
               </cxp:xml>

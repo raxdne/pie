@@ -591,7 +591,7 @@
     <xsl:element name="a">
       <xsl:attribute name="target"><xsl:value-of select="$str_frame"/></xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="concat('?path=',$dir_path,'&amp;','cxp=PiejQDirVerbose')"/>
+        <xsl:value-of select="concat('?path=',$dir_path,'&amp;','cxp=PiejQDirVerbose','&amp;','depth=1')"/>
       </xsl:attribute>
       <xsl:attribute name="title">
         <xsl:value-of select="'Verbose Dir'"/>
