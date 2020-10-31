@@ -1,4 +1,3 @@
-TAGS: PIE|Emacs|CGI|text|XML|XSLT
 
 # Personal Information Environment (PIE)
 
