@@ -16,7 +16,7 @@
       <body>
         <cxp:xhtml>
           <cxp:xml>
-            <cxp:dir depth="1" verbosity="2" urlencode="yes">
+            <cxp:dir depth="1" verbosity="3" urlencode="yes">
               <cxp:dir name="%CGIPATH%"/>
             </cxp:dir>
           </cxp:xml>

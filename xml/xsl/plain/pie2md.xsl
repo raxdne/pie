@@ -2,62 +2,51 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PiePlain.xsl"/>
   <xsl:output method="text" encoding="UTF-8"/>
-  <xsl:variable name="str_tagtime" select="''"/>
-  <xsl:template match="/">
-    <xsl:apply-templates/>
-  </xsl:template>
-  <xsl:template match="pie">
-    <xsl:call-template name="TAGTIME">
-      <xsl:with-param name="str_tagtime" select="concat('; ',$str_tagtime,$newpar)"/>
-    </xsl:call-template>
-    <xsl:apply-templates/>
-  </xsl:template>
-  <xsl:template match="h">
-    <xsl:if test="parent::section">
-    <xsl:for-each select="ancestor::section">
+  
+  <xsl:template match="section">
+    <xsl:value-of select="$newline"/>
+    <xsl:for-each select="ancestor-or-self::section">
       <xsl:text>#</xsl:text>
     </xsl:for-each>
     <xsl:text> </xsl:text>
-    </xsl:if>
-    <xsl:apply-templates/>
-  </xsl:template>
-  <xsl:template match="section">
-    <xsl:apply-templates select="h"/>
+    <xsl:apply-templates select="child::h/child::*|child::h/child::text()"/>
     <xsl:call-template name="FORMATIMPACT"/>
-    <xsl:value-of select="$newpar"/>
+    <xsl:value-of select="$newline"/>
     <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
   </xsl:template>
+
   <xsl:template match="task">
-    <xsl:call-template name="FORMATPREFIX"/>
+    <xsl:value-of select="$newline"/>
     <xsl:call-template name="FORMATTASK"/>
     <xsl:call-template name="FORMATIMPACT"/>
-    <xsl:value-of select="$newpar"/>
+    <xsl:value-of select="$newline"/>
     <xsl:apply-templates select="*[not(name()='h')]"/>
   </xsl:template>
-  <xsl:template match="target">
-    <!--  -->
-    <xsl:value-of select="normalize-space(concat('Ziel: ',h))"/>
-    <xsl:value-of select="$newpar"/>
-  </xsl:template>
+
   <xsl:template match="list">
+    <xsl:choose>
+      <xsl:when test="parent::list">
+      </xsl:when>
+      <xsl:when test="parent::p">
+	<xsl:value-of select="$newline"/>
+      </xsl:when>
+      <xsl:otherwise>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates/>
-    <xsl:if test="not(parent::list)">
-      <xsl:value-of select="$newline"/>
-    </xsl:if>
+    <xsl:value-of select="$newline"/>
   </xsl:template>
+
   <xsl:template match="p">
     <xsl:choose>
       <xsl:when test="name(parent::*) = 'list' or name(parent::*) = 'task'">
-        <!-- list item -->
-        <xsl:if test="count(ancestor::list) &gt; 1">
-          <xsl:for-each select="ancestor::list[position() &gt; 1]">
-            <xsl:if test="attribute::enum = 'yes'">
-	      <!-- eumerated -->
-	      <xsl:text> </xsl:text>
-	    </xsl:if>
-	    <xsl:text>  </xsl:text>
-          </xsl:for-each>
-	</xsl:if>
+        <xsl:for-each select="ancestor::list[position() &gt; 1]">
+          <xsl:if test="attribute::enum = 'yes'">
+	    <!-- eumerated -->
+	    <xsl:text> </xsl:text>
+	  </xsl:if>
+	  <xsl:text>  </xsl:text>
+        </xsl:for-each>
         <xsl:choose>
           <xsl:when test="parent::list/attribute::enum = 'yes'">
             <!-- eumerated -->
@@ -69,17 +58,19 @@
         </xsl:choose>
         <xsl:text> </xsl:text>
 	<xsl:apply-templates/>
-    <xsl:call-template name="FORMATIMPACT"/>
+	<xsl:call-template name="FORMATIMPACT"/>
 	<xsl:value-of select="$newline"/>
       </xsl:when>
       <xsl:otherwise>
+	<xsl:value-of select="$newline"/>
 	<xsl:apply-templates/>
-    <xsl:call-template name="FORMATIMPACT"/>
-	<xsl:value-of select="$newpar"/>
+	<xsl:call-template name="FORMATIMPACT"/>
+	<xsl:value-of select="$newline"/>
       </xsl:otherwise>
     </xsl:choose>
     <!-- para -->
   </xsl:template>
+  
   <xsl:template match="pre">
     <xsl:call-template name="PREBLOCK">
       <xsl:with-param name="StringToTransform">
@@ -88,10 +79,7 @@
     </xsl:call-template>
     <xsl:value-of select="$newpar"/>
   </xsl:template>
-  <xsl:template match="tag|t">
-    <!-- ignore normal text nodes -->
-  </xsl:template>
-
+  
   <xsl:template name="PREBLOCK">
     <xsl:param name="StringToTransform"/>
     <xsl:choose>
@@ -145,6 +133,10 @@
       <xsl:otherwise>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="t|tag|meta">
+    <!-- ignore normal text nodes -->
   </xsl:template>
 
 </xsl:stylesheet>

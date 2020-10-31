@@ -16,13 +16,6 @@
       <xsl:with-param name="str_tagtime" select="concat('; ',$str_tagtime,$newpar)"/>
     </xsl:call-template>
     <xsl:apply-templates/>
-    <xsl:if test="meta/t/t/YYY">
-    <xsl:text>TAGS: </xsl:text>
-    <xsl:for-each select="meta/t/t[@count]">
-      <xsl:sort order="ascending" data-type="text" select="translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
-      <xsl:value-of select="concat(text(),' ')"/>
-    </xsl:for-each>
-    </xsl:if>
   </xsl:template>
   <xsl:template match="h">
     <xsl:if test="parent::section">
@@ -34,6 +27,7 @@
     <xsl:call-template name="DATESTRING"/>
     <xsl:apply-templates/>
   </xsl:template>
+  
   <xsl:template match="section">
     <xsl:apply-templates select="h"/>
     <xsl:if test="attribute::assignee">
