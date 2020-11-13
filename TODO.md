@@ -3,6 +3,47 @@
 
 ## Web UI
 
+https://quabel.com Browser-Editor <https://quabel.com>
+
+impress.js: It’s a presentation tool inspired by the idea behind
+prezi.com
+
+Foundation CSS Framework
+
+<http://cssdeck.com>
+
+<https://sites.google.com/site/mynotex/>
+
+Rednotebook <http://rednotebook.sourceforge.net/>
+
+Rainlendar <http://www.rainlendar.net/>
+
+projectmallard.org XML <http://projectmallard.org/>: Mallard is an XML format designed to make topic-oriented help as simple as possible.
+
+Tasque <https://wiki.gnome.org/Apps/Tasque>: is a simple task management app
+
+"Remember the Milk" <http://www.rememberthemilk.com/>
+
+Record Editor CSV <http://record-editor.sourceforge.net/>: is a Programmers Data-file editor
+
+Comparison of JavaScript-based source code editors <http://en.wikipedia.org/wiki/Comparison_of_JavaScript-based_source_code_editors>
+
+webodf.org <http://webodf.org/>
+
+leoeditor.com <http://leoeditor.com/>
+
+The JasperReports Library is the world's most popular open source reporting engine. <http://community.jaspersoft.com/project/jasperreports-library>
+
+<http://xmlstar.sourceforge.net/>
+
+<http://htmltopdf.org/>
+
+<https://transpect.github.io/index.html>
+
+<https://www.deepl.com/api-reference.html>
+
+microformats <http://microformats.org/wiki/about>
+
 ### Calendar
 
 REQ: removal of days from calendar

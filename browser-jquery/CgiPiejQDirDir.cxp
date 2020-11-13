@@ -194,7 +194,7 @@
           <p>
 	  <input type="submit" value="Search"/> in '%CGIPATH%' for files containing 
 	  <input class="additor" name="needle" type="text" size="30" value=""/> files named 
-	  <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|cal|mm)$"/>
+	  <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|md|cal|csv|ods|odt|mm|mmap|xmmap)$"/>
           </p>
         </form>
 
