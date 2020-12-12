@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:import href="../../Utils.xsl"/>
   <xsl:import href="../PieHtml.xsl"/>
   <xsl:variable name="dir_icons" select="'../html/icons'"/>
   <xsl:variable name="flag_tips" select="true()"/>
@@ -9,7 +8,7 @@
   <xsl:variable name="file_ref" select="''"/>
   <xsl:variable name="file_cxp" select="''"/>
   <!--  -->
-  <xsl:variable name="node_cols" select="/calendar/meta/calendar/col[@id]"/>
+  <xsl:variable name="node_cols" select="/calendar/col[@id]"/>
   <xsl:variable name="id_cols" select="$node_cols/@id"/>
   <xsl:variable name="context" select="''"/>
   <!--  -->
@@ -109,6 +108,7 @@
           </xsl:element>
 	</xsl:element>
       </xsl:element>
+	  <!-- TODO: process year/col too -->
       <xsl:apply-templates select="month|week"/>
     </xsl:if>
   </xsl:template>
@@ -190,7 +190,7 @@
   <xsl:template match="day">
     <xsl:variable name="cw" select="@cw"/>
     <xsl:variable name="ow" select="number(@ow)"/>
-    <xsl:if test="col[contains($id_cols,@idref) and child::node()] or @today">
+    <xsl:if test="col[contains($id_cols,@idref) and child::node()]">
       <xsl:variable name="own" select="@own"/>
       <xsl:element name="tr">
         <!-- -->
@@ -232,7 +232,7 @@
       </xsl:when>
       <xsl:when test="contains('todo,done,target,test,bug,req',@class)">
 	<!-- task item -->
-	<xsl:element name="div">
+	<xsl:element name="span">
 	  <xsl:attribute name="class">context-menu-task</xsl:attribute>
 	  <xsl:attribute name="name">
 	    <xsl:value-of select="concat(':',@xpath)"/>
@@ -270,22 +270,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="section">
-    <xsl:element name="p">
-      <xsl:attribute name="class">project</xsl:attribute>
-      <xsl:choose>
-        <xsl:when test="@begin">
-          <xsl:text>&#x25BC;</xsl:text>
-        </xsl:when>
-        <xsl:when test="@end">
-          <xsl:text>&#x25B2;</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:value-of select="concat(@hstr,h)"/>
-    </xsl:element>
-  </xsl:template>
+
   <xsl:template name="LINE">
     <xsl:param name="pwd"/>
     <xsl:param name="class">summary</xsl:param>
@@ -331,11 +316,6 @@
         </xsl:apply-templates>
       </xsl:element>
     </xsl:for-each>
-  </xsl:template>
-  <xsl:template match="th">
-    <xsl:element name="b">
-      <xsl:apply-templates />
-    </xsl:element>
   </xsl:template>
   <xsl:template match="meta">
     <xsl:if test="count(error/*) &gt; 0">

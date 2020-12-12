@@ -199,18 +199,24 @@
         </form>
 
 <h3>Actions</h3>
-<ul class="ui-menu"><ul>
+<ul class="ui-menu">
+<ul>
+<!--
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=GetSnapshot">Download Zip directory from Server (Snapshot)</a></li>
 <li><a target="_blank"><i>Upload Zip directory to Server</i></a></li>
+-->
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=DiskUsage">DiskUsage</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirCalendar&amp;depth=10#yesterday">Calendar</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirSitemap">Sitemap</a></li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQMerge&amp;frame=800x800&amp;depth=1">Merge</a> all PIE files in current directory (*.pie, *.txt, *.mm, *.jpg, *.png).</li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=Wallpaper&amp;frame=600x600&amp;depth=1">Wallpaper of</a> all Image files in current directory.</li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQmDir">Mobile Layout</a> of current directory.</li>
+<!--
 <li><a target="_blank" href="?base=%CGIPATH%&amp;cxp=gallery">Show Gallery Directory</a></li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PlayList">Audio PlayList Directory</a></li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQmDirAudio">Audio Browser Directory</a></li>
+-->
+</ul>
 </ul>
 
 	<cxp:xhtml>

@@ -1,35 +1,32 @@
-<pie class="directory">
-  <file name="TestScriptPlain.txt" urlname="TestScriptPlain.txt" type="text/plain" ext="txt" size="581" owner="developer" mtime="1545153747" mtime2="2018-12-18T18:22:27" read="yes" write="no" execute="no" hidden="no">
-    <pie>
-      <section>
-        <h>Test <script>Date();</script></h>
-        <p>This is a Test: <script>5*5;</script> : postfix</p>
-        <p>This is a Test: <script>5*5;</script> sep <script>5*5*5;</script> : postfix</p>
-        <p>This is a Test: SCRIPT="5*5;" : postfix</p>
-        <p>This is an script error: <script>ABC;</script> : postfix</p>
-        <p>Embedded</p>
-        <p>Embedded</p>
-        <p>Embedded</p>
-      </section>
-      <import type="script">
+<?xml version="1.0"?>
+<pie>
+	<section>
+		<h>Test <script>Date();</script></h>
+		<p>This is a Test: <script>5*5;</script> : postfix</p>
+		<p>This is a Test: <script>5*5;</script> sep <script>5*5*5;</script> : postfix</p>
+		<p>This is a Test: SCRIPT="5*5;" : postfix</p>
+		<p>This is an script error: <script>ABC;</script> : postfix</p>
+		<p>Embedded</p>
+		<p>Embedded</p>
+		<p>Embedded</p>
+	</section>
+	<import type="script">
 
 var A = 'XYZ';
 
 A + A + A;
-</import>
-      <import type="script" eval="no">
+	</import>
+	<import type="script" eval="no">
 
 var A = 'XYZ';
 
 A + A + A;
-</import>
-      <import type="script">
+	</import>
+	<import type="script">
 
 var B = 128;
 
 B + B;
-</import>
-      <import type="script"/>
-    </pie>
-  </file>
+	</import>
+	<import type="script"/>
 </pie>
