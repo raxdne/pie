@@ -54,7 +54,12 @@
       <h>Text Project</h>
     </stelle>
     <stelle id="text/vcard" type="text/vcard" disposition="attachement;filename=cxproc.vcf">
-      <h>Text vcard</h>
+      <h>Text vCard</h>
+      <make>
+	<xml>
+	  <file verbosity="4" name="PATH"/>
+	</xml>
+      </make>
     </stelle>
     <stelle id="application/rss+xml" type="application/rss+xml">
       <h>XML RSS</h>
@@ -800,8 +805,15 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="no" pattern="TAG" figure="no" offset="yes" validation="yes">
-	      <import name="PATH" locator="yes" type="vcf"/>
+	    <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
+	      <import type="cxp">
+		<xml>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="vcf2pie.xsl"/>
+		</xml>
+	      </import>
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
@@ -1080,6 +1092,12 @@
 	<xsl name="xCal2pie.xsl"/>
       </make>
     </transition>
+    <transition id="vcf2pie">
+      <h>vcf2pie</h>
+      <make>
+	<xsl name="vcf2pie.xsl"/>
+      </make>
+    </transition>
     <transition id="exportcalendar">
       <h>exportcalendar</h>
       <make>
@@ -1152,6 +1170,8 @@
     <relation from="ods2pie" to="application/pie+proc+xml"/>
     <relation from="text/calendar" to="ics2pie"/>
     <relation from="ics2pie" to="application/pie+proc+xml"/>
+    <relation from="text/vcard" to="vcf2pie"/>
+    <relation from="vcf2pie" to="application/pie+proc+xml"/>
     <relation from="application/rss+xml" to="rss2pie"/>
     <relation from="rss2pie" to="application/pie+proc+xml"/>
     <!-- <relation from="application/pie+proc+xml" to="pie2rss"/> -->
@@ -1251,6 +1271,7 @@
     <!-- -->
     <relation from="text/csv" to="parseFile"/>
     <relation from="text/calendar" to="parseFile"/>
+    <relation from="text/vcard" to="parseFile"/>
     <relation from="text/plain" to="parseFile"/>
     <relation from="application/xmmap+xml" to="parseFile"/>
     <relation from="application/mmap+xml" to="parseFile"/>
