@@ -51,7 +51,7 @@
             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
           </xsl:if>
           <xsl:if test="not($str_tag = '')">
-            <xsl:value-of select="concat('&amp;','pattern=',$str_tag)"/>
+            <xsl:value-of select="concat('&amp;','pattern=',$str_tag)"/> <!-- BUG: handle str_tag containing '#' -->
           </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="h"/>
@@ -71,7 +71,7 @@
             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
           </xsl:if>
           <xsl:if test="not($str_tag = '')">
-            <xsl:value-of select="concat('&amp;','pattern=',$str_tag)"/>
+            <xsl:value-of select="concat('&amp;','pattern=',$str_tag)"/> <!-- BUG: handle str_tag containing '#' -->
           </xsl:if>
         </xsl:attribute>
 	<xsl:text> cxp</xsl:text>

@@ -373,15 +373,17 @@ function callbackLink(key, options) {
 //
 function callbackSection(key, options) {
 
+    var urlParams = new URLSearchParams(document.location.search);
+	
     var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
     //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
 
     var strXpath;
-    if (arrLocator[2] == undefined || arrLocator[2] == '') {
+    if (arrLocator[1] == undefined || arrLocator[1] == '') {
 	putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
 	//return;
     } else {
-	strXpath = arrLocator[2];
+	strXpath = arrLocator[1];
     }
 
     var strFile = document.strFile;
@@ -397,7 +399,17 @@ function callbackSection(key, options) {
     if (key == 'view') {
 	window.document.viewElement(strFile,strXpath);
     } else if (key == 'frame') {
-	window.document.topElement(arrLocator[2],true);
+	//window.document.topElement(arrLocator[2],true);
+	urlParams.delete('hl');
+	//urlParams.delete('xpath');
+	urlParams.set('xpath',strXpath);
+	urlParams.set('path',strFile);
+
+	var strQuery = '?' + urlParams.toString();
+
+	putsConsole('New URL: ' + strQuery);
+	window.location.assign(strQuery);
+
     } else if (key == 'hide') {
 	options.$trigger.parent().parent().parent().css({'display': 'none'});
     } else if (key == 'top') {
@@ -566,19 +578,14 @@ function callbackContent(key, options) {
 
 	    if (urlParams.has('pattern')) {
 		// URL processing stops at '#' char
-		urlParams.set('pattern',urlParams.get('pattern').replace(/\#/g,'%23'));
+		//urlParams.set('pattern',urlParams.get('pattern').replace(/\#/g,'%23'));
 	    }
 	}
 	
-	var strQuery = urlParams.toString();
-	if (strQuery == '') {
-	    strUrlNew = window.location.pathname;
-	} else {
-	    strUrlNew = window.location.pathname + '?' + strQuery;
-	}
+	var strQuery = '?' + urlParams.toString();
 
-	putsConsole('New URL: ' + strUrlNew + strHashNew);
-	window.location.assign(strUrlNew + strHashNew);
+	putsConsole('New URL: ' + strQuery + strHashNew);
+	window.location.assign(strQuery + strHashNew);
     }
 }
 		    

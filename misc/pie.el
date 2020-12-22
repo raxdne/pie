@@ -96,7 +96,7 @@
 (defvar pie-plain-imenu-generic-expression
   '(
     ("Sections" "^[*%]+.*" 0)
-    ("TODO"     "^TODO:.*"   0)
+    ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
     ("Remarks"  "^[;]+.*"  0)
     ("Markups"  "^[#]+.*"   0)
     ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
@@ -115,6 +115,10 @@
 					;("\\[[a-zA-Z0-9\,\-]*\\]" . font-lock-variable-name-face)
    ;; Todo
    ("TODO:" . font-lock-reference-face)
+   ("TEST:" . font-lock-reference-face)
+   ("BUG:" . font-lock-reference-face)
+   ("TARGET:" . font-lock-reference-face)
+   ("REQ:" . font-lock-reference-face)
    ("DONE:" . font-lock-reference-face)
    ;; Abb
    ("[Aa][Bb][Bb][\\.:]" . font-lock-reference-face)
@@ -169,21 +173,7 @@
   ;;
   (local-set-key    [S-f1] 'pie-plain-insert-task)
   ;;
-  (local-set-key [C-f1]
-		 (lambda () ""
-		   (interactive)
-		   (setq tmp-date (pie-iso-date-string)
-			 done-str (format "DONE: %04i%02i%02i "
-					  (nth 5 tmp-date)
-					  (nth 3 tmp-date)
-					  (nth 4 tmp-date)
-					  )
-			 )
-		   (move-beginning-of-line 1)
-		   (if (re-search-forward "TODO: " nil t)
-		       (replace-match "DONE: " nil nil))
-		   )
-		 )
+  (local-set-key [C-f1] 'pie-plain-toggle-todo)
   (if window-system
       (progn
 	;; font-lock
@@ -212,6 +202,33 @@
 ;  (run-mode-hooks 'text-mode-hook)
   )
 ;; (pie-plain-minor-mode)
+
+
+(defun pie-plain-toggle-todo ()
+  ""
+  (interactive)
+  (let ((point-origin (point)))
+					;(forward-paragraph 1)
+    (move-end-of-line 1)
+    (let ((point-end (point)))
+					;(forward-paragraph -1)
+      (move-beginning-of-line 1)
+      (let ((point-begin (point)))
+	(if (re-search-forward "TODO: " point-end t)
+	    (replace-match "DONE: " nil nil)
+	  (progn (goto-char point-begin)
+		 (if (re-search-forward "DONE: " point-end t)
+		     (replace-match "TODO: " nil nil)
+		   (progn (goto-char point-begin)
+			  (insert "\nTODO: ")))
+		 )
+	  )
+	)
+      )
+    (goto-char point-origin)
+    )
+  )
+;; (pie-plain-toggle-todo)
 
 
 (defun pie-plain-insert-task ()
@@ -721,6 +738,16 @@
 (define-key-after
   (lookup-key global-map [menu-bar file])
   [current-export-file] '("File export" . pie-export-file)
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-done] '("✔" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " ✔"))
+			  )
   t
   )
 

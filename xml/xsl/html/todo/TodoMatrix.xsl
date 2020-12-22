@@ -72,7 +72,7 @@
                 <xsl:value-of select="concat('overdue (&#x0394; &lt; ',$diff_delta_0,')')"/>
               </xsl:element>
               <xsl:call-template name="ROWURGENCY">
-                <xsl:with-param name="ns_row" select="$ns_date[@diff &lt; $diff_delta_0]"/>
+                <xsl:with-param name="ns_row" select="$ns_date[descendant::date/@diff &lt; $diff_delta_0]"/>
                 <xsl:with-param name="nr_row" select="2"/>
               </xsl:call-template>
             </xsl:element>
@@ -82,7 +82,7 @@
                 <xsl:value-of select="concat('high (&#x0394; &lt; ',$diff_delta_1,')')"/>
               </xsl:element>
               <xsl:call-template name="ROWURGENCY">
-                <xsl:with-param name="ns_row" select="$ns_date[not(@diff) or (@diff &gt;= $diff_delta_0 and @diff &lt; $diff_delta_1)]"/>
+                <xsl:with-param name="ns_row" select="$ns_date[not(descendant::date/@diff) or (descendant::date/@diff &gt;= $diff_delta_0 and descendant::date/@diff &lt; $diff_delta_1)]"/>
                 <xsl:with-param name="nr_row" select="1"/>
               </xsl:call-template>
             </xsl:element>
@@ -92,7 +92,7 @@
                 <xsl:value-of select="concat('medium (&#x0394; &gt;= ',$diff_delta_1,')')"/>
               </xsl:element>
               <xsl:call-template name="ROWURGENCY">
-                <xsl:with-param name="ns_row" select="$ns_date[not(@diff) or (@diff &gt;= $diff_delta_1)]"/>
+                <xsl:with-param name="ns_row" select="$ns_date[not(descendant::date/@diff) or (descendant::date/@diff &gt;= $diff_delta_1)]"/>
                 <xsl:with-param name="nr_row" select="2"/>
               </xsl:call-template>
             </xsl:element>

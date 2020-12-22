@@ -39,6 +39,10 @@
       <h>Text plain lines</h>
       <p>A simple line layout.</p>
     </stelle>
+    <stelle id="text/plain+journal" type="text/plain">
+      <h>Text plain Journal</h>
+      <p>A simple journal layout.</p>
+    </stelle>
     <stelle id="text/calendar" type="text/calendar" disposition="attachement;filename=cxproc.ics">
       <h>Text ICS Calendar</h>
       <make>
@@ -1043,7 +1047,7 @@
       <h>mm2mm</h>
       <make>
 	<xpath select="XPATH"/>
-	<xsl name="mm_strip_folded.xsl"/>
+	<xsl name="mm_strip_folded.xsl" valid="no"/>
 	<xsl name="mm_cleanup.xsl"/>
       </make>
     </transition>
@@ -1090,6 +1094,12 @@
       <h>ics2pie</h>
       <make>
 	<xsl name="xCal2pie.xsl"/>
+      </make>
+    </transition>
+    <transition id="ics2journal">
+      <h>ics2journal</h>
+      <make>
+	<xsl name="xCal2journal.xsl"/>
       </make>
     </transition>
     <transition id="vcf2pie">
@@ -1170,6 +1180,8 @@
     <relation from="ods2pie" to="application/pie+proc+xml"/>
     <relation from="text/calendar" to="ics2pie"/>
     <relation from="ics2pie" to="application/pie+proc+xml"/>
+    <relation from="text/calendar" to="ics2journal"/>
+    <relation from="ics2journal" to="text/plain+journal"/>
     <relation from="text/vcard" to="vcf2pie"/>
     <relation from="vcf2pie" to="application/pie+proc+xml"/>
     <relation from="application/rss+xml" to="rss2pie"/>

@@ -1173,12 +1173,18 @@ a.geb {
  background-color:#00FF00;
 }
 
-span.htag, span.htag-todo, span.htag-req, span.htag-target, span.htag-bug, span.htag-test {
+span.htag, span.htag-todo, span.htag-req, span.htag-bug, span.htag-test {
   border-radius: 5px;
   background: #ffffaa;
 }
 
+span.htag-target {
+  border-radius: 5px;
+  background: #ee4444;
+}
+
 span.htag-bug {
+  border-radius: 5px;
   background: #ff4000;
 }
 
@@ -1205,6 +1211,10 @@ table {
 
 table.unlined {
   background-color:#ffffff;
+}
+
+table.done {
+  color:#AAAAAA;
 }
 
 tr {
@@ -1601,7 +1611,7 @@ blockquote > :last-child {
 }
 
 
-    </xsl:element>
+   </xsl:element>
 </xsl:template>
   <xsl:template match="meta|t">
     <!-- ignore this elements -->

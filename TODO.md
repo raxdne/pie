@@ -3,6 +3,8 @@
 
 ## Web UI
 
+REQ: adapt RMB menu to current path context (e.g. no Editor on MS Office files)
+
 https://quabel.com Browser-Editor <https://quabel.com>
 
 impress.js: It’s a presentation tool inspired by the idea behind
@@ -46,6 +48,8 @@ microformats <http://microformats.org/wiki/about>
 
 ### Calendar
 
+BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`) ++
+
 REQ: removal of days from calendar
 
 Navigation with Tabs
@@ -55,6 +59,10 @@ TEST: [jQuery Calendar and Date Picker Plugins](http://www.tripwiremagazine.com/
 REQ: embedd calendar into pie text
 
 ### Text
+
+BUG: use of flocator/fxpath for “Scope” ++
+
+BUG: filtering using tags which contain '#' char
 
 REQ: structure as mindmap (3D.js)
 

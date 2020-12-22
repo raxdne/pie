@@ -311,6 +311,7 @@
                     <xsl:text>&#x1429;</xsl:text>
                   </xsl:if>
                 </xsl:element>
+                <xsl:value-of select="normalize-space(text())"/>
               </xsl:element>
             </xsl:for-each>
             <!-- <xsl:element name="hr"/> -->
@@ -441,7 +442,7 @@
                           <xsl:when test="cxp:make/cxp:description/@icon">
                             <xsl:element name="img">
                               <xsl:attribute name="src">
-                                <xsl:value-of select="concat('/pie/icons/',cxp:make/cxp:description/@icon)"/>
+                                <xsl:value-of select="cxp:make/cxp:description/@icon"/>
                               </xsl:attribute>
                               <xsl:attribute name="title">
                                 <xsl:value-of select="cxp:make/cxp:description"/>

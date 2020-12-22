@@ -65,7 +65,7 @@
     <xsl:apply-templates select="block|section|list|task|p"/>
   </xsl:template>
 
-  <xsl:template match="section[child::task and child::h]">
+  <xsl:template match="*[child::task]">
     <!-- separate header row -->
     <xsl:element name="tr">
       <xsl:element name="th">
@@ -76,6 +76,11 @@
 	      <xsl:text> :: </xsl:text>
 	    </xsl:if>
 	    <xsl:copy-of select="child::h/descendant::text()"/>
+	    <!-- BUG: text nodes from other child nodes are missed
+	    <xsl:apply-templates select="child::h[1]"/>
+	    <xsl:copy-of select="child::h[1]/descendant::text()"/>
+	    <xsl:value-of select="normalize-space(child::h[1]//text())"/>
+	     -->
 	  </xsl:for-each>
 	</xsl:element>
       </xsl:element>
