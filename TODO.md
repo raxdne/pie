@@ -1,78 +1,42 @@
 
 # TODO PIE
 
+## Documentation
+
+TODO: update Documentation #v1 ++
+
 ## Web UI
 
-REQ: adapt RMB menu to current path context (e.g. no Editor on MS Office files)
+REQ: adapt RMB menu to current path context (e.g. no Editor on MS Office files) #v1
 
-https://quabel.com Browser-Editor <https://quabel.com>
+TODO: update non-javascript UI (s. <browser-cgi>) #v1
+- tabs
 
-impress.js: It’s a presentation tool inspired by the idea behind
-prezi.com
+TODO: update to HTML5 standard
+- modern CSS
 
-Foundation CSS Framework
-
-<http://cssdeck.com>
-
-<https://sites.google.com/site/mynotex/>
-
-Rednotebook <http://rednotebook.sourceforge.net/>
-
-Rainlendar <http://www.rainlendar.net/>
-
-projectmallard.org XML <http://projectmallard.org/>: Mallard is an XML format designed to make topic-oriented help as simple as possible.
-
-Tasque <https://wiki.gnome.org/Apps/Tasque>: is a simple task management app
-
-"Remember the Milk" <http://www.rememberthemilk.com/>
-
-Record Editor CSV <http://record-editor.sourceforge.net/>: is a Programmers Data-file editor
-
-Comparison of JavaScript-based source code editors <http://en.wikipedia.org/wiki/Comparison_of_JavaScript-based_source_code_editors>
-
-webodf.org <http://webodf.org/>
-
-leoeditor.com <http://leoeditor.com/>
-
-The JasperReports Library is the world's most popular open source reporting engine. <http://community.jaspersoft.com/project/jasperreports-library>
-
-<http://xmlstar.sourceforge.net/>
-
-<http://htmltopdf.org/>
-
-<https://transpect.github.io/index.html>
-
-<https://www.deepl.com/api-reference.html>
-
-microformats <http://microformats.org/wiki/about>
+TODO: cleanup "browser-cgi\PieTransformations.xml"
 
 ### Calendar
 
-BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`) ++
+BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`)  #v1 ++
 
-REQ: removal of days from calendar
-
-Navigation with Tabs
-
-TEST: [jQuery Calendar and Date Picker Plugins](http://www.tripwiremagazine.com/2012/11/jquery-calendar-date-pickers.html)
-
-REQ: embedd calendar into pie text
+- remove `PieDate.js` and improve `PieCalendar.js`
 
 ### Text
 
-BUG: use of flocator/fxpath for “Scope” ++
+BUG: use of flocator/fxpath for “Scope” #v1 ++
 
-BUG: filtering using tags which contain '#' char
+BUG: filtering using tags which contain '#' char #v1 ++
 
-REQ: structure as mindmap (3D.js)
+REQ: structure as mindmap (3D.js) #v2
+- text visualization using Data-Driven Documents (tree etc)
 
 REQ: content statistics (chars, words, histogram)
 
 REQ: local images in fig.
 
-Tag cloud
-
-TEST: w3m + Emacs as HTML to text renderer
+REQ: Tag cloud ✔ 
 
 REQ: concurrent access (file locking?)
 
@@ -84,15 +48,21 @@ REQ: PDF generator
 
 REQ: upload of files
 
-REQ: search and search index (tipue?)
-- „?cxp=search&name=ABC.txt“
-- „?cxp=search&pattern=DEF“
+REQ: search and search index (tipue?)  #v1 ++
+- `?cxp=search&name=ABC.txt`
+- `?cxp=search&pattern=DEF`
 
 ### Editor
 
-REQ: syntax highlighting for PIE text in ACE
+REQ: syntax highlighting for PIE text in ACE  #v1 ++
 
-REQ: common shortcuts
+REQ: common shortcuts  #v1 ++
+
+[Comparison of JavaScript-based source code editors](http://en.wikipedia.org/wiki/Comparison_of_JavaScript-based_source_code_editors)
+
+[webodf](http://webodf.org/)
+
+[Leo](https://github.com/leo-editor) is a PIM, IDE and outliner that accelerates the work flow of programmers, authors and web designers.
 
 ### Database UI
 
@@ -114,9 +84,9 @@ Navigation
 
 ### Test
 
-TODO: 2020-10-30 add test files for
+TODO: 2020-10-30 add neutral test files for #v1
 -  .mmap and .xmmap
-- docx
+- docx (different compatibility levels)
 - ...
 
 plan
@@ -189,14 +159,6 @@ plan
 - "Archive"
 - "Database"
 
-TODO: update non-js cxp files of browser-cgi
-- tabs
-
-TODO: update to HTML5 standard
-- modern CSS
-
-TODO: cleanup "browser-cgi\PieTransformations.xml"
-
 ## Web runtime
 
 TODO: download commands for requiered modules (git or wget in build/prepare-cmake.sh ?)
@@ -227,7 +189,7 @@ TODO: create separate menue
 
 ## XSL-Code
 
-TODO: improv pie2latex.xsl
+TODO: improve pie2latex.xsl
 - slideshow
 - article
 
@@ -263,21 +225,7 @@ TODO: improve presentation layout
 
 REQ: Multilangual texts and mindmaps
 
-[sourceforge.net > Projects > Fo2odf](http://sourceforge.net/projects/fo2odf/)
-
-[opendocumentformat.org > Developers](http://www.opendocumentformat.org/developers/)
-
-[odf-converter.sourceforge.net](http://odf-converter.sourceforge.net/)
-
-[Compare http://johnmacfarlane.net/pandoc/](http://johnmacfarlane.net/pandoc/)
-- huge binary
-- layout-oriented
-
-["pie2s5.xsl" S5 (Simple Standards-Based Slide Show System)](https://en.wikipedia.org/wiki/S5_)
-
-[Semantic web](http://microformats.org/wiki/microformats2)
-
-<https://en.wikipedia.org/wiki/ReStructuredText>
+w3m + Emacs as HTML to text renderer
 
 Project drafting
 
@@ -295,3 +243,30 @@ Serial letter
 
 - XSLT with document(XML)
 
+## Inspiration
+
+[impress.js](https://github.com/impress/impress.js/): It’s a presentation tool inspired by the idea behind
+prezi.com #v2 ++
+
+[S5 -- Simple Standards-Based Slide Show System](https://meyerweb.com/eric/tools/s5/) ++
+
+[Rednotebook](http://rednotebook.sourceforge.net/) is a desktop journal
+
+[Rainlendar](http://www.rainlendar.net/)  is a customizable calendar application which stays out of your way
+but keeps all your important events and tasks always visible on your desktop. 
+
+[Mallard](http://projectmallard.org/) is a markup language that makes it easier for you to create better documentation.
+
+[Remember the Milk](http://www.rememberthemilk.com/)
+
+[Fo2odf](https://sourceforge.net/projects/fo2odf/)
+
+[opendocumentformat.org](http://www.opendocumentformat.org/developers/)
+
+[Pandoc](http://johnmacfarlane.net/pandoc/)
+- huge binary
+- layout-oriented
+
+[Semantic web](http://microformats.org/wiki/microformats2) ++
+
+[reStructuredText](https://en.wikipedia.org/wiki/ReStructuredText) (RST, ReST, or reST) is a file format for textual data used primarily in the Python programming language community for technical documentation.
