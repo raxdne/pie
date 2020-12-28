@@ -263,25 +263,20 @@ th.marker {
   font-weight:bold;
 }
 
-div.tag {
- margin: 3px 3px 3px 3px;
- text-align:right;
-}
-
 span.tag {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#FFFEA1;
 }
 span.tagGreen {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#88FF88;
 }
 span.tagYellow {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#FFFF88;
 }
 span.tagRed {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#FF8888;
 }
 

@@ -57,7 +57,7 @@ document.createUI = function () {
     //
     // https://stackoverflow.com/questions/16190455/how-to-detect-controlclick-in-javascript-from-an-onclick-div-attribute
     //
-    $('*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target').on('click change', function (event) {
+    $('*.tag,*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target').on('click change', function (event) {
 	var strElement = 't';
 	var strPattern;
 	var strValue;

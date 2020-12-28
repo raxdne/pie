@@ -28,31 +28,12 @@
     <xsl:call-template name="DATESTRING"/>
     <xsl:apply-templates/>
   </xsl:template>
-  <xsl:template match="htag">
+  <xsl:template match="htag|tag">
     <xsl:element name="span">
       <xsl:attribute name="class">
         <xsl:value-of select="name()"/>
       </xsl:attribute>
       <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template match="tag">
-    <xsl:element name="div">
-      <xsl:attribute name="class">
-        <xsl:value-of select="name()"/>
-      </xsl:attribute>
-      <xsl:element name="span">
-        <xsl:attribute name="class">
-          <xsl:value-of select="name()"/>
-        </xsl:attribute>
-        <xsl:copy-of select="@class"/>
-	<xsl:element name="a">
-	  <xsl:attribute name="href">
-	    <xsl:value-of select="concat('javascript:this.document.openTagged(','&quot;',.,'&quot;',')')"/>
-	  </xsl:attribute>
-          <xsl:value-of select="."/>
-	</xsl:element>
-      </xsl:element>
     </xsl:element>
   </xsl:template>
   <xsl:template match="section">
@@ -1324,25 +1305,20 @@ th.marker {
   font-weight:bold;
 }
 
-div.tag {
- margin: 3px 3px 3px 3px;
- text-align:right;
-}
-
 span.tag {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#FFFEA1;
 }
 span.tagGreen {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#88FF88;
 }
 span.tagYellow {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#FFFF88;
 }
 span.tagRed {
- margin: 3px 3px 3px 3px;
+ margin: 3px 3px 0px 0px;
  background-color:#FF8888;
 }
 
