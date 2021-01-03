@@ -51,7 +51,10 @@
             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
           </xsl:if>
           <xsl:if test="not($str_tag = '')">
-            <xsl:value-of select="concat('&amp;','pattern=',$str_tag)"/> <!-- BUG: handle str_tag containing '#' -->
+	    <xsl:text>&amp;pattern=</xsl:text>
+	    <xsl:call-template name="hashtag2code">
+	      <xsl:with-param name="StringToTransform" select="$str_tag"/>
+	    </xsl:call-template>
           </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="h"/>
@@ -71,13 +74,35 @@
             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
           </xsl:if>
           <xsl:if test="not($str_tag = '')">
-            <xsl:value-of select="concat('&amp;','pattern=',$str_tag)"/> <!-- BUG: handle str_tag containing '#' -->
+	    <xsl:text>&amp;pattern=</xsl:text>
+	    <xsl:call-template name="hashtag2code">
+	      <xsl:with-param name="StringToTransform" select="$str_tag"/>
+	    </xsl:call-template>
           </xsl:if>
         </xsl:attribute>
 	<xsl:text> cxp</xsl:text>
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template name="hashtag2code">
+    <xsl:param name="StringToTransform"/>
+    <xsl:choose>
+      <xsl:when test="contains($StringToTransform,'&#x23;')">
+	<xsl:value-of select="substring-before($StringToTransform,'&#x23;')"/>
+	<xsl:text>%23</xsl:text>
+	<xsl:call-template name="hashtag2code">
+          <xsl:with-param name="StringToTransform">
+            <xsl:value-of select="substring-after($StringToTransform,'&#x23;')"/>
+          </xsl:with-param>
+	</xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$StringToTransform"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="@*|node()">
   </xsl:template>
 </xsl:stylesheet>

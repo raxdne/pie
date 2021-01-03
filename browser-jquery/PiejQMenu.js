@@ -378,44 +378,45 @@ function callbackSection(key, options) {
     var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
     //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
 
-    var strXpath;
-    if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
-	//return;
-    } else {
-	strXpath = arrLocator[1];
-    }
-
-    var strFile = document.strFile;
-    if (arrLocator[0] == undefined || arrLocator[0] == '') {
-	putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
-    } else {
-	strFile = arrLocator[0];
-    }
-
     var m = "clicked: " + key;
     putsConsole(m); 
 
+    urlParams.delete('hl');
     if (key == 'view') {
-	window.document.viewElement(strFile,strXpath);
-    } else if (key == 'frame') {
-	//window.document.topElement(arrLocator[2],true);
-	urlParams.delete('hl');
-	//urlParams.delete('xpath');
-	urlParams.set('xpath',strXpath);
-	urlParams.set('path',strFile);
+	urlParams.delete('pattern');
+	urlParams.set('cxp','PiejQDefault');
+	window.location.assign('?' + urlParams.toString());
+    } else if (key == 'frame') { // scope
 
-	var strQuery = '?' + urlParams.toString();
+	if (arrLocator[0] == undefined || arrLocator[0] == '') {
+	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
+	} else {
+	    urlParams.set('path',arrLocator[0]);
+	}
 
-	putsConsole('New URL: ' + strQuery);
-	window.location.assign(strQuery);
+	if (arrLocator[1] == undefined || arrLocator[1] == '') {
+	    putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
+	} else {
+	    urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
+	}
 
+	urlParams.delete('pattern');
+	urlParams.set('cxp','PiejQDefault');
+	window.open('?' + urlParams.toString());
     } else if (key == 'hide') {
 	options.$trigger.parent().parent().parent().css({'display': 'none'});
     } else if (key == 'top') {
-	window.document.topElement(arrLocator[2],false);
+	
+	if (arrLocator[2] == undefined || arrLocator[2] == '') {
+	    putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
+	} else {
+	    urlParams.set('xpath',arrLocator[2]);
+	}
+	window.location.assign('?' + urlParams.toString());
+	
     } else if (key == 'up') {
-	window.document.upElement(arrLocator[2],false);
+	urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,''));
+	window.location.assign('?' + urlParams.toString());
     }
 }
 
@@ -426,75 +427,44 @@ function callbackSection(key, options) {
 //
 function _callbackTask(key, options) {
 
+    var urlParams = new URLSearchParams(document.location.search);
+	
     var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
     //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
 
-    var strXpath;
-    if (arrLocator[2] == undefined || arrLocator[2] == '') {
-	putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
-	//return;
-    } else {
-	strXpath = arrLocator[2];
-    }
-
-    var strFile = document.strFile;
     if (arrLocator[0] == undefined || arrLocator[0] == '') {
 	putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
     } else {
-	strFile = arrLocator[0];
+	urlParams.set('path',arrLocator[0]);
     }
-    
+
+    if (arrLocator[1] == undefined || arrLocator[1] == '') {
+	putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
+    } else {
+	urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
+    }
+
     var m = "clicked: " + key;
     putsConsole(m); 
-    
+
+    urlParams.delete('hl');
     if (key == 'view') {
-	window.document.viewElement(strFile,strXpath);
-    } else if (key == 'edit') {
-	var strURL = window.location.protocol + '//' + window.location.host + '/cxproc/exe?'
-	    + 'path=' + strFile + '&cxp=PiejQEditor' + '&xpath=' + strXpath + '&encoding=utf-8';
-	putsConsole( "New URL: " + strURL);
-	window.location.assign(strURL);
+	urlParams.delete('pattern');
+	urlParams.set('cxp','PiejQDefault');
+	urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,'')); // BUG: file internal XPath
+	window.location.assign('?' + urlParams.toString());
+    } else if (key == 'frame') {
+	urlParams.delete('pattern');
+	window.open('?' + urlParams.toString());
     } else if (key == 'hide') {
 	var classParentSelected = $('.context-menu-active').parent().attr('class').replace(/ *context-menu-active/,'');
 
 	putsConsole('Hide all elements of class: ' + classParentSelected);
 	$('.' + classParentSelected).hide();
-    } else if (key == 'undone') {
-	putsConsole("Delete done"); 
-	window.document.setElementAttribute(strFile,strXpath,'done');
-    } else if (key == 'clone') {
-	window.document.cloneElement(strFile,strXpath);
-	window.location.assign(window.document.URL.replace(/#.*$/,''));
-    } else if (key == 'date') {
-	$('#content').datepicker( "dialog", new Date(), function(strDate) {
-	    putsConsole("Date: " + strDate); 
-	    window.document.dateElement(strFile,strXpath,strDate);
-	}, { showWeek: true, showButtonPanel: false, dateFormat: "yymmdd"}); // [10,10] [event.pageX, event.pageY]
-    } else if (key == 'done') {
-	$('#content').datepicker( "dialog", new Date(), function(strDate) {
-	    putsConsole("Done: " + strDate); 
-	    window.document.doneElement(strFile,strXpath,strDate);
-	}, { showWeek: true, showButtonPanel: false, dateFormat: "yymmdd"}); // [10,10] [event.pageX, event.pageY]
-    } else if (key == 'impact') {
-	putsConsole("Increase Impact"); 
-	window.document.setElementAttribute(strFile,strXpath,key,'1');
-    } else if (key == 'hide') {
-	options.$trigger.parent().parent().css({'display': 'none'});
     } else if (key == 'top') {
 	window.document.topElement(arrLocator[2],false);
     } else if (key == 'up') {
-	putsConsole( "Old URL: " + window.document.URL);
-	if (window.document.URL.match(/xpath=/i)) {
-	    var strURLNew = window.document.URL.replace(/#.*$/i,'').replace(/&xpath=[^&]*/i,'');
-	    putsConsole( "Pre URL: " + strXpath);
-	    strURLNew += '&xpath=' + strXpath.replace(/\/\*\[[^\]*]\]$/i,'');
-	    putsConsole( "New URL: " + strURLNew);
-	    window.location.assign(strURLNew);
-	}
-    } else if (key == 'delete') {
-	window.document.removeElement(strFile,strXpath);
-	//window.location.assign(window.document.URL.replace(/#.*$/,''));
-    } else {
+	window.document.upElement(arrLocator[2],false);
     }
 }
 
@@ -540,6 +510,8 @@ function callbackContent(key, options) {
     } else {
 	var urlParams = new URLSearchParams(document.location.search);
 	var strHashNew = '';
+
+	urlParams.delete('hl');
 	
 	if (key == 'reload') {
 	} else if (key == 'layout') {
@@ -592,9 +564,11 @@ function callbackContent(key, options) {
 // 
 $(function(){
 
-    if (window.document.URL.match(/\.(pie|mm|cxp|cal|txt|docx|xmmap|mmap)/i)) {
+    var urlParams = new URLSearchParams(document.location.search);
 
-	if (window.document.URL.match(/calendar/i)) {
+    if (urlParams.get('path').match(/\.(pie|mm|md|cxp|cal|txt|csv)$/i)) {
+
+	if (urlParams.get('cxp').match(/calendar/i)) {
 
 	    $.contextMenu({
 		selector: '#content', 
@@ -628,6 +602,7 @@ $(function(){
 		    "presentation": {name: "Presentation", icon: ""}
 		}
 	    });
+	    
 	} else {
 	    $.contextMenu({
 		selector: '#content', 
@@ -640,7 +615,7 @@ $(function(){
 		    "sep1": "---------",
 		    "reload": {name: "Reload", icon: "reload"},
 		    "editor": {name: "Editor", icon: "edit"},
-		    "frame": {name: "Window", icon: ""},
+		    "frame": {name: "Scope", icon: ""},
 		    "cleanup": {name: "Cleanup", icon: ""},
 		    //"sep2": "---------",
 		    //"contextYear": {name: "Context Year", icon: "link"},
@@ -675,31 +650,33 @@ $(function(){
 	    items: {
 		"section": {name: "Section", icon: "section"},
 		"sep1": "---------",
-		"view": {name: "View", icon: "view"},
+		//"view": {name: "View", icon: "view"},
+		"frame": {name: "Scope", icon: ""},
 		"up": {name: "Up", icon: "hide"},
 		"top": {name: "Top", icon: "hide"},
-		"frame": {name: "Scope", icon: ""},
 		"hide": {name: "Hide", icon: "hide"}
 	    }
 	});
 
-	$.contextMenu({
-	    selector: '.context-menu-task', 
-	    trigger: 'right',
-	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
-	    autoHide: true,
-	    callback: _callbackTask,
-	    items: {
-		"task": {name: "Task", icon: "task"},
-		"sep1": "---------",
-		"up": {name: "Up", icon: "hide"},
-		"top": {name: "Top", icon: "hide"},
-		"hide": {name: "Hide", icon: "hide"}
-	    }
-	});
+	// $.contextMenu({
+	//     selector: '.context-menu-task', 
+	//     trigger: 'right',
+	//     position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
+	//     autoHide: true,
+	//     callback: _callbackTask,
+	//     items: {
+	// 	"task": {name: "Task", icon: "task"},
+	// 	"sep1": "---------",
+	// 	"up": {name: "Up", icon: "hide"},
+	// 	"top": {name: "Top", icon: "hide"},
+	// 	"hide": {name: "Hide", icon: "hide"}
+	//     }
+	// });
 	
     } else {
 
+	// non-editable format
+	
 	$.contextMenu({
 	    selector: '#content', 
 	    trigger: 'right',
@@ -708,9 +685,10 @@ $(function(){
 	    callback: callbackContent,
 	    items: {
 		"document": {name: "Document", icon: "document"},
-		"sep1": "---------",
+		//"sep1": "---------",
 		"reload": {name: "Reload", icon: "reload"},
-		"editor": {name: "Editor", icon: "edit"},
+		//"editor": {name: "Editor", icon: "edit"},
+		"cleanup": {name: "Cleanup", icon: ""},
 		"sep2": "---------",
 		"toc": {name: "Table of Content", icon: "toc"},
 		"tags": {name: "Tag cloud", icon: "tags"},
@@ -735,26 +713,29 @@ $(function(){
 	    callback: callbackSection,
 	    items: {
 		"section": {name: "Section", icon: "section"},
-		"sep2": "---------",
+		"sep1": "---------",
+		//"view": {name: "View", icon: "view"},
+		"frame": {name: "Scope", icon: ""},
 		"up": {name: "Up", icon: "hide"},
 		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
 	    }
 	});
 
-	$.contextMenu({
-	    selector: '.context-menu-task', 
-	    trigger: 'right',
-	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
-	    autoHide: true,
-	    callback: _callbackTask,
-	    items: {
-		"task": {name: "Task", icon: "task"},
-		"sep1": "---------",
-		"up": {name: "Up", icon: "hide"},
-		"top": {name: "Top", icon: "hide"},
-	    }
-	});
+	// $.contextMenu({
+	//     selector: '.context-menu-task', 
+	//     trigger: 'right',
+	//     position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
+	//     autoHide: true,
+	//     callback: _callbackTask,
+	//     items: {
+	// 	"task": {name: "Task", icon: "task"},
+	// 	"sep1": "---------",
+	// 	"up": {name: "Up", icon: "hide"},
+	// 	"top": {name: "Top", icon: "hide"},
+	// 	"hide": {name: "Hide", icon: "hide"}
+	//     }
+	// });
 	
     }
 

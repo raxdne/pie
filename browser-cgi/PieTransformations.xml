@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pie xmlns:pkg="http://www.tenbusch.info/pkg" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" class="petrinet">
+  <!--
+(shell-command "xsltproc ../pkg2/xsl/DotGraph.xsl browser-cgi/PieTransformations.xml | dot -T png -o browser-cgi/PieTransformations.png")
+ -->
   <section id="transformations">
     <stelle id="text/plain+calendar" type="text/plain">
       <h>Text plain calendar</h>
@@ -602,13 +605,10 @@
       <make>
 	<xml>
 	  <xml>
-	    <xml xpath="yes">
-	      <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
-		<import name="PATH" locator="yes"/>
-	      </pie>
-	    </xml>
+	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes" xpath="XPATH">
+	      <import name="PATH" locator="yes"/>
+	    </pie>
 	  </xml>
-	  <xpath select="XPATH"/>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>

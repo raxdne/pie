@@ -17,10 +17,8 @@
       <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
       <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
       <xsl:with-param name="str_prefix">
-        <xsl:for-each select="ancestor-or-self::dir">
-          <xsl:if test="position() &gt; 1">
-            <xsl:value-of select="concat(@urlname,'/')"/>
-          </xsl:if>
+        <xsl:for-each select="ancestor-or-self::dir[@urlname]">
+          <xsl:value-of select="concat(@urlname,'/')"/>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:apply-templates>

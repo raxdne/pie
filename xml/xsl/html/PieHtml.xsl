@@ -1038,8 +1038,8 @@
     </xsl:element>
   </xsl:template>
 <xsl:template name="CREATESTYLE">
-    <!-- insert "pie\html\pie.css" -->
     <xsl:element name="style">
+      <!-- (progn (move-beginning-of-line 2)(insert-file "../../../html/pie.css")) -->
 
 /* this is the CSS for txt2x: txt2x.css
 
@@ -1306,19 +1306,19 @@ th.marker {
 }
 
 span.tag {
- margin: 3px 3px 0px 0px;
+ margin: 3px 0px 3px 0px;
  background-color:#FFFEA1;
 }
 span.tagGreen {
- margin: 3px 3px 0px 0px;
+ margin: 3px 0px 3px 0px;
  background-color:#88FF88;
 }
 span.tagYellow {
- margin: 3px 3px 0px 0px;
+ margin: 3px 0px 3px 0px;
  background-color:#FFFF88;
 }
 span.tagRed {
- margin: 3px 3px 0px 0px;
+ margin: 3px 0px 3px 0px;
  background-color:#FF8888;
 }
 
@@ -1533,7 +1533,7 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 
 /* 
  */
-*.invalid {
+*.invalid, *.task-rejected {
   text-decoration: line-through;
 }
 
