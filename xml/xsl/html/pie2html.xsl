@@ -68,6 +68,7 @@
             <xsl:if test="$flag_tags">
               <xsl:call-template name="PIETAGCLOUD"/>
             </xsl:if>
+            <!-- <xsl:call-template name="METAVARS"/> -->
             <xsl:apply-templates/>
             <xsl:if test="true()">
               <xsl:call-template name="METAFOOTER"/>

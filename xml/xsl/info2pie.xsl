@@ -18,10 +18,10 @@
               </xsl:attribute>
               <xsl:value-of select="@name"/>
             </xsl:element>
-            <xsl:value-of select="concat(' (',cxp:source/@version,'-',cxp:source/@revision,')')"/>
+            <xsl:value-of select="concat(' (',cxp:source/@version,')')"/>
           </xsl:element>
           <xsl:element name="p">
-            <xsl:value-of select="concat('Compiled build ',cxp:compilation/@build,' on ',cxp:compilation/@platform,' at ',cxp:compilation/@date,' as ','&quot;',cxp:compilation/@lang,'&quot;')"/>
+            <xsl:value-of select="concat('Compiled on ',cxp:compilation/@platform,' at ',cxp:compilation/@date,' as ','&quot;',cxp:compilation/@lang,'&quot;')"/>
 	    <xsl:if test="cxp:compilation/@experimental = 'yes'">
 	      <xsl:text>, with experimental features</xsl:text>
 	    </xsl:if>
@@ -44,34 +44,38 @@
               </xsl:element>
             </xsl:for-each>
           </xsl:element>
-          <xsl:element name="p">Optional libs</xsl:element>
-          <xsl:element name="list">
-            <xsl:for-each select="cxp:option[@select='yes']">
-              <xsl:element name="p">
-                <xsl:element name="link">
-                  <xsl:attribute name="href">
-                    <xsl:value-of select="@ns"/>
-                  </xsl:attribute>
-                  <xsl:value-of select="@name"/>
-                </xsl:element>
-                <xsl:value-of select="concat(' (',@version,')')"/>
-              </xsl:element>
-            </xsl:for-each>
-          </xsl:element>
-          <xsl:element name="p">Optional modules</xsl:element>
-          <xsl:element name="list">
-            <xsl:for-each select="cxp:module[@select='yes']">
-              <xsl:element name="p">
-                <xsl:element name="link">
-                  <xsl:attribute name="href">
-                    <xsl:value-of select="@ns"/>
-                  </xsl:attribute>
-                  <xsl:value-of select="@name"/>
-                </xsl:element>
-                <xsl:value-of select="concat(' (',@version,')')"/>
-              </xsl:element>
-            </xsl:for-each>
-          </xsl:element>
+	  <xsl:if test="cxp:option[@select='yes']">
+            <xsl:element name="p">Optional libs</xsl:element>
+            <xsl:element name="list">
+              <xsl:for-each select="cxp:option[@select='yes']">
+		<xsl:element name="p">
+                  <xsl:element name="link">
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="@ns"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="@name"/>
+                  </xsl:element>
+                  <xsl:value-of select="concat(' (',@version,')')"/>
+		</xsl:element>
+              </xsl:for-each>
+            </xsl:element>
+	  </xsl:if>
+	  <xsl:if test="cxp:module[@select='yes']">
+            <xsl:element name="p">Optional modules</xsl:element>
+            <xsl:element name="list">
+              <xsl:for-each select="cxp:module[@select='yes']">
+		<xsl:element name="p">
+                  <xsl:element name="link">
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="@ns"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="@name"/>
+                  </xsl:element>
+                  <xsl:value-of select="concat(' (',@version,')')"/>
+		</xsl:element>
+              </xsl:for-each>
+            </xsl:element>
+	  </xsl:if>
         </xsl:element>
       </xsl:for-each>
       <xsl:element name="section">

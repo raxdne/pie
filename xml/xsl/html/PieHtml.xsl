@@ -8,6 +8,31 @@
   <xsl:template match="pie">
     <xsl:apply-templates/>
   </xsl:template>
+  <xsl:template name="METAVARS">
+    <!-- for debugging only
+    <xsl:comment>
+      <xsl:value-of select="concat('file_css:',$file_css)" />
+      <xsl:value-of select="concat('file_norm:',$file_norm)" />
+      <xsl:value-of select="concat('file_ref:',$file_ref)" />
+      <xsl:value-of select="concat('flag_toc:',$flag_toc)" />
+      <xsl:value-of select="concat('flag_header:',$flag_header)" />
+      <xsl:value-of select="concat('flag_footer:',$flag_footer)" />
+      <xsl:value-of select="concat('flag_fig:',$flag_fig)" />
+      <xsl:value-of select="concat('flag_xpath:',$flag_xpath)" />
+      <xsl:value-of select="concat('str_write:',$str_write)" />
+      <xsl:value-of select="concat('length_link:',$length_link)" />
+      <xsl:value-of select="concat('flag_form:',$flag_form)" />
+      <xsl:value-of select="concat('level_hidden:',$level_hidden)" />
+      <xsl:value-of select="concat('flag_slidecap:',$flag_slidecap)" />
+      <xsl:value-of select="concat('flag_llist:',$flag_llist)" />
+      <xsl:value-of select="concat('flag_tags:',$flag_tags)" />
+      <xsl:value-of select="concat('str_tag:',$str_tag)" />
+      <xsl:value-of select="concat('str_url:',$str_url)" />
+      <xsl:value-of select="concat('toc_display:',$toc_display)" />
+      <xsl:value-of select="concat('str_link_prefix:',$str_link_prefix)" />
+    </xsl:comment>
+      -->
+  </xsl:template>
   <xsl:template match="author">
     <xsl:element name="center">
       <xsl:element name="i">
@@ -887,9 +912,22 @@
     </xsl:if>
   </xsl:template>
   <xsl:template name="MENUSET">
-    <xsl:attribute name="name">
-      <xsl:value-of select="concat(@flocator,':',@fxpath,':',@xpath)"/>
-    </xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="@flocator">
+	<xsl:attribute name="name">
+	  <xsl:value-of select="concat(translate(@flocator,'\','/'),':',@fxpath,':',@xpath)"/>
+	</xsl:attribute>
+      </xsl:when>
+      <!--
+      <xsl:when test="string-length($file_norm) &gt; 0">
+	<xsl:attribute name="name">
+	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@xpath,':',@xpath)"/>
+	</xsl:attribute>
+	</xsl:when>
+	-->
+      <xsl:otherwise>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:attribute name="class">
       <xsl:value-of select="concat('context-menu-',name())"/>
     </xsl:attribute>

@@ -1,5 +1,5 @@
 
-# TODO PIE
+# TODO "Personal Information Environment (PIE)"
 
 ## Documentation
 
@@ -7,7 +7,7 @@ TODO: update Documentation #v1 ++
 
 ## Web UI
 
-REQ: adapt RMB menu to current path context (e.g. no Editor on MS Office files) #v1
+REQ: adapt RMB menu to current path context (e.g. no Editor on MS Office files) #v1 ✔
 
 TODO: update non-javascript UI (s. <browser-cgi>) #v1
 - tabs
@@ -17,6 +17,10 @@ TODO: update to HTML5 standard
 
 TODO: cleanup "browser-cgi\PieTransformations.xml"
 
+TODO: consolidate use of cxp:variable
+- "file_norm|file_plain"
+- flag_form
+
 ### Calendar
 
 BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`)  #v1 ++
@@ -25,9 +29,12 @@ BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`) 
 
 ### Text
 
-BUG: use of flocator/fxpath for “Scope” #v1 ++
+BUG: use of flocator/fxpath for “Scope” #v1 ++ ✔
 
-BUG: filtering using tags which contain '#' char #v1 ++
+BUG: flocator/fxpath for “Scope” in DOCX etc #v1 ++
+- xml/pie[@context="abc.docx"]/import
+
+BUG: filtering using tags which contain '#' char #v1 ++ ✔
 
 REQ: structure as mindmap (3D.js) #v2
 - text visualization using Data-Driven Documents (tree etc)
@@ -43,6 +50,12 @@ REQ: concurrent access (file locking?)
 REQ: PDF generator
 - Plain text → PIE XML → xsl:fo → PDF
 - documentation with PDF printing from Browser via FreePDF
+
+REQ: RMB Menu “Hide” for same class ✔
+- task
+
+BUG: “Cleanup” makes DONE to TODO without CSS
+- use UTF-8 markup
 
 ### Dir
 

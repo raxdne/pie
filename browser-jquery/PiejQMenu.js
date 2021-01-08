@@ -421,32 +421,13 @@ function callbackSection(key, options) {
 }
 
 
-
 //
 // 
 //
-function _callbackTask(key, options) {
+function callbackTask(key, options) {
 
     var urlParams = new URLSearchParams(document.location.search);
-	
-    var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
-    //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
-
-    if (arrLocator[0] == undefined || arrLocator[0] == '') {
-	putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
-    } else {
-	urlParams.set('path',arrLocator[0]);
-    }
-
-    if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
-    } else {
-	urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
-    }
-
-    var m = "clicked: " + key;
-    putsConsole(m); 
-
+    
     urlParams.delete('hl');
     if (key == 'view') {
 	urlParams.delete('pattern');
@@ -461,10 +442,28 @@ function _callbackTask(key, options) {
 
 	putsConsole('Hide all elements of class: ' + classParentSelected);
 	$('.' + classParentSelected).hide();
-    } else if (key == 'top') {
-	window.document.topElement(arrLocator[2],false);
-    } else if (key == 'up') {
-	window.document.upElement(arrLocator[2],false);
+    } else {
+
+	var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
+	//putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
+
+	if (arrLocator[0] == undefined || arrLocator[0] == '') {
+	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
+	} else {
+	    urlParams.set('path',arrLocator[0]);
+	}
+
+	if (arrLocator[1] == undefined || arrLocator[1] == '') {
+	    putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
+	} else {
+	    urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
+	}
+
+	if (key == 'top') {
+	} else if (key == 'up') {
+	    urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,''));
+	}
+	window.location.assign('?' + urlParams.toString());
     }
 }
 
@@ -513,6 +512,10 @@ function callbackContent(key, options) {
 
 	urlParams.delete('hl');
 	
+	if (urlParams.has('path')) {
+	    urlParams.set('path',urlParams.get('path').replace(/([\\]|%5C)/g,'/'));
+	}
+
 	if (key == 'reload') {
 	} else if (key == 'layout') {
 	    urlParams.delete('tag');
@@ -547,11 +550,6 @@ function callbackContent(key, options) {
 		urlParams.set('cxp','PiejQFormat');
 	    }
 	    urlParams.delete('hl');
-
-	    if (urlParams.has('pattern')) {
-		// URL processing stops at '#' char
-		//urlParams.set('pattern',urlParams.get('pattern').replace(/\#/g,'%23'));
-	    }
 	}
 	
 	var strQuery = '?' + urlParams.toString();
@@ -658,20 +656,20 @@ $(function(){
 	    }
 	});
 
-	// $.contextMenu({
-	//     selector: '.context-menu-task', 
-	//     trigger: 'right',
-	//     position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
-	//     autoHide: true,
-	//     callback: _callbackTask,
-	//     items: {
-	// 	"task": {name: "Task", icon: "task"},
-	// 	"sep1": "---------",
-	// 	"up": {name: "Up", icon: "hide"},
-	// 	"top": {name: "Top", icon: "hide"},
-	// 	"hide": {name: "Hide", icon: "hide"}
-	//     }
-	// });
+	$.contextMenu({
+	    selector: '.context-menu-task', 
+	    trigger: 'right',
+	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
+	    autoHide: true,
+	    callback: callbackTask,
+	    items: {
+		"task": {name: "Task", icon: "task"},
+		"sep1": "---------",
+		"up": {name: "Up", icon: "hide"},
+		"top": {name: "Top", icon: "hide"},
+		"hide": {name: "Hide", icon: "hide"}
+	    }
+	});
 	
     } else {
 
@@ -722,20 +720,20 @@ $(function(){
 	    }
 	});
 
-	// $.contextMenu({
-	//     selector: '.context-menu-task', 
-	//     trigger: 'right',
-	//     position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
-	//     autoHide: true,
-	//     callback: _callbackTask,
-	//     items: {
-	// 	"task": {name: "Task", icon: "task"},
-	// 	"sep1": "---------",
-	// 	"up": {name: "Up", icon: "hide"},
-	// 	"top": {name: "Top", icon: "hide"},
-	// 	"hide": {name: "Hide", icon: "hide"}
-	//     }
-	// });
+	$.contextMenu({
+	    selector: '.context-menu-task', 
+	    trigger: 'right',
+	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
+	    autoHide: true,
+	    callback: callbackTask,
+	    items: {
+		"task": {name: "Task", icon: "task"},
+		"sep1": "---------",
+		//"up": {name: "Up", icon: "hide"},
+		//"top": {name: "Top", icon: "hide"},
+		"hide": {name: "Hide", icon: "hide"}
+	    }
+	});
 	
     }
 

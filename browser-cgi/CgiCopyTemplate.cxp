@@ -3,13 +3,12 @@
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%CGIFILE%" cgi="file"/>
   <cxp:subst string="%CGITEMPLATE%" cgi="template" default=""/>
-  <cxp:subst string="%EXTENSION%" ext="%CGITEMPLATE%" default="txt"/>
-  <cxp:copy from="%CGITEMPLATE%" to="%CGIFILE%.%EXTENSION%"/>
+  <cxp:copy from="%CGITEMPLATE%" to="%CGIFILE%"/>
   <cxp:xhtml name="-">
     <html>
       <body>
         <div id="ui">
-          <p>Copy '%CGITEMPLATE%' to '%CGIFILE%.%EXTENSION%'</p>
+          <p>Copy '%CGITEMPLATE%' to '%CGIFILE%'</p>
         </div>
       </body>
     </html>

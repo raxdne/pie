@@ -5,10 +5,10 @@
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
-  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%CGIMIN%" cgi="min" default="-3"/>
   <cxp:subst string="%CGIMAX%" cgi="max" default="3"/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
   <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
@@ -21,19 +21,20 @@
           <div id="content">
             <cxp:xhtml>
               <cxp:xml eval="yes">
-		<cxp:include name="PieTransformation.cxp" search="yes"/>
+                <cxp:include name="PieTransformation.cxp" search="yes"/>
               </cxp:xml>
-	      <cxp:xsl name="OpenTasks.xsl"/>
+              <cxp:xsl name="OpenTasks.xsl"/>
               <cxp:xsl name="TodoMatrix.xsl">
+                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodoMatrix&amp;tag='"/>
                 <cxp:variable name="diff_delta_0" select="%CGIMIN%"/>
                 <cxp:variable name="diff_delta_1" select="%CGIMAX%"/>
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodoMatrix&amp;tag='"/>
               </cxp:xsl>
             </cxp:xhtml>
 	    <hr/>
             <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
           </div>
         </div>
+        <a name="bottom"/>
       </body>
     </html>
   </cxp:xhtml>

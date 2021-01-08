@@ -118,7 +118,7 @@ document.createUI = function () {
 	    }
 
 	    urlParamsTag.set('pattern',strPatternNew);
-	    urlParamsTag.set('hl',strValue);
+	    //urlParamsTag.set('hl',strValue);
 
 	    var strQuery = urlParamsTag.toString();
 	    if (strQuery == '') {
@@ -196,83 +196,6 @@ document.markTextStrRecursive = function (node,regexp) {
 //
 // 
 //
-document.upElement = function (strXpath, fNew) {
-    
-    var urlParams = new URLSearchParams(document.location.search);
-
-    // window.location.hash = '';
-    putsConsole( "Old URL: " + window.document.URL);
-	
-    if (urlParams.has('xpath')) {
-	urlParams.set('xpath',urlParams.get('xpath').replace(/\/\*\[[^\]*]\]$/i,''));
-    } else {
-	urlParams.set('xpath',strXpath.replace(/\/\*\[[^\]*]\]$/i,''));
-    }
-    urlParams.delete('hl');
-
-    var strQuery = urlParams.toString();
-    if (strQuery == '') {
-	strUrlNew = window.location.pathname;
-    } else {
-	strUrlNew = window.location.pathname + '?' + strQuery;
-    }
-
-    putsConsole('New URL: ' + strUrlNew);
-    window.location.assign(strUrlNew);
-}
-
-
-//
-// 
-//
-document.topElement = function (strXpath, fNew) {
-
-    var urlParams = new URLSearchParams(window.location.search);
-    
-    if (strXpath == undefined || strXpath == '') {
-	urlParams.delete('xpath');
-    } else {
-	urlParams.set('xpath',strXpath);
-    }
-
-    urlParams.delete('hl');
- 
-    var strUrlNew = window.location.pathname + '?' + urlParams.toString();
-
-    putsConsole('New Top: ' + strUrlNew);
-
-    if (fNew) {
-	window.open(strUrlNew);
-    } else {
-	window.location.assign(strUrlNew);
-    }
-}
-
-
-//
-// reload document with parent anchor
-//
-document.topElementNew = function (strLocator, strXpath) {
-    
-    if (strLocator != undefined) {
-	var urlParams = new URLSearchParams();
-	
-	urlParams.set('cxp','PiejQDefault');
-	
-	if (strXpath != undefined) {
-	    urlParams.set('xpath',strXpath);
-	}
-
-	window.location.assign('?' + urlParams.toString());
-    }
-    
-    // TODO: highlight according div element
-}
-
-
-//
-// 
-//
 function mapXpathToLabel(strXpath) {
 
     if (strXpath == undefined || strXpath == '') {
@@ -283,40 +206,6 @@ function mapXpathToLabel(strXpath) {
     var strResult = strXpath.replace(/[\*\[\]]+/g,'').replace(/\//g,'_');
 
     return strResult;
-}
-
-
-//
-// reload document with parent anchor
-//
-document.viewElement = function (strLocator, strXpath) {
-
-    var urlParams = new URLSearchParams(window.location.search);
-    
-    if (strLocator == undefined || strLocator == '') {
-	urlParams.delete('path');
-    } else {
-	urlParams.set('path',strLocator);
-    }
-
-    if (strXpath == undefined || strXpath == '') {
-	urlParams.delete('xpath');
-    } else {
-	urlParams.set('xpath',strXpath);
-    }
-
-    urlParams.set('cxp','PiejQDefault');
-    urlParams.set('hl',mapXpathToLabel(strXpath));
- 
-    var strUrlNew = window.location.pathname + '?' + urlParams.toString();
-
-    putsConsole('New URL: ' + strUrlNew);
-
-    window.location.hash = mapXpathToLabel(strXpath.replace(/\/[^\/]+$/,''));
-
-    window.location.assign(strUrlNew);
-
-    // TODO: highlight according div element
 }
 
 
