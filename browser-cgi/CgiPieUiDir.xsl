@@ -3,7 +3,7 @@
   <!--  -->
   <xsl:variable name="length_link" select="15"/>
   <!--  -->
-  <xsl:variable name="str_cxp_default" select="'PiejQDefault'"/>
+  <xsl:variable name="str_cxp_default" select="'PieUiDefault'"/>
   <!--  -->
   <xsl:variable name="str_frame" select="'piemain'"/>
   <!--  -->

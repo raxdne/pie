@@ -3,7 +3,6 @@
   <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
   <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIFORM%" cgi="form" default="true()"/>
   <cxp:subst string="%CGISUB%" cgi="sub"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
@@ -46,8 +45,6 @@
 	      <!-- <cxp:xsl name="RemoveDoneElements.xsl"/> -->
               <cxp:xsl name="TodoContactTable.xsl">
                 <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
-		<cxp:variable name="flag_form" select="%CGIFORM%"/>
-                <cxp:variable name="file_ref" select="''"/>
               </cxp:xsl>
             </cxp:xhtml>
           </div>

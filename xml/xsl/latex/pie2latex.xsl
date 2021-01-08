@@ -6,16 +6,12 @@
   <xsl:import href="PieLatex.xsl"/>
 
   <xsl:variable name="file_css" select="''"/>
-<!-- file:///H:/opt/cxproc/contrib/pie/html/ -->
-  <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_tree" select="false()"/>
   <!--  -->
   <xsl:variable name="flag_header" select="true()"/>
   <!--  -->
   <xsl:variable name="flag_fig" select="true()"/>
-  <!--  -->
-  <xsl:variable name="length_link" select="-1"/>
 
   <xsl:output method="text" encoding="utf-8"/>
 

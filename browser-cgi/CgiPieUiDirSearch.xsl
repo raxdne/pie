@@ -8,7 +8,7 @@
   <xsl:variable name="dir_prefix" select="''"/>
 <!--  -->
   <xsl:variable name="str_path" select="''"/>
-  <xsl:variable name="length_link" select="-1"/>
+
   <xsl:output method="html" encoding="UTF-8"/>
   <xsl:template match="/">
     <xsl:element name="html">

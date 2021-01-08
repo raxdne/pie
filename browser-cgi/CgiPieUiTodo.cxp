@@ -3,7 +3,6 @@
   <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
   <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIFORM%" cgi="form" default="true()"/>
   <cxp:subst string="%CGISUB%" cgi="sub"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
@@ -47,9 +46,7 @@
               <cxp:xsl name="RemoveDoneElements.xsl"/>
               <cxp:xsl name="AccountingTasks.xsl"/>
               <cxp:xsl name="TodoTable.xsl">
-		<cxp:variable name="flag_form" select="%CGIFORM%"/>
                 <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PieUiTodoContact&amp;sub=todoContact'"/>
               </cxp:xsl>
             </cxp:xhtml>
           </div>

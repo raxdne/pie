@@ -41,9 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
   <xsl:variable name="flag_search" select="false()"/>
   <xsl:variable name="flag_search_result" select="false()"/>
   <xsl:variable name="str_xpath" select="'/'"/>
-  <xsl:variable name="file_ref" select="''"/>
   <xsl:variable name="type" select="''"/>
-  <xsl:variable name="str_url" select="''"/>
   <xsl:variable name="level_hidden" select="0"/>
   <xsl:template match="/">
     <xsl:element name="html">

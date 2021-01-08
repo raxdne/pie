@@ -27,7 +27,6 @@
 							</cxp:xml>
 							<cxp:xsl name="pie2html.xsl">
 								<cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
-								<cxp:variable name="file_ref" select="''"/>
 							</cxp:xsl>
 						</cxp:xhtml>
 						<p style="text-align:right">%TAGTIME%</p>

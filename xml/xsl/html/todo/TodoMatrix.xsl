@@ -3,9 +3,7 @@
   <xsl:import href="../../Utils.xsl"/>
   <xsl:import href="../PieHtml.xsl"/>
   <!--  -->
-  <xsl:variable name="flag_form" select="true()"/>
   <xsl:variable name="file_css" select="'pie.css'"/>
-  <xsl:variable name="file_ref" select="''"/>
   <xsl:variable name="file_cxp" select="''"/>
   <!--  -->
   <xsl:variable name="diff_delta_0" select="-2"/>

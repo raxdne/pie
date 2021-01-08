@@ -52,7 +52,6 @@
               </xsl:stylesheet>
               <cxp:xsl name="CalendarTable.xsl" appendcgi="yes">
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
-                <cxp:variable name="flag_icon" select="false()"/>
               </cxp:xsl>
             </cxp:xhtml>
           </div>

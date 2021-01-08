@@ -11,8 +11,6 @@
     <xsl:text>   </xsl:text>
   </xsl:variable>
   <!--  -->
-  <xsl:variable name="length_link" select="-1"/>
-  <!--  -->
   <xsl:variable name="str_prefix_dir">
     <xsl:choose>
       <xsl:when test="/pie/dir/@urlprefix">

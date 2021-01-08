@@ -19,9 +19,6 @@
 	<cxp:xsl name="RemoveDoneElements.xsl"/>
 	<cxp:xsl name="TodoTable.xsl">
 	  <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-	  <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodoContact'"/>
-	  <cxp:variable name="flag_icon" select="false()"/>
-	  <cxp:variable name="flag_form" select="false()"/>
 	</cxp:xsl>
       </body>
     </html>

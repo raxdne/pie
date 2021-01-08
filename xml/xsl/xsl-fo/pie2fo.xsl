@@ -2,7 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PieFo.xsl"/>
   <xsl:variable name="level_hidden" select="1"/>
-  <xsl:variable name="length_link" select="30"/>
   <xsl:output method="xml"/>
   <xsl:template match="/">
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">

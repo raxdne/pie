@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="../Utils.xsl"/>
-  <xsl:variable name="length_link" select="-1"/>
   <xsl:variable name="flag_fig" select="true()"/>
 
   <xsl:template match="section">
@@ -74,14 +73,7 @@
           </xsl:choose>
 
           <xsl:text>{</xsl:text>
-          <xsl:choose>
-            <xsl:when test="$length_link &gt; 0">
-              <xsl:value-of select="substring(.,1,$length_link)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="."/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:value-of select="."/>
           <xsl:text>} </xsl:text>
 
   </xsl:template>

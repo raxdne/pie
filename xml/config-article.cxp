@@ -45,9 +45,7 @@
     <cxp:xsl name="pie2html.xsl">
       <cxp:variable name="level_hidden" select="2"/>
       <cxp:variable name="flag_tree" select="true()"/>
-      <cxp:variable name="flag_slidecap" select="false()"/>
       <cxp:variable name="flag_fig" select="true()"/>
-      <cxp:variable name="flag_xpath" select="false()"/>
     </cxp:xsl>
   </cxp:xhtml>
   <!--  -->

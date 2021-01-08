@@ -46,7 +46,6 @@
 		<cxp:include name="PieTransformation.cxp" search="yes"/>
               </cxp:xml>
               <cxp:xsl name="pie2html.xsl">
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PieUiTodoContact&amp;sub=todoContact'"/>
                 <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
 		<cxp:variable name="flag_footer" select="false()"/>
                 <cxp:variable name="flag_toc" select="true()"/>

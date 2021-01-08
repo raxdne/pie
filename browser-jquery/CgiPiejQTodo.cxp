@@ -24,8 +24,6 @@
 	      <cxp:xsl name="OpenTasks.xsl"/>
               <cxp:xsl name="TodoTable.xsl">
                 <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-		<cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodo&amp;tag='"/>
-		<cxp:variable name="flag_form" select="false()"/>
               </cxp:xsl>
             </cxp:xhtml>
             <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>

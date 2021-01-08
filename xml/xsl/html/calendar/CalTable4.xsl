@@ -20,21 +20,13 @@
   <!--  -->
   <xsl:variable name="listDays" select="''"/>
   <!--  -->
-  <xsl:variable name="flag_form" select="false()"/>
   <!--  -->
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
       <xsl:element name="body">
-        <xsl:if test="$flag_form">
-          <xsl:call-template name="NAVI"/>
-        </xsl:if>
         <xsl:apply-templates select="calendar"/>
-        <xsl:if test="$flag_form">
-          <xsl:call-template name="NAVI"/>
-          <xsl:call-template name="FORMFILTER"/>
-        </xsl:if>
       </xsl:element>
     </xsl:element>
   </xsl:template>

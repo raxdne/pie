@@ -22,6 +22,7 @@
           </cxp:xml>
           <cxp:xsl name="CgiPieUiDir.xsl">
             <cxp:variable name="write" select="'%CGIPERM%'"/>
+	    <cxp:variable name="str_cxp_default" select="'PiejQDefault'"/>
           </cxp:xsl>
         </cxp:xhtml>
       </body>

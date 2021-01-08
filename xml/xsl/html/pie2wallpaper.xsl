@@ -7,10 +7,6 @@
 
   <!-- -->
   <xsl:variable name="file_css" select="'pie.css'"/>
-  <!-- name of plain input file -->
-  <xsl:variable name="file_plain" select="''"/>
-
-  <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="false()"/>
   <!--  -->
@@ -18,25 +14,11 @@
   <!--  -->
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
-  <xsl:variable name="flag_xpath" select="true()"/>
-  <!--  -->
-  <xsl:variable name="str_write"  select="''"/>
-  <!--  -->
-  <xsl:variable name="length_link" select="-1"/>
-  <!--  -->
-  <xsl:variable name="flag_form" select="false()"/>
-  <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
-  <!-- flag for captions of slides -->
-  <xsl:variable name="flag_slidecap" select="true()"/>
 
   <xsl:variable name="flag_llist"  select="false()"/>
 
-  <xsl:variable name="flag_tags"  select="false()"/>
-
   <xsl:variable name="str_tag"  select="''"/>
-
-  <xsl:variable name="str_url"  select="''"/>
 
   <xsl:variable name="toc_display"  select="'none'"/>
   <!--  -->
@@ -61,9 +43,6 @@
                   <xsl:value-of select="$toc_display"/>
                 </xsl:with-param>
               </xsl:call-template>
-            </xsl:if>
-            <xsl:if test="$flag_tags">
-              <xsl:call-template name="PIETAGCLOUD"/>
             </xsl:if>
             <xsl:apply-templates/>
             <xsl:if test="true()">

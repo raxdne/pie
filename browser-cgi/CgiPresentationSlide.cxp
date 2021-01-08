@@ -20,7 +20,6 @@
       <cxp:variable name="file_js" select="''"/>
       <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
       <cxp:variable name="flag_form" select="true()"/>
-      <cxp:variable name="length_link" select="50"/>
       <cxp:variable name="level_hidden" select="1"/>
       <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
       <cxp:variable name="str_link_prefix" select="'?cxp=image&amp;frame=1222x668&amp;path=%PREFIX%'"/>

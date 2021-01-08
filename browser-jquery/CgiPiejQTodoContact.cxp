@@ -24,7 +24,6 @@
 	      <cxp:xsl name="RemoveDoneElements.xsl"/>
               <cxp:xsl name="TodoContactTable.xsl">
                 <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
-		<cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodoContact&amp;tag='"/>
               </cxp:xsl>
             </cxp:xhtml>
 	    <hr/>

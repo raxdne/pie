@@ -440,7 +440,7 @@
       <make>
 	<xsl name="pie2html.xsl">
 	  <variable name="file_css" select="''"/>
-	  <variable name="file_plain" select="'%CGIPATH%'"/>
+	  <variable name="file_norm" select="'%CGIPATH%'"/>
 	  <variable name="flag_toc" select="true()"/>
 	  <variable name="flag_tags" select="true()"/>
 	  <variable name="flag_llist" select="true()"/>
@@ -510,7 +510,7 @@
       <h>PIE to PSP</h>
       <make>
 	<xsl name="PrologPSP.xsl">
-	  <variable name="file_plain" select="'%CGIPATH%'"/>
+	  <variable name="file_norm" select="'%CGIPATH%'"/>
 	  <variable name="flag_toc" select="true()"/>
 	  <variable name="flag_tags" select="true()"/>
 	  <variable name="flag_llist" select="true()"/>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" version="1.0">
   <xsl:import href="../Utils.xsl"/>
-  <xsl:variable name="length_link" select="-1"/>
   <xsl:variable name="flag_fig" select="true()"/>
   <xsl:attribute-set name="paragraph">
     <!-- <xsl:attribute name="font-family">Courier</xsl:attribute> -->
@@ -208,14 +207,7 @@
             <xsl:attribute name="external-destination">
               <xsl:value-of select="@href"/>
             </xsl:attribute>
-            <xsl:choose>
-              <xsl:when test=". = @href and $length_link &gt; 0 and string-length(.) &gt; $length_link">
-                <xsl:value-of select="concat(substring(.,1,$length_link),'...')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="."/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="."/>
           </xsl:element>
         </xsl:element>
         <xsl:text> </xsl:text>

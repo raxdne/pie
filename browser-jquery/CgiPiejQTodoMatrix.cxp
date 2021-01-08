@@ -25,7 +25,6 @@
               </cxp:xml>
               <cxp:xsl name="OpenTasks.xsl"/>
               <cxp:xsl name="TodoMatrix.xsl">
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQTodoMatrix&amp;tag='"/>
                 <cxp:variable name="diff_delta_0" select="%CGIMIN%"/>
                 <cxp:variable name="diff_delta_1" select="%CGIMAX%"/>
               </cxp:xsl>

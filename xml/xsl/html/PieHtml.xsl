@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="../Utils.xsl"/>
-  <xsl:variable name="length_link" select="-1"/>
+
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="''"/>
@@ -13,21 +13,13 @@
     <xsl:comment>
       <xsl:value-of select="concat('file_css:',$file_css)" />
       <xsl:value-of select="concat('file_norm:',$file_norm)" />
-      <xsl:value-of select="concat('file_ref:',$file_ref)" />
       <xsl:value-of select="concat('flag_toc:',$flag_toc)" />
       <xsl:value-of select="concat('flag_header:',$flag_header)" />
       <xsl:value-of select="concat('flag_footer:',$flag_footer)" />
       <xsl:value-of select="concat('flag_fig:',$flag_fig)" />
-      <xsl:value-of select="concat('flag_xpath:',$flag_xpath)" />
-      <xsl:value-of select="concat('str_write:',$str_write)" />
-      <xsl:value-of select="concat('length_link:',$length_link)" />
-      <xsl:value-of select="concat('flag_form:',$flag_form)" />
       <xsl:value-of select="concat('level_hidden:',$level_hidden)" />
-      <xsl:value-of select="concat('flag_slidecap:',$flag_slidecap)" />
       <xsl:value-of select="concat('flag_llist:',$flag_llist)" />
-      <xsl:value-of select="concat('flag_tags:',$flag_tags)" />
       <xsl:value-of select="concat('str_tag:',$str_tag)" />
-      <xsl:value-of select="concat('str_url:',$str_url)" />
       <xsl:value-of select="concat('toc_display:',$toc_display)" />
       <xsl:value-of select="concat('str_link_prefix:',$str_link_prefix)" />
     </xsl:comment>
@@ -169,15 +161,13 @@
 	  </xsl:element>
 	</xsl:element>
       </xsl:element>
-      <xsl:if test="$flag_slidecap">
-	<xsl:element name="p">
-	  <xsl:element name="u">
-	    <xsl:text>Folie:</xsl:text>
-	  </xsl:element>
-	  <xsl:text> </xsl:text>
-	  <xsl:value-of select="h"/>
+      <xsl:element name="p">
+	<xsl:element name="u">
+	  <xsl:text>Folie:</xsl:text>
 	</xsl:element>
-      </xsl:if>
+	<xsl:text> </xsl:text>
+	<xsl:value-of select="h"/>
+      </xsl:element>
     </xsl:element>
   </xsl:template>
   <xsl:template match="list">
@@ -257,14 +247,7 @@
 	</xsl:attribute>
 	<xsl:copy-of select="@href"/>
       </xsl:if>
-      <xsl:choose>
-	<xsl:when test=". = @href and $length_link &gt; 0 and string-length(.) &gt; $length_link">
-	  <xsl:value-of select="concat(substring(.,1,$length_link),'...')"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:apply-templates/>
-	</xsl:otherwise>
-      </xsl:choose>
+      <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
   <xsl:template match="translation">
@@ -1047,21 +1030,6 @@
 	</xsl:if>
 	<!--  -->
 	<xsl:choose>
-	  <xsl:when test="$flag_line">
-	    <xsl:for-each select="tag">
-	      <xsl:variable name="str">
-		<xsl:value-of select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ','abcdefghijklmnopqrstuvwxyzäöü')"/>
-	      </xsl:variable>
-	      <xsl:text> / </xsl:text>
-	      <xsl:element name="a">
-		<xsl:attribute name="href">
-		  <xsl:value-of select="concat($file_ref,translate($str,'ÄÖÜ','äöü'))"/>
-		</xsl:attribute>
-		<xsl:value-of select="$str"/>
-		<xsl:text> </xsl:text>
-	      </xsl:element>
-	    </xsl:for-each>
-	  </xsl:when>
 	  <xsl:when test="count(child::*[not(name()='h')]) &gt; 0">
 	    <xsl:element name="div">
 	      <xsl:attribute name="style">margin: 5px 5px 5px 15px;</xsl:attribute>

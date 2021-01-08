@@ -125,7 +125,6 @@
           <cxp:variable name="nr_slide" select="%N%"/>
           <cxp:variable name="name_slide" select="'%MAIN%'"/>
           <cxp:variable name="flag_icons" select="true()"/>
-          <cxp:variable name="length_link" select="50"/>
           <cxp:variable name="level_hidden" select="0"/>
           <cxp:variable name="file_css" select="'presentation.css'"/>
         </cxp:xsl>
@@ -210,7 +209,6 @@
         <cxp:variable name="toc_display" select="'block'"/>
         <cxp:variable name="flag_toc" select="true()"/>
         <cxp:variable name="flag_tags" select="false()"/>
-        <cxp:variable name="flag_xpath" select="false()"/>
         <cxp:variable name="flag_llist" select="false()"/>
         <cxp:variable name="file_css" select="'pie.css'"/>
       </cxp:xsl>
@@ -222,9 +220,7 @@
       <cxp:xsl name="pie2html.xsl">
         <cxp:variable name="level_hidden" select="2"/>
         <cxp:variable name="flag_tree" select="true()"/>
-        <cxp:variable name="flag_slidecap" select="false()"/>
         <cxp:variable name="flag_fig" select="false()"/>
-        <cxp:variable name="flag_xpath" select="false()"/>
         <cxp:variable name="file_css" select="'pie.css'"/>
       </cxp:xsl>
     </cxp:xhtml>

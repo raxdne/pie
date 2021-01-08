@@ -42,7 +42,6 @@
               </cxp:xml>
               <cxp:xsl name="CalendarTable.xsl">
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQCalendar&amp;tag='"/>
               </cxp:xsl>
             </cxp:xhtml>
             <p style="text-align:right">"%ROOT%%CGIPATH%"  "%CGITAG%", %TAGTIME%</p>

@@ -3,9 +3,6 @@
   <xsl:import href="PieHtml.xsl"/>
   <!-- -->
   <xsl:variable name="file_css" select="'news.css'"/>
-  <!-- name of plain input file -->
-  <xsl:variable name="file_plain" select="''"/>
-  <xsl:variable name="file_ref" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="false()"/>
   <!--  -->
@@ -13,13 +10,8 @@
   <!--  -->
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
-  <xsl:variable name="length_link" select="-1"/>
-  <!--  -->
-  <xsl:variable name="flag_form" select="false()"/>
-  <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
-  <!-- flag for captions of slides -->
-  <xsl:variable name="flag_slidecap" select="true()"/>
+
   <xsl:output method="html" omit-xml-declaration="no" doctype-public="-//W3C//DTD HTML 4.01//EN" doctype-system="file:///tmp/dummy.dtd"/>
   <xsl:template match="/">
     <xsl:element name="html">

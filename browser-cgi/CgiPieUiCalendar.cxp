@@ -67,7 +67,6 @@
               <cxp:xsl name="CalTable4.xsl">
                 <cxp:variable name="dir_icons" select="'/pie/icons'"/>
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PieUiTodoContact&amp;sub=todoContact'"/>
               </cxp:xsl>
             </cxp:xhtml>
           </div>

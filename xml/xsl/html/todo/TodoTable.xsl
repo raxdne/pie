@@ -2,16 +2,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="../PieHtml.xsl"/>
   <xsl:variable name="file_css" select="''"/>
-  <!-- name of plain input file -->
-  <xsl:variable name="file_plain" select="''"/>
-  <xsl:variable name="file_ref" select="''"/>
   <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
-  <!--  -->
-  <xsl:variable name="flag_form" select="true()"/>
-  <!--  -->
-  <xsl:variable name="str_write" select="''"/>
+
   <xsl:output method="html"/>
+
   <xsl:include href="../../Utils.xsl"/>
 
   <xsl:template match="/">

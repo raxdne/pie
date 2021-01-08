@@ -18,7 +18,7 @@ TODO: update to HTML5 standard
 TODO: cleanup "browser-cgi\PieTransformations.xml"
 
 TODO: consolidate use of cxp:variable
-- "file_norm|file_plain"
+- "file_norm|file_plain" ✔
 - flag_form
 
 ### Calendar

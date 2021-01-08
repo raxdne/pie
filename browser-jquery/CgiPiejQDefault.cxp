@@ -23,14 +23,12 @@
                 <cxp:include name="PieTransformation.cxp" search="yes"/>
               </cxp:xml>
               <cxp:xsl name="pie2html.xsl">
-                <cxp:variable name="file_ref" select="'?path=%CGIPATH%&amp;cxp=PiejQDefault&amp;tag='"/>
                 <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
                 <cxp:variable name="flag_footer" select="false()"/>
                 <cxp:variable name="flag_toc" select="true()"/>
                 <cxp:variable name="flag_tags" select="true()"/>
                 <cxp:variable name="flag_llist" select="true()"/>
                 <cxp:variable name="str_tag" select="'%CGITAG%'"/>
-                <cxp:variable name="str_url" select="'%SCRIPT%?%QUERY%'"/>
                 <cxp:variable name="str_link_prefix" select="'/%CGIPATHDIR%'"/>
               </cxp:xsl>
             </cxp:xhtml>

@@ -20,7 +20,6 @@
               </cxp:xml>
               <cxp:xsl name="CgiPiejQDirVerbose.xsl">
 		<cxp:variable name="write" select="'%CGIPERM%'"/>
-		<cxp:variable name="length_link" select="256"/>
 		<cxp:variable name="str_frame" select="'piemain'"/>
               </cxp:xsl>
             </cxp:xhtml>
