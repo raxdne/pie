@@ -17,7 +17,7 @@ TODO: update to HTML5 standard
 
 TODO: cleanup "browser-cgi\PieTransformations.xml"
 
-TODO: consolidate use of cxp:variable
+TODO: consolidate use of cxp:variable ✔
 - "file_norm|file_plain" ✔
 - flag_form
 
@@ -25,7 +25,7 @@ TODO: consolidate use of cxp:variable
 
 BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`)  #v1 ++
 
-- remove `PieDate.js` and improve `PieCalendar.js`
+TODO: remove `PieDate.js` and improve `PieCalendar.js`
 
 ### Text
 
@@ -186,7 +186,7 @@ TEST: `<cxp:xhtml><html><body><pre><cxp:plain name="/tmp/test.txt">`
 
 TODO: redesign package
 
-TODO: create separate menue
+REQ: separate menue
 - Show structure
 - Clean buffers
 - Text
@@ -208,8 +208,6 @@ TODO: improve pie2latex.xsl
 
 [URL-encoding: Spaces ... s. ](http://skew.org/xml/stylesheets/url-encode/)
 
-TODO: extend pie2vcf.xsl
-
 TODO: update pie2md.xsl
 - [Markdown format](https://www.markdownguide.org/basic-syntax/)
 
@@ -229,10 +227,10 @@ TEST: xml\config-presentation.cxp
 TEST: xml\config-article.cxp
 
 TODO: improve presentation layout
-  - Layouts
-  - Logo, Copyright, Farben, Schrift
-  - stepwise mode
-  - test of "Impress.js"
+- Layouts
+- Logo, Copyright, Farben, Schrift
+- stepwise mode
+- test of "Impress.js"
 
 ## Ideas
 
