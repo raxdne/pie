@@ -21,6 +21,10 @@ TODO: consolidate use of cxp:variable ✔
 - "file_norm|file_plain" ✔
 - flag_form
 
+### Mobile
+
+TODO: update jquery-mobile UI #v1 ++
+
 ### Calendar
 
 BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`)  #v1 ++

@@ -21,30 +21,12 @@ body,table {
  */
 
 table {
-  background-color:#666666;
-  border-collapse:separate;
-  border-spacing:1px;
+  width: 95%;
+  border-collapse: collapse;
   empty-cells:show;
-
-/*   background-color:#666666; */
-/*   border-collapse:separate; */
-/*   border-spacing:1px; */
-/*   empty-cells:show; */
-  /*  table-layout:fixed; */
-
-  /* 
- margin: 5px 5px 5px 5px;
- margin: 5px 5px 5px 5px;
-     margin-top
-     margin-bottom
-     margin-left
-     margin-right
-  */
-}
-
-table.vcard {
-  margin: 5px 5px 5px 5px;
-  background-color:#ffffff;
+  margin-left:auto;
+  margin-right:auto;
+  border: 1px solid grey;
 }
 
 table.unlined {
@@ -56,12 +38,10 @@ tr {
 
 /* data cells */
 td {
-  /*  border:1px solid #222222;*/
-  background-color:#ffffff;
+  border: 1px solid grey;
   vertical-align:top;
 }
 .empty {
-  background-color:#ffffff;
   margin-bottom:0px;
 }
 .c11 {
@@ -98,25 +78,23 @@ td {
   background-color:#e0e0ff;
 }
 .gantt-low {
-  background-color:#b9ffb9;
+  background-color:#BBffBB;
   vertical-align:middle;
   text-align:center;
 }
 .gantt {
-  background-color:#ffff00;
+  background-color:#ffffBB;
   vertical-align:middle;
   text-align:center;
 }
 .gantt-high {
-  background-color:#ff7d7d;
+  background-color:#ffBBBB;
   vertical-align:middle;
   text-align:center;
 }
 
 table.formicons {
-  background-color:#ffffff;
   border-spacing:3px;
-  width: 100%;
 }
 td.formicon {
   text-align:left;
@@ -136,19 +114,20 @@ td.SLIDE {
 
 /* header cells */
 th {
+  border: 1px solid grey;
   margin-bottom:0px;
   text-align:left;
   background-color:#d9d9d9;
   color:#000000;
   font-weight:bold;
 }
-.title {
+th.title {
   margin-bottom:0px;
   text-align:left;
   background-color:#e0e0e0;
   font-weight:bold;
 }
-.header {
+th.header {
   margin-bottom:0px;
   text-align:left;
   background-color:#d9d9d9;
@@ -160,7 +139,46 @@ th.marker {
   background-color:#d9d9d9;
   font-weight:bold;
 }
- 
+
+span.tag {
+ margin: 3px 0px 3px 0px;
+ background-color:#FFFEA1;
+}
+span.tagGreen {
+ margin: 3px 0px 3px 0px;
+ background-color:#88FF88;
+}
+span.tagYellow {
+ margin: 3px 0px 3px 0px;
+ background-color:#FFFF88;
+}
+span.tagRed {
+ margin: 3px 0px 3px 0px;
+ background-color:#FF8888;
+}
+
+/* lists */
+ul, ol {
+ margin: 0px 0px 0px 0px;
+ padding: 0px 0px 0px 3em;
+}
+
+ul {
+  list-style-type:square;
+}
+
+li {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  margin-left:0px;
+  /* text-indent:0.1cm; */
+}
+
 /* misc tags
 
 */
@@ -173,38 +191,84 @@ p {
      margin-right
   */
   /* text-indent:0.1cm; */
-}
-.p1 {
-  background-color:#ffcccc;
-}
-.p2 {
-  background-color:#ccffcc;
-}
-.p3 {
-  background-color:#ccccff;
-}
-.done {
- color:#aaaaaa;
-/*  text-decoration:line-through; */
-}
-.target {
-  margin-bottom:0px;
-  text-align:left;
-  background-color:#fffea1;
+ margin: 3px 2px 3px 1px;
 }
 .abstract {
  font-style:italic;
   margin-bottom:0px;
   text-align:center;
 }
-.outlook {
- color:#666666;
- /*  text-decoration:line-through; */
+
+li.hidden,p.hidden {
+  /* 
+ margin: 5px 5px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+  /* text-indent:0.1cm; */
+  /* margin: 5px 5px 2px 2px; */
+  /* background-color:#00ff00; */
+  margin-top:5px;
+  margin-bottom:5px;
+ font-family:Courier;
+ font-size:120%;
+}
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
 }
 
 pre {
-  font-family:Courier,monospace;
- margin: 2px 2px 5px 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+dt {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+  */
+ font-weight:bold;
+ margin: 5px 5px 5px 5px;
+}
+
+dd {
+  /* 
+ margin: 10px 10px 20px 20px;
+     margin-top
+     margin-bottom
+     margin-left
+     margin-right
+ margin: 2px 2px 2px 2px;
+  */
 }
 
 img {
@@ -253,49 +317,51 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 }
  */
 
-*.task {
+*.task, *.todo, *.test, *.bug, *.req, *.target {
   background-color:#EEEEEE;
   padding: 1px;
   margin: 2px 2px 0px 0px;
 }
 
-*.taskDone,*.targetDone {
+*.p1, *.h1, *.fig1, *.task1, *.tr1, *.section1 {
+  background-color:#ffcccc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+*.p2, *.h2, *.fig2, *.task2, *.tr2, *.section2 {
+  background-color:#ccffcc;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+*.p3, *.h3, *.fig3, *.task3, *.tr3, *.section3 {
+  background-color:#ccccff;
+  padding: 1px;
+  margin: 2px 2px 0px 0px;
+}
+
+*.section-done,*.htag-done,*.task-done,*.p-done,*.h-done {
   color:#AAAAAA;
   background-color:#EEEEEE;
   padding: 1px;
   margin: 2px 2px 0px 0px;
+/*  text-decoration:line-through; */
 }
 
-*.task1 {
-  background-color:#ffdddd;
-  padding: 1px;
-  margin: 2px 2px 0px 0px;
+/* 
+ */
+*.invalid, *.task-rejected {
+  text-decoration: line-through;
 }
 
-*.task2 {
-  background-color:#ddffdd;
-  padding: 1px;
-  margin: 2px 2px 0px 0px;
-}
-
-*.task3 {
-  background-color:#ddddff;
-  padding: 1px;
-  margin: 2px 2px 0px 0px;
-}
-
-*.target {
-  vertical-align: top;
-  background-color:#fffea1;
-  padding:1px;
-  margin: 2px 2px 0px 0px;
-}
-
-*.highlight {
+*.highlight-block {
   border-right-color:#ff4444;
   border-right-style: solid;
   border-right-width: 8px;
   padding-right: 5px;
+}
+
+*.highlight {
+  background-color:#88ff88;
 }
 
 /* text marker like styles
@@ -318,4 +384,22 @@ span.b {
 span.i {
   font-style:italic;
 }
+span.date {
+  font-style:italic;
+}
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777;
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
 

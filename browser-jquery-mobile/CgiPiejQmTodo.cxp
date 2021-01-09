@@ -13,13 +13,15 @@
     <html>
       <cxp:include name="CgiPiejQmHead.xhtml" search="yes"/>
       <body>
-	<cxp:xml eval="yes">
-	  <cxp:include name="PieTransformation.cxp" search="yes"/>
-	</cxp:xml>
-	<cxp:xsl name="OpenTasks.xsl"/>
-	<cxp:xsl name="TodoTable.xsl">
-	  <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-	</cxp:xsl>
+        <cxp:xhtml>
+	  <cxp:xml eval="yes">
+	    <cxp:include name="PieTransformation.cxp" search="yes"/>
+	  </cxp:xml>
+	  <cxp:xsl name="OpenTasks.xsl"/>
+	  <cxp:xsl name="TodoTable.xsl">
+	    <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+	  </cxp:xsl>
+	</cxp:xhtml>
       </body>
     </html>
   </cxp:xhtml>
