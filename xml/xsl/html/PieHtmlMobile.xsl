@@ -47,9 +47,9 @@
             <xsl:element name="a">
               <xsl:attribute name="data-icon">bullets</xsl:attribute>
               <xsl:attribute name="href">
-                <xsl:text>javascript:window.location.assign(window.document.URL.replace(/(cxp|xsl)=[^&amp;]*/i,'cxp=PiejQmTodoContact'));</xsl:text>
+                <xsl:text>javascript:window.location.assign(window.document.URL.replace(/(cxp|xsl)=[^&amp;]*/i,'cxp=PiejQEditor'));</xsl:text>
               </xsl:attribute>
-              <xsl:text>Contact</xsl:text>
+              <xsl:text>Editor</xsl:text>
             </xsl:element>
           </xsl:element>
         </xsl:element>
@@ -65,41 +65,5 @@
       </xsl:element>
       <xsl:apply-templates select="*[not(name()='h')]"/>
     </xsl:element>
-  </xsl:template>
-  <xsl:template match="*[@valid='no']">
-    <!-- ignore this elements -->
-  </xsl:template>
-  <xsl:template match="task">
-    <xsl:choose>
-      <xsl:when test="@done">
-        <!-- ignore this elements -->
-      </xsl:when>
-      <xsl:when test="name(parent::node()) = 'list'">
-        <!-- list item -->
-        <xsl:element name="li">
-	</xsl:element>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:element name="p">
-          <xsl:call-template name="CLASSATRIBUTE"/>
-          <xsl:apply-templates select="h"/>
-          <xsl:text> / </xsl:text>
-          <!-- calendar marker -->
-          <xsl:call-template name="DATESTRING"/>
-          <xsl:text> / </xsl:text>
-          <xsl:value-of select="@effort"/>
-          <xsl:for-each select="htag">
-            <xsl:text> / </xsl:text>
-            <xsl:value-of select="@idref"/>
-          </xsl:for-each>
-        </xsl:element>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  <xsl:template match="section[count(*[not(name()='h')]) &lt; 1]">
-    <!-- ignore this elements -->
-  </xsl:template>
-  <xsl:template match="meta">
-    <!-- ignore this elements -->
   </xsl:template>
 </xsl:stylesheet>

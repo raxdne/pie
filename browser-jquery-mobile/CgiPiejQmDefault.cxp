@@ -18,6 +18,7 @@
 	    <cxp:include name="PieTransformation.cxp" search="yes"/>
 	  </cxp:xml>
 	  <cxp:xsl name="pie2jqm.xsl">
+	    <cxp:variable name="flag_header" select="false()"/>
 	    <cxp:variable name="flag_footer" select="false()"/>
 	  </cxp:xsl>
 	</cxp:xhtml>

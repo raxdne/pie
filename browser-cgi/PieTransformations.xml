@@ -452,7 +452,15 @@
     <transition id="pie2jqm">
       <h>pie2jqm</h>
       <make>
-	<xsl name="pie2jqm.xsl"/>
+	<xsl name="pie2jqm.xsl">
+	  <variable name="file_css" select="''"/>
+	  <variable name="file_norm" select="'%CGIPATH%'"/>
+	  <variable name="flag_toc" select="false()"/>
+	  <variable name="flag_tags" select="true()"/>
+	  <variable name="flag_llist" select="true()"/>
+	  <variable name="str_tag" select="'%CGITAG%'"/>
+	  <variable name="str_link_prefix" select="'/%CGIPATHDIR%'"/>
+	</xsl>
       </make>
     </transition>
     <transition id="pie2tab">

@@ -6,9 +6,9 @@
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="true()"/>
   <!--  -->
-  <xsl:variable name="flag_header" select="true()"/>
+  <xsl:variable name="flag_header" select="false()"/>
   <!--  -->
-  <xsl:variable name="flag_footer" select="true()"/>
+  <xsl:variable name="flag_footer" select="false()"/>
   <!--  -->
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->

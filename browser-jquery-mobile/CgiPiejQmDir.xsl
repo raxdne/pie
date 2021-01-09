@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rpt="http://openoffice.org/2005/report" xmlns:rdfa="http://docs.oasis-open.org/opendocument/meta/rdfa#" xmlns:office="http://openoffice.org/2000/office" xmlns:style="http://openoffice.org/2000/style" xmlns:text="http://openoffice.org/2000/text" xmlns:table="http://openoffice.org/2000/table" xmlns:draw="http://openoffice.org/2000/drawing" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:meta="http://openoffice.org/2000/meta" xmlns:number="http://openoffice.org/2000/datastyle" xmlns:svg="http://www.w3.org/2000/svg" xmlns:chart="http://openoffice.org/2000/chart" xmlns:dr3d="http://openoffice.org/2000/dr3d" xmlns:form="http://openoffice.org/2000/form" xmlns:script="http://openoffice.org/2000/script" xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003" version="1.0">
-  <xsl:import href="../xsl/html/PieHtmlMobile.xsl"/>
+  <xsl:import href="../xml/xsl/html/PieHtmlMobile.xsl"/>
   <!--
      s. https://demos.jquerymobile.com/1.4.5/
   -->
@@ -108,7 +108,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:attribute name="href">
-                  <xsl:value-of select="concat('?path=',$str_path,'&amp;','xsl=CgiPiejQmDir')"/>
+                  <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQmDir')"/>
                   <xsl:if test="@write='no'">
                     <xsl:value-of select="concat('&amp;','write=no')"/>
                   </xsl:if>
@@ -239,7 +239,7 @@
           </xsl:element>
         </xsl:element>
       </xsl:when>
-      <xsl:when test="@ext='docx' or @ext='txt' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='tdv' or @ext='vcf' or @ext='csv' or @ext='ics' or @ext='odt' or @ext='sxw' or @ext='ods' or @ext='sxc' or (contains(@type,'image') and image) or @ext='cal' or @ext='gcal'">
+      <xsl:when test="@ext='docx' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='vcf' or @ext='csv' or @ext='ics' or @ext='odt' or @ext='sxw' or @ext='ods' or @ext='sxc' or (contains(@type,'image') and image) or @ext='cal' or @ext='gcal'">
         <!-- dynamic content using cxproc -->
         <xsl:choose>
           <xsl:when test="@ext='cxp' and not(cxp:make/cxp:description)">
@@ -268,7 +268,7 @@
                       <!-- all images -->
                       <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
                     </xsl:when>
-                    <xsl:when test="@ext='cal' or @ext='gcal' or @ext='tdv' or @ext='ics'">
+                    <xsl:when test="@ext='cal' or @ext='gcal' or @ext='ics'">
                       <!-- edit form for this type of files -->
                       <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar')"/>
                     </xsl:when>
@@ -277,7 +277,7 @@
                       <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                       <!-- <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=csv')"/> -->
                     </xsl:when>
-                    <xsl:when test="@ext='txt' or @ext='mm' or @ext='pie' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx'">
+                    <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx'">
                       <!--  or @ext='html' -->
                       <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                     </xsl:when>
