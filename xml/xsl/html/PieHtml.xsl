@@ -393,57 +393,44 @@
     </xsl:element>
   </xsl:template>
   <xsl:template name="TABLEHEADER">
-    <!--  -->
-    <xsl:param name="numRows" select="-1"/>
-    <xsl:param name="numRowMax" select="-1"/>
-    <!--
-    <xsl:comment>
-      <xsl:value-of select="concat(' numRows = ',$numRows,', numRowMax = ',$numRowMax,' ')"/>
-      </xsl:comment>
-      -->
+    <!-- create a table header cell for every column -->
+    <xsl:param name="numCols" select="-1"/>
+    <xsl:param name="numColMax" select="-1"/>
     <xsl:choose>
-      <xsl:when test="$numRows = 0"> <!-- end of list -->
+      <xsl:when test="$numCols &lt; 0"> <!-- first column -->
 	<xsl:element name="thead">
 	  <xsl:element name="tr">
 	    <xsl:element name="th">
 	      <xsl:text>&#x2800;</xsl:text>
 	    </xsl:element>
-	    <xsl:for-each select="child::tr[position() = $numRowMax]/child::td">
-	      <xsl:element name="th">
-		<xsl:value-of select="position()"/>
-	      </xsl:element>
-	    </xsl:for-each>
+	    <xsl:call-template name="TABLEHEADER"> <!-- recursion, initial call -->
+	      <xsl:with-param name="numCols" select="1"/>
+	      <xsl:with-param name="numColMax">
+		<xsl:choose>
+		  <xsl:when test="@cols">
+		    <xsl:value-of select="@cols"/> <!-- initial value of table/@cols -->
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:value-of select="count(child::tr[1]/child::td)"/> <!-- initial value, count of childs -->
+		  </xsl:otherwise>
+		</xsl:choose>
+	      </xsl:with-param>
+	    </xsl:call-template>
 	  </xsl:element>
 	</xsl:element>
       </xsl:when>
+      <xsl:when test="$numCols &gt; $numColMax">
+	<!-- end recursion -->
+      </xsl:when>
       <xsl:otherwise>
+	<xsl:element name="th">
+	  <xsl:value-of select="$numCols"/>
+	</xsl:element>
 	<xsl:call-template name="TABLEHEADER"> <!-- recursion -->
-	  <xsl:with-param name="numRows">
-	    <xsl:choose>
-	      <xsl:when test="$numRows &lt; 0">
-		<xsl:value-of select="count(child::tr)"/> <!-- initial value -->
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="$numRows - 1"/> <!-- decrement value -->
-	      </xsl:otherwise>
-	    </xsl:choose>
+	  <xsl:with-param name="numCols">
+	    <xsl:value-of select="$numCols + 1"/> <!-- decrement value -->
 	  </xsl:with-param>
-	  <xsl:with-param name="numRowMax">
-	    <xsl:choose>
-	      <xsl:when test="$numRows &lt; 0">
-		<xsl:value-of select="count(child::tr)"/> <!-- initial value, last child -->
-	      </xsl:when>
-	      <xsl:when test="$numRowMax &lt; 0">
-		<xsl:value-of select="$numRows"/> <!-- initial value -->
-	      </xsl:when>
-	      <xsl:when test="count(child::tr[position() = $numRowMax]/child::td) &lt; count(child::tr[position() = $numRows]/child::td)">
-		<xsl:value-of select="$numRows"/> <!-- new maximum -->
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="$numRowMax"/> <!-- keep max value -->
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:with-param>
+	  <xsl:with-param name="numColMax" select="$numColMax"/> <!-- keep max value -->
 	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
