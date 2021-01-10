@@ -1104,6 +1104,12 @@
 	<xsl name="xCal2pie.xsl"/>
       </make>
     </transition>
+    <transition id="pie2ics">
+      <h>pie2ics</h>
+      <make>
+	<xsl name="pie2ics.xsl"/>
+      </make>
+    </transition>
     <transition id="ics2journal">
       <h>ics2journal</h>
       <make>
@@ -1116,7 +1122,7 @@
 	<xsl name="vcf2pie.xsl"/>
       </make>
     </transition>
-    <transition id="exportcalendar">
+    <transition id="exportcalendar" valid="no">
       <h>exportcalendar</h>
       <make>
 	<xsl name="piecalendar2ics.xsl"/>
@@ -1186,6 +1192,8 @@
     <relation from="odp2pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.spreadsheet" to="ods2pie"/>
     <relation from="ods2pie" to="application/pie+proc+xml"/>
+    <relation from="application/pie+proc+xml" to="pie2ics"/>
+    <relation from="pie2ics" to="text/calendar"/>
     <relation from="text/calendar" to="ics2pie"/>
     <relation from="ics2pie" to="application/pie+proc+xml"/>
     <relation from="text/calendar" to="ics2journal"/>
