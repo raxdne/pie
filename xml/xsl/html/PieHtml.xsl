@@ -882,22 +882,22 @@
     </xsl:if>
   </xsl:template>
   <xsl:template name="MENUSET">
-    <xsl:choose>
-      <xsl:when test="@flocator">
-	<xsl:attribute name="name">
+    <xsl:attribute name="name">
+      <xsl:choose>
+	<xsl:when test="@flocator">
 	  <xsl:value-of select="concat(translate(@flocator,'\','/'),':',@fxpath,':',@xpath)"/>
-	</xsl:attribute>
-      </xsl:when>
-      <!--
-      <xsl:when test="string-length($file_norm) &gt; 0">
-	<xsl:attribute name="name">
-	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@xpath,':',@xpath)"/>
-	</xsl:attribute>
 	</xsl:when>
-	-->
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+	<xsl:when test="ancestor::block[@context]">
+	  <xsl:value-of select="concat(translate(ancestor::block[1]/@context,'\','/'),':',@fxpath,':',@xpath)"/>
+	</xsl:when>
+	<xsl:when test="string-length($file_norm) &gt; 0">
+	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@xpath,':',@xpath)"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="concat('',':',@xpath,':',@xpath)"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
     <xsl:attribute name="class">
       <xsl:value-of select="concat('context-menu-',name())"/>
     </xsl:attribute>

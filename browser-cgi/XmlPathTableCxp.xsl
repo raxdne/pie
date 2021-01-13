@@ -81,6 +81,12 @@
           <xsl:value-of select="$str_path" />
         </xsl:attribute>
       </xsl:if>
+      <xsl:if test="attribute::select[. = 'PATH']">
+        <!-- replace 'PATH' by path value and set type attribute -->
+        <xsl:attribute name="select">
+          <xsl:value-of select="$str_path" />
+        </xsl:attribute>
+      </xsl:if>
       <xsl:if test="attribute::select[. = 'XPATH']">
         <!-- replace 'XPATH' by path value and set type attribute -->
         <xsl:attribute name="select">

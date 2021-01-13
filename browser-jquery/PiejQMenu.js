@@ -395,7 +395,11 @@ function callbackSection(key, options) {
 	}
 
 	if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	    putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
+	    if (arrLocator[2] == undefined || arrLocator[2] == '') {
+		putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
+	    } else {
+		urlParams.set('xpath',arrLocator[2]);
+	    }
 	} else {
 	    urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
 	}

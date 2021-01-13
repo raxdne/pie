@@ -733,7 +733,9 @@
 		  <xml>
 		    <file name="PATH" verbosity="5"/>
 		  </xml>
-		  <xsl name="docx2txt.xsl"/>
+		  <xsl name="docx2txt.xsl">
+		    <variable name="str_path" select="PATH" />
+		  </xsl>
 		</plain>
 	      </import>
 	    </pie>
@@ -751,7 +753,9 @@
 	  <xml locator="yes">
 	    <file name="PATH" verbosity="5"/>
 	  </xml>
-	  <xsl name="docx2txt.xsl"/>
+	  <xsl name="docx2txt.xsl">
+	    <variable name="str_path" select="PATH" />
+	  </xsl>
 	</plain>
       </make>
     </transition>
