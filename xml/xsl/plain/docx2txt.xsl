@@ -7,7 +7,7 @@
 
   <xsl:variable name="str_path" select="''" />
 
-  <!-- 'Heading' 'berschrift' -->
+  <!-- header structure with templates 'Heading' 'berschrift' -->
 
   <xsl:variable name="newline">
 <xsl:text>
@@ -21,9 +21,17 @@
 </xsl:variable>
   
   <xsl:template match="/">
-    <xsl:if test="string-length($str_path) &gt; 0"> <!--  -->
-      <xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="string-length($str_path) &gt; 0">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+      </xsl:when>
+      <xsl:when test="pie/file/@name">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- no locator found -->
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates select="//w:document/w:body"/>
     <!-- all table cells containing markup 'TODO:' -->
     <xsl:if test="count(descendant::w:p[parent::w:tc and descendant::w:t[contains(.,'TODO:')]]) &gt; 0">
@@ -32,7 +40,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'berschrift')]"> <!-- TODO: check language dependencies -->
+  <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Heading') or contains(w:pPr/w:pStyle/@w:val,'berschrift')]">
     <xsl:if test="descendant::w:strike or descendant::w:dstrike"> <!-- text strike -->
       <xsl:text>;</xsl:text>
     </xsl:if>
@@ -40,7 +48,16 @@
       <xsl:with-param name="str_markup">
 	<xsl:text>*</xsl:text>
       </xsl:with-param>
-      <xsl:with-param name="level" select="substring-after(w:pPr/w:pStyle/@w:val,'berschrift')"/>
+      <xsl:with-param name="level">
+	<xsl:choose>
+	  <xsl:when test="starts-with(w:pPr/w:pStyle/@w:val,'berschrift')">
+	    <xsl:value-of select="substring-after(w:pPr/w:pStyle/@w:val,'berschrift')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="substring-after(w:pPr/w:pStyle/@w:val,'Heading')"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:with-param>
     </xsl:call-template>
     <xsl:apply-templates/>
     <xsl:value-of select="$newpar"/>
@@ -102,7 +119,7 @@
   </xsl:template>
 
   <xsl:template match="w:p">
-    <xsl:if test="descendant::w:rPr[child::w:strike or child::w:dstrike] and not(ancestor::w:p/descendant::w:pPr[contains(w:pStyle/@w:val,'berschrift')])"> <!-- text strike, but not header -->
+    <xsl:if test="descendant::w:rPr[child::w:strike or child::w:dstrike] and not(ancestor::w:p/descendant::w:pPr[contains(w:pPr/w:pStyle/@w:val,'Heading') or contains(w:pPr/w:pStyle/@w:val,'berschrift')])"> <!-- text strike, but not header -->
       <xsl:text>; </xsl:text>
     </xsl:if>
     <xsl:apply-templates/>

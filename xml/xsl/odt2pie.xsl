@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:php="http://php.net/xsl" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" exclude-result-prefixes="xhtml php xsl office style text table draw fo xlink">
-  <xsl:output method="xml"/>
+
+  <xsl:output method="xml" encoding="UTF-8" version="1.0"/>
+
+  <xsl:variable name="str_path" select="''" />
+
   <xsl:template match="/">
-    <xsl:choose>
-      <xsl:when test="pie//file/archive/file[@name = 'content.xml']/office:document-content">
-	<xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
+    <xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
+      <xsl:attribute name="class">
+        <xsl:text>odt</xsl:text>
+      </xsl:attribute>
+      <xsl:choose>
+	<xsl:when test="string-length($str_path) &gt; 0">
+	  <xsl:attribute name="context">
+	    <xsl:value-of select="$str_path"/>
+	  </xsl:attribute>
+	</xsl:when>
+	<xsl:when test="pie/file/@name">
+	  <xsl:attribute name="context">
+	    <xsl:value-of select="concat(pie/file/@prefix,'/',pie/file/@name)"/>
+	  </xsl:attribute>
+	</xsl:when>
+	<xsl:otherwise>
+	  <!-- no locator found -->
+	</xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+	<xsl:when test="pie//file/archive/file[@name = 'content.xml']/office:document-content">
 	  <xsl:apply-templates select="pie//file/archive/file[@name = 'content.xml']/office:document-content/office:body/office:text"/>
-	</xsl:element>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
+	</xsl:when>
+	<xsl:otherwise>
 	  <xsl:apply-templates select="//office:document-content/office:body/office:text"/>
-	</xsl:element>
-      </xsl:otherwise>
-    </xsl:choose>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:element>
   </xsl:template>
+  
   <xsl:template match="office:text">
     <xsl:element name="section">
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="text:h">
     <xsl:element name="h">
       <xsl:apply-templates/>

@@ -554,6 +554,7 @@
       <h>pie2txt</h>
       <make>
 	<xsl name="pie2txt.xsl">
+	  <variable name="str_path" select="PATH" />
 	  <variable name="str_tagtime" select="TAGTIME"/>
 	</xsl>
       </make>
@@ -1069,23 +1070,10 @@
 	<xsl name="XlsX2pie.xsl"/>
       </make>
     </transition>
-    <transition id="DocX2Pie">
-      <h>DocX2Pie</h>
-      <make>
-	<xsl name="DocX2Pie.xsl"/>
-      </make>
-    </transition>
     <transition id="odt2html" valid="no">
       <h>odt2html</h>
       <make>
 	<xsl name="odt2html.xsl"/>
-      </make>
-    </transition>
-    <transition id="odt2pie" valid="no">
-      <h>odt2pie</h>
-      <make>
-	<xpath select="XPATH"/>
-	<xsl name="odt2pie.xsl"/>
       </make>
     </transition>
     <transition id="ods2pie">
@@ -1175,6 +1163,7 @@
     <relation from="xmind2mm" to="application/mm+proc+xml"/>
     <!-- <relation from="application/mm+proc+xml" to="mm2html"/><relation from="mm2html" to="text/html"/>-->
     <relation from="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" to="XlsX2pie"/>
+    <relation from="XlsX2pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.text" to="odt2plain"/>
     <relation from="odt2plain" to="text/plain+import"/>
     <relation from="application/vnd.oasis.opendocument.text" to="importodt"/>
@@ -1187,11 +1176,8 @@
     <relation from="importpptx" to="application/pie+proc+xml"/>
     <relation from="application/vnd.openxmlformats-officedocument.presentationml.presentation" to="pptx2plain"/>
     <relation from="pptx2plain" to="text/plain+import"/>
-    <relation from="DocX2Pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.text" to="odt2html"/>
     <relation from="odt2html" to="text/html"/>
-    <relation from="application/vnd.oasis.opendocument.text" to="odt2pie"/>
-    <relation from="odt2pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.presentation" to="odp2pie"/>
     <relation from="odp2pie" to="application/pie+proc+xml"/>
     <relation from="application/vnd.oasis.opendocument.spreadsheet" to="ods2pie"/>

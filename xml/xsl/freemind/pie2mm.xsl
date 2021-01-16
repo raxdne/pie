@@ -19,7 +19,7 @@
   </xsl:template>
   <xsl:template match="pie">
     <xsl:choose>
-      <xsl:when test="count(child::*[not(name()='meta' or name()='date' or name()='error' or name()='author')]) &gt; 1">
+      <xsl:when test="count(child::*[not(name()='meta')]) &gt; 1">
         <!-- create root node -->
         <xsl:element name="node">
           <xsl:attribute name="TEXT">
@@ -299,7 +299,18 @@
     </xsl:if>
   </xsl:template>
   <xsl:template match="block">
-    <xsl:apply-templates/>
+    <xsl:choose>
+      <xsl:when test="count(child::*[not(name()='meta')]) &gt; 1">
+	<!-- its a block with more than one child, create explicit node -->
+        <xsl:element name="node">
+          <xsl:apply-templates/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- simple block can be ignored -->
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <xsl:template match="*|text()|@*">
     <!-- ignore other elements --> 

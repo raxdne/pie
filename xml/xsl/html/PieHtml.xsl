@@ -890,9 +890,11 @@
 	<xsl:when test="ancestor::block[@context]">
 	  <xsl:value-of select="concat(translate(ancestor::block[1]/@context,'\','/'),':',@fxpath,':',@xpath)"/>
 	</xsl:when>
+	<!--
 	<xsl:when test="string-length($file_norm) &gt; 0">
 	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@xpath,':',@xpath)"/>
-	</xsl:when>
+	  </xsl:when>
+	  -->
 	<xsl:otherwise>
 	  <xsl:value-of select="concat('',':',@xpath,':',@xpath)"/>
 	</xsl:otherwise>

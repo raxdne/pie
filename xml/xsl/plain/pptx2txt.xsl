@@ -5,6 +5,8 @@
 
   <xsl:output method="text" encoding="UTF-8"/>
 
+  <xsl:variable name="str_path" select="''" />
+
 <xsl:variable name="newpar">
 <xsl:text>
 
@@ -12,7 +14,17 @@
 </xsl:variable>
   
 <xsl:template match="/">
-  <xsl:value-of select="concat(';;',$newpar)"/>
+  <xsl:choose>
+    <xsl:when test="string-length($str_path) &gt; 0">
+      <xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+    </xsl:when>
+    <xsl:when test="pie/file/@name">
+      <xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <!-- no locator found -->
+    </xsl:otherwise>
+  </xsl:choose>
   <xsl:choose>
     <!--
     <xsl:when test="pie/file[@name]">

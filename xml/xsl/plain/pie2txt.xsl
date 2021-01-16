@@ -2,16 +2,29 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PiePlain.xsl"/>
   <xsl:output method="text" encoding="UTF-8"/>
+
+  <xsl:variable name="str_path" select="''" />
+
   <xsl:variable name="str_tagtime" select="''"/>
+
   <xsl:variable name="newpar">
     <xsl:text>
 
 </xsl:text>
   </xsl:variable>
+
   <xsl:template match="/">
-    <xsl:apply-templates/>
-  </xsl:template>
-  <xsl:template match="pie">
+    <xsl:choose>
+      <xsl:when test="string-length($str_path) &gt; 0">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+      </xsl:when>
+      <xsl:when test="pie/file/@name">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- no locator found -->
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:call-template name="TAGTIME">
       <xsl:with-param name="str_tagtime" select="concat('; ',$str_tagtime,$newpar)"/>
     </xsl:call-template>

@@ -1,22 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
   <xsl:output method="xml" encoding="UTF-8" version="1.0"/>
+
+  <xsl:variable name="str_path" select="''" />
+
   <xsl:variable name="flag_section" select="count(descendant::font[@BOLD='true']) &gt; 0"/>
+
   <xsl:variable name="h_max" select="3"/>
-  <xsl:template match="pie|file">
-    <xsl:apply-templates/>
-  </xsl:template>
-  <xsl:template match="map">
-    <xsl:element name="pie">
+
+  <xsl:template match="/">
+    <xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
       <xsl:attribute name="class">
         <xsl:text>mindmap</xsl:text>
       </xsl:attribute>
+      <xsl:choose>
+	<xsl:when test="string-length($str_path) &gt; 0">
+	  <xsl:attribute name="context">
+	    <xsl:value-of select="$str_path"/>
+	  </xsl:attribute>
+	</xsl:when>
+	<xsl:when test="pie/file/@name">
+	  <xsl:attribute name="context">
+	    <xsl:value-of select="concat(pie/file/@prefix,'/',pie/file/@name)"/>
+	  </xsl:attribute>
+	</xsl:when>
+	<xsl:otherwise>
+	  <!-- no locator found -->
+	</xsl:otherwise>
+      </xsl:choose>
       <xsl:comment>
-      <xsl:value-of select="concat(' mm2pie.xsl: ','flag_section=',$flag_section,' ','h_max=',$h_max,' ')"/>
+	<xsl:value-of select="concat(' mm2pie.xsl: ','flag_section=',$flag_section,' ','h_max=',$h_max,' ')"/>
       </xsl:comment>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template match="pie|file|map">
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <xsl:template match="node[attribute[@NAME='class']/@VALUE]">
     <!-- node with explicit element name -->
     <xsl:element name="{attribute[1][@NAME='class']/@VALUE}">

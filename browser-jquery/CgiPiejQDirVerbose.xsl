@@ -25,6 +25,7 @@
               <xsl:element name="th">Title</xsl:element>
               <xsl:element name="th">File name</xsl:element>
               <xsl:element name="th">Edit</xsl:element>
+              <xsl:element name="th">Meta</xsl:element>
               <xsl:element name="th">Byte</xsl:element>
               <xsl:element name="th">MTime</xsl:element>
               <xsl:element name="th">MIME</xsl:element>
@@ -188,7 +189,7 @@
                     <!-- edit form for this type of files -->
                     <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
                   </xsl:when>
-                  <xsl:when test="starts-with(@type,'text/') or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
+                  <xsl:when test="starts-with(@type,'text/') or @ext='pie' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
                     <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                   </xsl:when>
                   <xsl:when test="@ext='cxp'">
@@ -286,9 +287,21 @@
 		<xsl:attribute name="href">
 		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=PiejQEditor')"/>
 		</xsl:attribute>
-		<xsl:text> [Edit]</xsl:text>
+		<xsl:text>[Edit]</xsl:text>
 	      </xsl:element>
 	    </xsl:if>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:element name="a">
+	      <xsl:attribute name="class">cxp</xsl:attribute>
+	      <xsl:attribute name="title">
+		<xsl:value-of select="@name"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=PiejQFormat')"/>
+	      </xsl:attribute>
+	      <xsl:text>[Meta]</xsl:text>
+	    </xsl:element>
 	  </xsl:element>
 	  <xsl:element name="td">
 	    <xsl:value-of select="@size"/>
@@ -308,7 +321,7 @@
 	      <xsl:attribute name="href">
 		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Trash')"/>
 	      </xsl:attribute>
-	      <xsl:text> [Trash]</xsl:text>
+	      <xsl:text>[Trash]</xsl:text>
 	    </xsl:element>
 	  </xsl:element>
 	</xsl:element>

@@ -19,13 +19,13 @@
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
-
+  <!--  -->
   <xsl:variable name="flag_llist"  select="false()"/>
-
+  <!--  -->
   <xsl:variable name="flag_tags"  select="false()"/>
-
+  <!--  -->
   <xsl:variable name="str_tag"  select="''"/>
-
+  <!--  -->
   <xsl:variable name="toc_display"  select="'none'"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="'.'"/>

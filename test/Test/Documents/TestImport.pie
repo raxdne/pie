@@ -3,6 +3,22 @@
   <section>
     <h>Test import PIE</h>
     <import name="TestContent.txt"/>
+    <import type="cxp">
+      <plain>
+	<xml>
+	  <file name="Test/Documents/TestContent.odt" verbosity="5"/>
+	</xml>
+	<xsl name="odt2txt.xsl"/>
+      </plain>
+    </import>
+    <import type="cxp">
+      <xml>
+	<xml>
+	  <file name="Test/Documents/TestContent.mm" verbosity="5"/>
+	</xml>
+	<xsl name="mm2pie.xsl"/>
+      </xml>
+    </import>
     <import name="TestContent.pie"/>
   </section>
 </pie>

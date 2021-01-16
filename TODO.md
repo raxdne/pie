@@ -35,8 +35,9 @@ TODO: remove `PieDate.js` and improve `PieCalendar.js`
 
 BUG: use of flocator/fxpath for “Scope” #v1 ++ ✔
 
-BUG: flocator/fxpath for “Scope” in DOCX etc #v1 ++
-- xml/pie[@context="abc.docx"]/import
+BUG: flocator/fxpath for “Scope” in DOCX etc #v1 ✔ ++
+- `xml/pie/block[@context="abc.docx"]
+- markup in plain text (same as `TAGS`) `ORIGIN:abc.docx`
 
 BUG: filtering using tags which contain '#' char #v1 ++ ✔
 
@@ -44,6 +45,7 @@ REQ: structure as mindmap (3D.js) #v2
 - text visualization using Data-Driven Documents (tree etc)
 
 REQ: content statistics (chars, words, histogram)
+- `/pie/meta/statistics/[chars|words|histogram]` #v1
 
 REQ: local images in fig.
 
