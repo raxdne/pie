@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <!-- replaces Patterns 'PATH', 'XPATH' and 'TAG' -->
   <xsl:variable name="str_filter" select="''" />
-  <xsl:variable name="str_path" select="'abc.xml'" />
+  <xsl:variable name="str_path"></xsl:variable>
   <xsl:variable name="str_xpath" select="'/*'" />
   <xsl:variable name="str_tag" select="''" />
   <xsl:variable name="str_tagtime" select="''" />
@@ -87,6 +87,10 @@
           <xsl:value-of select="$str_path" />
         </xsl:attribute>
       </xsl:if>
+      <xsl:if test="text() = 'PATH'">
+        <!-- replace 'PATH' by path value and set type attribute -->
+        <xsl:value-of select="$str_path" />
+      </xsl:if>
       <xsl:if test="attribute::select[. = 'XPATH']">
         <!-- replace 'XPATH' by path value and set type attribute -->
         <xsl:attribute name="select">
@@ -112,6 +116,10 @@
         <xsl:attribute name="pattern">
           <xsl:value-of select="$str_tag" />
         </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="text() = 'TAG'">
+        <!-- replace 'TAG' by path value and set type attribute -->
+        <xsl:value-of select="$str_tag" />
       </xsl:if>
       <xsl:if test="attribute::select[. = 'TAGTIME']">
         <!-- replace 'TAGTIME' by path value and set type attribute -->

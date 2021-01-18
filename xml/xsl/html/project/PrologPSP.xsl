@@ -4,10 +4,14 @@
 
   <xsl:import href="../PieHtml.xsl"/>
 
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
+  <!--  -->
   <xsl:variable name="file_css" select="'pie.css'"/>
   <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
-<xsl:output method='html' version='1.0' encoding='UTF-8'/>
+
+  <xsl:output method='html' version='1.0' encoding='UTF-8'/>
 
 <xsl:variable name="flag_details" select="true()"/>
 <xsl:variable name="flag_ap" select="true()"/>

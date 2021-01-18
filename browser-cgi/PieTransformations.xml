@@ -307,7 +307,7 @@
       <make>
 	<xsl name="PieRemoveBlockNodes.xsl"/>
 	<xsl name="pie2tree.xsl">
-	  <variable name="str_tagtime" select="TAGTIME"/>
+	  <variable name="str_tagtime">TAGTIME</variable>
 	</xsl>
       </make>
     </transition>
@@ -370,9 +370,9 @@
       <h>mm2usecases</h>
       <make>
 	<xsl name="mm2usecases.xsl">
-	  <variable name="str_pathdir" select="'%CGIPATHDIR%'"/>
+	  <variable name="str_pathdir">%CGIPATHDIR%</variable>
 	  <!-- draft
-	  <variable name="str_tag" select="'Sundown'"/>
+	  <variable name="str_tag">Sundown</variable>
 	  -->
 	  <variable name="flag_task" select="true()"/>
 	  <variable name="flag_req" select="true()"/>
@@ -440,12 +440,12 @@
       <make>
 	<xsl name="pie2html.xsl">
 	  <variable name="file_css" select="''"/>
-	  <variable name="file_norm" select="'%CGIPATH%'"/>
+	  <variable name="file_norm">%CGIPATH%</variable>
 	  <variable name="flag_toc" select="true()"/>
 	  <variable name="flag_tags" select="true()"/>
 	  <variable name="flag_llist" select="true()"/>
-	  <variable name="str_tag" select="'%CGITAG%'"/>
-	  <variable name="str_link_prefix" select="'/%CGIPATHDIR%'"/>
+	  <variable name="str_tag">%CGITAG%</variable>
+	  <variable name="str_link_prefix">/%CGIPATHDIR%</variable>
 	</xsl>
       </make>
     </transition>
@@ -454,12 +454,12 @@
       <make>
 	<xsl name="pie2jqm.xsl">
 	  <variable name="file_css" select="''"/>
-	  <variable name="file_norm" select="'%CGIPATH%'"/>
+	  <variable name="file_norm">%CGIPATH%</variable>
 	  <variable name="flag_toc" select="false()"/>
 	  <variable name="flag_tags" select="true()"/>
 	  <variable name="flag_llist" select="true()"/>
-	  <variable name="str_tag" select="'%CGITAG%'"/>
-	  <variable name="str_link_prefix" select="'/%CGIPATHDIR%'"/>
+	  <variable name="str_tag">%CGITAG%</variable>
+	  <variable name="str_link_prefix">/%CGIPATHDIR%</variable>
 	</xsl>
       </make>
     </transition>
@@ -518,11 +518,11 @@
       <h>PIE to PSP</h>
       <make>
 	<xsl name="PrologPSP.xsl">
-	  <variable name="file_norm" select="'%CGIPATH%'"/>
+	  <variable name="file_norm">%CGIPATH%</variable>
 	  <variable name="flag_toc" select="true()"/>
 	  <variable name="flag_tags" select="true()"/>
 	  <variable name="flag_llist" select="true()"/>
-	  <variable name="str_tag" select="'%CGITAG%'"/>
+	  <variable name="str_tag">%CGITAG%</variable>
 	</xsl>
       </make>
     </transition>
@@ -554,8 +554,8 @@
       <h>pie2txt</h>
       <make>
 	<xsl name="pie2txt.xsl">
-	  <variable name="str_path" select="PATH" />
-	  <variable name="str_tagtime" select="TAGTIME"/>
+	  <variable name="str_path">PATH</variable>
+	  <variable name="str_tagtime">TAGTIME</variable>
 	</xsl>
       </make>
     </transition>
@@ -591,7 +591,7 @@
 	</xsl:template>  
       </xsl:stylesheet>
 	<xsl name="pie2txt.xsl">
-	  <variable name="str_tagtimeYY" select="TAGTIME"/>
+	  <variable name="str_tagtime">TAGTIME</variable>
 	</xsl>
       </make>
     </transition>
@@ -599,7 +599,7 @@
       <h>pie2md</h>
       <make>
 	<xsl name="pie2md.xsl">
-	  <variable name="str_tagtime" select="TAGTIME"/>
+	  <variable name="str_tagtime">TAGTIME</variable>
 	</xsl>
       </make>
     </transition>
@@ -735,7 +735,7 @@
 		    <file name="PATH" verbosity="5"/>
 		  </xml>
 		  <xsl name="docx2txt.xsl">
-		    <variable name="str_path" select="PATH" />
+		    <variable name="str_path">PATH</variable>
 		  </xsl>
 		</plain>
 	      </import>
@@ -755,7 +755,7 @@
 	    <file name="PATH" verbosity="5"/>
 	  </xml>
 	  <xsl name="docx2txt.xsl">
-	    <variable name="str_path" select="PATH" />
+	    <variable name="str_path">PATH</variable>
 	  </xsl>
 	</plain>
       </make>

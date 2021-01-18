@@ -3,9 +3,9 @@
   <xsl:import href="PiePlain.xsl"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
-  <xsl:variable name="str_path" select="''" />
+  <xsl:variable name="str_path"></xsl:variable>
 
-  <xsl:variable name="str_tagtime" select="''"/>
+  <xsl:variable name="str_tagtime"></xsl:variable>
 
   <xsl:variable name="newpar">
     <xsl:text>

@@ -8,6 +8,8 @@
   <xsl:import href="PieHtml.xsl"/>
 
   <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
+  <!-- -->
   <xsl:variable name="file_css" select="''"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="true()"/>
@@ -24,7 +26,7 @@
   <!--  -->
   <xsl:variable name="flag_tags"  select="false()"/>
   <!--  -->
-  <xsl:variable name="str_tag"  select="''"/>
+  <xsl:variable name="str_tag"></xsl:variable>
   <!--  -->
   <xsl:variable name="toc_display"  select="'none'"/>
   <!--  -->

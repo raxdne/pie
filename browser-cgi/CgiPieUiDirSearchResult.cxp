@@ -8,7 +8,7 @@
     <html>
       <cxp:xhtml>
         <cxp:xsl name="CgiPieUi.xsl">
-          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
           <cxp:variable name="flag_header" select="true()"/>
         </cxp:xsl>
       </cxp:xhtml>
@@ -16,7 +16,7 @@
         <div id="ui">
           <cxp:xhtml>
             <cxp:xsl name="CgiPieUi.xsl">
-              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
               <cxp:variable name="str_type" select="'inode/directory'"/>
               <cxp:variable name="sub" select="'search'"/>
               <cxp:variable name="flag_sub" select="false()"/>
@@ -30,7 +30,7 @@
                 </cxp:dir>
               </cxp:xml>
               <cxp:xsl name="HtmlDirGrepResult.xsl">
-                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
                 <cxp:variable name="flag_sub" select="false()"/>
               </cxp:xsl>
             </cxp:xhtml>

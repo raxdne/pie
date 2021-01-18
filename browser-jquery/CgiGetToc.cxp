@@ -4,7 +4,7 @@
   <cxp:plain name="-">
     <cxp:xml name="%CGIPATH%" xpath="yes"/>
     <cxp:xsl name="CgiGetToc.xsl">
-      <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+      <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
       <cxp:variable name="date" select="'%Y%m%d'"/>
     </cxp:xsl>
   </cxp:plain>

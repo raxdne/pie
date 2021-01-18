@@ -16,11 +16,11 @@
       <cxp:xsl name="PieValidate.xsl"/>
     </cxp:pathtable>
     <cxp:xsl name="XmlPathTableCxp.xsl" valid="yes">
-      <cxp:variable name="str_path" select="'%CGIPATH%'" />
-      <cxp:variable name="str_xpath" select="'%CGIXPATH%'" />
-      <cxp:variable name="str_tag" select="'%CGITAG%'" />
-      <cxp:variable name="str_tagtime" select="'%TAGTIME%'" />
-      <cxp:variable name="str_pathdir" select="'%CGIPATHDIR%'" />
+      <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+      <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
+      <cxp:variable name="str_tag">%CGITAG%</cxp:variable>
+      <cxp:variable name="str_tagtime">%TAGTIME%</cxp:variable>
+      <cxp:variable name="str_pathdir">%CGIPATHDIR%</cxp:variable>
       <cxp:variable name="int_count" select="10"/>
     </cxp:xsl>
   </cxp:xml>

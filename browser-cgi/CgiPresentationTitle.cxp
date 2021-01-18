@@ -12,9 +12,9 @@
     <cxp:xsl name="ExtractSlide.xsl">
       <cxp:variable name="flag_title" select="true()"/>
       <cxp:variable name="file_css" select="'/html/presentation.css'"/>
-      <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
+      <cxp:variable name="file_norm">%CGIPATH%</cxp:variable>
       <cxp:variable name="flag_form" select="true()"/>
-      <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+      <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
     </cxp:xsl>
   </cxp:xhtml>
 </cxp:make>

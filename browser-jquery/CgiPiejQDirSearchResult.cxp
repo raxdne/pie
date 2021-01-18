@@ -17,7 +17,7 @@
                 </cxp:dir>
               </cxp:xml>
               <cxp:xsl name="HtmlDirGrepResult.xsl">
-                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
                 <cxp:variable name="flag_sub" select="false()"/>
                 <cxp:variable name="str_cxp" select="'PiejQDefault'"/>
               </cxp:xsl>

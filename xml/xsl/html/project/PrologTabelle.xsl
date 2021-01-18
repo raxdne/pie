@@ -4,6 +4,8 @@
 
   <xsl:import href="../PieHtml.xsl"/>
 
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <xsl:variable name="file_css" select="'pie.css'"/>
   <!--  -->
   <xsl:variable name="level_hidden" select="0"/>

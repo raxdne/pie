@@ -12,7 +12,7 @@
     <html>
       <cxp:xhtml>
         <cxp:xsl name="CgiPieUi.xsl">
-          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
           <cxp:variable name="flag_header" select="true()"/>
         </cxp:xsl>
       </cxp:xhtml>
@@ -23,8 +23,8 @@
               <cxp:file verbosity="3" name="%CGIPATH%"/>
             </cxp:xml>
             <cxp:xsl name="CgiPieUi.xsl">
-              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-              <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+              <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+              <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
               <cxp:variable name="sub" select="'%CGISUB%'"/>
               <cxp:variable name="flag_sub" select="false()"/>
             </cxp:xsl>
@@ -32,8 +32,8 @@
           <div id="content">
             <cxp:xhtml>
               <cxp:xsl name="CgiPieUi.xsl">
-                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-                <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
+                <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+                <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
                 <cxp:variable name="sub" select="'%CGISUB%'"/>
                 <cxp:variable name="flag_sub" select="true()"/>
               </cxp:xsl>
@@ -54,7 +54,7 @@
               <cxp:xsl name="CalTable4.xsl">
                 <cxp:variable name="dir_icons" select="'/pie/icons'"/>
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
-                <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
+                <cxp:variable name="file_norm">%CGIPATH%</cxp:variable>
               </cxp:xsl>
             </cxp:xhtml>
           </div>

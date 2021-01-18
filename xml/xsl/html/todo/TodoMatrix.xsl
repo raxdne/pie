@@ -2,18 +2,28 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="../../Utils.xsl"/>
   <xsl:import href="../PieHtml.xsl"/>
+
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <!--  -->
   <xsl:variable name="file_css" select="'pie.css'"/>
+  <!-- -->
   <xsl:variable name="file_cxp" select="''"/>
   <!--  -->
   <xsl:variable name="diff_delta_0" select="-2"/>
+  <!-- -->
   <xsl:variable name="diff_delta_1" select="5"/>
+  <!-- -->
   <xsl:variable name="nowYear" select="0"/>
+  <!-- -->
   <xsl:variable name="nowMonth" select="0"/>
+  <!-- -->
   <xsl:variable name="nowWeek" select="0"/>
+  <!-- -->
   <xsl:variable name="nowDay" select="0"/>
+  <!-- -->
   <xsl:variable name="ns_date" select="//task[not(@done or @class = 'done' or @state = 'done')]"/>
-  <!--  -->
+
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
   <xsl:template match="/">
     <xsl:element name="html">

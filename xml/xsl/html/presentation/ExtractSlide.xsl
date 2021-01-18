@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
   <xsl:import href="../PieHtml.xsl"/>
   <xsl:output method="html" omit-xml-declaration="no" doctype-public="-//W3C//DTD HTML 4.01//EN" doctype-system="file:///tmp/dummy.dtd" encoding="UTF-8"/>
   <!-- normalized name of plain input file -->
-  <xsl:variable name="file_norm" select="''"/>
+  <xsl:variable name="file_norm"></xsl:variable>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="translate($file_norm,'\','/')"/>
   <!--  -->

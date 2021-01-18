@@ -21,9 +21,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 -->
   <xsl:import href="../PieHtml.xsl" />
+  
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
+  <!-- -->
   <xsl:variable name="dir_icons" select="'../html/icons'" />
+  <!-- -->
   <xsl:variable name="flag_tips" select="true()" />
+  <!-- -->
   <xsl:variable name="file_css" select="''" />
+
   <xsl:output method="html" encoding="UTF-8" />
   <xsl:include href="../../Utils.xsl" />
   <xsl:template match="/">

@@ -6,6 +6,8 @@
   <xsl:import href="PieHtml.xsl"/>
 
   <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
+  <!-- -->
   <xsl:variable name="file_css" select="'pie.css'"/>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="false()"/>

@@ -23,7 +23,7 @@
               </cxp:xml>
 	      <cxp:xsl name="RemoveDoneElements.xsl"/>
               <cxp:xsl name="TodoContactTable.xsl">
-                <cxp:variable name="file_norm" select="'%CGIPATH%'"/>
+                <cxp:variable name="file_norm">%CGIPATH%</cxp:variable>
               </cxp:xsl>
             </cxp:xhtml>
 	    <hr/>

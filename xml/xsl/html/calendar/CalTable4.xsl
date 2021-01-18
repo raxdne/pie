@@ -2,11 +2,15 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="../../Utils.xsl"/>
   <xsl:import href="../PieHtml.xsl"/>
+
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <xsl:variable name="dir_icons" select="'../html/icons'"/>
+  <!--  -->
   <xsl:variable name="flag_tips" select="true()"/>
   <!--  -->
   <xsl:variable name="file_css" select="'pie.css'"/>
-'"/>
+  <!--  -->
   <xsl:variable name="file_cxp" select="''"/>
   <!--  -->
   <xsl:variable name="node_cols" select="/calendar/meta/calendar/col[@id]"/>
@@ -19,8 +23,7 @@
   <xsl:variable name="nowDay" select="0"/>
   <!--  -->
   <xsl:variable name="listDays" select="''"/>
-  <!--  -->
-  <!--  -->
+  
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
   <xsl:template match="/">
     <xsl:element name="html">

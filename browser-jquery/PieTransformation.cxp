@@ -8,10 +8,10 @@
     </cxp:xml>
   </cxp:pathtable>
   <cxp:xsl name="XmlPathTableCxp.xsl">
-    <cxp:variable name="str_path" select="'%CGIPATH%'" />
-    <cxp:variable name="str_xpath" select="'%CGIXPATH%'" />
-    <cxp:variable name="str_tag" select="'%CGITAG%'" />
-    <cxp:variable name="str_pathdir" select="'%CGIPATHDIR%'" />
+    <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+    <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
+    <cxp:variable name="str_tag">%CGITAG%</cxp:variable>
+    <cxp:variable name="str_pathdir">/%CGIPATHDIR%</cxp:variable>
   </cxp:xsl>
   <!--  -->
   <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">

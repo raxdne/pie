@@ -19,7 +19,7 @@
 	  </cxp:xml>
 	  <cxp:xsl name="OpenTasks.xsl"/>
 	  <cxp:xsl name="TodoTable.xsl">
-	    <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+	    <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
 	  </cxp:xsl>
 	</cxp:xhtml>
       </body>

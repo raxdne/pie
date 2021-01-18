@@ -3,9 +3,13 @@
   <!-- Gantt table format of a calendar -->
   <xsl:import href="../../Utils.xsl"/>
   <xsl:import href="../PieHtml.xsl"/>
+
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <xsl:variable name="file_css" select="'pie.css'"/>
   <xsl:variable name="str_year" select="''"/>
   <xsl:variable name="flag_cluster" select="count(/descendant::section[attribute::cluster]) &gt; 0"/>
+
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
   <xsl:key name="listprojects" match="section[@pid and (not(@state) or @state &lt; 2) and not(@state='-')]" use="@pid"/><!-- and @assignee='Muller' -->
   <xsl:template match="/">

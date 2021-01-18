@@ -8,7 +8,7 @@
     <html>
       <cxp:xhtml>
         <cxp:xsl name="CgiPieUi.xsl">
-          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
           <cxp:variable name="flag_header" select="true()"/>
         </cxp:xsl>
       </cxp:xhtml>
@@ -19,7 +19,7 @@
               <cxp:file verbosity="3" name="%CGIPATH%"/>
             </cxp:xml>
             <cxp:xsl name="CgiPieUi.xsl">
-              <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+              <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
               <cxp:variable name="sub" select="'%CGISUB%'"/>
               <cxp:variable name="flag_sub" select="false()"/>
             </cxp:xsl>
@@ -27,7 +27,7 @@
           <div id="content">
             <cxp:xhtml>
               <cxp:xsl name="CgiPieUi.xsl">
-                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+                <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
                 <cxp:variable name="sub" select="'%CGISUB%'"/>
                 <cxp:variable name="flag_sub" select="true()"/>
               </cxp:xsl>
