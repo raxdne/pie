@@ -538,6 +538,11 @@ function callbackContent(key, options) {
 		strHashNew = '#yesterday';
 	    } else if (key == 'calendar_month') {
 		//window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
+	    } else if (key == 'selection') {
+		selection = window.getSelection();
+		strSelect = selection.toString();
+		urlParams.set('pattern',"descendant::*[contains(child::text(),'" + strSelect + "')]");
+		urlParams.set('hl',strSelect);
 	    } else if (key == 'todo') {
 		urlParams.set('cxp','PiejQTodo');
 	    } else if (key == 'todocalendar') {
@@ -553,7 +558,7 @@ function callbackContent(key, options) {
 	    } else {
 		urlParams.set('cxp','PiejQFormat');
 	    }
-	    urlParams.delete('hl');
+	    //urlParams.delete('hl');
 	}
 	
 	var strQuery = '?' + urlParams.toString();
@@ -628,7 +633,7 @@ $(function(){
 		    "sep4": "---------",
 		    "toc": {name: "Table of Content", icon: "toc"},
 		    "tags": {name: "Tag cloud", icon: "tags"},
-		    // TODO: "tag":  {name: "Tag this", icon: ""},
+		    "selection": {name: "Tag selection", icon: "tags"},
 		    "link": {name: "Link list", icon: "link"},
 		    "sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
@@ -694,6 +699,7 @@ $(function(){
 		"sep2": "---------",
 		"toc": {name: "Table of Content", icon: "toc"},
 		"tags": {name: "Tag cloud", icon: "tags"},
+		"selection": {name: "Tag selection", icon: "tags"},
 		"link": {name: "Link list", icon: "link"},
 		"sep3": "---------",
 		"layout": {name: "Layout", icon: ""},
