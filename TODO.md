@@ -63,24 +63,26 @@ REQ: RMB Menu “Hide” for same class ✔
 BUG: “Cleanup” makes DONE to TODO without CSS
 - use UTF-8 markup
 
-REQ: embedd structured WYSIWYG Editor (HTML5, mappable to PIE/XML)
-- https://www.google.com/search?q=javascript+wysiwyg+editor+open+source
-- https://github.com/alohaeditor/Aloha-Editor http://aloha-editor.org/
-- https://github.com/codex-team/editor.js
-
 ### Dir
 
 REQ: upload of files
 
-REQ: search and search index (tipue?)  #v1 ++
+REQ: search (search index?)  #v1 ++
 - `?cxp=search&name=ABC.txt`
 - `?cxp=search&pattern=DEF`
 
+REQ: search in office formats
+
 ### Editor
+
+REQ: embedd structured WYSIWYG Editor (HTML5, mappable to PIE/XML) #v2
+- https://www.google.com/search?q=javascript+wysiwyg+editor+open+source
+- https://github.com/alohaeditor/Aloha-Editor http://aloha-editor.org/
+- https://github.com/codex-team/editor.js
 
 REQ: syntax highlighting for PIE text in ACE  #v1 ++
 
-REQ: common shortcuts  #v1 ++
+REQ: more common shortcuts  #v1 ++
 
 [Comparison of JavaScript-based source code editors](http://en.wikipedia.org/wiki/Comparison_of_JavaScript-based_source_code_editors)
 

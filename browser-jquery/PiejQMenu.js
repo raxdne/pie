@@ -546,9 +546,10 @@ function callbackContent(key, options) {
 	    } else if (key == 'search') {
 		selection = window.getSelection();
 		strSelect = selection.toString();
+		urlParams.delete('pattern');
+		urlParams.delete('path'); // search in all files of this site
 		urlParams.set('cxp','PiejQDirSearchResult');
 		urlParams.set('needle', strSelect);
-		urlParams.set('path', '');
 	    } else if (key == 'todo') {
 		urlParams.set('cxp','PiejQTodo');
 	    } else if (key == 'todocalendar') {
