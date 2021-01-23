@@ -543,6 +543,12 @@ function callbackContent(key, options) {
 		strSelect = selection.toString();
 		urlParams.set('pattern',"descendant::*[contains(child::text(),'" + strSelect + "')]");
 		urlParams.set('hl',strSelect);
+	    } else if (key == 'search') {
+		selection = window.getSelection();
+		strSelect = selection.toString();
+		urlParams.set('cxp','PiejQDirSearchResult');
+		urlParams.set('needle', strSelect);
+		urlParams.set('path', '');
 	    } else if (key == 'todo') {
 		urlParams.set('cxp','PiejQTodo');
 	    } else if (key == 'todocalendar') {
@@ -634,6 +640,7 @@ $(function(){
 		    "toc": {name: "Table of Content", icon: "toc"},
 		    "tags": {name: "Tag cloud", icon: "tags"},
 		    "selection": {name: "Tag selection", icon: "tags"},
+		    "search": {name: "Search selection", icon: "tags"},
 		    "link": {name: "Link list", icon: "link"},
 		    "sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
@@ -700,6 +707,7 @@ $(function(){
 		"toc": {name: "Table of Content", icon: "toc"},
 		"tags": {name: "Tag cloud", icon: "tags"},
 		"selection": {name: "Tag selection", icon: "tags"},
+		"search": {name: "Search selection", icon: "tags"},
 		"link": {name: "Link list", icon: "link"},
 		"sep3": "---------",
 		"layout": {name: "Layout", icon: ""},

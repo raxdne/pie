@@ -63,6 +63,11 @@ REQ: RMB Menu “Hide” for same class ✔
 BUG: “Cleanup” makes DONE to TODO without CSS
 - use UTF-8 markup
 
+REQ: embedd structured WYSIWYG Editor (HTML5, mappable to PIE/XML)
+- https://www.google.com/search?q=javascript+wysiwyg+editor+open+source
+- https://github.com/alohaeditor/Aloha-Editor http://aloha-editor.org/
+- https://github.com/codex-team/editor.js
+
 ### Dir
 
 REQ: upload of files
@@ -221,6 +226,10 @@ TODO: update „pptx2txt.xsl“
 
 xlsx2pie.xsl
 - concatenate all "xl\worksheets\sheet*.xml"
+
+REQ: support [YAML format](https://en.wikipedia.org/wiki/YAML) `pie2yaml.xsl`
+
+REQ: support JSON format `pie2json.xsl`
 
 ## CXP code
 
