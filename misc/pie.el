@@ -82,6 +82,35 @@
 	)
     (pie-plain-minor-mode)
     )
+
+  (local-set-key "\e1"
+		 (lambda () ""
+		   (interactive)
+		   (insert "[]()")
+		   (backward-char 3)))
+
+  (local-set-key "\e2"
+		 (lambda () ""
+		   (interactive)
+		   (let ((begin-region (mark))
+			 (end-region (point)))
+		     (if (> (- end-region begin-region) 0)
+			 (progn
+			   (goto-char begin-region)
+			   (insert "“")
+			   (goto-char (+ end-region 1))
+			   (insert "”")
+					;(goto-char end-region)
+			   )
+		       (progn
+			 (insert "“”")
+			 (backward-char 1)
+			 )
+		       )
+		     )
+		   )
+		 )
+  ;;
   )
 
 (add-hook 'text-mode-hook 'pie-minor-mode)
@@ -153,23 +182,6 @@
   ;;
   (line-number-mode 1)
   (column-number-mode 1)
-  ;;
-  ;; fügt deutsche Anführungszeichen ein
-  (local-set-key "\e1"
-		 (lambda () ""
-		   (interactive)
-		   ;;(insert "><")
-		   (insert "‚‘")
-		   (backward-char 1)))
-  ;; fügt deutsche doppelte Anführungszeichen ein
-  (local-set-key "\e2"
-		 (lambda () ""
-		   (interactive)
-		   ;;(insert ">><<")
-		   ;;(insert "„“")
-		   ;;(insert ">><<")
-		   (insert "“”")
-		   (backward-char 1)))
   ;;
   (local-set-key    [S-f1] 'pie-plain-insert-task)
   ;;
@@ -290,19 +302,6 @@
   (line-number-mode 1)
   (column-number-mode 1)
   ;;
-  ;; fügt deutsche Anführungszeichen ein
-  (local-set-key "\e1"
-		 (lambda () ""
-		   (interactive)
-		   (insert "‚‘")
-		   (backward-char 1)))
-  ;; fügt deutsche doppelte Anführungszeichen ein
-  (local-set-key "\e2"
-		 (lambda () ""
-		   (interactive)
-		   (insert "„“")
-		   (backward-char 1)))
-
   ;(local-set-key    [f7] 'browse-url-of-buffer)
   (local-set-key    [S-f1] 'pie-xml-insert-task)
 
@@ -757,6 +756,16 @@
 				     ""
 				     (interactive)
 				     (insert " ✘"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-marker] '("Insert Marker" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert "\n\n➽\n\n"))
 			  )
   t
   )

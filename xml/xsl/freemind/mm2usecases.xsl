@@ -61,6 +61,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       </xsl:element>
     </xsl:element>
     <xsl:element name="body">
+      <xsl:comment>
+	<xsl:value-of select="concat('$str_tag: ', $str_tag)"/>
+      </xsl:comment>
       <xsl:choose>
         <xsl:when test="transform">
           <xsl:apply-templates select="document(/transform/@a)/*"/>
@@ -79,7 +82,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 <xsl:template match="map">
   <!--  or starts-with(@TEXT,'UC') -->
-  <xsl:variable name="nodeset_uclist" select="descendant::node[(starts-with(translate(@TEXT,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'USECASE ') or starts-with(@TEXT,'Function ')) and not(ancestor-or-self::node[child::icon[contains(@BUILTIN, 'cancel')]]) and (not(ancestor-or-self::node[attribute::FOLDED = 'true']) or $flag_unfold) and ($str_tag = '' or descendant::*[contains(@TEXT,$str_tag)])]"/>
+  <xsl:variable name="nodeset_uclist" select="descendant::node[(starts-with(translate(@TEXT,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'USECASE ') or starts-with(@TEXT,'Function ')) and not(ancestor-or-self::node[child::icon[contains(@BUILTIN, 'cancel')]]) and (not(ancestor-or-self::node[attribute::FOLDED = 'true']) or $flag_unfold) and ($str_tag = '' or descendant-or-self::node[contains(@TEXT,$str_tag)])]"/>
   <!--  and (child::attribute[@NAME='assignee' and contains(@VALUE,'Muller')]) -->
   <!--  and (child::attribute[@NAME='training' and contains(@VALUE,'c')]) -->
   <!-- create header -->
