@@ -11,6 +11,9 @@
       <xsl:if test="$flag_attr">
         <attribute_registry SHOW_ATTRIBUTES="hide"/>
       </xsl:if>
+      <xsl:comment>
+	<xsl:value-of select="concat(' pie2mm.xsl: ','flag_attr=',$flag_attr,' ')"/>
+      </xsl:comment>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -52,45 +55,8 @@
           <xsl:value-of select="h/@ref"/>
         </xsl:attribute>
       </xsl:if>
-      <!-- icons for attribute 'state' -->
-      <xsl:choose>
-        <xsl:when test="@state">
-        <xsl:element name="icon">
-          <xsl:attribute name="BUILTIN">
-            <xsl:choose>
-              <xsl:when test="@state='0'">
-                <xsl:text>stop</xsl:text>
-              </xsl:when>
-              <xsl:when test="@state='1'">
-                <xsl:text>go</xsl:text>
-              </xsl:when>
-              <xsl:when test="@state='2'">
-                <xsl:text>button_ok</xsl:text>
-              </xsl:when>
-              <xsl:when test="@state='-'">
-                <xsl:text>button_cancel</xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:text>prepare</xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-        </xsl:element>
-        </xsl:when>
-        <xsl:when test="@assignee">
-        <xsl:element name="icon">
-          <xsl:attribute name="BUILTIN">
-            <xsl:text>male2</xsl:text>
-          </xsl:attribute>
-        </xsl:element>
-        </xsl:when>
-        <xsl:otherwise>
-        </xsl:otherwise>
-      </xsl:choose>
       <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-      <xsl:if test="$flag_attr">
-        <xsl:call-template name="CREATEATTRIBUTES"/>
-      </xsl:if>
+      <xsl:call-template name="CREATEATTRIBUTES"/>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -114,7 +80,7 @@
             </xsl:attribute>
           </xsl:element>
         </xsl:if>
-        <xsl:if test="@prio &lt; 3">
+        <xsl:if test="@impact &lt; 3">
           <xsl:element name="icon">
             <xsl:attribute name="BUILTIN">
               <xsl:text>messagebox_warning</xsl:text>
@@ -128,9 +94,7 @@
             </xsl:attribute>
           </xsl:element>
         </xsl:if>
-        <xsl:if test="$flag_attr">
-          <xsl:call-template name="CREATEATTRIBUTES"/>
-        </xsl:if>
+        <xsl:call-template name="CREATEATTRIBUTES"/>
         <xsl:element name="icon">
           <xsl:attribute name="BUILTIN">
             <xsl:choose>
@@ -218,9 +182,7 @@
             <xsl:attribute name="SIZE">10</xsl:attribute>
           </xsl:element>
         </xsl:if>
-        <xsl:if test="$flag_attr">
-          <xsl:call-template name="CREATEATTRIBUTES"/>
-        </xsl:if>
+        <xsl:call-template name="CREATEATTRIBUTES"/>
         <xsl:apply-templates select="list"/>
       </xsl:element>
     </xsl:if>
@@ -316,26 +278,18 @@
     <!-- ignore other elements --> 
   </xsl:template>
   <xsl:template name="CREATEATTRIBUTES">
-    <!--
-    <xsl:element name="attribute">
-      <xsl:attribute name="NAME">
-        <xsl:value-of select="'class'"/>
-      </xsl:attribute>
-      <xsl:attribute name="VALUE">
-        <xsl:value-of select="name()"/>
-      </xsl:attribute>
-    </xsl:element>
-    -->
-    <!-- add all mindmap node attributes -->
-    <xsl:for-each select="attribute::*[contains('date,impact,effort,origin',name())]">
-      <xsl:element name="attribute">
-        <xsl:attribute name="NAME">
-          <xsl:value-of select="name()"/>
-        </xsl:attribute>
-        <xsl:attribute name="VALUE">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:element>
-    </xsl:for-each>
+    <xsl:if test="$flag_attr">
+      <!-- add all mindmap node attributes -->
+      <xsl:for-each select="attribute::*[contains('date,effort,origin',name())]">
+	<xsl:element name="attribute">
+          <xsl:attribute name="NAME">
+            <xsl:value-of select="name()"/>
+          </xsl:attribute>
+          <xsl:attribute name="VALUE">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+	</xsl:element>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

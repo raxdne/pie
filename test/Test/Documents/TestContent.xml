@@ -29,17 +29,17 @@ numbered list
       <h>CC</h>
       <section>
         <h>BBB</h>
-        <task date="20160401" impact="2">
-          <h>t1</h>
-          <contact idref="abc"/>
+        <task impact="2">
+          <h><date>20160401</date> t1</h>
+          <htag>abc</htag>
         </task>
-        <task date="20160403" impact="2" valid="no">
-          <h>t2</h>
-          <contact idref="abc"/>
+        <task impact="2" valid="no">
+          <h><date>20160403</date> t2</h>
+          <htag>abc</htag>
         </task>
-        <task date="20160405" impact="2">
-          <h>t3</h>
-          <contact idref="abc"/>
+        <task impact="2">
+          <h><date>20160405</date> t3</h>
+          <htag>abc</htag>
         </task>
       </section>
     </section>
@@ -51,8 +51,8 @@ numbered list
     </section>
     <section origin="20160401">
       <h>EE</h>
-      <task origin="20160401" date="20160403">
-        <h>t4</h>
+      <task origin="20160401">
+        <h><date>20160403</date> t4</h>
       </task>
     </section>
   </section>

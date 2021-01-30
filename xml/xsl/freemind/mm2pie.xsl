@@ -57,6 +57,7 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="node[node[1]/richcontent/html/body/img]">
     <!-- first node has an image child: figure -->
     <xsl:element name="fig">
@@ -93,11 +94,13 @@
       </xsl:choose>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="node[child::font[@NAME='Monospaced' or contains(@NAME,'Courier')]]">
     <xsl:element name="pre">
       <xsl:value-of select="@TEXT"/>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="node">
     <!-- regular node -->
     <xsl:variable name="depth" select="count(ancestor::node)"/>
@@ -200,11 +203,13 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  
   <xsl:template match="hook">
     <xsl:if test="@NAME = 'accessories/plugins/NodeNote.properties' and child::text">
       <xsl:apply-templates/>
     </xsl:if>
   </xsl:template>
+  
   <xsl:template match="text">
     <!--
   <xsl:for-each select="ancestor::node">
@@ -214,14 +219,10 @@
     <xsl:text> </xsl:text>
     <xsl:value-of select="."/>
   </xsl:template>
+  
   <xsl:template name="CREATEATTRIBUTES">
     <xsl:copy-of select="@flocator"/>
     <xsl:copy-of select="@fxpath"/>
-    <xsl:if test="child::node/child::icon[contains(@BUILTIN, 'male')] and not(child::icon[@BUILTIN='list'])">
-      <xsl:attribute name="assignee">
-        <xsl:value-of select="child::node/@TEXT"/>
-      </xsl:attribute>
-    </xsl:if>
     <xsl:if test="child::icon[contains(@BUILTIN, 'cancel')]">
       <xsl:attribute name="valid">
         <xsl:text>no</xsl:text>
@@ -242,7 +243,7 @@
         <xsl:value-of select="@COLOR"/>
       </xsl:attribute>
     </xsl:if>
-<!-- add all mindmap node attributes -->
+    <!-- add all mindmap node attributes -->
     <xsl:for-each select="attribute">
       <xsl:choose>
         <xsl:when test="@NAME='class'"/>
@@ -254,6 +255,7 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
+  
   <xsl:template match="*|@*|text()|comment()|meta|t">
     <!-- ignore other elements --> 
   </xsl:template>

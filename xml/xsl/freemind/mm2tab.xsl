@@ -62,7 +62,7 @@
 	</xsl:element>
       </xsl:element>
       <xsl:element name="td">
-        <xsl:for-each select="@assignee|tag">
+        <xsl:for-each select="htag|tag">
           <xsl:value-of select="."/>
 	</xsl:for-each>
       </xsl:element>
@@ -90,7 +90,7 @@
         </xsl:element>
       </xsl:element>
       <xsl:element name="td">
-        <xsl:for-each select="@assignee|tag">
+        <xsl:for-each select="htag|tag">
           <xsl:value-of select="."/>
 	</xsl:for-each>
       </xsl:element>

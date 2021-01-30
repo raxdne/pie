@@ -317,26 +317,20 @@
   ;;
   (setq pie-position (point))
   (setq pie-task-date-str
-	(read-from-minibuffer "date="))
-  (setq pie-task-effort-str
-	(read-from-minibuffer "effort="))
+	(read-from-minibuffer "date: "))
   (setq pie-task-h-str
 	(read-from-minibuffer "h: "))
   ;;
-  (insert (concat "<task"
+  (insert (concat "<task>\n"
+		  "  <h>"
 		  (if (> (length pie-task-date-str) 0)
-		      (concat " date=\"" pie-task-date-str "\"")
+		      (concat "<date>" pie-task-date-str "</date> ")
 		    )
-		  (if (> (length pie-task-effort-str) 0)
-		      (concat " effort=\"" pie-task-effort-str "\"")
-		    )
-		  ">\n"
-		  "  <h>" pie-task-h-str "</h>\n"
-		  "  <contact idref=\"\"/>\n"
+		  pie-task-h-str "</h>\n"
 		  "</task>\n")
 	  )
   (indent-region pie-position (point) nil)
-  (re-search-backward "idref=\\\"" nil t)
+  (re-search-backward "<date>" nil t)
   (goto-char (match-end 0))
   )
 

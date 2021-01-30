@@ -43,9 +43,6 @@
   
   <xsl:template match="section">
     <xsl:apply-templates select="h"/>
-    <xsl:if test="attribute::assignee">
-      <xsl:value-of select="concat(' @',attribute::assignee)"/>
-    </xsl:if>
     <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
     <xsl:apply-templates select="*[not(name(.) = 'h')]"/>

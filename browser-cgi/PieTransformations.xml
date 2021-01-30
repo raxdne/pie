@@ -185,9 +185,6 @@
     <stelle id="text/html+todo" type="text/html">
       <h>HTML Todo layout</h>
     </stelle>
-    <stelle id="text/html+project+contact" type="text/html">
-      <h>HTML Project contact</h>
-    </stelle>
     <stelle id="text/html+todo+effort" type="text/html">
       <h>HTML Todo effort</h>
     </stelle>
@@ -1224,7 +1221,6 @@
     <relation from="application/mm+xml" to="mm2usecases"/>
     <relation from="mm2usecases" to="text/html+usecases"/>
     <relation from="pie2todo" to="text/html+todo"/>
-    <relation from="application/pie+proc+xml" to="pie2todocontact"/>
     <relation from="application/pie+xml" to="pie2tag" />
     <relation from="pie2tag" to="text/html+tag" />
     <relation from="application/pie+proc+xml" to="pie2psp" />

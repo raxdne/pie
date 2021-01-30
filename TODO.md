@@ -139,7 +139,6 @@ plan
     - table of content
     - tags
     - links
-    - list of contacts
   - setTop
   - resetTop
 - context dropdown menu

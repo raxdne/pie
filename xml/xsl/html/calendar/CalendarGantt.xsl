@@ -11,7 +11,7 @@
   <xsl:variable name="flag_cluster" select="count(/descendant::section[attribute::cluster]) &gt; 0"/>
 
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
-  <xsl:key name="listprojects" match="section[@pid and (not(@state) or @state &lt; 2) and not(@state='-')]" use="@pid"/><!-- and @assignee='Muller' -->
+  <xsl:key name="listprojects" match="section[@pid and (not(@state) or @state &lt; 2) and not(@state='-')]" use="@pid"/>
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
@@ -48,7 +48,7 @@
             <xsl:value-of select="'Project'"/>
           </xsl:element>
           <xsl:element name="th">
-            <xsl:value-of select="'assignee'"/>
+            <xsl:value-of select="'htag'"/>
           </xsl:element>
           <xsl:if test="$flag_cluster">
             <xsl:element name="th">
@@ -119,7 +119,7 @@
           </xsl:element>
 	</xsl:element>
 	<xsl:element name="td">
-          <xsl:value-of select="ancestor-or-self::section[attribute::assignee]/attribute::assignee"/>
+          <xsl:value-of select="ancestor-or-self::section/child::h/child::htag"/> <!-- TODO: use for-each to build string -->
 	</xsl:element>
 	<xsl:if test="$flag_cluster">
           <xsl:element name="td">
