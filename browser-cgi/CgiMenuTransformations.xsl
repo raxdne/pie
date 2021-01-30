@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pkg="http://www.tenbusch.info/pkg" version="1.0">
   <xsl:import href="../xml/xsl/Utils.xsl"/>
   <xsl:variable name="type" select="''"/>
   <xsl:variable name="str_path" select="''"/>
@@ -18,7 +18,7 @@
           <xsl:value-of select="concat('Transform ','&quot;',$type,'&quot;',' into')"/>
         </xsl:element>
         <xsl:element name="ul">
-          <xsl:apply-templates select="//stelle[not(@id=$type)]">
+          <xsl:apply-templates select="//pkg:stelle[not(@id=$type)]">
             <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="h"/>
           </xsl:apply-templates>
         </xsl:element>
@@ -38,7 +38,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="stelle">
+  <xsl:template match="pkg:stelle">
     <xsl:element name="li">
       <xsl:element name="a">
         <xsl:attribute name="target">_blank</xsl:attribute>

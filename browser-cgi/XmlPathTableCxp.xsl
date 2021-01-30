@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pkg="http://www.tenbusch.info/pkg" version="1.0">
   <!-- replaces Patterns 'PATH', 'XPATH' and 'TAG' -->
   <xsl:variable name="str_filter" select="''" />
   <xsl:variable name="str_path"></xsl:variable>
@@ -10,7 +10,7 @@
   <xsl:output method="xml" />
   <xsl:template match="/">
     <xsl:element name="make">
-      <xsl:for-each select="descendant::path[count(child::transition[position() &gt; 1 and descendant::*[@name = 'PATH']]) &lt; 1]">
+      <xsl:for-each select="descendant::path[count(child::pkg:transition[position() &gt; 1 and descendant::*[@name = 'PATH']]) &lt; 1]">
         <!-- ignore paths with multiple PATHs -->
         <xsl:sort order="ascending" data-type="number" select="count(descendant::xsl)" />
         <xsl:if test="position() &lt;= $int_count">
@@ -20,7 +20,7 @@
     </xsl:element>
   </xsl:template>
   <xsl:template match="path">
-    <xsl:variable name="node_last" select="stelle[position()=last()]" />
+    <xsl:variable name="node_last" select="pkg:stelle[position()=last()]" />
     <xsl:choose>
       <xsl:when test="contains($node_last/@type,'xml')">
         <xsl:element name="xml">
@@ -45,7 +45,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="transition">
+  <xsl:template match="pkg:transition">
     <!--
     <xsl:comment>
       <xsl:value-of select="concat(' begin ',name(),' ',@id,' ')"/>
@@ -58,16 +58,16 @@
     </xsl:comment>
 -->
   </xsl:template>
-  <xsl:template match="stelle">
+  <xsl:template match="pkg:stelle">
     <xsl:comment>
       <xsl:value-of select="concat(' ',name(),' ',@id)" />
     </xsl:comment>
-    <xsl:if test="position() = 1 and not(following-sibling::transition[1]/make/descendant::*[@name = 'PATH'])">
+    <xsl:if test="position() = 1 and not(following-sibling::pkg:transition[1]/make/descendant::*[@name = 'PATH'])">
       <!-- very first source -->
       <xsl:apply-templates select="make/*" />
     </xsl:if>
   </xsl:template>
-  <xsl:template match="relation">
+  <xsl:template match="pkg:relation">
     <xsl:comment>
       <xsl:value-of select="concat(' ',@from,' ⇒ ',@to,' ')" />
     </xsl:comment>
