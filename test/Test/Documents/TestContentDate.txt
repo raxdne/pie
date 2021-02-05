@@ -1,0 +1,48 @@
+
+* Test of date/time detection
+
+s. https://en.wikipedia.org/wiki/ISO_8601
+
+2020 Year
+
+202004 YearMonth mailto:me@myself.org
+
+20200401 YearMonthDay
+
+20200417 11.00 Test
+
+18.04.2020 12.00 Test 2
+
+20200419 13.00 Test 3 2020-04-19 14.00 Test 4
+
+Iteration 20200419,22,24 15.00 Test 5
+
+a |picture.png|AAA| @mmm nnn
+
+20131010 15.00 E
+
+20131010 11.00 A
+
+20131010 13.00 C
+
+20131010 12.00 B
+
+20131010 2.00 B
+
+20131010 0.00 B
+
+20131010 14.00 D
+
+20131011 14.00-16.00 F
+
+20131010 12.00-12.63 H
+
+2013-10-12T14:00:00+05:00 TTT
+
+2013-10-12T14:00:00CST TTT
+
+2013-10-12T14:00:00−05:00 TTT
+
+20131013T146300Z TTT
+
+

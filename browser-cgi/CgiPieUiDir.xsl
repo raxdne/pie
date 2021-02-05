@@ -280,7 +280,7 @@
           </xsl:element>
         </xsl:element>
       </xsl:when>
-      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image) or @ext='cal' or @ext='gcal'">
+      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image) or @ext='cal' or @ext='gcal'">
         <!-- dynamic content using cxproc -->
         <xsl:choose>
           <xsl:when test="@name = 'shortcuts.pie'">
@@ -376,7 +376,7 @@
                       <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                       <!-- <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=csv')"/> -->
                     </xsl:when>
-                    <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
+                    <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='log' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
                       <!--  or @ext='html' -->
                       <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                     </xsl:when>
@@ -464,7 +464,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:when>
-                  <xsl:when test="@ext='pie' or @ext='txt' or @ext='html' or @ext='odt' or @ext='docx'">
+                  <xsl:when test="@ext='pie' or @ext='txt' or @ext='html' or @ext='odt' or @ext='docx' or @ext='log'">
                     <!--  -->
                     <xsl:choose>
                       <xsl:when test="pie//section[1]/h">
