@@ -492,9 +492,8 @@
     <pkg:transition id="tablecalendar">
       <h>tablecalendar</h>
       <make>
-	<xsl name="CalendarTable.xsl" appendcgi="yes">
+	<xsl name="CalendarTable.xsl">
 	  <variable name="file_css" select="'/pie/html/pie.css'"/>
-  	  <variable name="str_year" select="''"/>
 	</xsl>
       </make>
     </pkg:transition>
@@ -838,11 +837,11 @@
 	    <col id="legend" name="Legende">
 	      <xml>
 		<pie>
-		  <p date="00000000">%a %d.%m. (%j)</p>
-		  <p date="0000*w99mon">KW %V/%Y</p>
-		  <p date="0000*w99">%V/%Y</p>
-		  <p date="000000">%Y-%m</p>
-		  <p date="0000">%Y</p>
+		  <p><date ref="00000000"/>%a %d.%m. (%j)</p>
+		  <p><date ref="0000*w99mon"/>KW %V/%Y</p>
+		  <p><date ref="0000*w99"/>%V/%Y</p>
+		  <p><date ref="000000"/>%Y-%m</p>
+		  <p><date ref="0000"/>%Y</p>
 		</pie>
 	      </xml>
 	    </col>
@@ -868,11 +867,11 @@
 	    <col id="legend" name="Legende">
 	      <xml>
 		<pie>
-		  <p date="00000000">%a %d.%m. (%j)</p>
-		  <p date="0000*w99mon">KW %V/%Y</p>
-		  <p date="0000*w99">%V/%Y</p>
-		  <p date="000000">%Y-%m</p>
-		  <p date="0000">%Y</p>
+		  <p><date ref="00000000"/>%a %d.%m. (%j)</p>
+		  <p><date ref="0000*w99mon"/>KW %V/%Y</p>
+		  <p><date ref="0000*w99"/>%V/%Y</p>
+		  <p><date ref="000000"/>%Y-%m</p>
+		  <p><date ref="0000"/>%Y</p>
 		</pie>
 	      </xml>
 	    </col>
@@ -903,6 +902,36 @@
 		  </pie>
 		</xml>
 		<xsl name="RemoveHiddenLevel.xsl"/>
+	      </xml>
+	    </col>
+	  </calendar>
+	</xml>
+      </make>
+    </pkg:transition>
+    <pkg:transition id="importicstocalendar">
+      <h>import plain calendar to calendar</h>
+      <make>
+	<xml>
+	  <calendar columns="yes">
+	    <col id="legend" name="Legende">
+	      <xml>
+		<pie>
+		  <p><date ref="00000000"/>%a %d.%m. (%j)</p>
+		  <p><date ref="0000*w99mon"/>KW %V/%Y</p>
+		  <p><date ref="0000*w99"/>%V/%Y</p>
+		  <p><date ref="000000"/>%Y-%m</p>
+		  <p><date ref="0000"/>%Y</p>
+		</pie>
+	      </xml>
+	    </col>
+	    <col id="content">
+	      <xml>
+		<xml>
+		  <xml locator="yes">
+		    <file name="PATH" verbosity="5"/>
+		  </xml>
+		  <xsl name="xCal2pie.xsl"/>
+		</xml>
 	      </xml>
 	    </col>
 	  </calendar>
@@ -1258,6 +1287,8 @@
     <pkg:relation from="importcal" to="application/pie+proc+xml"/>
     <!-- -->
     <pkg:relation from="text/plain" to="importtocalendar"/>
+    <pkg:relation from="text/calendar" to="importicstocalendar"/>
+    <pkg:relation from="importicstocalendar" to="application/pie+cal+xml"/>
     <pkg:relation from="application/mm+xml" to="importmmtocalendar"/>
     <pkg:relation from="importmmtocalendar" to="application/pie+cal+xml"/>
     <pkg:relation from="application/pie+xml" to="importtocalendar"/>

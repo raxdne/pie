@@ -47,11 +47,11 @@
                   <cxp:col id="legende" name="Legend">
                     <cxp:xml>
                       <pie>
-                        <p date="00000000">%Y-%m-%d %a (%j)</p>
-                        <p date="0000*w99mon">KW %V/%Y</p>
-                        <p date="0000*w99">%V/%Y</p>
-                        <p date="000000">%Y-%m</p>
-                        <p date="0000">%Y</p>
+                        <p><date ref="00000000"/>%Y-%m-%d %a (%j)</p>
+                        <p><date ref="0000*w99mon"/>KW %V/%Y</p>
+                        <p><date ref="0000*w99"/>%V/%Y</p>
+                        <p><date ref="000000"/>%Y-%m</p>
+                        <p><date ref="0000"/>%Y</p>
                       </pie>
                     </cxp:xml>
                   </cxp:col>

@@ -40,20 +40,18 @@
       <xsl:choose>
         <xsl:when test="string-length($str_date) &gt; 0">
           <!-- there is a time value -->
-          <xsl:choose>
-            <xsl:when test="starts-with(properties/dtend/date-time,$str_date) or contains(properties/dtend/date-time,'T000000')">
-              <xsl:attribute name="date">
+	  <xsl:element name="date">
+            <xsl:choose>
+              <xsl:when test="starts-with(properties/dtend/date-time,$str_date) or contains(properties/dtend/date-time,'T000000')">
                 <xsl:value-of select="$str_date"/>
-              </xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:attribute name="date">
+              </xsl:when>
+              <xsl:otherwise>
                 <xsl:value-of select="concat($str_date,'#',substring-before(properties/dtend/date-time,'T'))"/>
-              </xsl:attribute>
-            </xsl:otherwise>
-          </xsl:choose>
-          <!-- time value without zone -->
-          <xsl:value-of select="concat(number(substring($str_time_start,1,2)) + $int_offset_local,'.',substring($str_time_start,3,2),'-',number(substring($str_time_end,1,2)) + $int_offset_local,'.',substring($str_time_end,3,2))"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <!-- time value without zone -->
+            <xsl:value-of select="concat(' ',number(substring($str_time_start,1,2)) + $int_offset_local,'.',substring($str_time_start,3,2),'-',number(substring($str_time_end,1,2)) + $int_offset_local,'.',substring($str_time_end,3,2))"/>
+	  </xsl:element>
           <!-- text value -->
           <xsl:if test="properties/url/text">
             <xsl:attribute name="href">
@@ -73,9 +71,9 @@
 	</xsl:when>
         <xsl:otherwise>
           <!-- there is no time value -->
-          <xsl:choose>
-            <xsl:when test="properties/dtend/date-time">
-              <xsl:attribute name="date">
+	  <xsl:element name="date">
+            <xsl:choose>
+              <xsl:when test="properties/dtend/date-time">
 		<xsl:choose>
 		  <xsl:when test="(properties/dtend/date-time - properties/dtstart/date-time) &lt; 2">
 		    <xsl:value-of select="properties/dtstart/date-time"/>
@@ -84,15 +82,13 @@
 		    <xsl:value-of select="concat(properties/dtstart/date-time,'#',properties/dtend/date-time)"/>
 		  </xsl:otherwise>
 		</xsl:choose>
-              </xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:attribute name="date">
+              </xsl:when>
+              <xsl:otherwise>
                 <xsl:value-of select="properties/dtstart/date-time"/>
-              </xsl:attribute>
-            </xsl:otherwise>
-          </xsl:choose>
-           <xsl:choose>
+              </xsl:otherwise>
+            </xsl:choose>
+	  </xsl:element>
+          <xsl:choose>
             <xsl:when test="properties/summary/text">
               <xsl:value-of select="concat(' ',properties/summary/text)"/>
             </xsl:when>

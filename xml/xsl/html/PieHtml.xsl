@@ -648,6 +648,7 @@
   </xsl:template>
   <xsl:template name="PIETAGCLOUD">
     <!--  -->
+    <xsl:if test="/pie/meta/t/t"> <!--  -->
       <xsl:variable name="int_space" select="5"/>
       <xsl:element name="div">
 	<xsl:attribute name="id">tags</xsl:attribute>
@@ -740,6 +741,7 @@
 	-->
 	<hr/>
       </xsl:element>
+    </xsl:if>
   </xsl:template>
   <xsl:template match="script">
     <!--  -->

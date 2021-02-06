@@ -7,7 +7,7 @@
         <col id="legende" name="Legende">
           <xml>
             <pie>
-              <p date="00000000"> %a %d.%m. (%j)</p>
+              <p><date ref="00000000"/> %a %d.%m. (%j)</p>
 	      <import name="feiertage.gcal"/>
             </pie>
 	    <xsl name="RemoveHiddenLevel.xsl"/>
@@ -32,9 +32,8 @@
         </col>
       </calendar>
     </xml>
-    <xsl name="CalendarTable.xsl" appendcgi="yes">
+    <xsl name="CalendarTable.xsl">
       <variable name="file_css" select="'/pie/html/pie.css'"/>
-      <variable name="str_year" select="''"/>
     </xsl>
   </xhtml>
 </make>
