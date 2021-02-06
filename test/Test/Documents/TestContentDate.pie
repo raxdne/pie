@@ -1,18 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <pie>
   <section>
     <h>Test dates</h>
     <section>
       <h>AA</h>
-      <task date="20160327,29,0402,07">
-        <h>AAA</h>
+      <task>
+        <h><date>20160327,29,0402,07</date> AAA</h>
       </task>
+      <p><date ref="20160321"/>DEF</p>
     </section>
     <section>
       <h>BB</h>
-      <section done="20160329">
+      <section>
         <h>BBB</h>
-        <task>
-          <h>CCC</h>
+        <task state="done">
+          <h><date>20160329</date> CCC</h>
         </task>
       </section>
     </section>
