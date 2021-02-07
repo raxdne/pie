@@ -12,6 +12,7 @@
   <cxp:subst string="%CGICONTEXT%" cgi="context" default="week"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
   <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
   <cxp:xhtml name="-">
     <html>
