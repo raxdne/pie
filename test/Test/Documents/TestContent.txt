@@ -33,6 +33,10 @@ yyyy & zzz 'AAA' @müller #TÄÄÄ
 
 Autolink <http://abc.de/>  http://def.com  <A.HTML> [ABC](/abc.html) 
 
+no link `<http://abc.de/>`
+
+preformated markup `<cxp:plain><cxp:html name="abc.html"/></cxp:plain>`
+
 TODO: |abc.html|ABC| @mö @me @her
 
 REQ: requirement ABC
@@ -136,7 +140,7 @@ BUG: @me minor bug @john @möll | Assignee
 
 text only 2020-03-09 @may
 
-text only 2020-03-09Z12:00:00 timezone 2020-03-09 date
+text only 2020-03-09T12:00:00UTC timezone 2020-03-09 date
 
 skype:12345
 

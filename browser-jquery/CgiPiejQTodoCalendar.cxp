@@ -31,7 +31,7 @@
                   </cxp:col>
                 </cxp:calendar>
               </cxp:xml>
-              <cxp:xsl name="CalendarTable.xsl" appendcgi="yes">
+              <cxp:xsl name="CalendarTable.xsl">
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
               </cxp:xsl>
             </cxp:xhtml>

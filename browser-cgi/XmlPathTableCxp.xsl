@@ -129,7 +129,7 @@
           <xsl:text>'</xsl:text>
         </xsl:attribute>
       </xsl:if>
-      <xsl:apply-templates select="*" />
+      <xsl:apply-templates />
     </xsl:element>
   </xsl:template>
 </xsl:stylesheet>

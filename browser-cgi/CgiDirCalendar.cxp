@@ -18,7 +18,7 @@
                 <cxp:calendar subst="yes">
                   <cxp:col id="all">
                     <cxp:xml>
-                      <p date="00000000">%Y-%m-%d</p>
+                      <p><date ref="00000000"/>%Y-%m-%d</p>
                     </cxp:xml>
                   </cxp:col>
                   <cxp:col id="directory" name="Directory">

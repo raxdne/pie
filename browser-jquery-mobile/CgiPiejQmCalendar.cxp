@@ -22,7 +22,7 @@
                   <cxp:col id="legende" name="Legend">
                     <cxp:xml>
                       <pie>
-                        <p date="00000000">%Y-%m-%d %a (KW%V/%Y)</p>
+                        <p><date ref="00000000"/>%Y-%m-%d %a (KW%V/%Y)</p>
                       </pie>
                     </cxp:xml>
                   </cxp:col>
@@ -35,7 +35,7 @@
                   </cxp:col>
                 </cxp:calendar>
               </cxp:xml>
-              <cxp:xsl name="CalendarTable.xsl" appendcgi="yes">
+              <cxp:xsl name="CalendarTable.xsl">
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
               </cxp:xsl>
             </cxp:xhtml>

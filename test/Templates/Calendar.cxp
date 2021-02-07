@@ -1,68 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
-	<cxp:subst string="%CGIPATH%" cgi="path"/>
-	<cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
-	<cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
-	<cxp:subst string="%CGIYEAR%" cgi="year" default="content"/>
-	<cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
-	<cxp:description anchor="today">Calendar Skeleton</cxp:description>
-	<cxp:xhtml name="-">
-		<html>
-			<cxp:xhtml>
-				<cxp:xsl name="CgiPieUi.xsl">
-					<cxp:variable name="str_path">%CGIPATH%</cxp:variable>
-					<cxp:variable name="flag_header" select="true()"/>
-				</cxp:xsl>
-			</cxp:xhtml>
-			<body>
-				<div id="ui">
-					<div id="content">
-						<cxp:xhtml>
-							<cxp:xml>
-								<cxp:calendar type="day" year="%CGIYEAR%">
-									<cxp:col id="legende" name="Legend">
-										<cxp:xml>
-											<pie>
-												<p date="00000000">%a %d.%m. (%j)</p>
-												<p date="0000*w99mon">KW %V/%Y</p>
-												<p date="0000*w99">%V/%Y</p>
-												<p date="000000">%Y-%m</p>
-												<p date="0000">%Y</p>
-											</pie>
-										</cxp:xml>
-									</cxp:col>
-									<cxp:col id="termine" name="Tasks">
-										<cxp:xml>
-											<pie>
-												<import name="Empty.txt" />
-											</pie>
-										</cxp:xml>
-									</cxp:col>
-									<cxp:col id="termine2" name="Tasks">
-										<cxp:xml>
-											<cxp:xml>
-												<cxp:file verbosity="4" name="test.ics"/>
-											</cxp:xml>
-											<cxp:xsl name="xCal2pie.xsl"/>
-										</cxp:xml>
-									</cxp:col>
-									<cxp:col id="termine3" name="Tasks">
-										<cxp:xml>
-											<pie>
-												<import name="Templates\Empty.md" />
-											</pie>
-										</cxp:xml>
-									</cxp:col>
-								</cxp:calendar>
-							</cxp:xml>
-							<cxp:xsl name="CalendarTable.xsl">
-								<cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
-							</cxp:xsl>
-						</cxp:xhtml>
-						<p style="text-align:right">"%ROOT%%CGIPATH%"  "%CGITAG%", %TAGTIME%</p>
-					</div>
-				</div>
-			</body>
-		</html>
-	</cxp:xhtml>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIYEAR%" cgi="year" default="content"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:description anchor="today">Calendar Skeleton</cxp:description>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:xhtml>
+	<cxp:xsl name="CgiPieUi.xsl">
+	  <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+	  <cxp:variable name="flag_header" select="true()"/>
+	</cxp:xsl>
+      </cxp:xhtml>
+      <body>
+	<div id="ui">
+	  <div id="content">
+	    <cxp:xhtml>
+	      <cxp:xml>
+		<cxp:calendar type="day" year="%CGIYEAR%">
+		  <cxp:col id="legende" name="Legend">
+		    <cxp:xml>
+		      <pie>
+			<p><date ref="00000000"/>%Y-%m-%d %a (%j)</p>
+			<p><date ref="0000*w99mon"/>CW %V/%Y</p>
+			<p><date ref="0000*w99"/>%V/%Y</p>
+			<p><date ref="000000"/>%Y-%m</p>
+			<p><date ref="0000"/>%Y</p>
+		      </pie>
+		    </cxp:xml>
+		  </cxp:col>
+		  <cxp:col id="termine" name="Tasks">
+		    <cxp:xml>
+		      <pie>
+			<import name="Empty.txt" />
+		      </pie>
+		    </cxp:xml>
+		  </cxp:col>
+		  <cxp:col id="termine2" name="Tasks">
+		    <cxp:xml>
+		      <cxp:xml>
+			<cxp:file verbosity="4" name="test.ics"/>
+		      </cxp:xml>
+		      <cxp:xsl name="xCal2pie.xsl"/>
+		    </cxp:xml>
+		  </cxp:col>
+		  <cxp:col id="termine3" name="Tasks">
+		    <cxp:xml>
+		      <pie>
+			<import name="Templates\Empty.md" />
+		      </pie>
+		    </cxp:xml>
+		  </cxp:col>
+		</cxp:calendar>
+	      </cxp:xml>
+	      <cxp:xsl name="CalendarTable.xsl">
+		<cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+	      </cxp:xsl>
+	    </cxp:xhtml>
+	    <p style="text-align:right">"%ROOT%%CGIPATH%"  "%CGITAG%", %TAGTIME%</p>
+	  </div>
+	</div>
+      </body>
+    </html>
+  </cxp:xhtml>
 </cxp:make>
