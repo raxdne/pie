@@ -11,7 +11,7 @@
   <!--  -->
   <xsl:variable name="node_cols" select="/calendar/col[@id]"/>
   <xsl:variable name="id_cols" select="/calendar/col/@id"/>
-  <xsl:variable name="context" select="'week'"/>
+  <xsl:variable name="context" select="''"/>
   <!--  -->
   <xsl:variable name="str_tag"></xsl:variable>
   <xsl:variable name="nowYear" select="0"/>
@@ -19,9 +19,9 @@
   <xsl:variable name="nowWeek" select="0"/>
   <xsl:variable name="nowDay" select="0"/>
   <!--  -->
-  <xsl:variable name="year" select="2019"/>
+  <xsl:variable name="year" select="0"/>
   <xsl:variable name="month" select="0"/>
-  <xsl:variable name="week" select="11"/>
+  <xsl:variable name="week" select="0"/>
   <xsl:variable name="day" select="0"/>
   <!--  -->
   <xsl:variable name="flag_days" select="descendant::day"/>
@@ -263,6 +263,7 @@
 
     <xsl:element name="tr">
       <xsl:choose>
+	<xsl:when test="not(col)"/>
 	<xsl:when test="$id_cols">
 	  <xsl:variable name="own" select="@own"/>
           <!-- -->
