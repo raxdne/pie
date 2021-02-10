@@ -11,7 +11,7 @@
   <!--  -->
   <xsl:variable name="node_cols" select="/calendar/col[@id]"/>
   <xsl:variable name="id_cols" select="/calendar/col/@id"/>
-  <xsl:variable name="context" select="''"/>
+  <xsl:variable name="context" select="'week'"/>
   <!--  -->
   <xsl:variable name="str_tag"></xsl:variable>
   <xsl:variable name="nowYear" select="0"/>
@@ -19,11 +19,13 @@
   <xsl:variable name="nowWeek" select="0"/>
   <xsl:variable name="nowDay" select="0"/>
   <!--  -->
-  <xsl:variable name="year" select="0"/>
+  <xsl:variable name="year" select="2019"/>
   <xsl:variable name="month" select="0"/>
-  <xsl:variable name="week" select="0"/>
+  <xsl:variable name="week" select="11"/>
   <xsl:variable name="day" select="0"/>
   <!--  -->
+  <xsl:variable name="flag_days" select="descendant::day"/>
+
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
 
   <xsl:template match="/">
@@ -31,6 +33,14 @@
       <xsl:call-template name="HEADER"/>
       <xsl:element name="body">
         <xsl:call-template name="PIETAGCLOUD"/>
+	<xsl:comment>
+	  <xsl:value-of select="concat(' $id_cols: ',$id_cols)"/>
+	  <xsl:value-of select="concat(' $context: ',$context)"/>
+	  <xsl:value-of select="concat(' $year: ',$year)"/>
+	  <xsl:value-of select="concat(' $month: ',$month)"/>
+	  <xsl:value-of select="concat(' $week: ',$week)"/>
+	  <xsl:value-of select="concat(' $day: ',$day)"/>
+	</xsl:comment>
         <xsl:apply-templates select="calendar"/>
       </xsl:element>
     </xsl:element>
@@ -81,13 +91,23 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
+          <xsl:when test="$context='week'">
+            <xsl:choose>
+              <xsl:when test="$year = 0 or $week = 0">
+		<xsl:apply-templates select="descendant::week"/>
+              </xsl:when>
+              <xsl:otherwise>
+		<xsl:apply-templates select="year[@ad=$year]/week[@nr=$week]"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
           <xsl:when test="$context='day'">
             <xsl:choose>
-              <xsl:when test="$day = 0">
+              <xsl:when test="$year = 0 or $day = 0">
 		<xsl:apply-templates select="descendant::day"/>
               </xsl:when>
               <xsl:otherwise>
-		<xsl:apply-templates select="year[@ad=$year]/month[@nr=$month]/day[@om=$day]"/>
+		<xsl:apply-templates select="year[@ad=$year]/descendant::day[@oy=$day]"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
@@ -108,109 +128,139 @@
   </xsl:template>
   
   <xsl:template match="year">
-    <xsl:choose>
-    <xsl:when test="col or week[col or day[col]] or month[col or day[col]]">
-      <xsl:element name="tr">
-	<xsl:element name="th">
-          <xsl:attribute name="colspan">
-            <xsl:value-of select="count($id_cols)"/>
-          </xsl:attribute>
-          <xsl:element name="center">
-            <xsl:value-of select="@ad"/>
-          </xsl:element>
-	</xsl:element>
+    <xsl:comment>
+      <xsl:value-of select="name()"/>
+    </xsl:comment>
+    <!-- header line -->
+    <xsl:element name="tr">
+      <xsl:element name="th">
+        <xsl:attribute name="colspan">
+          <xsl:value-of select="count($id_cols)"/>
+        </xsl:attribute>
+        <xsl:element name="center">
+          <xsl:value-of select="@ad"/>
+        </xsl:element>
       </xsl:element>
-      <!-- TODO: process year/col too -->
-      <xsl:apply-templates select="month|week"/>
-    </xsl:when>
+    </xsl:element>
+    <!-- child lines -->
+    <xsl:choose>
+      <xsl:when test="day|month|week">
+	<xsl:apply-templates />
+      </xsl:when>
       <xsl:otherwise>
+	<xsl:variable name="node_year" select="."/>
 	<xsl:element name="tr">
-	  <xsl:element name="th">
-            <xsl:value-of select="@ad"/>
-	  </xsl:element>
+	  <xsl:for-each select="$id_cols">
+	    <xsl:variable name="id_col" select="."/>
+	    <xsl:element name="td">
+    	      <xsl:for-each select="$node_year/col[@idref=$id_col]">
+		<xsl:apply-templates>
+		  <xsl:sort select="date[1]/@hour" data-type="number"/>
+		  <xsl:sort select="date[1]/@minute" data-type="number"/>
+		  <xsl:sort select="date[1]/@second" data-type="number"/>
+		  <xsl:sort select="@hstr"/>
+		  <xsl:sort select="."/>
+		</xsl:apply-templates>
+	      </xsl:for-each>
+	    </xsl:element>
+	  </xsl:for-each>
 	</xsl:element>
-	<xsl:apply-templates select="month|week"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
   <xsl:template match="month">
-    <!-- -->
+    <xsl:comment>
+      <xsl:value-of select="name()"/>
+    </xsl:comment>
+    <!-- header line -->
+    <xsl:element name="tr">
+      <xsl:element name="th">
+        <xsl:attribute name="colspan">
+          <xsl:value-of select="count($id_cols)"/>
+        </xsl:attribute>
+        <xsl:element name="center">
+          <xsl:value-of select="concat(@name,' / ',../@ad)"/>
+        </xsl:element>
+      </xsl:element>
+    </xsl:element>
+    <!-- child lines -->
     <xsl:choose>
-      <xsl:when test="$id_cols">
-	<xsl:element name="tr">
-	  <xsl:element name="th">
-            <xsl:attribute name="colspan">
-              <xsl:value-of select="count($id_cols)"/>
-            </xsl:attribute>
-            <!-- label -->
-            <xsl:element name="a">
-              <xsl:attribute name="id">
-		<xsl:value-of select="concat('m',../@ad,@nr)"/>
-              </xsl:attribute>
-            </xsl:element>
-            <xsl:element name="center">
-              <xsl:value-of select="concat(@name,' / ',../@ad)"/>
-            </xsl:element>
-            <!-- next -->
-            <xsl:element name="a">
-              <xsl:attribute name="href">
-		<xsl:value-of select="concat('#m',parent::year/attribute::ad,following-sibling::month/attribute::nr)"/>
-              </xsl:attribute>
-              <xsl:text>next</xsl:text>
-            </xsl:element>
-	  </xsl:element>
-	</xsl:element>
+      <xsl:when test="$flag_days">
+	<xsl:apply-templates select="day"/>
       </xsl:when>
       <xsl:otherwise>
+	<xsl:variable name="node_month" select="."/>
 	<xsl:element name="tr">
-	  <xsl:element name="th">
-            <xsl:value-of select="concat(@name,' / ',../@ad)"/>
-	  </xsl:element>
+	  <xsl:for-each select="$id_cols">
+	    <xsl:variable name="id_col" select="."/>
+	    <xsl:element name="td">
+    	      <xsl:for-each select="$node_month/col[@idref=$id_col]">
+		<xsl:apply-templates>
+		  <xsl:sort select="date[1]/@hour" data-type="number"/>
+		  <xsl:sort select="date[1]/@minute" data-type="number"/>
+		  <xsl:sort select="date[1]/@second" data-type="number"/>
+		  <xsl:sort select="@hstr"/>
+		  <xsl:sort select="."/>
+		</xsl:apply-templates>
+	      </xsl:for-each>
+	    </xsl:element>
+	  </xsl:for-each>
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:apply-templates select="day"/>
+   
   </xsl:template>
   
   <xsl:template match="week">
-    <xsl:if test="col or day[col]">
-      <xsl:element name="tr">
-	<xsl:element name="th">
-          <xsl:attribute name="colspan">
-            <xsl:value-of select="count($id_cols)"/>
-          </xsl:attribute>
-          <!-- label -->
-          <xsl:element name="a">
-            <xsl:attribute name="id">
-              <xsl:value-of select="concat('w',../@ad,@nr)"/>
-            </xsl:attribute>
-          </xsl:element>
-          <xsl:element name="center">
-            <xsl:value-of select="concat(@nr,' / ',../@ad)"/>
-          </xsl:element>
-	</xsl:element>
+    <xsl:comment>
+      <xsl:value-of select="name()"/>
+    </xsl:comment>
+    <!-- header line -->
+    <xsl:element name="tr">
+      <xsl:element name="th">
+        <xsl:attribute name="colspan">
+          <xsl:value-of select="count($id_cols)"/>
+        </xsl:attribute>
+        <xsl:element name="center">
+          <xsl:value-of select="concat('Week ',@nr,' / ',../@ad)"/>
+        </xsl:element>
       </xsl:element>
-      <!-- -->
-      <xsl:choose>
-	<xsl:when test="col[contains($id_cols,@idref) and child::node()]">
-	  <xsl:element name="tr">
-            <!-- -->
-            <xsl:call-template name="LINE">
-              <xsl:with-param name="pwd" select="self::node()"/>
-            </xsl:call-template>
-	  </xsl:element>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:apply-templates select="day"/>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
+    </xsl:element>
+    <!-- child lines -->
+    <xsl:choose>
+      <xsl:when test="$flag_days">
+	<xsl:apply-templates select="day"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:variable name="node_week" select="."/>
+	<xsl:element name="tr">
+	  <xsl:for-each select="$id_cols">
+	    <xsl:variable name="id_col" select="."/>
+	    <xsl:element name="td">
+    	      <xsl:for-each select="$node_week/col[@idref=$id_col]">
+		<xsl:apply-templates>
+		  <xsl:sort select="date[1]/@hour" data-type="number"/>
+		  <xsl:sort select="date[1]/@minute" data-type="number"/>
+		  <xsl:sort select="date[1]/@second" data-type="number"/>
+		  <xsl:sort select="@hstr"/>
+		  <xsl:sort select="."/>
+		</xsl:apply-templates>
+	      </xsl:for-each>
+	    </xsl:element>
+	  </xsl:for-each>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="day">
     <xsl:variable name="cw" select="@cw"/>
     <xsl:variable name="ow" select="number(@ow)"/>
+    <xsl:comment>
+      <xsl:value-of select="name()"/>
+    </xsl:comment>
+
     <xsl:element name="tr">
       <xsl:choose>
 	<xsl:when test="$id_cols">
@@ -247,6 +297,10 @@
 
   <xsl:template match="hour">
     <xsl:variable name="nr" select="@nr"/>
+    <xsl:comment>
+      <xsl:value-of select="name()"/>
+    </xsl:comment>
+
     <xsl:element name="tr">
       <!-- -->
       <xsl:call-template name="LINE">
@@ -307,6 +361,7 @@
   <xsl:template name="LINE">
     <xsl:param name="pwd"/>
     <xsl:param name="class">summary</xsl:param>
+    <xsl:comment>LINE</xsl:comment>
     <xsl:for-each select="$id_cols">
       <xsl:variable name="id_col" select="."/>
       <xsl:element name="td">
