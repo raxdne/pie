@@ -27,6 +27,21 @@
                         <cxp:include name="PieTransformation.cxp" search="yes"/>
                       </cxp:xml>
 		      <cxp:xsl name="OpenTasks.xsl"/>
+		      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+			<xsl:output method="xml" encoding="UTF-8"/>  
+			<!-- ignore all elements with an id and valid="no" -->
+			<xsl:template match="@*|node()">
+			  <xsl:choose>
+			    <!-- in valids -->
+			    <xsl:when test="self::section[not(descendant::task)]"/>
+			    <xsl:otherwise>
+			      <xsl:copy>
+				<xsl:apply-templates select="@*|node()"/> 
+			      </xsl:copy>
+			    </xsl:otherwise>
+			  </xsl:choose>
+			</xsl:template>
+		      </xsl:stylesheet>
                     </cxp:xml>
                   </cxp:col>
                 </cxp:calendar>

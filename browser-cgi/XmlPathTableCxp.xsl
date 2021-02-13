@@ -129,7 +129,13 @@
           <xsl:text>'</xsl:text>
         </xsl:attribute>
       </xsl:if>
-      <xsl:apply-templates />
+      <xsl:choose>
+	<xsl:when test="text() = 'PATH'"/>
+	<xsl:when test="text() = 'XPATH'"/>
+	<xsl:otherwise>
+	  <xsl:apply-templates />
+	</xsl:otherwise>
+      </xsl:choose>
     </xsl:element>
   </xsl:template>
 </xsl:stylesheet>

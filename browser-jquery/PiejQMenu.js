@@ -447,10 +447,20 @@ function callbackTask(key, options) {
 	urlParams.delete('pattern');
 	window.open('?' + urlParams.toString());
     } else if (key == 'hide') {
-	var classParentSelected = $('.context-menu-active').parent().attr('class').replace(/ *context-menu-active/,'');
+	var classParentSelected;
 
-	putsConsole('Hide all elements of class: ' + classParentSelected);
-	$('.' + classParentSelected).hide();
+	classParentSelected = $('.context-menu-active').parent().attr('class');
+	if (classParentSelected == undefined) {
+	    classParentSelected = $('.context-menu-active').attr('class');
+	}
+	
+	if (classParentSelected == undefined) {
+	} else {
+	    classParentSelected = classParentSelected.replace(/ *context-menu-active/,'');
+ 	    putsConsole('Hide all elements of class: ' + classParentSelected);
+	    $('.' + classParentSelected).hide();
+	}
+	
     } else {
 
 	var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
@@ -482,6 +492,11 @@ function callbackTask(key, options) {
 //
 function callbackContent(key, options) {
     
+    var urlParams = new URLSearchParams(document.location.search);
+    var strHashNew = '';
+
+    urlParams.delete('hl');
+    
     if (key == 'frame') {
 	window.open(window.location);
     } else if (key == 'cleanup') {
@@ -504,11 +519,11 @@ function callbackContent(key, options) {
     } else if (key == 'link') {
 	$('#links').css({'display': 'block'});
     } else if (key == 'contextYear') {
-	switchContext('year');
+	urlParams.set('context','year');
     } else if (key == 'contextMonth') {
-	switchContext('month');
+	urlParams.set('context','month');
     } else if (key == 'contextWeek') {
-	switchContext('week');
+	urlParams.set('context','week');
     } else if (key == 'context') {
 	switchContext();
     } else if (key == 'contextNext') {
@@ -516,11 +531,6 @@ function callbackContent(key, options) {
     } else if (key == 'contextPrev') {
 	goPrev();
     } else {
-	var urlParams = new URLSearchParams(document.location.search);
-	var strHashNew = '';
-
-	urlParams.delete('hl');
-	
 	if (urlParams.has('path')) {
 	    urlParams.set('path',urlParams.get('path').replace(/([\\]|%5C)/g,'/'));
 	}
@@ -572,12 +582,12 @@ function callbackContent(key, options) {
 	    }
 	    //urlParams.delete('hl');
 	}
-	
-	var strQuery = '?' + urlParams.toString();
-
-	putsConsole('New URL: ' + strQuery + strHashNew);
-	window.location.assign(strQuery + strHashNew);
     }
+    
+    var strQuery = '?' + urlParams.toString();
+
+    putsConsole('New URL: ' + strQuery + strHashNew);
+    window.location.assign(strQuery + strHashNew);
 }
 		    
 // 
@@ -587,7 +597,7 @@ $(function(){
 
     if (urlParams.get('path').match(/\.(pie|mm|md|cxp|cal|txt|csv)$/i)) {
 
-	if (urlParams.get('cxp').match(/calendar/i)) {
+	if (urlParams.get('cxp').match(/PiejQCalendar/i)) {
 
 	    $.contextMenu({
 		selector: '#content', 
@@ -608,10 +618,10 @@ $(function(){
 		    "contextNext": {name: "Next", icon: "link"},
 		    "contextPrev": {name: "Prev", icon: "link"},
 		    "sep4": "---------",
-		    "toc": {name: "Table of Content", icon: "toc"},
-		    "tags": {name: "Tag cloud", icon: "tags"},
-		    "link": {name: "Link list", icon: "link"},
-		    "sep5": "---------",
+		    //"toc": {name: "Table of Content", icon: "toc"},
+		    //"tags": {name: "Tag cloud", icon: "tags"},
+		    //"link": {name: "Link list", icon: "link"},
+		    //"sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "todo": {name: "Todo", icon: ""},
@@ -697,36 +707,74 @@ $(function(){
 
 	// non-editable format
 	
-	$.contextMenu({
-	    selector: '#content', 
-	    trigger: 'right',
-	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
-	    autoHide: true,
-	    callback: callbackContent,
-	    items: {
-		"document": {name: "Document", icon: "document"},
-		//"sep1": "---------",
-		"reload": {name: "Reload", icon: "reload"},
-		//"editor": {name: "Editor", icon: "edit"},
-		"cleanup": {name: "Cleanup", icon: ""},
-		"sep2": "---------",
-		"toc": {name: "Table of Content", icon: "toc"},
-		"tags": {name: "Tag cloud", icon: "tags"},
-		"selection": {name: "Tag selection", icon: "tags"},
-		"search": {name: "Search selection", icon: "tags"},
-		"link": {name: "Link list", icon: "link"},
-		"sep3": "---------",
-		"layout": {name: "Layout", icon: ""},
-		"calendar": {name: "Calendar", icon: ""},
-		"todo": {name: "Todo", icon: ""},
-		"todocalendar": {name: "TodoCalendar", icon: ""},
-		"todomatrix": {name: "TodoMatrix", icon: ""},
-		"treemap": {name: "Treemap", icon: ""},
-		// TODO: "mindmap": {name: "Mindmap", icon: ""},
-		"presentation": {name: "Presentation", icon: ""}
-	    }
-	});
+	if (urlParams.get('cxp').match(/PiejQCalendar/i)) {
 
+	    $.contextMenu({
+		selector: '#content', 
+		trigger: 'right',
+		position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
+		autoHide: true,
+		callback: callbackContent,
+		items: {
+		    "document": {name: "Document", icon: "document"},
+		    "sep1": "---------",
+		    "reload": {name: "Reload", icon: "reload"},
+		    "editor": {name: "Editor", icon: "edit"},
+		    "sep2": "---------",
+		    "contextYear": {name: "Context Year", icon: "link"},
+		    "contextMonth": {name: "Context Month", icon: "link"},
+		    "contextWeek": {name: "Context Week", icon: "link"},
+		    "sep3": "---------",
+		    "contextNext": {name: "Next", icon: "link"},
+		    "contextPrev": {name: "Prev", icon: "link"},
+		    //"sep4": "---------",
+		    //"toc": {name: "Table of Content", icon: "toc"},
+		    //"tags": {name: "Tag cloud", icon: "tags"},
+		    //"link": {name: "Link list", icon: "link"},
+		    "sep5": "---------",
+		    "layout": {name: "Layout", icon: ""},
+		    "calendar": {name: "Calendar", icon: ""},
+		    "todo": {name: "Todo", icon: ""},
+		    "todocalendar": {name: "TodoCalendar", icon: ""},
+		    "todomatrix": {name: "TodoMatrix", icon: ""},
+		    "treemap": {name: "Treemap", icon: ""},
+		    "presentation": {name: "Presentation", icon: ""}
+		}
+	    });
+	    
+	} else {
+
+	    $.contextMenu({
+		selector: '#content', 
+		trigger: 'right',
+		position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
+		autoHide: true,
+		callback: callbackContent,
+		items: {
+		    "document": {name: "Document", icon: "document"},
+		    //"sep1": "---------",
+		    "reload": {name: "Reload", icon: "reload"},
+		    //"editor": {name: "Editor", icon: "edit"},
+		    "cleanup": {name: "Cleanup", icon: ""},
+		    "sep2": "---------",
+		    "toc": {name: "Table of Content", icon: "toc"},
+		    "tags": {name: "Tag cloud", icon: "tags"},
+		    "selection": {name: "Tag selection", icon: "tags"},
+		    "search": {name: "Search selection", icon: "tags"},
+		    "link": {name: "Link list", icon: "link"},
+		    "sep3": "---------",
+		    "layout": {name: "Layout", icon: ""},
+		    "calendar": {name: "Calendar", icon: ""},
+		    "todo": {name: "Todo", icon: ""},
+		    "todocalendar": {name: "TodoCalendar", icon: ""},
+		    "todomatrix": {name: "TodoMatrix", icon: ""},
+		    "treemap": {name: "Treemap", icon: ""},
+		    // TODO: "mindmap": {name: "Mindmap", icon: ""},
+		    "presentation": {name: "Presentation", icon: ""}
+		}
+	    });
+	}
+	
 	$.contextMenu({
 	    selector: '.context-menu-section', 
 	    trigger: 'right',

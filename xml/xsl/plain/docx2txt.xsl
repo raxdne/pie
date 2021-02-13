@@ -5,7 +5,7 @@
 
   <xsl:output method="text" encoding="UTF-8"/>
 
-  <xsl:variable name="str_path" select="''" />
+  <xsl:variable name="str_path"></xsl:variable>
 
   <!-- header structure with templates 'Heading' 'berschrift' -->
 
@@ -23,10 +23,10 @@
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="string-length($str_path) &gt; 0">
-	<xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+	<xsl:value-of select="concat('ORIGIN: ', $str_path, $newpar)"/>
       </xsl:when>
       <xsl:when test="pie/file/@name">
-	<xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+	<xsl:value-of select="concat('ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
       </xsl:when>
       <xsl:otherwise>
 	<!-- no locator found -->
@@ -38,6 +38,14 @@
       <xsl:value-of select="concat('*** Tasks from the table',$newpar,$newpar)"/>
       <xsl:apply-templates select="descendant::w:p[parent::w:tc and descendant::w:t[contains(.,'TODO:')]]"/>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Title')]">
+    <xsl:value-of select="concat('___',.,'___',$newpar)"/>
+  </xsl:template>
+
+  <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Subtitle')]">
+    <xsl:value-of select="concat('__',.,'__',$newpar)"/>
   </xsl:template>
 
   <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Heading') or contains(w:pPr/w:pStyle/@w:val,'berschrift')]">
@@ -123,7 +131,20 @@
       <xsl:text>; </xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
-    <xsl:value-of select="$newpar"/>
+    <xsl:choose>
+      <xsl:when test="parent::w:tc"/>
+      <xsl:otherwise>
+	<xsl:value-of select="$newpar"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="w:t[preceding-sibling::w:rPr/w:b]">
+    <xsl:value-of select="concat('___',.,'___')"/>
+  </xsl:template>
+
+  <xsl:template match="w:t[preceding-sibling::w:rPr/w:i]">
+    <xsl:value-of select="concat('__',.,'__')"/>
   </xsl:template>
 
   <xsl:template match="w:tab">
@@ -138,11 +159,12 @@
 
   <xsl:template match="w:tr">
     <xsl:apply-templates select="w:tc"/>
-    <xsl:value-of select="concat('','&#10;')"/>
+    <xsl:value-of select="$newline"/>
   </xsl:template>
   
   <xsl:template match="w:tc">
-    <xsl:value-of select="concat(normalize-space(.),';')"/>
+    <xsl:apply-templates/>
+    <xsl:text>;</xsl:text>
   </xsl:template>
 
   <xsl:template match="w:drawing">

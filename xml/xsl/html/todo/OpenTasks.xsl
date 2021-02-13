@@ -26,33 +26,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
   <!-- ignore all elements with an id and valid="no" -->
 
-  <xsl:template match="@*|node()">
+  <xsl:template match="/pie">
+    <xsl:element name="{name()}">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+      
+  <xsl:template match="section">
+    <xsl:element name="{name()}">
+      <xsl:element name="h">
+	<xsl:value-of select="string(child::h)"/>
+      </xsl:element>
+      <xsl:apply-templates select="child::section|child::task"/>
+    </xsl:element>
+  </xsl:template>
+      
+  <xsl:template match="task">
     <xsl:choose>
       <!-- in valids -->
-      <xsl:when test="self::task[@done or @class = 'done' or @state = 'done']"/>
-      <xsl:when test="self::h[parent::section]">
-	<xsl:element name="{name()}">
-	  <xsl:value-of select="text()"/>
-	</xsl:element>
-      </xsl:when>
-      <xsl:when test="self::task">
+      <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
+      <xsl:otherwise>
 	<xsl:element name="{name()}">
 	  <xsl:copy-of select="@*|h"/>
+          <xsl:apply-templates select="node()"/>
 	</xsl:element>
-      </xsl:when>
-      <xsl:when test="self::section">
-        <xsl:copy>
-          <xsl:apply-templates select="@*|node()"/>
-        </xsl:copy>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
       
+  <xsl:template match="@*|node()">
+    <xsl:apply-templates />
+  </xsl:template>
+      
 </xsl:stylesheet>
-
-
-
-

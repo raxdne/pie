@@ -32,7 +32,6 @@
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
       <xsl:element name="body">
-        <xsl:call-template name="PIETAGCLOUD"/>
 	<xsl:comment>
 	  <xsl:value-of select="concat(' $id_cols: ',$id_cols)"/>
 	  <xsl:value-of select="concat(' $context: ',$context)"/>
@@ -320,7 +319,7 @@
       </xsl:when>
       <xsl:when test="contains('todo,done,target,test,bug,req',@class)">
 	<!-- task item -->
-	<xsl:element name="span">
+	<xsl:element name="a">
 	  <xsl:attribute name="class">context-menu-task</xsl:attribute>
 	  <xsl:attribute name="name">
 	    <xsl:value-of select="concat(':',@xpath)"/>
