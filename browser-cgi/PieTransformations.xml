@@ -1003,11 +1003,11 @@
 	      <!-- <xsl:when test="self::task[not(@date)]"/> -->
 	      <xsl:when test="self::t"/>
 	      <xsl:when test="self::meta"/>
-	      <xsl:when test="name() = 'fxpath' or name() = 'xpath'"/>
+	      <xsl:when test="name() = 'fxpath' or name() = 'bxpath' or name() = 'xpath'"/>
 	      <xsl:when test="name() = 'diff'"/>
 	      <!-- <xsl:when test="name() = 'impact'"/> -->
 	      <xsl:when test="name() = 'duration'"/>
-	      <xsl:when test="name() = 'flocator'"/>
+	      <xsl:when test="name() = 'flocator' or name() = 'blocator'"/>
 	      <xsl:when test="@hidden"/>
 	      <xsl:when test="name() = 'block' or name() = 'htag' or name() = 'date'">
 		<xsl:apply-templates /> 

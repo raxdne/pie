@@ -894,14 +894,14 @@
   <xsl:template name="MENUSET">
     <xsl:attribute name="name">
       <xsl:choose>
-	<xsl:when test="@flocator">
-	  <xsl:value-of select="concat(translate(@flocator,'\','/'),':',@fxpath,':',@xpath)"/>
+	<xsl:when test="@blocator">
+	  <xsl:value-of select="concat(translate(@blocator,'\','/'),':',@bxpath,':',@xpath)"/>
 	</xsl:when>
 	<xsl:when test="ancestor::block[@context]">
-	  <xsl:value-of select="concat(translate(ancestor::block[1]/@context,'\','/'),':',@fxpath,':',@xpath)"/>
+	  <xsl:value-of select="concat(translate(ancestor::block[1]/@context,'\','/'),':',@bxpath,':',@xpath)"/>
 	</xsl:when>
 	<xsl:when test="string-length($file_norm) &gt; 0">
-	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@fxpath,':',@xpath)"/>
+	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@bxpath,':',@xpath)"/>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:value-of select="concat('',':',@xpath,':',@xpath)"/>
@@ -914,7 +914,7 @@
   </xsl:template>
   <xsl:template name="FORMATTOOLTIP">
     <xsl:param name="node"/>
-    <xsl:value-of select="concat(ancestor::*[@flocator and position() = 1]/@flocator,' ')"/>
+    <xsl:value-of select="concat(ancestor::*[@blocator and position() = 1]/@blocator,' ')"/>
     <xsl:for-each select="@*">
       <xsl:if test="not(contains(name(),'id')) and not(name()='hstr') and not(contains(name(),'xpath')) and not(contains(name(),'locator'))">
 	<xsl:value-of select="concat(name(),'=',.,' ')"/>

@@ -71,7 +71,7 @@ d3.json('?' + urlParamsFormat.toString(), function(error, root) {
       .enter().append("div")
       .attr("class", "node")
       .call(position)
-      .on("click", function(d) { document.topElementNew(d.flocator,d.fxpath);})
+      .on("click", function(d) { document.topElementNew(d.blocator,d.bxpath);})
       .style("background", function(d) { return d.children ? color(d.name) : null; })
       .text(function(d) { return d.children ? null : d.name; });
 

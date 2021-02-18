@@ -113,10 +113,10 @@
         <xsl:value-of select="concat('&quot;','name','&quot;',': ','&quot;',$str_name,'&quot;')"/>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="@flocator">
-      <xsl:value-of select="concat(', &quot;','flocator','&quot;',': ','&quot;',translate(@flocator,'\','/'),'&quot;')"/>
-      <xsl:if test="@fxpath">
-        <xsl:value-of select="concat(', &quot;','fxpath','&quot;',': ','&quot;',@fxpath,'&quot;')"/>
+    <xsl:if test="@blocator">
+      <xsl:value-of select="concat(', &quot;','blocator','&quot;',': ','&quot;',translate(@blocator,'\','/'),'&quot;')"/>
+      <xsl:if test="@bxpath">
+        <xsl:value-of select="concat(', &quot;','bxpath','&quot;',': ','&quot;',@bxpath,'&quot;')"/>
       </xsl:if>
     </xsl:if>
     <xsl:if test="$int_size &gt; 0">

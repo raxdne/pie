@@ -373,13 +373,25 @@ function callbackLink(key, options) {
 //
 function callbackSection(key, options) {
 
+    
     var urlParams = new URLSearchParams(document.location.search);
 	
+    var m = "clicked: " + key;
+    putsConsole(m); 
+
     var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
     //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
 
-    var m = "clicked: " + key;
-    putsConsole(m); 
+    var strLocator;
+    if (arrLocator[1] == undefined || arrLocator[1] == '') {
+	if (arrLocator[2] == undefined || arrLocator[2] == '') {
+	    putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
+	} else {
+	    strLocator = arrLocator[2];
+	}
+    } else {
+	strLocator = arrLocator[1];
+    }
 
     urlParams.delete('hl');
     if (key == 'view') {
@@ -387,22 +399,14 @@ function callbackSection(key, options) {
 	urlParams.set('cxp','PiejQDefault');
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'frame') { // scope
-
+	
 	if (arrLocator[0] == undefined || arrLocator[0] == '') {
 	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
 	} else {
 	    urlParams.set('path',arrLocator[0]);
 	}
 
-	if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	    if (arrLocator[2] == undefined || arrLocator[2] == '') {
-		putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
-	    } else {
-		urlParams.set('xpath',arrLocator[2]);
-	    }
-	} else {
-	    urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
-	}
+	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator + '"]');
 
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
@@ -411,20 +415,12 @@ function callbackSection(key, options) {
 	options.$trigger.parent().parent().parent().css({'display': 'none'});
     } else if (key == 'top') {
 	
-	if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	    if (arrLocator[2] == undefined || arrLocator[2] == '') {
-		putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
-	    } else {
-		urlParams.set('xpath',arrLocator[2]);
-	    }
-	} else {
-	    urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
-	}
+	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator + '"]');
 
 	window.location.assign('?' + urlParams.toString());
 	
     } else if (key == 'up') {
-	urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,''));
+	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator.replace(/\/[^\/]+$/,'') + '"]');
 	window.location.assign('?' + urlParams.toString());
     }
 }
@@ -518,24 +514,24 @@ function callbackContent(key, options) {
 	}
     } else if (key == 'link') {
 	$('#links').css({'display': 'block'});
-    } else if (key == 'contextYear') {
-	urlParams.set('context','year');
-    } else if (key == 'contextMonth') {
-	urlParams.set('context','month');
-    } else if (key == 'contextWeek') {
-	urlParams.set('context','week');
-    } else if (key == 'context') {
-	switchContext();
-    } else if (key == 'contextNext') {
-	goNext();
-    } else if (key == 'contextPrev') {
-	goPrev();
     } else {
+
+	// actions to change the URL
+	
+	urlParams.delete('context');
+
 	if (urlParams.has('path')) {
 	    urlParams.set('path',urlParams.get('path').replace(/([\\]|%5C)/g,'/'));
 	}
-
+	
 	if (key == 'reload') {
+	    // 
+	} else if (key == 'contextYear') {
+	    urlParams.set('context','year');
+	} else if (key == 'contextMonth') {
+	    urlParams.set('context','month');
+	} else if (key == 'contextWeek') {
+	    urlParams.set('context','week');
 	} else if (key == 'layout') {
 	    urlParams.delete('tag');
 	    urlParams.delete('xpath');
@@ -546,48 +542,44 @@ function callbackContent(key, options) {
 	    urlParams.delete('xpath');
 	    urlParams.delete('pattern');
 	    urlParams.set('cxp','PiejQEditor');
+	} else if (key == 'calendar') {
+	    urlParams.set('cxp','PiejQCalendar');
+	    strHashNew = '#yesterday';
+	} else if (key == 'calendar_month') {
+	    //window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
+	} else if (key == 'selection') {
+	    selection = window.getSelection();
+	    strSelect = selection.toString();
+	    urlParams.set('pattern',"descendant::*[contains(child::text(),'" + strSelect + "')]");
+	    urlParams.set('hl',strSelect);
+	} else if (key == 'search') {
+	    selection = window.getSelection();
+	    strSelect = selection.toString();
+	    urlParams.delete('pattern');
+	    urlParams.delete('path'); // search in all files of this site
+	    urlParams.set('cxp','PiejQDirSearchResult');
+	    urlParams.set('needle', strSelect);
+	} else if (key == 'todo') {
+	    urlParams.set('cxp','PiejQTodo');
+	} else if (key == 'todocalendar') {
+	    urlParams.set('cxp','PiejQTodoCalendar');
+	} else if (key == 'todomatrix') {
+	    urlParams.set('cxp','PiejQTodoMatrix');
+	} else if (key == 'todocontact') {
+	    urlParams.set('cxp','PiejQTodoContact');
+	} else if (key == 'treemap') {
+	    urlParams.set('cxp','PiejQTodoTreemap');
+	} else if (key == 'presentation') {
+	    urlParams.set('cxp','PresentationIndex');
 	} else {
-
-	    if (key == 'calendar') {
-		urlParams.set('cxp','PiejQCalendar');
-		strHashNew = '#yesterday';
-	    } else if (key == 'calendar_month') {
-		//window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
-	    } else if (key == 'selection') {
-		selection = window.getSelection();
-		strSelect = selection.toString();
-		urlParams.set('pattern',"descendant::*[contains(child::text(),'" + strSelect + "')]");
-		urlParams.set('hl',strSelect);
-	    } else if (key == 'search') {
-		selection = window.getSelection();
-		strSelect = selection.toString();
-		urlParams.delete('pattern');
-		urlParams.delete('path'); // search in all files of this site
-		urlParams.set('cxp','PiejQDirSearchResult');
-		urlParams.set('needle', strSelect);
-	    } else if (key == 'todo') {
-		urlParams.set('cxp','PiejQTodo');
-	    } else if (key == 'todocalendar') {
-		urlParams.set('cxp','PiejQTodoCalendar');
-	    } else if (key == 'todomatrix') {
-		urlParams.set('cxp','PiejQTodoMatrix');
-	    } else if (key == 'todocontact') {
-		urlParams.set('cxp','PiejQTodoContact');
-	    } else if (key == 'treemap') {
-		urlParams.set('cxp','PiejQTodoTreemap');
-	    } else if (key == 'presentation') {
-		urlParams.set('cxp','PresentationIndex');
-	    } else {
-		urlParams.set('cxp','PiejQFormat');
-	    }
-	    //urlParams.delete('hl');
+	    urlParams.set('cxp','PiejQFormat');
 	}
-    }
-    
-    var strQuery = '?' + urlParams.toString();
+	
+	var strQuery = '?' + urlParams.toString();
 
-    putsConsole('New URL: ' + strQuery + strHashNew);
-    window.location.assign(strQuery + strHashNew);
+	putsConsole('New URL: ' + strQuery + strHashNew);
+	window.location.assign(strQuery + strHashNew);
+    }
 }
 		    
 // 
@@ -614,9 +606,9 @@ $(function(){
 		    "contextYear": {name: "Context Year", icon: "link"},
 		    "contextMonth": {name: "Context Month", icon: "link"},
 		    "contextWeek": {name: "Context Week", icon: "link"},
-		    "sep3": "---------",
-		    "contextNext": {name: "Next", icon: "link"},
-		    "contextPrev": {name: "Prev", icon: "link"},
+		    //"sep3": "---------",
+		    //"contextNext": {name: "Next", icon: "link"},
+		    //"contextPrev": {name: "Prev", icon: "link"},
 		    "sep4": "---------",
 		    //"toc": {name: "Table of Content", icon: "toc"},
 		    //"tags": {name: "Tag cloud", icon: "tags"},
@@ -724,9 +716,9 @@ $(function(){
 		    "contextYear": {name: "Context Year", icon: "link"},
 		    "contextMonth": {name: "Context Month", icon: "link"},
 		    "contextWeek": {name: "Context Week", icon: "link"},
-		    "sep3": "---------",
-		    "contextNext": {name: "Next", icon: "link"},
-		    "contextPrev": {name: "Prev", icon: "link"},
+		    //"sep3": "---------",
+		    //"contextNext": {name: "Next", icon: "link"},
+		    //"contextPrev": {name: "Prev", icon: "link"},
 		    //"sep4": "---------",
 		    //"toc": {name: "Table of Content", icon: "toc"},
 		    //"tags": {name: "Tag cloud", icon: "tags"},
