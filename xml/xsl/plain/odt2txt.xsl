@@ -76,6 +76,21 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="text:span">
+    <xsl:variable name="str_style" select="@text:style-name"/>
+    <xsl:choose>
+      <xsl:when test="ancestor::office:document-content[descendant::style:style[@style:name = $str_style and child::style:text-properties[@style:font-weight-complex='bold']]]">
+	<xsl:value-of select="concat('___',.,'___')"/>
+      </xsl:when>
+      <xsl:when test="ancestor::office:document-content[descendant::style:style[@style:name = $str_style and child::style:text-properties[@style:font-style-complex='italic']]]">
+	<xsl:value-of select="concat('__',.,'__')"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat('',.,'')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="text:p">
     <xsl:apply-templates/>
     <xsl:value-of select="$newpar"/>
