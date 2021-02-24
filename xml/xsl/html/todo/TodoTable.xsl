@@ -69,7 +69,7 @@
     <xsl:element name="tr">
       <xsl:element name="th">
 	<xsl:element name="span">
-	  <xsl:call-template name="MENUSET"/>
+	  <!-- <xsl:call-template name="MENUSET"/> -->
           <xsl:for-each select="ancestor-or-self::section">
 	    <xsl:if test="position() &gt; 1">
 	      <xsl:text> :: </xsl:text>

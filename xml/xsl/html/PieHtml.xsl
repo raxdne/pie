@@ -777,17 +777,26 @@
 	  <xsl:value-of select="concat('display:',$display)"/>
 	</xsl:attribute>
 	<xsl:for-each select="//section[h and not(ancestor-or-self::section[@valid='no']) and not(ancestor::meta)]">
+	  <xsl:variable name="str_id" select="child::h/child::link/attribute::id"/>
 	  <xsl:for-each select="ancestor::section[h]">
 	    <xsl:text>   </xsl:text>
 	  </xsl:for-each>
 	  <xsl:element name="a">
+	    <xsl:call-template name="MENUSET"/>
 	    <xsl:attribute name="href">
 	      <xsl:value-of select="concat('#',generate-id(.))"/>
 	    </xsl:attribute>
 	    <xsl:value-of select="normalize-space(h)"/>
 	  </xsl:element>
-	  <xsl:if test="child::h/child::link/attribute::id">
-            <xsl:value-of select="concat(' #',child::h/child::link/attribute::id)"/>
+	  <xsl:if test="$str_id">
+	    <xsl:text> </xsl:text>
+	    <xsl:element name="a">
+	      <xsl:attribute name="class">warning</xsl:attribute>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat('#',$str_id)"/>
+	      </xsl:attribute>
+              <xsl:value-of select="concat('',$str_id)"/>
+	    </xsl:element>
 	  </xsl:if>
 	  <xsl:value-of select="$newline"/>
 	</xsl:for-each>

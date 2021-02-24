@@ -372,7 +372,6 @@ function callbackLink(key, options) {
 // 
 //
 function callbackSection(key, options) {
-
     
     var urlParams = new URLSearchParams(document.location.search);
 	
@@ -432,15 +431,42 @@ function callbackSection(key, options) {
 function callbackTask(key, options) {
 
     var urlParams = new URLSearchParams(document.location.search);
-    
+	
+    var m = "clicked: " + key;
+    putsConsole(m); 
+
+    var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
+    //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
+
+    var strLocator;
+    if (arrLocator[1] == undefined || arrLocator[1] == '') {
+	if (arrLocator[2] == undefined || arrLocator[2] == '') {
+	    putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
+	} else {
+	    strLocator = arrLocator[2];
+	}
+    } else {
+	strLocator = arrLocator[1];
+    }
+
     urlParams.delete('hl');
     if (key == 'view') {
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
 	urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,'')); // BUG: file internal XPath
 	window.location.assign('?' + urlParams.toString());
-    } else if (key == 'frame') {
+    } else if (key == 'frame') { // scope
+	
+	if (arrLocator[0] == undefined || arrLocator[0] == '') {
+	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
+	} else {
+	    urlParams.set('path',arrLocator[0]);
+	}
+
+	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator.replace(/\/[^\/]+$/,'') + '"]');
+
 	urlParams.delete('pattern');
+	urlParams.set('cxp','PiejQDefault');
 	window.open('?' + urlParams.toString());
     } else if (key == 'hide') {
 	var classParentSelected;
@@ -689,6 +715,7 @@ $(function(){
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
+		"frame": {name: "Scope", icon: ""},
 		"up": {name: "Up", icon: "hide"},
 		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
@@ -793,6 +820,7 @@ $(function(){
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
+		"frame": {name: "Scope", icon: ""},
 		//"up": {name: "Up", icon: "hide"},
 		//"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
