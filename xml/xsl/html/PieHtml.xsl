@@ -241,20 +241,29 @@
   <xsl:template match="link">
     <xsl:param name="target" select="'mainframe'"/>
     <xsl:element name="a">
-    <xsl:copy-of select="@class"/>
-    <xsl:if test="@href">
-	<xsl:attribute name="target">
-          <xsl:choose>
-            <xsl:when test="@target">
-              <xsl:value-of select="@target"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="$target"/>
-            </xsl:otherwise>
-          </xsl:choose>
-	</xsl:attribute>
-	<xsl:copy-of select="@href"/>
-      </xsl:if>
+      <xsl:copy-of select="@class"/>
+      <xsl:choose>
+	<xsl:when test="@id">
+	  <xsl:attribute name="name">
+            <xsl:value-of select="@id"/>
+	  </xsl:attribute>
+	</xsl:when>
+	<xsl:when test="@href">
+	  <xsl:attribute name="target">
+            <xsl:choose>
+              <xsl:when test="@target">
+		<xsl:value-of select="@target"/>
+              </xsl:when>
+              <xsl:otherwise>
+		<xsl:value-of select="$target"/>
+              </xsl:otherwise>
+            </xsl:choose>
+	  </xsl:attribute>
+	  <xsl:copy-of select="@href"/>
+	</xsl:when>
+	<xsl:otherwise>
+	</xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -777,6 +786,9 @@
 	    </xsl:attribute>
 	    <xsl:value-of select="normalize-space(h)"/>
 	  </xsl:element>
+	  <xsl:if test="child::h/child::link/attribute::id">
+            <xsl:value-of select="concat(' #',child::h/child::link/attribute::id)"/>
+	  </xsl:if>
 	  <xsl:value-of select="$newline"/>
 	</xsl:for-each>
 	<hr/>
