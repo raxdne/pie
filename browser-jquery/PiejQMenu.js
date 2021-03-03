@@ -192,7 +192,7 @@ function pieCleanup() {
     putsConsole("Cleanup DOM: " + window.document.URL);
 
     $('*[class="context-menu-list context-menu-root"]').remove();
-    $('span.htag:contains(@)').remove(); // anonymizing content
+    //$('span.htag:contains(@)').remove(); // anonymizing content
     $('head > link, script, #toc, #tags, #links, #context-menu-layer').remove();
     //$('*').removeAttr("style");
     $('*').removeAttr("class").removeAttr("id").removeAttr("name");

@@ -1048,6 +1048,7 @@
 	</xsl:if>
 	<!--  -->
 	<xsl:choose>
+	  <xsl:when test="$flag_line" />
 	  <xsl:when test="count(child::*[not(name()='h')]) &gt; 0">
 	    <xsl:element name="div">
 	      <xsl:attribute name="style">margin: 5px 5px 5px 15px;</xsl:attribute>

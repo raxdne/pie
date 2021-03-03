@@ -3,6 +3,8 @@
 
 * >>Test only<< | ÄÖÜ
 
+#subst("abc","zyx")
+
 T<C>
 
 ** http://www.dummy.org/

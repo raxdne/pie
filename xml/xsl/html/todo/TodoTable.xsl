@@ -11,8 +11,6 @@
 
   <xsl:output method="html"/>
 
-  <xsl:include href="../../Utils.xsl"/>
-
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
@@ -36,55 +34,87 @@
                 </xsl:element>
               </xsl:element>
             </xsl:element>
-	    <xsl:apply-templates select="file|pie|block|section|list|task|p"/>
+	    <xsl:apply-templates />
+	    <!--
             <xsl:element name="tr">
               <xsl:element name="th">
 		<xsl:attribute name="style">text-align: right;</xsl:attribute>
 		<xsl:value-of select="concat(count(descendant::task[not(ancestor-or-self::*/@done) and not(ancestor-or-self::*/@valid = 'no')]),' Tasks')"/>
               </xsl:element>
-            </xsl:element>
+              </xsl:element>
+	      -->
           </xsl:element>
         </xsl:element>
       </xsl:element>
     </xsl:element>
   </xsl:template>
   
-  <xsl:template match="pie|block|section|list|task|p">
-    <xsl:apply-templates select="block|section|list|task|p"/>
+  <xsl:template match="pie|block">
+    <xsl:comment>
+      <xsl:value-of select="concat(name(),' ')"/>
+    </xsl:comment>
+    <xsl:apply-templates select="child::node()"/>
   </xsl:template>
   
-  <xsl:template match="task[child::h]">
-    <xsl:element name="tr">
-      <xsl:element name="td">
-	<xsl:call-template name="TASK">
-	  <xsl:with-param name="flag_line" select="true()"/>
-	</xsl:call-template>
-      </xsl:element>
-    </xsl:element>
-    <xsl:apply-templates select="block|section|list|task|p"/>
+  <xsl:template match="list|p">
+    <xsl:comment>
+      <xsl:value-of select="concat(name(),' ')"/>
+    </xsl:comment>
+    <xsl:apply-templates select="descendant::task"/>
   </xsl:template>
 
-  <xsl:template match="*[child::task]">
-    <!-- separate header row -->
-    <xsl:element name="tr">
-      <xsl:element name="th">
-	<xsl:element name="span">
-	  <!-- <xsl:call-template name="MENUSET"/> -->
-          <xsl:for-each select="ancestor-or-self::section">
-	    <xsl:if test="position() &gt; 1">
-	      <xsl:text> :: </xsl:text>
-	    </xsl:if>
-	    <xsl:copy-of select="child::h/descendant::text()"/>
-	    <!-- BUG: text nodes from other child nodes are missed
-	    <xsl:apply-templates select="child::h[1]"/>
-	    <xsl:copy-of select="child::h[1]/descendant::text()"/>
-	    <xsl:value-of select="normalize-space(child::h[1]//text())"/>
-	     -->
-	  </xsl:for-each>
+  <xsl:template match="task">
+    <xsl:comment>
+      <xsl:value-of select="concat(name(),' ')"/>
+    </xsl:comment>
+    <xsl:choose>
+      <xsl:when test="@done or @state = 'done' or @state = 'rejected' or @class = 'done'">
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:element name="tr">
+	  <xsl:element name="td">
+	    <xsl:call-template name="TASK">
+	      <xsl:with-param name="flag_line" select="true()"/>
+	    </xsl:call-template>
+	  </xsl:element>
 	</xsl:element>
-      </xsl:element>
-    </xsl:element>
-    <xsl:apply-templates select="block|section|list|task|p"/>
+	<xsl:apply-templates select="descendant::task"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="section">
+    <xsl:comment>
+      <xsl:value-of select="concat(name(),'')"/>
+    </xsl:comment>
+    <xsl:choose>
+      <xsl:when test="child::task[not(@done or @state = 'done' or @state = 'rejected' or @class = 'done')]">
+	<!-- separate header row -->
+	<xsl:element name="tr">
+	  <xsl:element name="th">
+	    <xsl:element name="span">
+	      <!-- <xsl:call-template name="MENUSET"/> -->
+              <xsl:for-each select="ancestor-or-self::section">
+		<xsl:if test="position() &gt; 1">
+		  <xsl:text> :: </xsl:text>
+		</xsl:if>
+		<xsl:copy-of select="child::h/descendant::text()"/>
+		<!-- BUG: text nodes from other child nodes are missed
+		     <xsl:apply-templates select="child::h[1]"/>
+		     <xsl:copy-of select="child::h[1]/descendant::text()"/>
+		     <xsl:value-of select="normalize-space(child::h[1]//text())"/>
+		-->
+	      </xsl:for-each>
+	    </xsl:element>
+	  </xsl:element>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates select="pie|block|section|list|task|p"/>
+  </xsl:template>
+  
+  <xsl:template match="meta|table|fig|t"/>
+  
 </xsl:stylesheet>
