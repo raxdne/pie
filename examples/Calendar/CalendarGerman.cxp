@@ -13,8 +13,8 @@
           <div id="content">
 	    <cxp:xhtml>
 	    <cxp:xml>
-	      <cxp:calendar coordinate="+5231+01323/" timezone="CET" year="%YEAR%" type="day">
-		<!-- Berlin: coordinate="+5231+01323/" timezone="CET" -->
+	      <cxp:calendar coordinate="+5231+01323" timezone="CET" year="%YEAR%" type="day">
+		<!-- Berlin: coordinate="+5231+01323" timezone="CET" -->
 		<!-- Shanghai: coordinate="+3112+12130" timezone="China Standard Time" -->
 		<cxp:col id="legende" name="Legende">
 		  <cxp:xml>
