@@ -99,6 +99,7 @@
     <xsl:element name="pre">
       <xsl:value-of select="@TEXT"/>
     </xsl:element>
+    <xsl:apply-templates/>
   </xsl:template>
   
   <xsl:template match="node">
