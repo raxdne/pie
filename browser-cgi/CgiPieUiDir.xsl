@@ -274,7 +274,24 @@
               <xsl:value-of select="@name"/>
             </xsl:attribute>
             <xsl:attribute name="href">
-              <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQDefault')"/>
+              <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=Format','&amp;','b=text/csv')"/>
+            </xsl:attribute>
+              <xsl:value-of select="translate(substring-before(@name,concat('.',@ext)),'_',' ')"/>
+          </xsl:element>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="@ext='fitx'">
+        <xsl:element name="li">
+          <xsl:attribute name="class">ui-dir-file</xsl:attribute>
+          <xsl:element name="a">
+            <xsl:attribute name="target">
+              <xsl:value-of select="$str_frame"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="@name"/>
+            </xsl:attribute>
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=Format','&amp;','b=text/html')"/>
             </xsl:attribute>
               <xsl:value-of select="translate(substring-before(@name,concat('.',@ext)),'_',' ')"/>
           </xsl:element>

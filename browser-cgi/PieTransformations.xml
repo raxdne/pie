@@ -267,9 +267,15 @@
       <h>HTML jQuery Mobile Directory</h>
     </pkg:stelle>
     <pkg:stelle id="application/vnd.garmin.tcx+xml" type="text/xml">
-      <h>Training Center XML</h>
+      <h>Garmin Training Center XML</h>
       <make>
 	<xml name="PATH"/>
+      </make>
+    </pkg:stelle>
+    <pkg:stelle id="application/vnd.garmin.fit+xml" type="vnd.garmin.fit+xml" disposition="attachement;filename=cxproc.fitx">
+      <h>Garmin FIT (XML)</h>
+      <make>
+	<file name="PATH" verbosity="5"/>
       </make>
     </pkg:stelle>
     <!--  -->
@@ -308,6 +314,12 @@
       <h>tcx2csv</h>
       <make>
 	<xsl name="tcx2csv.xsl"/>
+      </make>
+    </pkg:transition>
+    <pkg:transition id="fitx2html">
+      <h>fitx2html</h>
+      <make>
+	<xsl name="fitx2html.xsl"/>
       </make>
     </pkg:transition>
     <pkg:transition id="mm2csv">
@@ -1164,6 +1176,8 @@
     <pkg:relation from="mm2lines" to="text/plain+lines" />
     <pkg:relation from="application/vnd.garmin.tcx+xml" to="tcx2csv" />
     <pkg:relation from="tcx2csv" to="text/csv" />
+    <pkg:relation from="application/vnd.garmin.fit+xml" to="fitx2html" />
+    <pkg:relation from="fitx2html" to="text/html" />
     <pkg:relation from="application/mm+proc+xml" to="mm2csv" />
     <pkg:relation from="mm2csv" to="text/csv" />
     <pkg:relation from="application/mm+proc+xml" to="mm2short" />

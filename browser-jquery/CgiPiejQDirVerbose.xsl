@@ -185,7 +185,10 @@
                     <!-- all images -->
                     <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
                   </xsl:when>
-                  <xsl:when test="@ext='cal' or @ext='gcal' or @ext='ics'">
+		  <xsl:when test="@ext='fitx'">
+		    <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=Format','&amp;','b=text/html')"/>
+		  </xsl:when>
+		  <xsl:when test="@ext='cal' or @ext='gcal' or @ext='ics'">
                     <!-- edit form for this type of files -->
                     <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
                   </xsl:when>
