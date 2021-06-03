@@ -249,19 +249,26 @@
 	  </xsl:attribute>
 	</xsl:when>
 	<xsl:when test="@href">
-	  <xsl:attribute name="target">
-            <xsl:choose>
-              <xsl:when test="@target">
-		<xsl:value-of select="@target"/>
-              </xsl:when>
-              <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="@target">
+	      <xsl:copy-of select="@target"/>
+            </xsl:when>
+	    <xsl:when test="starts-with(@href,'#')">
+	      <!-- local link only -->
+	    </xsl:when>
+            <xsl:otherwise>
+	      <xsl:attribute name="target">
 		<xsl:value-of select="$target"/>
-              </xsl:otherwise>
-            </xsl:choose>
-	  </xsl:attribute>
+	      </xsl:attribute>
+            </xsl:otherwise>
+          </xsl:choose>
 	  <xsl:copy-of select="@href"/>
 	</xsl:when>
 	<xsl:otherwise>
+	  <!-- without href attribute -->
+	  <xsl:attribute name="href">
+	    <xsl:value-of select="text()"/>
+	  </xsl:attribute>
 	</xsl:otherwise>
       </xsl:choose>
       <xsl:apply-templates/>
