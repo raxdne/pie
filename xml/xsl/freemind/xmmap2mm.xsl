@@ -77,7 +77,81 @@
 	      </xsl:attribute>
 	    </xsl:element>
 	  </xsl:for-each>
+          <xsl:if test="ap:NotesGroup/ap:NotesXhtmlData">
+	    <!-- TODO: either ap:NotesGroup/ap:NotesXhtmlData/html or ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText -->
+	    <xsl:choose>
+              <xsl:when test="false() and ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText">
+		<xsl:element name="node">
+		  <xsl:attribute name="BACKGROUND_COLOR">
+		    <xsl:value-of select="'#ffffaa'"/>
+		  </xsl:attribute>
+		  <xsl:attribute name="TEXT">
+		    <xsl:value-of select="ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText"/>
+		    <xsl:call-template name="lf2br">
+		      <xsl:with-param name="StringToTransform" select="ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText"/>
+		    </xsl:call-template>
+		  </xsl:attribute>
+		</xsl:element>
+	      </xsl:when>
+              <xsl:when test="true() and ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText">
+		<xsl:element name="node">
+		  <xsl:attribute name="BACKGROUND_COLOR">
+		    <xsl:value-of select="'#ffffaa'"/>
+		  </xsl:attribute>
+		  <xsl:attribute name="TEXT">
+		    <xsl:text>NOTE</xsl:text>
+		  </xsl:attribute>
+		<xsl:call-template name="BR2NODE">
+		  <xsl:with-param name="StringToTransform" select="ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText"/>
+		</xsl:call-template>
+		</xsl:element>
+	      </xsl:when>
+              <xsl:when test="true() and ap:NotesGroup/ap:NotesXhtmlData/html">
+		<xsl:element name="richcontent">
+		  <xsl:attribute name="TYPE">
+		    <xsl:text>node</xsl:text>
+		  </xsl:attribute>
+		  <xsl:copy-of select="ap:NotesGroup/ap:NotesXhtmlData/*"/>
+		</xsl:element>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<!-- ignoring notes -->
+	      </xsl:otherwise>
+	    </xsl:choose>
+
+          </xsl:if>
           <xsl:apply-templates/>
+	    <!-- TODO: avoid fixed @NAME and @SIZE, use global ones -->
+	  <xsl:choose>
+          <xsl:when test="ap:Text/ap:Font[@Italic='true']">
+            <xsl:element name="font">
+              <xsl:attribute name="ITALIC">
+		<xsl:text>true</xsl:text>
+              </xsl:attribute>
+              <xsl:attribute name="NAME">
+		<xsl:text>SansSerif</xsl:text>
+              </xsl:attribute>
+              <xsl:attribute name="SIZE">
+		<xsl:text>12</xsl:text>
+              </xsl:attribute>
+	    </xsl:element>
+	  </xsl:when>
+          <xsl:when test="ap:Text/ap:Font[@Bold='true']">
+            <xsl:element name="font">
+              <xsl:attribute name="BOLD">
+		<xsl:text>true</xsl:text>
+              </xsl:attribute>
+              <xsl:attribute name="NAME">
+		<xsl:text>SansSerif</xsl:text>
+              </xsl:attribute>
+              <xsl:attribute name="SIZE">
+		<xsl:text>12</xsl:text>
+              </xsl:attribute>
+	    </xsl:element>
+	  </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	  </xsl:choose>
         </xsl:element>
       </xsl:when>
       <xsl:otherwise>
@@ -86,4 +160,53 @@
     </xsl:choose>
   </xsl:template>
   <xsl:template match="*|@*"/>
+
+  <xsl:template name="BR2NODE">
+    <xsl:param name="StringToTransform"/>
+    <xsl:choose>
+      <xsl:when test="contains($StringToTransform,'&lt;br&gt;')">
+
+	<xsl:if test="string-length(substring-before($StringToTransform,'&lt;br&gt;')) &gt; 0">
+          <xsl:element name="node">
+            <xsl:attribute name="TEXT">
+	      <xsl:value-of select="substring-before($StringToTransform,'&lt;br&gt;')"/>
+	    </xsl:attribute>
+	  </xsl:element>
+	</xsl:if>
+	
+	<xsl:call-template name="BR2NODE">
+          <xsl:with-param name="StringToTransform">
+            <xsl:value-of select="substring-after($StringToTransform,'&lt;br&gt;')"/>
+          </xsl:with-param>
+	</xsl:call-template>
+	
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:element name="node">
+          <xsl:attribute name="TEXT">
+	    <xsl:value-of select="$StringToTransform"/>
+	  </xsl:attribute>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="lf2br">
+    <xsl:param name="StringToTransform"/>
+    <xsl:choose>
+      <xsl:when test="contains($StringToTransform,'&lt;br&gt;')">
+	<xsl:value-of select="substring-before($StringToTransform,'&lt;br&gt;')"/>
+	<xsl:text> </xsl:text>
+	<xsl:call-template name="lf2br">
+          <xsl:with-param name="StringToTransform">
+            <xsl:value-of select="substring-after($StringToTransform,'&lt;br&gt;')"/>
+          </xsl:with-param>
+	</xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$StringToTransform"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

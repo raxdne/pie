@@ -209,11 +209,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
             <xsl:when test="contains(@TEXT,'ExceptionYYY') or contains(@TEXT,'RelatedYYY')">
 	      <!-- skip this categories -->
 	    </xsl:when>
-            <xsl:when test="starts-with(@TEXT,'Exception') and count(child::node) &gt; 1">
+            <xsl:when test="(starts-with(@TEXT,'Exception') or starts-with(@TEXT,'Test')) and count(child::node) &gt; 1">
 	      <xsl:for-each select="child::node[not(child::icon[contains(@BUILTIN,'cancel')]) and (not(attribute::FOLDED = 'true') or $flag_unfold) and (not(starts-with(attribute::TEXT,'REQ: ')) or $flag_req) and (not(starts-with(attribute::TEXT,'TODO: ')) or $flag_task)]">
 		<xsl:element name="tr">
 		<xsl:element name="td">
-                  <xsl:value-of select="concat('Exception ',position())"/>
+		    <xsl:for-each select="parent::node">
+		      <!-- change to parent context back, cause of color attributes -->
+		      <xsl:call-template name="CREATEATTRIBUTES"/>
+		    </xsl:for-each>
+		  <xsl:choose>
+		    <xsl:when test="starts-with(parent::*/attribute::TEXT,'Exception')">
+                      <xsl:value-of select="concat('Exception ',position())"/>
+		    </xsl:when>
+		    <xsl:otherwise>
+                      <xsl:value-of select="concat('Test Case ',position())"/>
+		    </xsl:otherwise>
+		  </xsl:choose>
 		</xsl:element>
 		<xsl:element name="td">
 		  <xsl:element name="p">

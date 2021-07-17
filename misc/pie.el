@@ -177,7 +177,7 @@
 
   (interactive)
   ;;
-  (auto-fill-mode 1)
+  (auto-fill-mode -1)
   ;(setq fill-column 70)
   ;;
   (line-number-mode 1)

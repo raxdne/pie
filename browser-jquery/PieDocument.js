@@ -118,7 +118,7 @@ document.createUI = function () {
 	    }
 
 	    urlParamsTag.set('pattern',strPatternNew);
-	    urlParamsTag.set('hl',strValue);
+	    // urlParamsTag.set('hl',strValue);
 
 	    var strQuery = urlParamsTag.toString();
 	    if (strQuery == '') {

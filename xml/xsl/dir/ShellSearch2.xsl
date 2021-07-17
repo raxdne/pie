@@ -11,7 +11,9 @@
 </xsl:variable>
 
 <xsl:variable name="nodes_call" select="/pie//file[@ext = 'txt' or @ext = 'pie']"/>
-<xsl:variable name="grep_call" select="'grep -n -H -s %* '"/>
+<xsl:variable name="grep_call">
+  <xsl:text>grep -n -H -s %* </xsl:text>
+</xsl:variable>
 <xsl:variable name="dir_prefix" select="translate(concat(/pie/dir/@prefix,'/',/pie/dir/@name),'/','\')"/>
 
 <xsl:template match="/">

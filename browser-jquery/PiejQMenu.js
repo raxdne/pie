@@ -191,7 +191,7 @@ function pieCleanup() {
 
     putsConsole("Cleanup DOM: " + window.document.URL);
 
-    $('*[class="context-menu-list context-menu-root"]').remove();
+    $('*[class="context-menu-list context-menu-root"]').off();
     //$('span.htag:contains(@)').remove(); // anonymizing content
     $('head > link, script, #toc, #tags, #links, #context-menu-layer').remove();
     //$('*').removeAttr("style");
@@ -577,7 +577,7 @@ function callbackContent(key, options) {
 	    selection = window.getSelection();
 	    strSelect = selection.toString();
 	    urlParams.set('pattern',"descendant::*[contains(child::text(),'" + strSelect + "')]");
-	    urlParams.set('hl',strSelect);
+	    // urlParams.set('hl',strSelect);
 	} else if (key == 'search') {
 	    selection = window.getSelection();
 	    strSelect = selection.toString();
@@ -610,6 +610,11 @@ function callbackContent(key, options) {
 		    
 // 
 $(function(){
+
+    // TODO: exclude 'a' elements from context menu or delete binding (keep default menu)
+    // $("a").contextmenu().off();
+    // $('a').off('contextmenu');
+    // $('a[class="context-menu-list context-menu-root"]').off();
 
     var urlParams = new URLSearchParams(document.location.search);
 

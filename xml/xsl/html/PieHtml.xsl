@@ -5,9 +5,11 @@
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="''"/>
+
   <xsl:template match="pie">
     <xsl:apply-templates/>
   </xsl:template>
+
   <xsl:template name="METAVARS">
     <!-- for debugging only
     <xsl:comment>
@@ -25,6 +27,7 @@
     </xsl:comment>
       -->
   </xsl:template>
+
   <xsl:template match="author">
     <xsl:element name="center">
       <xsl:element name="i">
@@ -32,6 +35,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="block[@type = 'quote']">
     <xsl:element name="blockquote">
       <xsl:attribute name="class">
@@ -40,11 +44,13 @@
     <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="h">
     <xsl:copy-of select="@class"/>
     <xsl:call-template name="DATESTRING"/>
     <xsl:apply-templates/>
   </xsl:template>
+
   <xsl:template match="htag|tag">
     <xsl:element name="span">
       <xsl:attribute name="class">
@@ -53,6 +59,7 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="pkg:stelle|pkg:transition"> <!-- pkg elements -->
     <xsl:element name="p">
       <xsl:value-of select="h"/>
@@ -61,6 +68,7 @@
       <xsl:copy-of select="make/*"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="section">
     <xsl:variable name="int_ancestors" select="count(ancestor-or-self::section)"/>
     <xsl:element name="section">
@@ -117,6 +125,7 @@
       </xsl:choose>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="task">
     <xsl:choose>
       <xsl:when test="name(parent::node()) = 'list'">
@@ -130,6 +139,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="section[@class='slide']">
     <!-- slide section -->
     <xsl:element name="center">
@@ -178,6 +188,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="list">
     <xsl:if test="child::*[not(@hidden) or @hidden &lt;= $level_hidden]">
       <xsl:choose>
@@ -238,6 +249,7 @@
       </xsl:choose>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="link">
     <xsl:param name="target" select="'mainframe'"/>
     <xsl:element name="a">
@@ -274,9 +286,11 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="translation">
     <!-- ignore -->
   </xsl:template>
+
   <xsl:template match="abstract">
     <xsl:element name="p">
       <xsl:attribute name="class">
@@ -285,10 +299,12 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="span">
     <xsl:copy-of select="@class"/>
     <xsl:copy-of select="."/>
   </xsl:template>
+
   <xsl:template match="b|u|i|date">
     <!-- map former elements to span -->
     <xsl:element name="span">
@@ -298,74 +314,76 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="em|strong|tt">
     <xsl:element name="{name()}">
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="p">
-    <xsl:if test="@name">
-      <xsl:element name="a">
-	<xsl:copy-of select="@name"/>
-      </xsl:element>
-    </xsl:if>
-    <xsl:choose>
-      <xsl:when test="parent::list">
-	<!-- list item -->
-	<xsl:choose>
-	  <xsl:when test="not(@hidden)">
-	    <!-- simple paragraph -->
-	    <xsl:element name="li">
-	      <xsl:call-template name="CLASSATRIBUTE"/>
-	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:if test="parent::list[@enum = 'yes']">
-		<xsl:attribute name="value">
-		  <xsl:value-of select="count(preceding-sibling::p) + 1"/>
-		</xsl:attribute>
-	      </xsl:if>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:when test="@hidden &lt;= $level_hidden">
-	    <!-- hidden paragraph -->
-	    <xsl:element name="li">
-	      <xsl:attribute name="class">hidden</xsl:attribute>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- really hidden paragraph -->
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:choose>
-	  <xsl:when test="not(@hidden)">
-	    <!-- simple paragraph -->
-	    <xsl:element name="p">
-	      <xsl:call-template name="CLASSATRIBUTE"/>
-	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:when test="@hidden &lt;= $level_hidden">
-	    <!-- hidden paragraph -->
-	    <xsl:element name="p">
-	      <xsl:attribute name="class">hidden</xsl:attribute>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- really hidden paragraph -->
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:element name="div">
+      <xsl:call-template name="CLASSATRIBUTE"/>
+      <xsl:call-template name="ADDSTYLE"/>
+      <xsl:if test="@name">
+	<xsl:element name="a">
+	  <xsl:copy-of select="@name"/>
+	</xsl:element>
+      </xsl:if>
+      <xsl:choose>
+	<xsl:when test="parent::list">
+	  <!-- list item -->
+	  <xsl:choose>
+	    <xsl:when test="not(@hidden)">
+	      <!-- simple paragraph -->
+	      <xsl:element name="li">
+		<xsl:call-template name="ADDSTYLE"/>
+		<xsl:if test="parent::list[@enum = 'yes']">
+		  <xsl:attribute name="value">
+		    <xsl:value-of select="count(preceding-sibling::p) + 1"/>
+		  </xsl:attribute>
+		</xsl:if>
+		<xsl:apply-templates/>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:when test="@hidden &lt;= $level_hidden">
+	      <!-- hidden paragraph -->
+	      <xsl:element name="li">
+		<xsl:attribute name="class">hidden</xsl:attribute>
+		<xsl:apply-templates/>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <!-- really hidden paragraph -->
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:choose>
+	    <xsl:when test="not(@hidden)">
+	      <!-- simple paragraph -->
+	      <xsl:element name="p">
+		<xsl:call-template name="ADDSTYLE"/>
+		<xsl:apply-templates/>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:when test="@hidden &lt;= $level_hidden">
+	      <!-- hidden paragraph -->
+	      <xsl:element name="p">
+		<xsl:attribute name="class">hidden</xsl:attribute>
+		<xsl:apply-templates/>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <!-- really hidden paragraph -->
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:otherwise>
+      </xsl:choose>
+      <xsl:call-template name="FORMATIMPACT"/>
+    </xsl:element>
   </xsl:template>
+
   <xsl:template match="pre">
     <xsl:element name="pre">
       <xsl:element name="code">
@@ -373,10 +391,22 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="hr">
     <xsl:copy-of select="."/>
   </xsl:template>
+
   <xsl:template match="img">
+    <xsl:variable name="str_src">
+      <xsl:choose>
+	<xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
+	  <xsl:value-of select="@src"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:if test="@src">
       <xsl:element name="a">
 	<xsl:attribute name="name">
@@ -384,6 +414,13 @@
 	</xsl:attribute>
       </xsl:element>
     </xsl:if>
+      <xsl:element name="a">
+      <xsl:attribute name="href">
+	<xsl:value-of select="$str_src"/>
+      </xsl:attribute>
+      <xsl:attribute name="target">
+	<xsl:value-of select="'blank'"/>
+      </xsl:attribute>
     <xsl:element name="{name()}">
       <xsl:copy-of select="@*"/>
       <xsl:attribute name="class">
@@ -398,24 +435,17 @@
 	    <xsl:value-of select="parent::fig/child::h"/>
 	  </xsl:when>
 	  <xsl:otherwise>
-	    <xsl:value-of select="@src"/>
+	    <xsl:value-of select="$str_src"/>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:attribute>
-      <xsl:choose>
-	<xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
-	  <xsl:attribute name="src">
-	    <xsl:value-of select="@src"/>
-	  </xsl:attribute>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:attribute name="src">
-	    <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
-	  </xsl:attribute>
-	</xsl:otherwise>
-      </xsl:choose>
+      <xsl:attribute name="src">
+	<xsl:value-of select="$str_src"/>
+      </xsl:attribute>
     </xsl:element>
+      </xsl:element>
   </xsl:template>
+
   <xsl:template name="TABLEHEADER">
     <!-- create a table header cell for every column -->
     <xsl:param name="numCols" select="-1"/>
@@ -459,6 +489,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="table">
     <xsl:element name="center">
       <xsl:element name="table">
@@ -501,12 +532,14 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="fig">
     <xsl:if test="$flag_fig and child::*">
       <xsl:choose>
 	<xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
 	  <!-- normal figure -->
 	  <xsl:element name="center">
+	    <xsl:attribute name="class">figure</xsl:attribute>
 	    <xsl:apply-templates select="img"/>
 	    <xsl:if test="h">
 	      <xsl:element name="p">
@@ -540,6 +573,7 @@
       </xsl:choose>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="LISTCSS">
     <xsl:param name="list_css" select="''"/>
     <xsl:choose>
@@ -576,6 +610,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="LISTJS">
     <xsl:param name="list_js" select="''"/>
     <xsl:choose>
@@ -607,6 +642,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="HEADER">
     <xsl:param name="list_js" select="''"/>
     <xsl:element name="head">
@@ -662,6 +698,7 @@
       </xsl:call-template>
      </xsl:element>
   </xsl:template>
+
   <xsl:template name="PIETAGCLOUD">
     <!--  -->
     <xsl:if test="/pie/meta/t/t"> <!--  -->
@@ -759,10 +796,12 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="script">
     <!--  -->
     <xsl:copy-of select="."/>
   </xsl:template>
+
   <xsl:template name="PIETOC">
     <xsl:param name="display" select="block"/>
     <xsl:if test="count(//section[child::h and not(ancestor::section[@valid='no'])]) &gt; 3">
@@ -811,6 +850,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="PIELINKLIST">
     <xsl:if test="count(//link[not(ancestor::*[@valid='no']) and string-length(@href) &gt; 4]) &gt; 1">
 <!--
@@ -864,6 +904,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="TAGMARKUP">
     <xsl:param name="str_mark"/>
     <xsl:variable name="str_tail" select="substring-after($str_mark,$str_tag)"/>
@@ -888,6 +929,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="ADDSTYLE">
     <xsl:param name="flag_background" select="true()"/>
     <xsl:if test="@color or @background">
@@ -919,6 +961,7 @@
       </xsl:attribute>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="MENUSET">
     <xsl:attribute name="name">
       <xsl:choose>
@@ -940,6 +983,7 @@
       <xsl:value-of select="concat('context-menu-',name())"/>
     </xsl:attribute>
   </xsl:template>
+
   <xsl:template name="FORMATTOOLTIP">
     <xsl:param name="node"/>
     <xsl:value-of select="concat(ancestor::*[@blocator and position() = 1]/@blocator,' ')"/>
@@ -958,6 +1002,7 @@
       </xsl:call-template>
     </xsl:for-each>
   </xsl:template>
+
   <xsl:template name="TIMESTRING">
     <xsl:if test="@hour">
       <xsl:value-of select="concat(@hour,'.',@minute)"/>
@@ -967,6 +1012,7 @@
       <xsl:value-of select="concat('',' ')"/>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="CLASSATRIBUTE">
     <xsl:attribute name="class">
       <xsl:choose>
@@ -988,6 +1034,7 @@
       </xsl:choose>
     </xsl:attribute>
   </xsl:template>
+
   <xsl:template name="TASK">
     <!-- callable for task element -->
     <xsl:param name="flag_line" select="false()"/>
@@ -1621,7 +1668,9 @@ blockquote > :last-child {
 
    </xsl:element>
 </xsl:template>
+
   <xsl:template match="meta|t">
     <!-- ignore this elements -->
   </xsl:template>
+  
 </xsl:stylesheet>
