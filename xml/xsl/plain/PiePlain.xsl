@@ -12,10 +12,14 @@
 </xsl:text>
 </xsl:variable>
 
-  <xsl:template match="processing-instruction('tag-regexp')">
+  <xsl:template match="processing-instruction('regexp-tag')">
     <xsl:value-of select="concat('TAGS: ',.,$newpar)"/>
   </xsl:template>
 
+  <xsl:template match="processing-instruction()">
+    <xsl:value-of select="concat('; ',name(),': ',.,$newpar)"/>
+  </xsl:template>
+  
   <xsl:template match="hr">
     <!-- para -->
         <xsl:text>____</xsl:text>
@@ -65,10 +69,6 @@
     <xsl:value-of select="concat('Fig. ![',h,'](',img/@src,')',$newpar)"/>
   </xsl:template>
 
-  <xsl:template match="processing-instruction()">
-    <xsl:value-of select="concat('; ',.,$newpar)"/>
-  </xsl:template>
-  
   <xsl:template name="TAGTIME">
     <xsl:param name="str_tagtime" select="''"/>
 	<xsl:if test="not($str_tagtime = '')">

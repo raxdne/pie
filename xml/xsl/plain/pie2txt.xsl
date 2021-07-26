@@ -30,6 +30,7 @@
     </xsl:call-template>
     <xsl:apply-templates/>
   </xsl:template>
+  
   <xsl:template match="h">
     <xsl:if test="parent::section">
       <xsl:for-each select="ancestor::section">
@@ -56,9 +57,17 @@
   </xsl:template>
 
   <xsl:template match="list">
-    <xsl:if test="name(parent::*) = 'p'">
-      <xsl:value-of select="$newpar"/>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="parent::p">
+	<xsl:value-of select="$newpar"/>
+      </xsl:when>
+      <xsl:when test="parent::list">
+	<xsl:value-of select="$newpar"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!--  -->
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -66,10 +75,21 @@
     <xsl:call-template name="FORMATPREFIX"/>
     <xsl:apply-templates/>
     <xsl:call-template name="FORMATIMPACT"/>
-    <xsl:value-of select="$newpar"/>
+    <xsl:choose>
+      <xsl:when test="child::list[position() = last()]">
+	<!--  -->
+      </xsl:when>
+      <xsl:when test="preceding-sibling::list">
+	<!--  -->
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$newpar"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="table">
+    <xsl:value-of select="$newpar"/>
     <xsl:text>#begin_of_csv
 </xsl:text>
     <xsl:for-each select="tr">
@@ -83,7 +103,9 @@
     
 </xsl:text>
   </xsl:template>
+
   <xsl:template match="pre">
+    <xsl:value-of select="$newpar"/>
     <xsl:text>
 #begin_of_pre
 </xsl:text>
@@ -93,7 +115,21 @@
 </xsl:text>
     <xsl:value-of select="$newpar"/>
   </xsl:template>
+
+  <xsl:template match="import[@type = 'script']">
+    <xsl:value-of select="$newpar"/>
+    <xsl:text>
+#begin_of_script
+</xsl:text>
+    <xsl:value-of select="text()"/>
+    <xsl:text>
+#end_of_script
+</xsl:text>
+    <xsl:value-of select="$newpar"/>
+  </xsl:template>
+
   <xsl:template match="t|meta">
     <!-- ignore normal text nodes -->
   </xsl:template>
+
 </xsl:stylesheet>

@@ -624,6 +624,7 @@
 	  </xml>
 	  <xsl name="ExtractDuration.xsl"/>
 	  <xsl name="RemoveHiddenLevel.xsl"/>
+	  <xsl name="RemoveDone.xsl" valid="no"/>
 	</xml>
       </make>
     </pkg:transition>

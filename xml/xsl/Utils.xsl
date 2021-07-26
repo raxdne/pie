@@ -41,6 +41,9 @@
 
   <xsl:template name="FORMATTASKPREFIX">
     <xsl:choose>
+      <xsl:when test="@class = 'todo' and @state = 'done'">
+	<xsl:value-of select="concat('DONE: ','')"/>
+      </xsl:when>
       <xsl:when test="@class">
         <xsl:value-of select="concat(translate(@class,'todnreqabugs','TODNREQABUGS'),': ')"/>
       </xsl:when>

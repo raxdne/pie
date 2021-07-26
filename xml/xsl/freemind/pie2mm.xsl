@@ -6,6 +6,8 @@
   <xsl:variable name="flag_attr" select="false()"/>
   <xsl:variable name="flag_fold" select="true()"/>
   <xsl:variable name="str_title" select="''"/>
+  <xsl:variable name="str_font" select="'SansSerif'"/> <!--  -->
+  <xsl:variable name="int_fontsize" select="12"/>
   <xsl:template match="/">
     <xsl:element name="map">
       <xsl:if test="$flag_attr">
@@ -17,9 +19,11 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="file">
     <xsl:apply-templates select="pie"/>
   </xsl:template>
+
   <xsl:template match="pie">
     <xsl:choose>
       <xsl:when test="count(child::*[not(name()='meta')]) &gt; 1">
@@ -40,6 +44,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="section">
     <xsl:element name="node">
       <xsl:if test="$flag_fold and child::*[not(name() = 'h')] and count(ancestor::section) &gt; 0">
@@ -47,19 +52,41 @@
           <xsl:text>true</xsl:text>
         </xsl:attribute>
       </xsl:if>
-      <xsl:attribute name="TEXT">
-        <xsl:value-of select="normalize-space(h)"/>
-      </xsl:attribute>
-      <xsl:if test="h/@ref">
-        <xsl:attribute name="LINK">
-          <xsl:value-of select="h/@ref"/>
+      <xsl:for-each select="child::h">
+	<xsl:choose>
+	  <xsl:when test="@ref">
+            <xsl:attribute name="LINK">
+              <xsl:value-of select="@ref"/>
+            </xsl:attribute>
+	  </xsl:when>
+	  <xsl:when test="link[@href]">
+            <xsl:attribute name="LINK">
+              <xsl:value-of select="link[1]/@href"/>
+            </xsl:attribute>
+	  </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:attribute name="TEXT">
+          <xsl:value-of select="normalize-space(.)"/>
+	</xsl:attribute>
+      </xsl:for-each>
+      <xsl:element name="font">
+	<xsl:attribute name="BOLD">
+          <xsl:text>true</xsl:text>
+	</xsl:attribute>
+        <xsl:attribute name="NAME">
+          <xsl:value-of select="$str_font"/>
         </xsl:attribute>
-      </xsl:if>
-      <font BOLD="true" NAME="SansSerif" SIZE="12"/>
+        <xsl:attribute name="SIZE">
+          <xsl:value-of select="$int_fontsize"/>
+        </xsl:attribute>
+      </xsl:element>
       <xsl:call-template name="CREATEATTRIBUTES"/>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="task">
     <xsl:if test="$flag_p">
       <xsl:element name="node">
@@ -114,6 +141,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="list">
     <xsl:if test="$flag_p">
       <xsl:choose>
@@ -127,6 +155,7 @@
       </xsl:choose>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="fig">
     <xsl:element name="node">
       <xsl:if test="h">
@@ -151,9 +180,11 @@
       </xsl:if>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="link">
     <xsl:value-of select="text()"/>
   </xsl:template>
+
   <xsl:template match="p">
     <xsl:if test="$flag_p">
       <xsl:element name="node">
@@ -176,17 +207,24 @@
           </xsl:attribute>
         </xsl:if>
         <xsl:if test="@hidden &gt; 0">
-          <xsl:element name="font">
-            <xsl:attribute name="ITALIC">true</xsl:attribute>
-            <xsl:attribute name="NAME">SansSerif</xsl:attribute>
-            <xsl:attribute name="SIZE">10</xsl:attribute>
-          </xsl:element>
+	  <xsl:element name="font">
+	    <xsl:attribute name="ITALIC">
+              <xsl:text>true</xsl:text>
+	    </xsl:attribute>
+            <xsl:attribute name="NAME">
+              <xsl:value-of select="$str_font"/>
+            </xsl:attribute>
+            <xsl:attribute name="SIZE">
+              <xsl:value-of select="$int_fontsize"/>
+            </xsl:attribute>
+	  </xsl:element>
         </xsl:if>
         <xsl:call-template name="CREATEATTRIBUTES"/>
         <xsl:apply-templates select="list"/>
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="table">
     <xsl:for-each select="tr[1]/*">
       <xsl:variable name="int_col" select="position()"/>
@@ -225,6 +263,7 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
+
   <xsl:template match="tr">
     <xsl:element name="node">
       <xsl:attribute name="TEXT">
@@ -233,6 +272,7 @@
       <xsl:apply-templates select="*"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="th">
     <xsl:element name="node">
       <xsl:attribute name="TEXT">
@@ -240,6 +280,7 @@
       </xsl:attribute>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="td">
     <xsl:element name="node">
       <xsl:attribute name="TEXT">
@@ -247,19 +288,25 @@
       </xsl:attribute>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="pre">
     <xsl:if test="$flag_p">
       <xsl:element name="node">
         <xsl:attribute name="TEXT">
           <xsl:apply-templates/>
         </xsl:attribute>
-        <xsl:element name="font">
-          <xsl:attribute name="NAME">Courier</xsl:attribute>
-          <xsl:attribute name="SIZE">10</xsl:attribute>
-        </xsl:element>
+	<xsl:element name="font">
+          <xsl:attribute name="NAME">
+            <xsl:text>Courier</xsl:text>
+          </xsl:attribute>
+          <xsl:attribute name="SIZE">
+            <xsl:value-of select="$int_fontsize - 2"/>
+          </xsl:attribute>
+	</xsl:element>
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="block">
     <xsl:choose>
       <xsl:when test="count(child::*[not(name()='meta')]) &gt; 1">
@@ -274,9 +321,11 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="*|text()|@*">
     <!-- ignore other elements --> 
   </xsl:template>
+
   <xsl:template name="CREATEATTRIBUTES">
     <xsl:if test="$flag_attr">
       <!-- add all mindmap node attributes -->
