@@ -173,6 +173,10 @@
       <h>HTML Simple layout</h>
       <p>A full content simple layout with header and content.</p>
     </pkg:stelle>
+    <pkg:stelle id="text/html+impress" type="text/html">
+      <h>HTML Impress layout</h>
+      <p>A full content impress layout with header and content.</p>
+    </pkg:stelle>
     <pkg:stelle id="text/html+tab" type="text/html">
       <h>HTML Table layout</h>
       <p>A full content table layout with header and content rows.</p>
@@ -438,6 +442,12 @@
       <h>pie2htmlsimple</h>
       <make>
 	<xsl name="pie2htmlsimple.xsl"/>
+      </make>
+    </pkg:transition>
+    <pkg:transition id="pie2impress">
+      <h>pie2impress</h>
+      <make>
+	<xsl name="pie2impress.xsl"/>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2html">
@@ -1239,6 +1249,8 @@
     <pkg:relation from="pie2html" to="text/html"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2htmlsimple"/>
     <pkg:relation from="pie2htmlsimple" to="text/html+simple"/>
+    <pkg:relation from="application/pie+proc+xml" to="pie2impress"/>
+    <pkg:relation from="pie2impress" to="text/html+impress"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2htmlshort"/>
     <pkg:relation from="pie2htmlshort" to="text/html+compact"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2jqm"/>
