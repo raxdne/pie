@@ -95,7 +95,7 @@
     <xsl:param name="str_spaces" select="'  '"/>
     <xsl:param name="flag_spacing" select="false()"/>
     <xsl:choose>
-      <xsl:when test="self::section">
+      <xsl:when test="self::section|self::task">
 	<xsl:if test="$flag_spacing">
           <xsl:value-of select="concat($str_prefix,$str_spaces,'│&#10;')"/>
 	</xsl:if>
@@ -108,8 +108,11 @@
 	    <xsl:text>└─</xsl:text>
 	  </xsl:otherwise>
 	</xsl:choose>
+	<xsl:if test="self::task">
+	  <xsl:call-template name="FORMATTASKPREFIX"/>
+	</xsl:if>
 	<xsl:value-of select="concat(' ',normalize-space(h),'&#10;')"/>
-	<xsl:for-each select="section[h]">
+	<xsl:for-each select="section[child::h]|task[@class = 'target' and child::h]">
 	  <xsl:call-template name="TREELINE">
 	    <xsl:with-param name="str_prefix">
 	      <xsl:choose>
@@ -129,7 +132,7 @@
 	</xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:for-each select="pie|block|section[h]">
+	<xsl:for-each select="pie|block|section[h]|task[@class = 'target' and child::h]">
 	  <xsl:call-template name="TREELINE">
 	    <xsl:with-param name="str_prefix">
 	      <xsl:value-of select="$str_prefix"/>

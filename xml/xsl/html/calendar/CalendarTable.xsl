@@ -337,7 +337,7 @@
 	    </xsl:if>
 	    <xsl:element name="span">
 	      <xsl:attribute name="class">
-		<xsl:text>htag</xsl:text>
+		<xsl:value-of select="concat('htag-',@class)"/>
 	      </xsl:attribute>
 	      <xsl:value-of select="concat(translate(@class,'todnreqabugs','TODNREQABUGS'),': ')"/>
 	    </xsl:element>

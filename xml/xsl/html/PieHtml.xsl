@@ -1016,6 +1016,22 @@
   <xsl:template name="CLASSATRIBUTE">
     <xsl:attribute name="class">
       <xsl:choose>
+	<xsl:when test="@class">
+	  <xsl:choose>
+	    <xsl:when test="@state">
+	      <xsl:value-of select="concat(@class,'-',@state)"/>
+	    </xsl:when>
+	    <xsl:when test="@done">
+	      <xsl:value-of select="concat(@class,'-done')"/>
+	    </xsl:when>
+	    <xsl:when test="@impact">
+	      <xsl:value-of select="concat(@class,@impact)"/>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:value-of select="@class"/>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:when>
 	<xsl:when test="@state">
 	  <xsl:value-of select="concat(name(),'-',@state)"/>
 	</xsl:when>
@@ -1024,9 +1040,6 @@
 	</xsl:when>
 	<xsl:when test="@impact">
 	  <xsl:value-of select="concat(name(),@impact)"/>
-	</xsl:when>
-	<xsl:when test="@class">
-	  <xsl:value-of select="@class"/>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:value-of select="name()"/>
@@ -1404,7 +1417,7 @@ span.tagRed {
 /* lists */
 ul, ol {
  margin: 0px 0px 0px 0px;
- padding: 0px 0px 0px 3em;
+ padding: 0px 0px 0px 2em;
 }
 
 ul {
@@ -1516,11 +1529,17 @@ dd {
 }
 
 img {
- margin: 10px 10px 20px 20px;
+ /* margin: 10px 10px 20px 20px; */
  border:none
 }
+.figure {
+ background-color:#EEEEEE;
+ border-style:solid;
+ border-width:thin;
+ margin: 5px 5px 10px 10px;
+}
 .localsize {
-  /* width: 90%; */
+ width: 90%;
  margin: 5px 5px 10px 10px;
  border:none
 }
@@ -1583,36 +1602,35 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 *.task, *.todo, *.test, *.bug, *.req, *.target {
   background-color:#EEEEEE;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
 }
 
-*.p1, *.h1, *.fig1, *.task1, *.tr1, *.section1 {
+*.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.section1 {
   background-color:#ffcccc;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
 }
-*.p2, *.h2, *.fig2, *.task2, *.tr2, *.section2 {
+*.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.section2 {
   background-color:#ccffcc;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
 }
-*.p3, *.h3, *.fig3, *.task3, *.tr3, *.section3 {
+*.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.section3 {
   background-color:#ccccff;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
 }
 
-*.section-done,*.htag-done,*.task-done,*.p-done,*.h-done {
+*.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.p-done,*.h-done {
   color:#AAAAAA;
   background-color:#EEEEEE;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
-/*  text-decoration:line-through; */
+  margin: 1px 0px 1px 0px;
 }
 
 /* 
  */
-*.invalid, *.task-rejected {
+*.invalid, *.task-rejected, *.target-rejected, *.test-rejected, *.bug-rejected, *.req-rejected {
   text-decoration: line-through;
 }
 
@@ -1625,6 +1643,7 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 
 *.highlight {
   background-color:#88ff88;
+  padding: 1px;
 }
 
 /* text marker like styles

@@ -33,18 +33,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
   </xsl:template>
       
   <xsl:template match="section">
-    <xsl:element name="{name()}">
-      <xsl:element name="h">
-	<xsl:value-of select="string(child::h)"/>
-      </xsl:element>
-      <xsl:apply-templates select="child::section|child::task"/>
-    </xsl:element>
+    <xsl:choose>
+      <!-- in valids -->
+      <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@hidden"/>
+      <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
+      <xsl:otherwise>
+	<xsl:element name="{name()}">
+	  <xsl:element name="h">
+	    <xsl:value-of select="string(child::h)"/>
+	  </xsl:element>
+	  <xsl:apply-templates select="child::block|child::section|child::task"/>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
       
   <xsl:template match="task">
     <xsl:choose>
       <!-- in valids -->
       <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@hidden"/>
       <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
       <xsl:otherwise>
 	<xsl:element name="{name()}">
@@ -54,9 +63,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-      
-  <xsl:template match="@*|node()">
-    <xsl:apply-templates />
+
+  <xsl:template match="node()">
+    <xsl:choose>
+      <!-- in valids -->
+      <xsl:when test="@valid = 'no'"/>
+      <xsl:otherwise>
+        <xsl:apply-templates /> 
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
       
+
 </xsl:stylesheet>
