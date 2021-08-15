@@ -585,6 +585,8 @@ function callbackContent(key, options) {
 	    urlParams.delete('path'); // search in all files of this site
 	    urlParams.set('cxp','PiejQDirSearchResult');
 	    urlParams.set('needle', strSelect);
+	} else if (key == 'backlog') {
+	    urlParams.set('cxp','PiejQBacklog');
 	} else if (key == 'todo') {
 	    urlParams.set('cxp','PiejQTodo');
 	} else if (key == 'todocalendar') {
@@ -647,6 +649,7 @@ $(function(){
 		    //"sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
+		    "backlog": {name: "Backlog", icon: ""},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -685,6 +688,7 @@ $(function(){
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    //"calendar_month": {name: "CalendarMonth", icon: ""},
+		    "backlog": {name: "Backlog", icon: ""},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -758,6 +762,7 @@ $(function(){
 		    "sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
+		    "backlog": {name: "Backlog", icon: ""},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -789,6 +794,7 @@ $(function(){
 		    "sep3": "---------",
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
+		    "backlog": {name: "Backlog", icon: ""},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
