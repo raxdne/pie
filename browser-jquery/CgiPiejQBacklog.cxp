@@ -29,6 +29,7 @@
             <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
           </div>
         </div>
+        <a name="bottom"/>
       </body>
     </html>
   </cxp:xhtml>

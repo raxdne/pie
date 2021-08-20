@@ -52,8 +52,9 @@
   <xsl:template name="BACKLOG">
     <xsl:param name="set_nodes" />
     <xsl:for-each select="$set_nodes">
-      <xsl:sort order="ascending" data-type="number" select="@impact"/>
-      <xsl:sort order="descending" data-type="number" select="@diff"/>
+      <xsl:sort order="ascending" data-type="number" select="@diff"/>
+      <xsl:sort order="ascending" data-type="number" select="child::h/child::date[1]/@diff"/>
+      <xsl:sort order="ascending" data-type="number" select="parent::section/child::h/child::date[1]/@diff"/>
       <xsl:element name="tr">
 	<xsl:element name="td">
 	  <xsl:call-template name="TASK">

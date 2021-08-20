@@ -1,4 +1,6 @@
 
+TAGS: abc|GTD|Test|\u258A{1,4}|\u21AF+
+
 #subst("TODAY",now="%Y-%m-%d")
 
 * >>Test only<< | ÄÖÜ
@@ -37,9 +39,11 @@ Autolink <http://abc.de/>  http://def.com  <A.HTML> [ABC](/abc.html)
 
 no link `<http://abc.de/>`
 
+TTT http://def.com/a--b--c/
+
 preformated markup `<cxp:plain><cxp:html name="abc.html"/></cxp:plain>`
 
-TODO: |abc.html|ABC| @mö @me @her
+TODO: |abc.html|ABC| @mö @me @her-majesty
 
 REQ: requirement ABC
 
@@ -128,7 +132,7 @@ TODO: fix that error
 
 **** [AAAA](id:anchor)
 
-BUG: @me minor bug @john @möll | Assignee
+BUG: @me minor bug \u21AF @john @möll | Assignee
 
 - not reproducable
 
@@ -140,9 +144,9 @@ BUG: @me minor bug @john @möll | Assignee
 
 *** |http://www.demo.org/test/|TEST| ++
 
-text only 2020-03-09 @may
+text only 2020-03-09 @may ▊▊
 
-text only 2020-03-09T12:00:00UTC timezone 2020-03-09 date
+text only 2020-03-09T12:00:00UTC timezone 2020-03-09 date ▊▊▊
 
 skype:12345
 
@@ -160,13 +164,15 @@ TODO: removed ✘
 
 DONE: 20200120 this was done @me
 
-http://www.dummy.com/test%20abc%20%28inside%29/
+http://www.dummy.com/test%20abc%20%28inside%29/#anchor
 
-TODO: has to be done || you
+TODO: has to be done \u258A\u258A\u258A || you
 
 TODO: must be done ||| me_do 
 
 abc >>öäü<<
+
+TAGS: (ooo|n{2,})
 
 + mmm+
 
@@ -174,7 +180,7 @@ abc >>öäü<<
 
 + ooo @her+++
 
-#import("TestContent.csv")
+; #import("TestContent.csv")
 
     ---- 
 
@@ -190,17 +196,17 @@ get new figures @muller++
 
 @muller informed about new figures +++
 
-----
+;----
 
 ** CC
 
-list
+list ++
 
 - A
 
 -- AA
 
---- AAA
+--- AAA \u258A\u258A
 
 ---- AAAA
 
@@ -210,4 +216,3 @@ list
 
 * Test 2
 
-TAGS: abc|GTD|Test

@@ -185,6 +185,9 @@
       <h>HTML Indent layout</h>
       <p>A text only layout build of nested lists, no CSS.</p>
     </pkg:stelle>
+    <pkg:stelle id="text/html+backlog" type="text/html">
+      <h>HTML Backlog layout</h>
+    </pkg:stelle>
     <pkg:stelle id="text/html+todo" type="text/html">
       <h>HTML Todo layout</h>
     </pkg:stelle>
@@ -503,6 +506,13 @@
 	  <variable name="file_css" select="''" />
 	  <variable name="flag_done" select="false()"/>
 	</xsl>
+      </make>
+    </pkg:transition>
+    <pkg:transition id="pie2backlog">
+      <h>pie2backlog</h>
+      <make>
+	<xsl name="OpenTasks.xsl"/>
+	<xsl name="TodoBacklog.xsl"/>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2todo">
@@ -1263,12 +1273,14 @@
     <pkg:relation from="mm2tab" to="text/html+tab"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2indent"/>
     <pkg:relation from="pie2indent" to="text/html+indent"/>
+    <pkg:relation from="application/pie+proc+xml" to="pie2backlog"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2todo"/>
     <pkg:relation from="application/mm+proc+xml" to="mm2touch"/>
     <pkg:relation from="mm2touch" to="text/html+touch"/>
     <pkg:relation from="application/mm+proc+xml" to="mm2usecases"/>
     <pkg:relation from="application/mm+xml" to="mm2usecases"/>
     <pkg:relation from="mm2usecases" to="text/html+usecases"/>
+    <pkg:relation from="pie2backlog" to="text/html+backlog"/>
     <pkg:relation from="pie2todo" to="text/html+todo"/>
     <pkg:relation from="application/pie+xml" to="pie2tag" />
     <pkg:relation from="pie2tag" to="text/html+tag" />

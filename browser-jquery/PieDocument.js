@@ -23,7 +23,7 @@ document.createUI = function () {
     var urlParams = new URLSearchParams(document.location.search);
 
     if (urlParams.has('pattern')) {
-	$('#tags').css({'display': 'block'});
+	// $('#tags').css({'display': 'block'});
     }
     
     if (urlParams.has('hl')) {
