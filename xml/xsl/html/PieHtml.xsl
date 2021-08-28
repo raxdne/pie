@@ -360,17 +360,14 @@
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:choose>
-	    <xsl:when test="not(@hidden)">
+	    <xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
 	      <!-- simple paragraph -->
 	      <xsl:element name="p">
 		<xsl:call-template name="ADDSTYLE"/>
-		<xsl:apply-templates/>
-	      </xsl:element>
-	    </xsl:when>
-	    <xsl:when test="@hidden &lt;= $level_hidden">
-	      <!-- hidden paragraph -->
-	      <xsl:element name="p">
-		<xsl:attribute name="class">hidden</xsl:attribute>
+		<xsl:if test="@hidden">
+		  <!-- hidden paragraph -->
+		  <xsl:attribute name="class">hidden</xsl:attribute>
+		</xsl:if>
 		<xsl:apply-templates/>
 	      </xsl:element>
 	    </xsl:when>
@@ -380,7 +377,6 @@
 	  </xsl:choose>
 	</xsl:otherwise>
       </xsl:choose>
-      <xsl:call-template name="FORMATIMPACT"/>
     </xsl:element>
   </xsl:template>
 
@@ -1107,7 +1103,6 @@
 	  <xsl:call-template name="FORMATTASKPREFIX"/>
 	</xsl:element>
 	<xsl:apply-templates select="h"/>
-	<xsl:call-template name="FORMATIMPACT"/>
 	<!--  -->
 	<xsl:if test="@effort">
 	  <xsl:text> / </xsl:text>

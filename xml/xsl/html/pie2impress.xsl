@@ -158,14 +158,12 @@
 	<!-- list item -->
 	<xsl:element name="li">
 	  <xsl:call-template name="FORMATTASK"/>
-	  <xsl:call-template name="FORMATIMPACT"/>
 	  <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
 	</xsl:element>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:element name="p">
 	  <xsl:call-template name="FORMATTASK"/>
-	  <xsl:call-template name="FORMATIMPACT"/>
 	</xsl:element>
 	<xsl:apply-templates select="*[not(name(.) = 'h')]"/>
       </xsl:otherwise>
@@ -224,7 +222,6 @@
 	    <!-- simple paragraph -->
 	    <xsl:element name="li">
 	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
 	    </xsl:element>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -238,7 +235,6 @@
 	    <!-- simple paragraph -->
 	    <xsl:element name="p">
 	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
 	    </xsl:element>
 	  </xsl:when>
 	  <xsl:when test="@hidden">
@@ -247,7 +243,6 @@
 	      <xsl:element name="i">
 		<xsl:apply-templates/>
 	      </xsl:element>
-	      <xsl:call-template name="FORMATIMPACT"/>
 	    </xsl:element>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -285,7 +280,6 @@
 	  <xsl:value-of select="concat('Fig. ',img/@src,': ',h)"/>
 	</xsl:otherwise>
       </xsl:choose>
-      <xsl:call-template name="FORMATIMPACT"/>
     </xsl:element>
   </xsl:template>
 

@@ -73,8 +73,9 @@
 
   <xsl:template match="p">
     <xsl:call-template name="FORMATPREFIX"/>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="text()|child::*[not(name() = 'list')]"/>
     <xsl:call-template name="FORMATIMPACT"/>
+    <xsl:apply-templates select="child::list"/>
     <xsl:choose>
       <xsl:when test="child::list[position() = last()]">
 	<!--  -->
