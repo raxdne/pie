@@ -9,6 +9,7 @@
   <!--  -->
   <xsl:variable name="write" select="'yes'"/>
   <xsl:output method="html" encoding="UTF-8"/>
+
   <xsl:template match="/pie">
     <!-- URL encoded path names -->
     <xsl:variable name="str_path_top">
@@ -40,47 +41,58 @@
     </xsl:variable>
     <xsl:element name="html">
       <xsl:element name="body">
-        <!--  -->
-        <xsl:element name="ul">
-          <xsl:attribute name="class">ui-dir</xsl:attribute>
-          <xsl:element name="li">
-            <xsl:attribute name="class">ui-dir-path</xsl:attribute>
+	<xsl:choose>
+          <xsl:when test="child::dir/child::file[@name = 'index.cxp']">
+	    <!-- there is a 'index.cxp' file, redirect to it via javascript -->
+            <xsl:element name="script">
+	      <xsl:value-of select="concat('document.location = &quot;/',$str_path_top,'/index.cxp&quot;;')"/>
+	    </xsl:element>
+          </xsl:when>
+          <xsl:otherwise>
             <!--  -->
-            <xsl:call-template name="DIRPATHLINKS">
-              <xsl:with-param name="dir_path">
-                <xsl:value-of select="concat($str_path_top,'/')"/>
-              </xsl:with-param>
-              <xsl:with-param name="dir_path_view">
-                <xsl:value-of select="concat($str_path_top_view,'/')"/>
-              </xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="DIRACTIONS">
-              <xsl:with-param name="dir_path">
-                <xsl:value-of select="$str_path_top"/>
-              </xsl:with-param>
-            </xsl:call-template>
+            <xsl:element name="ul">
+              <xsl:attribute name="class">ui-dir</xsl:attribute>
+              <xsl:element name="li">
+		<xsl:attribute name="class">ui-dir-path</xsl:attribute>
+		<!--  -->
+		<xsl:call-template name="DIRPATHLINKS">
+		  <xsl:with-param name="dir_path">
+                    <xsl:value-of select="concat($str_path_top,'/')"/>
+		  </xsl:with-param>
+		  <xsl:with-param name="dir_path_view">
+                    <xsl:value-of select="concat($str_path_top_view,'/')"/>
+		  </xsl:with-param>
+		</xsl:call-template>
+		<xsl:call-template name="DIRACTIONS">
+		  <xsl:with-param name="dir_path">
+                    <xsl:value-of select="$str_path_top"/>
+		  </xsl:with-param>
+		</xsl:call-template>
+              </xsl:element>
+	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']">
+		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
+		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
+		<xsl:with-param name="path_prefix">
+		  <xsl:value-of select="$str_path_top"/>
+		</xsl:with-param>
+              </xsl:apply-templates>
             </xsl:element>
-          <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']">
-            <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
-            <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
-            <xsl:with-param name="path_prefix">
-              <xsl:value-of select="$str_path_top"/>
-            </xsl:with-param>
-          </xsl:apply-templates>
-        </xsl:element>
-        <xsl:element name="p">
-          <xsl:attribute name="align">right</xsl:attribute>
-          <xsl:element name="a">
-            <xsl:attribute name="target"><xsl:value-of select="$str_frame"/></xsl:attribute>
-            <xsl:attribute name="href">
-              <xsl:value-of select="concat('?','cxp=PieUiPowered')"/>
-            </xsl:attribute>
-            <xsl:text>Powered by ...</xsl:text>
-          </xsl:element>
-        </xsl:element>
+            <xsl:element name="p">
+              <xsl:attribute name="align">right</xsl:attribute>
+              <xsl:element name="a">
+		<xsl:attribute name="target"><xsl:value-of select="$str_frame"/></xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','cxp=PieUiPowered')"/>
+		</xsl:attribute>
+		<xsl:text>Powered by ...</xsl:text>
+              </xsl:element>
+            </xsl:element>
+	  </xsl:otherwise>
+	</xsl:choose>
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="dir">
     <!--  -->
     <xsl:param name="path_prefix" select="''"/>
@@ -132,6 +144,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="file">
     <!--  -->
     <xsl:param name="path_prefix" select="''"/>
@@ -594,6 +607,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="DIRACTIONS">
     <!--  -->
     <xsl:param name="dir_path" select="''"/>
@@ -627,6 +641,7 @@
       <xsl:text> ☜</xsl:text>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="DIRPATHLINKS">
     <!--  -->
     <xsl:param name="dir_done" select="''"/>
@@ -753,6 +768,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="LINKTEXT">
     <xsl:param name="str_path" select="''"/>
     <xsl:choose>
@@ -769,4 +785,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  
 </xsl:stylesheet>
