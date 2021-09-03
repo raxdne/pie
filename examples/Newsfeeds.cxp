@@ -3,6 +3,24 @@
   <cxp:description>News aggregator</cxp:description>
   <cxp:make thread="yes">
     <cxp:make>
+      <cxp:xml cacheas="tagesschau#pie">
+        <cxp:xml name="https://www.tagesschau.de/newsticker.rdf"/>
+        <cxp:xsl name="rss202pie.xsl">
+          <cxp:variable name="entry_max" select="20"/>
+          <cxp:variable name="flag_description" select="true()"/>
+        </cxp:xsl>
+      </cxp:xml>
+    </cxp:make>
+    <cxp:make>
+      <cxp:xml cacheas="spiegel#pie">
+        <cxp:xml name="https://www.spiegel.de/schlagzeilen/index.rss"/>
+        <cxp:xsl name="rss202pie.xsl">
+          <cxp:variable name="entry_max" select="20"/>
+          <cxp:variable name="flag_description" select="true()"/>
+        </cxp:xsl>
+      </cxp:xml>
+    </cxp:make>
+    <cxp:make>
       <cxp:xml cacheas="heise#pie">
         <cxp:xml name="https://www.heise.de/rss/heise.rdf"/>
         <cxp:xsl name="rss202pie.xsl">
@@ -11,31 +29,23 @@
         </cxp:xsl>
       </cxp:xml>
     </cxp:make>
-    <cxp:make>
-      <cxp:xml cacheas="tagesschau#pie">
-        <cxp:xml name="http://www.tagesschau.de/newsticker.rdf"/>
-        <cxp:xsl name="rss202pie.xsl">
-          <cxp:variable name="entry_max" select="20"/>
-          <cxp:variable name="flag_description" select="true()"/>
-        </cxp:xsl>
-      </cxp:xml>
-    </cxp:make>
   </cxp:make>
   <cxp:xhtml name="-">
     <cxp:xml>
-      <pie url="no" tags="no">
-	    <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+      <cxp:pie url="no" tags="yes">
+	<cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
         <section>
-		  <h>My Newspaper %TAGTIME%</h>
-	      <img title="Webcam Berliner Rathaus" width="500px" src="http://www.berlin.de/webcams/rathaus/webcam.jpg"/>
-		</section>
-        <import name="tagesschau#pie" type="xml"/>
-        <import name="heise#pie" type="xml"/>
-		<?tag-regexp Corona|Sport?>
-      </pie>
+	  <h>My Newspaper %TAGTIME%</h>
+	  <img title="Webcam Berliner Rathaus" src="http://www.berlin.de/webcams/rathaus/webcam.jpg"/>
+          <cxp:import name="tagesschau#pie" type="xml"/>
+          <cxp:import name="spiegel#pie" type="xml"/>
+          <cxp:import name="heise#pie" type="xml"/>
+	  <?tag-regexp Corona|Sport?>
+	</section>
+      </cxp:pie>
     </cxp:xml>
     <cxp:xsl name="pie2html.xsl">
-      <cxp:variable name="file_css" select="'/pie/html/news.css'"/>
+      <cxp:variable name="file_css" select="'/pie/html/news.css,/pie/html/pie.css'"/>
     </cxp:xsl>
   </cxp:xhtml>
 </cxp:make>
