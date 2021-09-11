@@ -36,6 +36,11 @@
   <xsl:template match="camt:Document">
     <xsl:call-template name="BOOKGLIST"/>
     <xsl:call-template name="NMLIST"/>
+    <xsl:for-each select="camt:BkToCstmrAcctRpt/camt:GrpHdr">
+      <xsl:element name="p">
+	<xsl:value-of select="concat(camt:MsgId,' ',camt:CreDtTm,' ',camt:MsgRcpt/camt:Nm)"/>
+      </xsl:element>
+    </xsl:for-each>
   </xsl:template>
   
   <xsl:template match="camt:TxDtls">

@@ -397,6 +397,12 @@ function callbackSection(key, options) {
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
 	window.location.assign('?' + urlParams.toString());
+    } else if (key == 'selection') {
+	selection = window.getSelection();
+	strSelect = selection.toString();
+	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	urlParams.set('hl',strSelect);
+	window.location.assign('?' + urlParams.toString());
     } else if (key == 'frame') { // scope
 	
 	if (arrLocator[0] == undefined || arrLocator[0] == '') {
@@ -454,6 +460,12 @@ function callbackTask(key, options) {
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
 	urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,'')); // BUG: file internal XPath
+	window.location.assign('?' + urlParams.toString());
+    } else if (key == 'selection') {
+	selection = window.getSelection();
+	strSelect = selection.toString();
+	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'frame') { // scope
 	
@@ -538,6 +550,12 @@ function callbackContent(key, options) {
 	    $('#tags').css({'display': 'block'});
 	    $(window).scrollTop(0);
 	}
+    } else if (key == 'selection') {
+	selection = window.getSelection();
+	strSelect = selection.toString();
+	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	urlParams.set('hl',strSelect);
+	window.location.assign('?' + urlParams.toString());
     } else if (key == 'link') {
 	$('#links').css({'display': 'block'});
     } else {
@@ -576,8 +594,8 @@ function callbackContent(key, options) {
 	} else if (key == 'selection') {
 	    selection = window.getSelection();
 	    strSelect = selection.toString();
-	    urlParams.set('pattern',"descendant::*[contains(child::text(),'" + strSelect + "')]");
-	    // urlParams.set('hl',strSelect);
+	    urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	    urlParams.set('hl',strSelect);
 	} else if (key == 'search') {
 	    selection = window.getSelection();
 	    strSelect = selection.toString();
@@ -708,7 +726,9 @@ $(function(){
 		"section": {name: "Section", icon: "section"},
 		"sep1": "---------",
 		//"view": {name: "View", icon: "view"},
+		"selection": {name: "Tag selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
+		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
 		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
@@ -724,7 +744,9 @@ $(function(){
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
+		"selection": {name: "Tag selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
+		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
 		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}

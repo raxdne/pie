@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="1" dir="pwd">
+  <cxp:subst string="%DIR%" argv="2" cgi="path" default="."/>
+  <cxp:subst string="%TAG%" now="Directory '%DIR%' at %Y-%m-%dT%H:%M:%S"/>
+  <cxp:plain name="-">
+    <cxp:plain>%TAG%
+
+    </cxp:plain>
+    <cxp:plain>
+      <cxp:xml>
+	<cxp:dir verbosity="2" index="skip">
+	  <cxp:dir name="%DIR%"/>
+	</cxp:dir>
+      </cxp:xml>
+      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:decimal-format grouping-separator="" decimal-separator=","/>
+	<xsl:output method="text"/>
+	<xsl:variable name="tab">
+	  <xsl:text>	</xsl:text>
+	</xsl:variable>
+	<xsl:template match="dir">
+	  <xsl:variable name="size" select="sum(descendant::file/attribute::size) div 1048576"/>
+	  <xsl:if test="$size &gt; 0.1">
+	    <xsl:for-each select="ancestor::dir">
+              <xsl:value-of select="$tab"/>
+	    </xsl:for-each>
+	    <xsl:value-of select="concat(format-number($size,'###0,00 MB'),$tab,@name,$tab,count(file),'&#10;')"/>
+	  </xsl:if>
+	  <xsl:apply-templates select="dir"/>
+	</xsl:template>
+      </xsl:stylesheet>
+    </cxp:plain>
+  </cxp:plain>
+</cxp:make>

@@ -28,7 +28,13 @@ document.createUI = function () {
     
     if (urlParams.has('hl')) {
 	// TODO: use clolor index for multiple selections (s. markTextStrRecursive)
-	$('span:contains(' + urlParams.get('hl') + ')').toggleClass('highlight',true);
+	//$('span:contains(' + urlParams.get('hl') + ')').toggleClass('highlight',true);
+
+	var strMark = '/' + urlParams.get('hl') + '/i';
+	var regexpMark = eval(strMark);
+ 	
+	putsConsole('Highlight: ' + strMark);
+	this.markTextStrRecursive(null,regexpMark);
     }
     
     if (urlParams.has('pos')) {
@@ -167,6 +173,10 @@ document.markTextStrRecursive = function (node,regexp) {
 
     var i;
 
+    if (node == undefined || node == null) {
+	node = this.documentElement;
+    }
+    
     for (i=0; node && i<node.childNodes.length; i++) {
 	if (node.childNodes[i] && node.childNodes[i].nodeType == 3) { // Node.TEXT_NODE
 	    if (node.childNodes[i].nodeValue && node.childNodes[i].nodeValue.match(regexp)) {
@@ -182,7 +192,8 @@ document.markTextStrRecursive = function (node,regexp) {
 // 		    node.setAttribute('bstyle','');
 // 		}
 		// TODO: highlight string only <div class="hl">TEST</div>
-		node.style.backgroundColor = this.arrColorMarker[this.intColorIndex];
+		//node.style.backgroundColor = this.arrColorMarker[this.intColorIndex];
+		node.classList.add('highlight');
 	    }
 	}
 	else if (node.childNodes[i].nodeType == 1) { // Node.ELEMENT_NODE
