@@ -23,63 +23,63 @@
 
 *** PIE format (Emacs outline mode)
 
-+ http://localhost:8183/Test/Documents/TestContent.txt
++ </Test/Documents/TestContent.txt>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&type=text-plain
++ </cxproc/exe?file=Test/Documents/TestContent.txt&type=text-plain>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt
++ </cxproc/exe?file=Test/Documents/TestContent.txt>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&xsl=pie2html
++ </cxproc/exe?file=Test/Documents/TestContent.txt&xsl=pie2html>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&xpath=/pie/section/h
++ </cxproc/exe?file=Test/Documents/TestContent.txt&xpath=/pie/section/h>
 
-+ http://localhost:8183/cxproc/exe?path=Test/Documents/TestContent.txt&cxp=PieUiDefault
++ </cxproc/exe?path=Test/Documents/TestContent.txt&cxp=PieUiDefault>
 
-;+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.txt&js=LinkExtract
+;+ </cxproc/exe?file=Test/Documents/TestContent.txt&js=LinkExtract>
 
 *** CSV
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.csv
++ </cxproc/exe?file=Test/Documents/TestContent.csv>
 
 ** Processing of HTML text files
 
-+ http://localhost:8183/Test/Documents/TestContent.html
++ </Test/Documents/TestContent.html>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html
++ </cxproc/exe?file=Test/Documents/TestContent.html>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html&xpath=/html/body/h1
++ </cxproc/exe?file=Test/Documents/TestContent.html&xpath=/html/body/h1>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html&xsl=html2pie
++ </cxproc/exe?file=Test/Documents/TestContent.html&xsl=html2pie>
 
-;+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.html&cxp=html2pie
+;+ </cxproc/exe?file=Test/Documents/TestContent.html&cxp=html2pie>
 
 ** Processing of XML text files
 
 *** PIE | #pieTag
 
-+ http://localhost:8183/Test/Documents/TestContent.pie
++ </Test/Documents/TestContent.pie>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie
++ </cxproc/exe?file=Test/Documents/TestContent.pie>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie&xsl=pie2html
++ </cxproc/exe?file=Test/Documents/TestContent.pie&xsl=pie2html>
 
-+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie&xpath=/pie/section/h
++ </cxproc/exe?file=Test/Documents/TestContent.pie&xpath=/pie/section/h>
 
-+ http://localhost:8183/cxproc/exe?path=Test/Documents/TestContent.pie&cxp=PieUiDefault
++ </cxproc/exe?path=Test/Documents/TestContent.pie&cxp=PieUiDefault>
 
-;+ http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.pie&js=LinkExtract
+;+ </cxproc/exe?file=Test/Documents/TestContent.pie&js=LinkExtract>
 
 *** CXP
 
-+ http://localhost:8183/cxproc/exe
++ </cxproc/exe>
 
-+ http://localhost:8183/cxproc/exe?cxp=PieUiPowered
++ </cxproc/exe?cxp=PieUiPowered>
 
-+ http://localhost:8183/Test/TestCgiVariable.cxp?id=abcdef&count=11
++ </Test/TestCgiVariable.cxp?id=abcdef&count=11>
 
 *** FreeMind
 
-- http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.mm&xsl=mm2pie
+- </cxproc/exe?file=Test/Documents/TestContent.mm&xsl=mm2pie>
 
 *** Generic
 
@@ -89,25 +89,25 @@
 
 + ZIP
 
--- http://localhost:8183/cxproc/exe?path=Test/Archive/TestArchive.zip/Test/SubTest/SubTest/Length_1024.txt
+-- </cxproc/exe?path=Test/Archive/TestArchive.zip/Test/SubTest/SubTest/Length_1024.txt>
 
 + ODT 
 
--- http://localhost:8183/cxproc/exe?path=Test/Documents/TestContent.odt&cxp=PieUiOdt
+-- </cxproc/exe?path=Test/Documents/TestContent.odt&cxp=PieUiOdt>
 
--- http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.odt&xsl=odt2html
+-- </cxproc/exe?file=Test/Documents/TestContent.odt&xsl=odt2html>
 
 + MMAP
 
--- http://localhost:8183/cxproc/exe?file=Test/Documents/TestContent.mmap&cxp=PieUiDefault
+-- </cxproc/exe?file=Test/Documents/TestContent.mmap&cxp=PieUiDefault>
 
 **** TAR
 
-- http://localhost:8183/cxproc/exe?path=Test/Archive/TestArchive.tar/Test/SubTest/folder.png
-   
+- </cxproc/exe?path=Test/Archive/TestArchive.tar/Test/SubTest/folder.png>
+
 **** ISO
 
-- http://localhost:8183/cxproc/exe?path=Test/Archive/TestArchive.iso/./sub/weiter.png
+- </cxproc/exe?path=Test/Archive/TestArchive.iso/./sub/weiter.png>
 
 *** CGI parameter
 
@@ -115,29 +115,29 @@
 
 *** XSL
 
-+ Standalone stylesheet applied to a dummy root element http://localhost:8183/cxproc/exe?xsl=Hello
++ Standalone stylesheet applied to a dummy root element </cxproc/exe?xsl=Hello>
 
-;+ http://localhost:8183/Test/TestCgiVariable.xsl?id=abcdef&count=11
+;+ </Test/TestCgiVariable.xsl?id=abcdef&count=11>
 
 ** Dir mode (incl. indexing)
 
-http://localhost:8183/cxproc/exe?path=
+</cxproc/exe?path=>
 
-http://localhost:8183/cxproc/exe?dir=
+</cxproc/exe?dir=>
 
-http://localhost:8183/cxproc/exe?dir=Test
+</cxproc/exe?dir=Test>
 
-http://localhost:8183/cxproc/exe?dir=Test&xsl=dir2json
+</cxproc/exe?dir=Test&xsl=dir2json>
 
-http://localhost:8183/cxproc/exe?dir=Test&cxp=PieUiDir
+</cxproc/exe?dir=Test&cxp=PieUiDir>
 
-;http://localhost:8183/cxproc/exe?dir=Test/Music&cxp=PlayTrack&t=1
+;</cxproc/exe?dir=Test/Music&cxp=PlayTrack&t=1>
 
 ** Encoded URLs
 
-encoding error: http://localhost:8183/Test/Documents/TestContent_%fc.pie
+encoding error: </Test/Documents/TestContent_%fc.pie>
 
-encoding OK: http://localhost:8183/Test/Documents/TestContent%20%C3%B6.pie
+encoding OK: </Test/Documents/TestContent%20%C3%B6.pie>
 
 mailto:Max.Mustermann@irgendwo.de
 
@@ -199,14 +199,4 @@ kajdlkaj:\ ksjdalkd
 \\abcd.def.de\jfkjsdhf\AA%20BB%20CC
 
 \\abcd.def.de\jfkjösÖdhf\AA
-
-#begin_of_skip
-
-** Processing of JavaScript
-
-+ http://localhost:8183/cxproc/exe?js=Demo
-
-** Processing of Tcl script code
-
-+ http://localhost:8183/cxproc/exe?tcl=Demo
 

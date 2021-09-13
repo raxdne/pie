@@ -49,7 +49,7 @@ REQ: requirement ABC
 
 + detail #Aäöü
 
-+ detail B++
++ detail B ++
 
 + detail C
 
@@ -69,11 +69,11 @@ TODO: 20200317,0402,11 to be done ||| möller abc-def_hij
 
 ***    2020-04-30
 
-*** AAA @vvv++
+*** AAA @vvv ++
 
 TARGET: this is my next target TODAY | me_review @john
 
-text only+++
+text only +++
 
 BUG: this is an important bug ++
 
@@ -154,7 +154,7 @@ tel:+0123456789 @james
 
 ** #BBC
 
-*** BBB+++
+*** BBB +++
 
 TODO: GTD categories '_org', '_do', '_review', '_rejected' | me_org john_do her_review he_rejected
 
@@ -174,11 +174,11 @@ abc >>öäü<<
 
 TAGS: (ooo|n{2,})
 
-+ mmm+
++ mmm +
 
-+ nnn++
++ nnn ++
 
-+ ooo @her+++
++ ooo @her +++
 
 ; #import("TestContent.csv")
 
@@ -192,7 +192,7 @@ fig. chart.png current plan @me ++
 
 ![new plan](new_plan.png)
 
-get new figures @muller++
+get new figures @muller ++
 
 @muller informed about new figures +++
 
@@ -200,7 +200,7 @@ get new figures @muller++
 
 ** CC
 
-list ++
+list  ++    
 
 - A
 
@@ -211,6 +211,8 @@ list ++
 ---- AAAA
 
 ----- AAAAA
+
+; BB ++
 
 [Jump up](#anchor)
 
