@@ -88,7 +88,7 @@
       <xsl:value-of select="concat(name(),'')"/>
     </xsl:comment>
     <xsl:choose>
-      <xsl:when test="child::task[not(@done or @state = 'done' or @state = 'rejected' or @class = 'done')]">
+      <xsl:when test="child::p/descendant::task[not(@done or @state = 'done' or @state = 'rejected' or @class = 'done')]|child::task[not(@done or @state = 'done' or @state = 'rejected' or @class = 'done')]">
 	<!-- separate header row -->
 	<xsl:element name="tr">
 	  <xsl:element name="th">

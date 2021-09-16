@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 	  <xsl:element name="h">
 	    <xsl:value-of select="string(child::h)"/>
 	  </xsl:element>
-	  <xsl:apply-templates select="child::block|child::section|child::task"/>
+	  <xsl:apply-templates select="child::block|child::section|child::task|child::list|child::p"/>
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>

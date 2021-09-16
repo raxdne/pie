@@ -605,6 +605,8 @@ function callbackContent(key, options) {
 	    urlParams.set('needle', strSelect);
 	} else if (key == 'backlog') {
 	    urlParams.set('cxp','PiejQBacklog');
+	} else if (key == 'kanban') {
+	    urlParams.set('cxp','PiejQKanban');
 	} else if (key == 'todo') {
 	    urlParams.set('cxp','PiejQTodo');
 	} else if (key == 'todocalendar') {
@@ -668,6 +670,7 @@ $(function(){
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
+		    "kanban": {name: "Kanban", icon: "tags"},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -707,6 +710,7 @@ $(function(){
 		    "calendar": {name: "Calendar", icon: ""},
 		    //"calendar_month": {name: "CalendarMonth", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
+		    "kanban": {name: "Kanban", icon: "tags"},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -785,6 +789,7 @@ $(function(){
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
+		    "kanban": {name: "Kanban", icon: "tags"},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -817,6 +822,7 @@ $(function(){
 		    "layout": {name: "Layout", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
+		    "kanban": {name: "Kanban", icon: "tags"},
 		    "todo": {name: "Todo", icon: ""},
 		    "todocalendar": {name: "TodoCalendar", icon: ""},
 		    "todomatrix": {name: "TodoMatrix", icon: ""},
@@ -837,7 +843,9 @@ $(function(){
 		"section": {name: "Section", icon: "section"},
 		"sep1": "---------",
 		//"view": {name: "View", icon: "view"},
+		"selection": {name: "Tag selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
+		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
 		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
@@ -853,7 +861,9 @@ $(function(){
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
+		"selection": {name: "Tag selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
+		"sep2": "---------",
 		//"up": {name: "Up", icon: "hide"},
 		//"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
