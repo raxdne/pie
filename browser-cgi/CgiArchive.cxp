@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%ARCHIVEDIR%" env="CXP_ARCHIVE" default="Archive"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIDIR%" dir="%CGIPATH%"/>
+  <!-- TODO: check value of 'path' -->
+  <cxp:plain name="-" response="OK">Move '%CGIPATH%' to '%ARCHIVEDIR%/%CGIDIR%' </cxp:plain>
+  <cxp:copy from="%CGIPATH%" to="%ARCHIVEDIR%/%CGIDIR%/" delete="yes"/>
+</cxp:make>
