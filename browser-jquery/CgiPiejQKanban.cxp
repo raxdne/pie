@@ -21,9 +21,10 @@
               <cxp:xml eval="yes">
 		<cxp:include name="PieTransformation.cxp" search="yes"/>
               </cxp:xml>
-	      <cxp:xsl name="OpenTasks.xsl" valid="yes"/>
+	      <cxp:xsl name="OpenTasks.xsl" valid="no"/> <!-- include REQ/TEST/TARGET/DONE ? -->
               <cxp:xsl name="TodoKanban.xsl">
                 <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+		<cxp:variable name="flag_done" select="false()"/>
               </cxp:xsl>
             </cxp:xhtml>
             <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>

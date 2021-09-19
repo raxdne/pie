@@ -6,10 +6,6 @@
   <!--  -->
   <xsl:variable name="str_link_prefix" select="''"/>
 
-  <xsl:template match="pie">
-    <xsl:apply-templates/>
-  </xsl:template>
-
   <xsl:template name="METAVARS">
     <!-- for debugging only
     <xsl:comment>

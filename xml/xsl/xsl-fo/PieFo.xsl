@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" version="1.0">
+
+  <!--  http://figp.co.uk/xsl-fo/xsl-fo-character-codes/ -->
+  
   <xsl:import href="../Utils.xsl"/>
+
+  <!-- section header with numbers -->
+  <xsl:variable name="flag_num" select="false()"/>
+
   <xsl:variable name="flag_fig" select="true()"/>
+
   <xsl:attribute-set name="paragraph">
     <!-- <xsl:attribute name="font-family">Courier</xsl:attribute> -->
     <xsl:attribute name="font-size">10pt</xsl:attribute>
@@ -10,13 +18,16 @@
     <xsl:attribute name="text-align">justify</xsl:attribute>
     <xsl:attribute name="xml:lang">de</xsl:attribute>
   </xsl:attribute-set>
+
   <xsl:attribute-set name="struct">
     <xsl:attribute name="hyphenate">true</xsl:attribute>
     <xsl:attribute name="margin-bottom">15pt</xsl:attribute>
   </xsl:attribute-set>
+
   <xsl:attribute-set name="item">
     <xsl:attribute name="text-align">left</xsl:attribute>
   </xsl:attribute-set>
+
   <xsl:attribute-set name="header">
     <xsl:attribute name="font-weight">bold</xsl:attribute>
     <xsl:attribute name="hyphenate">false</xsl:attribute>
@@ -25,13 +36,36 @@
     <xsl:attribute name="margin-bottom">10pt</xsl:attribute>
     <xsl:attribute name="text-align">left</xsl:attribute>
   </xsl:attribute-set>
-  <xsl:template match="author|date">
+
+  <xsl:template match="dir|file|pie|block">
+    <xsl:comment>
+      <xsl:value-of select="concat('begin: ',name(),'')"/>
+    </xsl:comment>
+    <xsl:apply-templates/>
+    <xsl:comment>
+      <xsl:value-of select="concat('end: ',name(),'')"/>
+    </xsl:comment>
+  </xsl:template>
+  
+  <xsl:template match="block[@type = 'quote']">
+    <!-- preformatted paragraph -->
+    <!-- TODO: indent -->
+    <xsl:element name="fo:block" use-attribute-sets="paragraph">
+      <xsl:attribute name="font-family">Courier</xsl:attribute>
+      <xsl:attribute name="font-size">8pt</xsl:attribute>
+      <xsl:attribute name="linefeed-treatment">preserve</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="author">
     <xsl:element name="center">
       <xsl:element name="i">
         <xsl:value-of select="."/>
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="section">
     <xsl:param name="str_number_context"/>
     <xsl:variable name="str_number">
@@ -40,8 +74,12 @@
       </xsl:if>
       <xsl:number/>
     </xsl:variable>
+    <xsl:comment>
+      <xsl:value-of select="concat('begin: ',name(),'')"/>
+    </xsl:comment>
     <xsl:if test="h">
       <xsl:element name="fo:block" use-attribute-sets="paragraph header">
+        <!-- <xsl:attribute name="page-break-before">always</xsl:attribute> -->
         <xsl:attribute name="font-size">
           <xsl:choose>
             <xsl:when test="count(ancestor::section) &lt; 1">
@@ -61,110 +99,105 @@
         <xsl:if test="h/@hidden">
           <xsl:attribute name="font-style">italic</xsl:attribute>
         </xsl:if>
-        <xsl:if test="count(ancestor-or-self::section) &lt; 4">
+        <xsl:if test="$flag_num and count(ancestor-or-self::section) &lt; 4">
           <xsl:value-of select="concat($str_number,' ')"/>
         </xsl:if>
-        <xsl:value-of select="h"/>
+        <xsl:apply-templates select="h"/>
       </xsl:element>
     </xsl:if>
     <xsl:apply-templates select="*[not(name(.) = 'h')]">
       <!-- * -->
       <xsl:with-param name="str_number_context" select="$str_number"/>
     </xsl:apply-templates>
+    <xsl:comment>
+      <xsl:value-of select="concat('end: ',name(),'')"/>
+    </xsl:comment>
   </xsl:template>
+
   <xsl:template match="task">
-    <xsl:element name="fo:block" use-attribute-sets="paragraph struct">
-      <xsl:attribute name="border-style">solid</xsl:attribute>
-      <xsl:attribute name="margin">10pt</xsl:attribute>
-      <xsl:attribute name="padding">10pt</xsl:attribute>
-      <xsl:if test="h">
-        <xsl:element name="fo:block">
-          <xsl:choose>
-            <xsl:when test="@done">
-              <!-- -->
-              <xsl:attribute name="text-decoration">line-through</xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-              <!--  -->
-              <xsl:attribute name="font-style">italic</xsl:attribute>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:value-of select="h"/>
-        </xsl:element>
-      </xsl:if>
-      <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template match="list">
-    <xsl:if test="child::*[not(@hidden) or @hidden &lt;= $level_hidden]">
-      <xsl:choose>
-        <xsl:when test="name(parent::node()) = 'list'">
-          <!-- list item -->
-          <xsl:element name="fo:list-item">
-            <xsl:element name="fo:list-item-label">
-              <xsl:element name="fo:block">
-                <xsl:text/>
-              </xsl:element>
-            </xsl:element>
-            <xsl:element name="fo:list-item-body">
-              <xsl:attribute name="start-indent">body-start() + 5pt</xsl:attribute>
-              <xsl:element name="fo:list-block">
-                <xsl:apply-templates/>
-              </xsl:element>
-            </xsl:element>
-          </xsl:element>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:element name="fo:block">
-            <xsl:element name="fo:list-block">
-              <xsl:attribute name="provisional-label-separation">2pt</xsl:attribute>
-              <xsl:attribute name="start-indent">5pt</xsl:attribute>
-              <xsl:apply-templates/>
-            </xsl:element>
-          </xsl:element>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-  </xsl:template>
-  <xsl:template match="p">
     <xsl:choose>
       <xsl:when test="name(parent::node()) = 'list'">
+	<!-- list item -->
+	<xsl:element name="li">
+	  <xsl:call-template name="TASK"/>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template name="TASK">
+	  <xsl:with-param name="flag_ancestor" select="false()"/>
+	</xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="list">
+    <xsl:choose>
+      <xsl:when test="count(child::p) = 0"/>
+      <xsl:when test="parent::p">
+        <!-- list item -->
+        <xsl:element name="fo:block">
+          <xsl:attribute name="space-before">6pt</xsl:attribute>
+          <xsl:element name="fo:list-block">
+            <xsl:apply-templates/>
+          </xsl:element>
+	</xsl:element>
+      </xsl:when>
+      <xsl:when test="parent::list">
         <!-- list item -->
         <xsl:element name="fo:list-item">
           <xsl:element name="fo:list-item-label">
-            <xsl:attribute name="end-indent">label-end()</xsl:attribute>
+            <xsl:element name="fo:block">
+              <xsl:text/>
+            </xsl:element>
+          </xsl:element>
+          <xsl:element name="fo:list-item-body">
+            <xsl:element name="fo:list-block">
+              <xsl:apply-templates/>
+            </xsl:element>
+          </xsl:element>
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:element name="fo:block">
+          <xsl:element name="fo:list-block">
+            <xsl:apply-templates/>
+          </xsl:element>
+        </xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="p">
+    <xsl:choose>
+      <xsl:when test="parent::list">
+        <!-- list item -->
+        <xsl:element name="fo:list-item">
+	  <xsl:element name="fo:list-item-label">
+            <!-- <xsl:attribute name="provisional-label-separation">12pt</xsl:attribute> -->
+            <xsl:attribute name="start-indent">body-start() - 14pt</xsl:attribute>
             <xsl:element name="fo:block" use-attribute-sets="paragraph item">
               <xsl:choose>
-                <xsl:when test="@hidden &gt; $level_hidden">
-                  <!-- ignore hidden paragraph -->
-                </xsl:when>
                 <xsl:when test="parent::list/attribute::enum = 'yes'">
-                  <!-- simple paragraph -->
                   <xsl:number/>
                   <xsl:text>.</xsl:text>
                 </xsl:when>
-                <xsl:otherwise>
-                  <!-- really hidden paragraph -->
+                <xsl:when test="count(ancestor-or-self::list) &gt; 1">
                   <xsl:text>-</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:text>&#8226;</xsl:text>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:element>
           </xsl:element>
           <xsl:element name="fo:list-item-body">
-            <xsl:attribute name="start-indent">body-start()</xsl:attribute>
+            <xsl:attribute name="start-indent">body-start() + 4pt</xsl:attribute>
             <xsl:element name="fo:block" use-attribute-sets="paragraph item">
-              <xsl:choose>
-                <xsl:when test="@hidden &gt; $level_hidden">
-                  <!-- ignore hidden paragraph -->
-                </xsl:when>
-                <xsl:otherwise>
-                  <!--  -->
-                  <xsl:if test="@hidden">
-                    <xsl:attribute name="font-style">italic</xsl:attribute>
-                  </xsl:if>
-                  <xsl:apply-templates/>
-                </xsl:otherwise>
-              </xsl:choose>
+              <!--  -->
+              <xsl:if test="@hidden">
+                <xsl:attribute name="font-style">italic</xsl:attribute>
+              </xsl:if>
+              <xsl:apply-templates/>
             </xsl:element>
           </xsl:element>
         </xsl:element>
@@ -180,13 +213,36 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+  <xsl:template match="htag|tag">
+    <xsl:element name="fo:inline">
+      <xsl:attribute name="color">#0000ff</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template match="i">
     <!-- italic -->
-    <xsl:element name="fo:inline" use-attribute-sets="paragraph">
+    <xsl:element name="fo:inline">
       <xsl:attribute name="font-style">italic</xsl:attribute>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template match="strong">
+    <xsl:element name="fo:inline">
+      <xsl:attribute name="font-weight">bold</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="u">
+    <xsl:element name="fo:inline">
+      <xsl:attribute name="text-decoration">underline</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template match="pre|import">
     <!-- preformatted paragraph -->
     <xsl:element name="fo:block" use-attribute-sets="paragraph">
@@ -196,10 +252,11 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="link">
     <xsl:choose>
       <xsl:when test="@href">
-        <xsl:element name="fo:inline" use-attribute-sets="paragraph">
+        <xsl:element name="fo:inline">
           <xsl:attribute name="color">#0000ff</xsl:attribute>
           <xsl:attribute name="text-decoration">underline</xsl:attribute>
           <xsl:element name="fo:basic-link">
@@ -217,8 +274,9 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="fig">
-    <xsl:element name="fo:block-container">
+    <xsl:element name="fo:block-container" use-attribute-sets="paragraph">
       <xsl:attribute name="margin-bottom">10pt</xsl:attribute>
       <!-- normal figure -->
       <xsl:if test="$flag_fig">
@@ -238,6 +296,7 @@
       </xsl:if>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="img">
     <xsl:element name="fo:block">
       <xsl:attribute name="margin">10pt</xsl:attribute>
@@ -247,6 +306,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="table">
     <xsl:element name="fo:table">
       <xsl:element name="fo:table-body">
@@ -254,6 +314,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="tr">
     <xsl:if test="th or td">
       <xsl:element name="fo:table-row">
@@ -261,6 +322,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="th|td">
     <xsl:element name="fo:table-cell">
       <xsl:attribute name="border-style">solid</xsl:attribute>
@@ -273,11 +335,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="*">
-    <xsl:element name="fo:block" use-attribute-sets="paragraph">
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
+
   <xsl:template name="HEADER">
     <fo:layout-master-set>
       <!-- layout for the first page -->
@@ -321,10 +379,56 @@
     </xsl:element>
 -->
   </xsl:template>
+
   <xsl:template match="*[@valid='no']">
     <!-- ignore this elements -->
   </xsl:template>
+
   <xsl:template match="meta|t|tag">
     <!-- ignore this elements -->
   </xsl:template>
+  
+  <xsl:template name="TASK">
+    <!-- callable for task element -->
+    <xsl:param name="flag_line" select="false()"/>
+    <xsl:param name="flag_ancestor" select="false()"/>
+    <xsl:element name="fo:block" use-attribute-sets="paragraph">
+      <xsl:if test="h">
+        <xsl:element name="fo:block">
+          <xsl:choose>
+            <xsl:when test="@done">
+              <!-- -->
+              <xsl:attribute name="text-decoration">line-through</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+              <!--  -->
+            </xsl:otherwise>
+          </xsl:choose>
+
+	  <xsl:if test="$flag_ancestor">
+	    <!--  -->
+            <xsl:attribute name="font-style">italic</xsl:attribute>
+	    <xsl:choose>
+	      <xsl:when test="@hstr">
+		<xsl:value-of select="@hstr"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:for-each select="ancestor::section[position() &lt; 3]">
+		  <xsl:value-of select="h"/>
+		  <xsl:text> :: </xsl:text>
+		</xsl:for-each>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	    <xsl:text> </xsl:text>
+	  </xsl:if>
+	
+	  <xsl:call-template name="FORMATTASKPREFIX"/>
+	  <xsl:apply-templates select="h"/>
+        </xsl:element>
+      </xsl:if>
+      <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
+    </xsl:element>
+
+  </xsl:template>
+
 </xsl:stylesheet>

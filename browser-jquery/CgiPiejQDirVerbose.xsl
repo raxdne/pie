@@ -338,7 +338,7 @@
 	      </xsl:attribute>
 	      <xsl:text>[Trash]</xsl:text>
 	    </xsl:element>
-	  </xsl:element>	  
+	  </xsl:element>
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
