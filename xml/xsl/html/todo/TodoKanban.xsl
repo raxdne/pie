@@ -9,8 +9,8 @@
   <!--  -->
   <xsl:variable name="flag_done" select="false()"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task"/>
-
+  <xsl:variable name="ns_task" select="/descendant::task[not(child::t = '#done')]"/>
+  
   <!-- TODO: parameters/variables for tag strings ('#review' etc) -->
   
   <xsl:output method="html"/>

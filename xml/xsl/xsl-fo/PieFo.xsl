@@ -193,6 +193,7 @@
           <xsl:element name="fo:list-item-body">
             <xsl:attribute name="start-indent">body-start() + 4pt</xsl:attribute>
             <xsl:element name="fo:block" use-attribute-sets="paragraph item">
+	      <xsl:call-template name="CLASSATRIBUTE"/>
               <!--  -->
               <xsl:if test="@hidden">
                 <xsl:attribute name="font-style">italic</xsl:attribute>
@@ -388,6 +389,22 @@
     <!-- ignore this elements -->
   </xsl:template>
   
+  <xsl:template name="CLASSATRIBUTE">
+    <xsl:attribute name="background-color">
+      <xsl:choose>
+	<xsl:when test="@done">
+	  <xsl:text>#aaaaff</xsl:text>
+	</xsl:when>
+	<xsl:when test="@impact">
+	  <xsl:text>#aaaaff</xsl:text>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:text>#ffffff</xsl:text>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template name="TASK">
     <!-- callable for task element -->
     <xsl:param name="flag_line" select="false()"/>

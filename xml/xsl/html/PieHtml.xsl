@@ -1061,11 +1061,13 @@
 	  <!--  -->
 	  <xsl:element name="i">
 	    <xsl:element name="a">
+	      <!--
 	      <xsl:attribute name="title">
 		<xsl:call-template name="FORMATTOOLTIP">
 		  <xsl:with-param name="node" select="self::node()"/>
 		</xsl:call-template>
 	      </xsl:attribute>
+	      -->
 	      <xsl:choose>
 		<xsl:when test="@hstr">
 		  <xsl:value-of select="@hstr"/>

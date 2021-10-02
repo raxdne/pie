@@ -63,7 +63,7 @@ document.createUI = function () {
     //
     // https://stackoverflow.com/questions/16190455/how-to-detect-controlclick-in-javascript-from-an-onclick-div-attribute
     //
-    $('*.tag,*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target').on('click change', function (event) {
+    $('*.tag,*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target,span.date').on('click change', function (event) {
 	var strElement = 't';
 	var strPattern;
 	var strValue;
@@ -75,10 +75,14 @@ document.createUI = function () {
 
 	    if (strClass.match(/^htag-.+/)) { // map combined class name to usable tag
 	        strValue = strClass.replace(/^htag-/, '#');
+	    } else if (strClass.match(/date/)) {
+		strElement = 'date';
+	        strValue = event.target.innerText;
 	    } else {
 	        strValue = event.target.innerText;
 	    }
 	}
+	putsConsole('element: ' + strElement);
 	
 	var urlParamsTag = new URLSearchParams(document.location.search);
 	
