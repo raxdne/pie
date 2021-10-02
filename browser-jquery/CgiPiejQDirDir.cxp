@@ -181,22 +181,31 @@
 
 </form>
 
+<h3>Upload file</h3>
+<form action="?" method="post" enctype="multipart/form-data">
+  <button>Upload</button>
+  <input name="target" size="50" value="%CGIPATH%/BBB.txt"/> 
+  <label>Select a local text file (*.txt, *.xml etc)</label>  
+  <input name="content" type="file" size="50" maxlength="100000" accept="text/*"/> 
+  <input name="cxp" type="hidden" value="PieUpload"/> 
+</form>
+
 <h3>New subdirectory</h3>
 <form>
-<input type="hidden" name="cxp" value="MakeDirectory"/>
-<p><input type="submit" value="Create"/> subdirectory <input class="additor" name="path" maxlength="125" size="70" value="%CGIPATH%/New"/></p>
+  <input type="hidden" name="cxp" value="MakeDirectory"/>
+  <p><input type="submit" value="Create"/> subdirectory <input class="additor" name="path" maxlength="125" size="70" value="%CGIPATH%/New"/></p>
 </form>
 	    
 <h3>Search directory</h3>
-        <form method="post">
-          <input type="hidden" name="cxp" value="PiejQDirSearchResult"/>
-          <input type="hidden" name="path" value="%CGIPATH%"/>
-          <p>
-	  <input type="submit" value="Search"/> in '%CGIPATH%' for files containing 
-	  <input class="additor" name="needle" type="text" size="30" value=""/> files named 
-	  <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|md|cal|csv|ods|odt|mm|mmap|xmmap)$"/>
-          </p>
-        </form>
+<form method="post">
+  <input type="hidden" name="cxp" value="PiejQDirSearchResult"/>
+  <input type="hidden" name="path" value="%CGIPATH%"/>
+  <p>
+    <input type="submit" value="Search"/> in '%CGIPATH%' for files containing 
+    <input class="additor" name="needle" type="text" size="30" value=""/> files named 
+    <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|md|cal|csv|ods|odt|mm|mmap|xmmap)$"/>
+  </p>
+</form>
 
 <h3>Actions</h3>
 <ul class="ui-menu">
