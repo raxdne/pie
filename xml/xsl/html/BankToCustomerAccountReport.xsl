@@ -9,38 +9,37 @@
 
   <xsl:decimal-format name="f1" grouping-separator="," decimal-separator="."/>
   
+  <xsl:key name="list-unique" match="camt:Ntry" use="concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm)"/> <!--  -->
+
   <xsl:key name="list-by-name" match="camt:Nm" use="text()"/>
 
   <xsl:template match="/">
     <xsl:element name="html">
-      <xsl:element name="head">
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<xsl:call-template name="CREATESTYLE"/>
-	<xsl:element name="title">
-	  <xsl:value-of select="''"/>
-	</xsl:element>
-      </xsl:element>
+      <xsl:call-template name="HEADER"/>
       <xsl:element name="body">
 	<xsl:choose>
-          <xsl:when test="transform">
+          <xsl:when test="dir|file|pie/dir|pie/file">
+	    <xsl:call-template name="BOOKGLIST"/>
+	    <xsl:call-template name="NMLIST"/>
+          </xsl:when>
+          <xsl:when test="transformYYY">
             <xsl:apply-templates select="document(/transform/@a)/*"/>
           </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates />
+	  <xsl:when test="camt:Document">
+	    <xsl:call-template name="BOOKGLIST"/>
+	    <xsl:call-template name="NMLIST"/>
+	    <xsl:for-each select="camt:BkToCstmrAcctRpt/camt:GrpHdr">
+	      <xsl:element name="p">
+		<xsl:value-of select="concat(camt:MsgId,' ',camt:CreDtTm,' ',camt:MsgRcpt/camt:Nm)"/>
+	      </xsl:element>
+	    </xsl:for-each>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- invalid elements -->
           </xsl:otherwise>
 	</xsl:choose>
       </xsl:element>
     </xsl:element>
-  </xsl:template>
-  
-  <xsl:template match="camt:Document">
-    <xsl:call-template name="BOOKGLIST"/>
-    <xsl:call-template name="NMLIST"/>
-    <xsl:for-each select="camt:BkToCstmrAcctRpt/camt:GrpHdr">
-      <xsl:element name="p">
-	<xsl:value-of select="concat(camt:MsgId,' ',camt:CreDtTm,' ',camt:MsgRcpt/camt:Nm)"/>
-      </xsl:element>
-    </xsl:for-each>
   </xsl:template>
   
   <xsl:template match="camt:TxDtls">
@@ -76,23 +75,42 @@
 	<xsl:value-of select="camt:RltdPties/camt:Cdtr/camt:Nm"/>
       </xsl:element>
       <xsl:element name="td">
-	<xsl:for-each select="camt:RmtInf/camt:Ustrd">
-	  <xsl:if test="position() &gt; 1">
-	    <!-- <xsl:element name="br"/> -->
-	    <xsl:text> </xsl:text>
-	  </xsl:if>
-	  <xsl:value-of select="string(.)"/>
-	</xsl:for-each>
+	<xsl:apply-templates select="camt:RmtInf"/>
       </xsl:element>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="camt:RmtInf">
+    <xsl:variable name="str_lines">
+      <xsl:for-each select="camt:Ustrd">
+	<xsl:value-of select="string(.)"/>
+      </xsl:for-each>
+    </xsl:variable>
+    <!--
+    <xsl:element name="pre">
+      <xsl:for-each select="camt:Ustrd">
+	<xsl:value-of select="string(.)"/>
+	<xsl:element name="br"/>
+      </xsl:for-each>
+    </xsl:element>
+    -->
+    <xsl:element name="span">
+      <xsl:value-of select="substring($str_lines,1,3*64)"/>
     </xsl:element>
   </xsl:template>
 
   <xsl:template name="BOOKGLIST">
     <xsl:variable name="int_lines">
-      <xsl:value-of select="count(descendant::camt:Ntry)"/>
+      <xsl:value-of select="count(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm)))])"/>
     </xsl:variable>
     <xsl:element name="table">
-      <xsl:element name="tbody">
+      <xsl:attribute name="id">
+	<xsl:text>bookgtable</xsl:text>
+      </xsl:attribute>
+      <xsl:attribute name="class">
+	<xsl:text>tablesorter</xsl:text>
+      </xsl:attribute>
+      <xsl:element name="thead">
 	<xsl:element name="tr">
 	  <xsl:element name="th">
 	    <xsl:text>BookgDt</xsl:text>
@@ -116,42 +134,54 @@
 	    <xsl:text>RmtInf</xsl:text>
 	  </xsl:element>
 	</xsl:element>
-	<xsl:apply-templates />
-	<xsl:element name="tr">
-	  <!-- empty line -->
-	</xsl:element>
-	<xsl:element name="tr">
-	  <xsl:element name="td">
-	    <xsl:text>Sum</xsl:text>
+      </xsl:element>
+      <xsl:element name="tbody">
+	<xsl:apply-templates select="/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm)))]">
+          <xsl:sort order="descending" select="camt:BookgDt/camt:Dt"/>
+	</xsl:apply-templates>
+	<xsl:if test="false()">
+	  <xsl:element name="tr">
+	    <!-- empty line -->
 	  </xsl:element>
-	  <xsl:element name="td">
+	  <xsl:element name="tr">
+	    <xsl:element name="td">
+	      <xsl:text>Sum</xsl:text>
+	    </xsl:element>
+	    <xsl:element name="td">
+	    </xsl:element>
+	    <xsl:element name="td">
+	      <xsl:value-of select="concat('=SUM(C2:C',$int_lines + 1,')')"/>
+	    </xsl:element>
+	    <xsl:element name="td">
+	      <xsl:value-of select="concat('=SUM(D2:D',$int_lines + 1,')')"/>
+	    </xsl:element>
 	  </xsl:element>
-	  <xsl:element name="td">
-	    <xsl:value-of select="concat('=SUM(C1:C',$int_lines + 1,')')"/>
+	  <xsl:element name="tr">
+	    <!-- empty line -->
 	  </xsl:element>
-	  <xsl:element name="td">
-	    <xsl:value-of select="concat('=SUM(D1:D',$int_lines + 1,')')"/>
-	  </xsl:element>
-	</xsl:element>
-	<xsl:element name="tr">
-	  <!-- empty line -->
-	</xsl:element>
-	<xsl:element name="tr">
-	  <xsl:element name="td">
-	  </xsl:element>
-	  <xsl:element name="td">
-	  </xsl:element>
-	  <xsl:element name="td">
-	    <xsl:value-of select="concat('=C',$int_lines + 3,' - D',$int_lines + 3)"/>
-	  </xsl:element>
-	</xsl:element>    
+	  <xsl:element name="tr">
+	    <xsl:element name="td">
+	    </xsl:element>
+	    <xsl:element name="td">
+	    </xsl:element>
+	    <xsl:element name="td">
+	      <xsl:value-of select="concat('=C',$int_lines + 3,' - D',$int_lines + 3)"/>
+	    </xsl:element>
+	  </xsl:element>    
+	</xsl:if>
       </xsl:element>
     </xsl:element>
   </xsl:template>
 
   <xsl:template name="NMLIST">
     <xsl:element name="table">
-      <xsl:element name="tbody">
+      <xsl:attribute name="id">
+	<xsl:text>nmtable</xsl:text> <!-- TODO: handle multiple tables -->
+      </xsl:attribute>
+      <xsl:attribute name="class">
+	<xsl:text>tablesorter</xsl:text>
+      </xsl:attribute>
+      <xsl:element name="thead">
 	<xsl:element name="tr">
 	  <xsl:element name="td">
 	  </xsl:element>
@@ -166,41 +196,49 @@
 	  <xsl:element name="th">
 	    <xsl:text>Nm</xsl:text>
 	  </xsl:element>
+	  <xsl:element name="th">
+	    <xsl:text>Cnt</xsl:text>
+	  </xsl:element>
+	  <xsl:element name="th">
+	    <xsl:text>Nm</xsl:text>
+	  </xsl:element>
 	</xsl:element>
-
+      </xsl:element>
+      <xsl:element name="tbody">
 	<xsl:for-each select="descendant::camt:Nm[generate-id() = generate-id(key('list-by-name', .))]">
-	  <xsl:sort select="."/>
-
+	  <xsl:sort select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 	  <xsl:variable name="str_name">
 	    <xsl:value-of select="."/>
 	  </xsl:variable>
-
+	  <xsl:variable name="int_count">
+	    <xsl:value-of select="count(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/descendant::camt:Nm = $str_name]])"/>
+	  </xsl:variable>
 	  <xsl:element name="tr">
 	    <xsl:element name="td">
+	      <xsl:value-of select="position()"/>
 	    </xsl:element>
 	    <xsl:element name="td">
 	    </xsl:element>
 	    <xsl:element name="td">
-	      <xsl:attribute name="align">right</xsl:attribute>
-	      <xsl:value-of select="format-number(sum(/descendant::camt:TxDtls[camt:RltdPties/camt:Dbtr/camt:Nm = $str_name]/camt:Amt),'#,##0.00','f1')"/>
+	      <xsl:value-of select="format-number(sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Dbtr/camt:Nm = $str_name]]/camt:Amt),'#,##0.00','f1')"/>
 	    </xsl:element>
 	    <xsl:element name="td">
-	      <xsl:attribute name="align">right</xsl:attribute>
-	      <xsl:value-of select="format-number(sum(/descendant::camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]/camt:Amt),'#,##0.00','f1')"/>
+	      <xsl:value-of select="format-number(sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]]/camt:Amt),'#,##0.00','f1')"/>
 	    </xsl:element>
 	    <xsl:element name="td">
 	      <xsl:value-of select="$str_name"/>
 	    </xsl:element>
 	    <xsl:element name="td">
-	      <xsl:if test="count(/descendant::camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]) &lt; 2">
-		<xsl:for-each select="/descendant::camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]/camt:RmtInf/camt:Ustrd">
-		  <xsl:if test="position() &gt; 1">
-		    <!-- <xsl:element name="br"/> -->
-		    <xsl:text> </xsl:text>
-		  </xsl:if>
-		  <xsl:value-of select="string(.)"/>
-		</xsl:for-each>
-	      </xsl:if>
+	      <xsl:value-of select="$int_count"/>
+	    </xsl:element>
+	    <xsl:element name="td">
+	      <xsl:choose>
+		<xsl:when test="$int_count = 1">
+		  <xsl:apply-templates select="/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/descendant::camt:Nm = $str_name]]/camt:NtryDtls/camt:TxDtls/camt:RmtInf" />
+		</xsl:when>
+		<xsl:otherwise>
+		</xsl:otherwise>
+	      </xsl:choose>
 	    </xsl:element>
 	  </xsl:element>
 	</xsl:for-each>
@@ -209,60 +247,58 @@
     </xsl:element>
   </xsl:template>
   
-<xsl:template name="CREATESTYLE">
-    <xsl:element name="style">
-
-body,table {
-  background-color:#ffffff;
+  <xsl:template name="HEADER">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="cache-control" content="no-cache"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <xsl:element name="title">
+    <xsl:value-of select="node[1]/@TEXT"/>
+  </xsl:element>
+  <style type="text/css">
+body {
   font-family: Arial,sans-serif;
-  /* font-family:Courier; */
   font-size:12px;
-  margin: 5px 5px 5px 5px;
 }
 
-/* settings for tables
- */
-
-table {
-  width: 95%;
-  border-collapse: collapse;
-  empty-cells:show;
-  margin-left:auto;
-  margin-right:auto;
-  border: 1px solid grey;
+pre {
+  margin: 2px 2px 2px 2px;
 }
+  </style>
+  <link rel="stylesheet" href="/jquery/tablesorter/css/theme.blue.css"/>
+  <script src="/jquery/jquery.js" type="text/javascript">//</script>
+  <script src="/jquery/tablesorter/js/jquery.tablesorter.js" type="text/javascript">//</script>
 
-tr {
-}
+<script type="text/javascript">
+  $(function() {
 
-/* data cells */
-td {
-  border: 1px solid grey;
-  vertical-align:top;
-  padding: 5px;
-  }
-.empty {
-  margin-bottom:0px;
-}
+  // initial sort set using sortList option
+  $("#bookgtable").tablesorter({
+    theme : 'blue',
+    widgets: ["filter"],
+    widgetOptions : {
+      filter_ignoreCase : true
+    }
+    // sort on the first column and second column in ascending order
+    //sortList: [[0,0],[1,0]]
+  });
 
-/* header cells */
-th {
-  border: 1px solid grey;
-  margin-bottom:0px;
-  text-align:left;
-  background-color:#d9d9d9;
-  color:#000000;
-  font-weight:bold;
-}
-th.header {
-  margin-bottom:0px;
-  text-align:left;
-  background-color:#d9d9d9;
-  font-weight:bold;
-}
-   </xsl:element>
- </xsl:template>
+  // initial sort set using data-sortlist attribute (see HTML below)
+  $("#nmtable").tablesorter({
+    theme : 'blue',
+    widgets: ["filter"],
+    widgetOptions : {
+      filter_ignoreCase : true
+    }
+   });
 
- <xsl:template match="text()|@*"/>
+  });
+  
+</script>
+</head>    
+  </xsl:template>
+
+  <xsl:template match="text()|@*"/>
     
 </xsl:stylesheet>
