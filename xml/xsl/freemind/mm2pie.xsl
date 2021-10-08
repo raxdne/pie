@@ -36,7 +36,16 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="pie|file|map">
+  <xsl:template match="pie|file">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="map">
+    <xsl:if test="node[1]/attribute[@NAME = 'regexp-tag']">
+      <xsl:processing-instruction name="regexp-tag">
+        <xsl:value-of select="node[1]/attribute[@NAME = 'regexp-tag']/@VALUE"/>
+      </xsl:processing-instruction>
+    </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -248,6 +257,7 @@
     <xsl:for-each select="attribute">
       <xsl:choose>
         <xsl:when test="@NAME='class'"/>
+	<xsl:when test="@NAME='regexp-tag'"/>
         <xsl:otherwise>
           <xsl:attribute name="{@NAME}">
             <xsl:value-of select="@VALUE"/>

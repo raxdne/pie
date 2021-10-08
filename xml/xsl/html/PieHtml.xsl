@@ -814,6 +814,19 @@
 	<xsl:attribute name="style">
 	  <xsl:value-of select="concat('display:',$display)"/>
 	</xsl:attribute>
+
+	<xsl:for-each select="//link[@id]">
+	  <xsl:element name="a">
+	    <xsl:attribute name="class">warning</xsl:attribute>
+	    <xsl:attribute name="href">
+	      <xsl:value-of select="concat('#',@id)"/>
+	    </xsl:attribute>
+            <xsl:value-of select="concat('',@id)"/>
+	  </xsl:element>
+	  <xsl:text> </xsl:text>
+	</xsl:for-each>
+	<xsl:value-of select="$newline"/>
+
 	<xsl:for-each select="//section[h and not(ancestor-or-self::section[@valid='no']) and not(ancestor::meta)]">
 	  <xsl:variable name="str_id" select="child::h/child::link/attribute::id"/>
 	  <xsl:for-each select="ancestor::section[h]">
