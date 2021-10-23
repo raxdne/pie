@@ -183,12 +183,12 @@
               <!-- font attributes for current node -->
               <xsl:choose>
                 <xsl:when test="child::font[@BOLD='true']">
-                  <xsl:element name="b">
+                  <xsl:element name="strong">
                     <xsl:value-of select="@TEXT"/>
                   </xsl:element>
                 </xsl:when>
                 <xsl:when test="child::font[@ITALIC='true']">
-                  <xsl:element name="i">
+                  <xsl:element name="em">
                     <xsl:value-of select="@TEXT"/>
                   </xsl:element>
                 </xsl:when>

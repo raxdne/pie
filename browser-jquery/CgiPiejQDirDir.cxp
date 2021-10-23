@@ -181,12 +181,18 @@
 
 </form>
 
+<!--
+TODO: use XMLHttpRequest()
+
+- https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+
+-->
 <h3>Upload file</h3>
 <form action="?" method="post" enctype="multipart/form-data">
   <button>Upload</button>
   <input name="target" size="50" value="%CGIPATH%/BBB.txt"/> 
   <label>Select a local text file (*.txt, *.xml etc)</label>  
-  <input name="content" type="file" size="50" maxlength="100000" accept="text/*"/> 
+  <input name="content" type="file" size="50" maxlength="1000000" /> 
   <input name="cxp" type="hidden" value="PieUpload"/> 
 </form>
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
-  <cxp:subst string="%CGICONTENT%" cgi="content" default="empty"/>
   <cxp:subst string="%CGIPATH%" cgi="target" default="AAA.txt"/>
   <cxp:system message="Upload to '%CGIPATH%'"/>
-  <cxp:plain name="%CGIPATH%" response="OK">%CGICONTENT%</cxp:plain>
+  <cxp:copy cgi="content" to="%CGIPATH%"/>
 </cxp:make>

@@ -220,9 +220,11 @@
 	    <xsl:element name="td">
 	    </xsl:element>
 	    <xsl:element name="td">
+	      <xsl:attribute name="align">right</xsl:attribute>
 	      <xsl:value-of select="format-number(sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Dbtr/camt:Nm = $str_name]]/camt:Amt),'#,##0.00','f1')"/>
 	    </xsl:element>
 	    <xsl:element name="td">
+	      <xsl:attribute name="align">right</xsl:attribute>
 	      <xsl:value-of select="format-number(sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]]/camt:Amt),'#,##0.00','f1')"/>
 	    </xsl:element>
 	    <xsl:element name="td">

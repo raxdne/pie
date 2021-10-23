@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  
   <xsl:include href="../Utils.xsl"/>
   <xsl:output method="xml" version="1.0" encoding="US-ASCII"/>
   <xsl:variable name="flag_p" select="true()"/>
@@ -8,6 +9,7 @@
   <xsl:variable name="str_title" select="''"/>
   <xsl:variable name="str_font" select="'SansSerif'"/> <!--  -->
   <xsl:variable name="int_fontsize" select="12"/>
+  
   <xsl:template match="/">
     <xsl:element name="map">
       <xsl:if test="$flag_attr">
@@ -67,6 +69,7 @@
 	  <xsl:otherwise>
 	  </xsl:otherwise>
 	</xsl:choose>
+	<xsl:call-template name="CREATECOLORS"/>
 	<xsl:attribute name="TEXT">
           <xsl:value-of select="normalize-space(.)"/>
 	</xsl:attribute>
@@ -107,13 +110,7 @@
             </xsl:attribute>
           </xsl:element>
         </xsl:if>
-        <xsl:if test="@impact &lt; 3">
-          <xsl:element name="icon">
-            <xsl:attribute name="BUILTIN">
-              <xsl:text>messagebox_warning</xsl:text>
-            </xsl:attribute>
-          </xsl:element>
-        </xsl:if>
+        <xsl:call-template name="CREATECOLORS"/>
         <xsl:if test="@valid = 'no' or @hidden">
           <xsl:element name="icon">
             <xsl:attribute name="BUILTIN">
@@ -122,21 +119,6 @@
           </xsl:element>
         </xsl:if>
         <xsl:call-template name="CREATEATTRIBUTES"/>
-        <xsl:element name="icon">
-          <xsl:attribute name="BUILTIN">
-            <xsl:choose>
-              <xsl:when test="@class='todo'">
-                <xsl:text>list</xsl:text>
-              </xsl:when>
-              <xsl:when test="@class='target'">
-                <xsl:text>flag-yellow</xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:text></xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-        </xsl:element>
         <xsl:apply-templates select="child::*[not(name()='h')]"/>
       </xsl:element>
     </xsl:if>
@@ -189,10 +171,12 @@
     <xsl:if test="$flag_p">
       <xsl:element name="node">
         <xsl:attribute name="TEXT">
-          <xsl:for-each select="child::*|text()">
+          <xsl:for-each select="child::node()|child::text()">
 	    <xsl:choose>
-	      <xsl:when test="self::list">
-		<!-- ignore the list element here -->
+	      <xsl:when test="self::list"/>
+	      <xsl:when test="self::t"/>
+	      <xsl:when test="self::text()">
+		<xsl:copy-of select="."/>
 	      </xsl:when>
 	      <xsl:otherwise>
 		<xsl:value-of select="normalize-space(.)"/>
@@ -201,6 +185,7 @@
 	  </xsl:for-each>
 	  <xsl:call-template name="FORMATIMPACT"/>
         </xsl:attribute>
+        <xsl:call-template name="CREATECOLORS"/>
         <xsl:if test="link/@href">
           <xsl:attribute name="LINK">
             <xsl:value-of select="link[1]/@href"/>
@@ -324,6 +309,23 @@
 
   <xsl:template match="*|text()|@*">
     <!-- ignore other elements --> 
+  </xsl:template>
+
+  <xsl:template name="CREATECOLORS">
+    <xsl:if test="@impact">
+      <xsl:attribute name="BACKGROUND_COLOR">
+	<xsl:choose>
+	  <xsl:when test="@impact = 1">
+	    <xsl:text>#ffcccc</xsl:text> <!-- value to be aligned with "html/pie.css" -->
+	  </xsl:when>
+	  <xsl:when test="@impact = 2">
+	    <xsl:text>#ccffcc</xsl:text>
+	  </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:attribute>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="CREATEATTRIBUTES">

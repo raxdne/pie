@@ -40,6 +40,16 @@
               <xsl:value-of select="concat('ff',substring(@COLOR,2,6))"/>
             </xsl:attribute>
           </xsl:if>
+	  <xsl:if test="font[@BOLD = 'true']">
+            <xsl:attribute name="Bold">
+	      <xsl:text>true</xsl:text>
+	    </xsl:attribute>
+	  </xsl:if>
+	  <xsl:if test="font[@ITALIC = 'true']">
+            <xsl:attribute name="Italic">
+	      <xsl:text>true</xsl:text>
+	    </xsl:attribute>
+	  </xsl:if>
         </xsl:element>
       </xsl:element>
       <xsl:if test="@BACKGROUND_COLOR">
