@@ -30,7 +30,7 @@
                   </cxp:col>
                 </cxp:calendar>
               </cxp:xml>
-              <cxp:xsl name="CalTable4.xsl">
+              <cxp:xsl name="CalendarTable.xsl">
                 <cxp:variable name="dir_icons" select="'/pie/icons'"/>
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
               </cxp:xsl>

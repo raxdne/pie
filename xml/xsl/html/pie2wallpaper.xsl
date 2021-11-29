@@ -35,7 +35,7 @@
 
   <xsl:template match="/">
     <xsl:choose>
-      <xsl:when test="true()">
+      <xsl:when test="false()">
         <xsl:element name="html">
           <xsl:call-template name="HEADER"/>
           <xsl:element name="body">
@@ -57,17 +57,21 @@
         </xsl:element>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-templates/>
+        <xsl:element name="html">
+          <xsl:element name="body">
+            <xsl:apply-templates/>
+	  </xsl:element>
+	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="*[@valid='no']">
+  <xsl:template match="*[@valid='no']|meta|text()">
     <!-- ignore this elements -->
   </xsl:template>
 
-  <xsl:template match="meta">
-    <!-- ignore this elements -->
+  <xsl:template match="*">
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="fig[child::*]">

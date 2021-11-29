@@ -361,6 +361,17 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="td|th">
+    <xsl:apply-templates />
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="tr">
+    <xsl:element name="p">
+      <xsl:apply-templates />
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template match="meta">
     <xsl:if test="count(error/*) &gt; 0">
       <xsl:element name="h2">Calendar Errors</xsl:element>

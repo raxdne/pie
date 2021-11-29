@@ -221,7 +221,7 @@ TODO: use XMLHttpRequest()
 <li><a target="_blank"><i>Upload Zip directory to Server</i></a></li>
 -->
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=DiskUsage">DiskUsage</a></li>
-<li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirCalendar&amp;depth=10#yesterday">Calendar</a></li>
+<li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=PiejQDirCalendar&amp;depth=10#yesterday">Calendar</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirSitemap">Sitemap</a></li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQMerge&amp;frame=800x800&amp;depth=1">Merge</a> all PIE files in current directory (*.pie, *.txt, *.mm, *.jpg, *.png).</li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=Wallpaper&amp;frame=600x600&amp;depth=1">Wallpaper of</a> all Image files in current directory.</li>

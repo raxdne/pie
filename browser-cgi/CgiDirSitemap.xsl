@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003" version="1.0">
-  <xsl:import href="../xsl/html/PieHtml.xsl"/>
+  <xsl:import href="../xml/xsl/html/PieHtml.xsl"/>
   <xsl:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
   <!--  -->
   <xsl:variable name="flag_header" select="true()"/>
@@ -21,7 +21,9 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+
   <xsl:output method="html" omit-xml-declaration="no" doctype-public="-//W3C//DTD HTML 4.01//EN" doctype-system="file:///tmp/dummy.dtd"/>
+
   <xsl:template match="/pie">
     <xsl:choose>
       <xsl:when test="$flag_header">
@@ -30,7 +32,7 @@
           <xsl:element name="body">
             <!--  -->
             <xsl:element name="pre">
-              <xsl:apply-templates select="dir/*[name()='dir' or name()='file']">
+              <xsl:apply-templates select="descendant::dir|descendant::file">
                 <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
                 <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
               </xsl:apply-templates>
@@ -45,6 +47,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="dir">
     <!--  -->
     <xsl:variable name="dir_path">
@@ -85,6 +88,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="file">
     <!--  -->
     <xsl:variable name="file_path">
@@ -242,4 +246,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
 </xsl:stylesheet>

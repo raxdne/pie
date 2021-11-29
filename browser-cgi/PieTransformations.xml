@@ -823,7 +823,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
 	      <import name="PATH" locator="yes" type="csv"/>
 	    </pie>
 	  </xml>
@@ -835,7 +835,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
 	      <import name="PATH" locator="yes" type="log"/>
 	    </pie>
 	  </xml>
@@ -1327,7 +1327,7 @@
     <pkg:relation from="importicstocalendar" to="application/pie+cal+xml"/>
     <pkg:relation from="application/mm+xml" to="importmmtocalendar"/>
     <pkg:relation from="importmmtocalendar" to="application/pie+cal+xml"/>
-    <pkg:relation from="application/pie+xml" to="importtocalendar"/>
+    <pkg:relation from="application/pie+proc+xml" to="importtocalendar"/>
     <pkg:relation from="importtocalendar" to="application/pie+cal+xml"/>
     <pkg:relation from="text/plain+calendar" to="importcaltocalendar"/>
     <pkg:relation from="importcaltocalendar" to="application/pie+cal+xml"/>
