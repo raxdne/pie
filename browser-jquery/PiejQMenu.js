@@ -85,7 +85,7 @@ function requestContent(objEditor,strQuery) {
 	if (objInfo.mime == undefined || objInfo.mime == '') {
 	    objEditor.setValue('No format information got!');
 	    return;
-	} else if (objInfo.mime.match(/^application\/(cxp\+xml|pie\+xml|mm\+xml)$/i)) {
+	} else if (objInfo.mime.match(/^application\/(pie\+xml|mm\+xml)$/i)) { // TODO: cxp\+xml|
 	    putsConsole('XML Format "' + objInfo.mime + ' OK');
 	    flagXML = true;
 	} else if (objInfo.mime.match(/^text\//i)) {
@@ -95,36 +95,13 @@ function requestContent(objEditor,strQuery) {
 	    return;
 	}
 
-	if (flagXML) {
-	    // TODO: disable content caching
-	    if (urlParams.has('xpath')) {
-		requestContent = $.ajax({
-		    url: '/cxproc/exe',
-		    type: 'GET',
-		    data: {path: urlParams.get('path'),
-			   xpath: urlParams.get('xpath'),
-			   encoding: urlParams.get('encoding'),
-			   r: Math.random()},
-		    dataType: 'text'
-		});
-	    } else {
-		requestContent = $.ajax({
-		    url: '/cxproc/exe',
-		    type: 'GET',
-		    data: {path: urlParams.get('path'),
-			   encoding: urlParams.get('encoding'),
-			   r: Math.random()},
-		    dataType: 'text'
-		});
-	    }
-	} else {
-	    requestContent = $.ajax({
-		url: '/' + urlParams.get('path'),
-		type: 'GET',
-		data: {r: Math.random()},
-		dataType: 'text'
-	    });
-	}
+	// TODO: disable content caching
+	
+	requestContent = $.ajax({
+	    url: '/' + urlParams.get('path'),
+	    type: 'GET',
+	    dataType: 'text'
+	});
 
 	//
 	requestContent.done(function( strContent ) {
@@ -173,7 +150,10 @@ function requestContent(objEditor,strQuery) {
 
 	requestContent.fail(function( jqXHR, textStatus ) {
 	    objEditor.setValue( 'Request failed: ' + textStatus );
+
 	    // TODO: save editor content in cache?
+
+	    // TODO: improve error handling
 	});
     });
 
