@@ -152,7 +152,7 @@ skype:12345
 
 tel:+0123456789 @james
 
-** #BBC
+** [#BBC](id:)
 
 *** BBB +++
 
@@ -160,7 +160,7 @@ TODO: GTD categories '_org', '_do', '_review', '_rejected' | me_org john_do her_
 
 TODO: can be done #abc @meReview ✔ 
 
-TODO: removed ✘
+TODO: removed ++   ✘
 
 DONE: 20200120 this was done @me
 
@@ -169,6 +169,8 @@ http://www.dummy.com/test%20abc%20%28inside%29/#anchor
 TODO: has to be done \u258A\u258A\u258A || you
 
 TODO: must be done ||| me_do 
+
+TODO: high impact but already done +++   ✔ 
 
 abc >>öäü<<
 
