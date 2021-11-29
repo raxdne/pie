@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script type="text/javascript" src="myGanttChart.js">// </script>
+  </head>
+  <body>
+    <h1>Demo Simple Gantt Diagram</h1>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" id="gantt_diagram"/>
+
+    <script type="text/javascript">
+
+      var c = new objGanttChart('gantt_diagram',400,800);
+      
+      c.appendChart();
+      //c.shift(-120);
+
+      c.excludeDate(135,5,'Holidays');
+      c.fixDate(155,'2021-12-17');
+      c.addLabel(135,'CW47');
+      c.addLabel(150,'CW50');
+      c.addLabel(155,'CW02');
+
+      c.append(
+      {start:  35, length: 200, title: 'Project A / WP5010: Transfer Data'},
+      {start: 175, length:  20, title: 'Project A / WP5050: Validate Data'},
+      {start: 100, length: 45, title: 'Project A: Migration', url : "?path=abc.txt"},
+      {start: 235, title: 'Project A: Go Live'},
+      {color: '#ccffcc'},
+      {start:  42, length: 60, title: 'Software Project: Release 6'},
+      {start: 102, length: 60, title: 'Software Project: Release 7', newline: false},
+      {start: 132, length: 60, height: 7, title: 'Software Project: Release 8'},
+      {start: 172, length: 60, color: '#ffaaaa', title: 'Software Project: Release 9'},
+      {start: 102, length: 80, title: 'Software Project: Process Definition'});
+
+      c.append(
+      {color: '#ccccff'},
+      {start: 162, length: 60, title: 'Software Update: 7'},
+      {start: 205, title: 'Software Update: Go Live'},
+      {start: 102, length: 60, title: 'Software Update: Strategy'},
+      );
+      
+   </script>
+  </body>
+</html>
