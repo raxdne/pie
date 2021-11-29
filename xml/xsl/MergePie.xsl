@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
+  <!-- merge all dir/file//pie/block in a structure -->
+
   <xsl:variable name="opt_cxp" select="''"/>
+  
   <xsl:output method="xml" version="1.0"/>
 
-  <xsl:template match="/pie">
+  <xsl:template match="/">
     <xsl:element name="pie">
       <xsl:apply-templates />
     </xsl:element>
@@ -12,28 +15,18 @@
 
   <xsl:template match="dir">
     <xsl:element name="block">
-      <xsl:if test="child::file">
-        <xsl:element name="section">
-          <xsl:element name="h">
-            <xsl:value-of select="@name"/>
-          </xsl:element>
-          <xsl:apply-templates/>
-        </xsl:element>
-      </xsl:if>
+      <xsl:copy-of select="@name"/>
+      <xsl:element name="section">
+	<xsl:element name="h">
+	  <xsl:value-of select="@name"/>
+	</xsl:element>
+	<xsl:apply-templates/>
+      </xsl:element>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="file">
-    <xsl:element name="block">
-      <xsl:attribute name="context">
-        <xsl:value-of select="@name"/>
-      </xsl:attribute>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
-
-  <xsl:template match="pie">
-    <xsl:copy-of select="."/>
+  <xsl:template match="file[child::pie]">
+    <xsl:copy-of select="pie/block"/>
   </xsl:template>
 
   <xsl:template match="file[starts-with(@type,'image')]">
@@ -66,6 +59,12 @@
       </xsl:when>
       <xsl:when test="contains(@type,'image')">
         <xsl:variable name="image_comment_name" select="concat(translate(@name,'.','_'),'.txt')"/>
+
+	<xsl:element name="block">
+          <xsl:attribute name="context">
+            <xsl:value-of select="concat('/',$file_path)"/>
+	  </xsl:attribute>
+	  
         <xsl:element name="fig">
           <xsl:element name="img">
             <xsl:attribute name="src">
@@ -97,6 +96,7 @@
             </xsl:choose>
           </xsl:element>
         </xsl:element>
+	</xsl:element>
       </xsl:when>
       <xsl:otherwise>
        </xsl:otherwise>
