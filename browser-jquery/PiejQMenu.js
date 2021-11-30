@@ -100,6 +100,7 @@ function requestContent(objEditor,strQuery) {
 	requestContent = $.ajax({
 	    url: '/' + urlParams.get('path'),
 	    type: 'GET',
+	    encoding: urlParams.get('encoding'),
 	    dataType: 'text'
 	});
 

@@ -1,6 +1,8 @@
 //
+// myGanttChart 0.1 (p) 2021 A. Tenbusch
 //
-//
+
+// s. https://developer.mozilla.org/en-US/docs/Web/SVG
 
 function objGanttChart (strId, argW, argH) {
 
@@ -107,6 +109,13 @@ objGanttChart.prototype.append = function () {
 
 	    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
 
+	    if (arguments[i].hasOwnProperty("url")) {
+		a = document.createElementNS('http://www.w3.org/2000/svg','a');
+		a.setAttribute('href', arguments[i].url);
+		g.appendChild(a);
+		g = a;
+	    }
+
 	    var t = arguments[i].start;
 	    
 	    if (arguments[i].hasOwnProperty("end") || arguments[i].hasOwnProperty("length")) {
@@ -134,15 +143,8 @@ objGanttChart.prototype.append = function () {
 		f.setAttribute('height',h);
 		f.setAttribute('width',arguments[i].length * 10);
 		f.setAttribute('rx',5);
-		f.setAttribute('stroke','#000000');
-		f.setAttribute('stroke-width','.25');
+		f.setAttribute('fill',this.barbackground);
 		
-		if (arguments[i].hasOwnProperty("color")) {
-		    f.setAttribute('fill',arguments[i].color);
-		} else {
-		    f.setAttribute('fill',this.barbackground);
-		}
-
 		tt = document.createElementNS('http://www.w3.org/2000/svg','title');
 		tt.appendChild(document.createTextNode(arguments[i].title + ' (' + t + ',' + arguments[i].length +')'));
 		f.appendChild(tt);
@@ -170,28 +172,29 @@ objGanttChart.prototype.append = function () {
 			       + ' ' + (t * 10)               + ',' + (this.y_n + this.dy)
 			       + ' ' + (t * 10 - this.dy / 2) + ',' + (this.y_n + this.dy / 2)
 			       + ' ' + (t * 10)               + ',' + (this.y_n));
-		f.setAttribute('stroke','#000000');
-		f.setAttribute('stroke-width','.25');		
 		f.setAttribute('fill','#aaaaff');
 
 		g.appendChild(f);
 
-		f = document.createElementNS('http://www.w3.org/2000/svg','text');
-		f.setAttribute('x', t * 10 + this.dy / 2 + 2);
-		f.setAttribute('y',this.y_n + this.dy - 5);
-		f.appendChild(document.createTextNode(arguments[i].title + ' (' + t + ')'));
+		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+		tx.setAttribute('x', t * 10 + this.dy / 2 + 2);
+		tx.setAttribute('y',this.y_n + this.dy - 5);
+		tx.appendChild(document.createTextNode(arguments[i].title + ' (' + t + ')'));
 		
-		g.appendChild(f);
-		
+		g.appendChild(tx);		
 	    }
 	    
+	    if (arguments[i].hasOwnProperty("color")) {
+		f.setAttribute('fill',arguments[i].color);
+	    }
+
+	    f.setAttribute('stroke-width','.5');
+	    
 	    if (arguments[i].hasOwnProperty("url")) {
-		a = document.createElementNS('http://www.w3.org/2000/svg','a');
-		a.setAttribute('href', arguments[i].url);
-		a.appendChild(tx);
-		
-		g.appendChild(a);
-	    } 
+		f.setAttribute('stroke','#0000ff');
+	    } else {
+		f.setAttribute('stroke','#000000');
+	    }
 	    
 	    this.svg.children[0].appendChild(g);
 	    
