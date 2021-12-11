@@ -1,6 +1,10 @@
 <html>
   <head>
-    <script type="text/javascript" src="myGanttChart.js">// </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>* {
+    font-size:12px;
+    }</style>
+    <script type="text/javascript" src="myGanttChart.js"></script>
   </head>
   <body>
     <h1>Demo Simple Gantt Diagram</h1>
@@ -9,36 +13,62 @@
 
     <script type="text/javascript">
 
-      var c = new objGanttChart('gantt_diagram',400,800);
+      function cw(y,w) {
+	  return ((y - 2021) * 52 + w);
+      }
       
-      c.appendChart();
-      //c.shift(-120);
+      function d(y,m,d) {
+	  
+	  var date = new Date(y,m,d);
+	  date.setHours(0, 0, 0, 0);
 
-      c.excludeDate(135,5,'Holidays');
-      c.fixDate(155,'2021-12-17');
-      c.addLabel(135,'CW47');
-      c.addLabel(150,'CW50');
-      c.addLabel(155,'CW02');
+	  // Thursday in current week decides the year.
+	  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+	  
+	  // January 4 is always in week 1.
+	  var week1 = new Date(date.getFullYear(), 0, 4);
+
+	  // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+	  var w = 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+	  
+	  return cw(y,w);
+      }
+      
+      var c = new objGanttChart('gantt_diagram',0,0,20);
+      
+      //c.shift(cw(2021,5));
 
       c.append(
-      {start:  35, length: 200, title: 'Project A / WP5010: Transfer Data'},
-      {start: 175, length:  20, title: 'Project A / WP5050: Validate Data'},
-      {start: 100, length: 45, title: 'Project A: Migration', url : "?path=abc.txt"},
-      {start: 235, title: 'Project A: Go Live'},
-      {color: '#ccffcc'},
-      {start:  42, length: 60, title: 'Software Project: Release 6'},
-      {start: 102, length: 60, title: 'Software Project: Release 7', newline: false},
-      {start: 132, length: 60, height: 7, title: 'Software Project: Release 8'},
-      {start: 172, length: 60, color: '#ffaaaa', title: 'Software Project: Release 9'},
-      {start: 102, length: 80, title: 'Software Project: Process Definition'});
+	  {start: 10, length: 4, title: 'Project A / WP5010: Transfer Data'},
+	  {start: 13, end: 17, title: 'Project A / WP5020: Test Data'},
+	  {start: cw(2021,15), end: cw(2021,17), title: 'Project A / WP5030: Transfer Data'},
+	  {start: cw(2021,19), end: d(2021,8,9), title: 'Project A / WP5040: Transfer Data'},
+	  {start:  d(2021,8,9), end: d(2021,8,29), title: 'Project A / WP5050: Validate Data'},
+	  {start: 10, length: 15, color: '#ffcccc', title: 'Project A: Migration', url : "?path=abc.txt"},
+	  {start: 23, title: 'Project A: Go Live'},);
 
       c.append(
-      {color: '#ccccff'},
-      {start: 162, length: 60, title: 'Software Update: 7'},
-      {start: 205, title: 'Software Update: Go Live'},
-      {start: 102, length: 60, title: 'Software Update: Strategy'},
+	  {color: '#ccffcc'},
+	  {start:  4, length: 4, title: 'Software Project: Release 6'},
+	  {start: 10, length: 5, title: 'Software Project: Release 7', newline: false},
+	  {start: 13, length: 6, height: 7, title: 'Software Project: Release 8'},
+	  {start: 17, length: 7, color: '#ffaaaa', title: 'Software Project: Release 9'},
+	  {start: 10, length: 8, title: 'Software Project: Process Definition'});
+
+      c.append(
+	  {color: '#ccccff'},
+	  {posx: 26, posy: 10, title: 'Link', url: "http://www.heise.de/"},
+	  {start: 16, length: 6, title: 'Software Update: 7'},
+	  {start: 20, title: 'Software Update: Go Live'},
+	  {start: 10, length: 6, title: 'Software Update: Strategy'},
       );
       
+      c.appendVBar(cw(2021,20),2,'Holidays');
+      c.addLabel(13,'CW47');
+      c.addLabel(15,'CW02');
+
+      //c.appendHLines();
+      c.appendVLines();
    </script>
   </body>
 </html>
