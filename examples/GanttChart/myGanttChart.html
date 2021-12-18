@@ -34,7 +34,7 @@
 	  return cw(y,w);
       }
       
-      var c = new objGanttChart('gantt_diagram',0,0,20);
+      var c = new objGanttChart('gantt_diagram',105,0,20);
       
       //c.shift(cw(2021,5));
 
@@ -63,10 +63,12 @@
 	  {start: 10, length: 6, title: 'Software Update: Strategy'},
       );
       
-      c.appendVBar(cw(2021,20),2,'Holidays');
-      c.addLabel(13,'CW47');
-      c.addLabel(15,'CW02');
+      c.appendVBar(cw(2021,20),2,'Holidays 2021');
+      c.addLabel(cw(2021,2),'CW02');
+      c.addLabel(cw(2021,47),'CW47');
 
+      c.appendVBar(cw(2022,30),2,'Holidays 2022');
+      
       //c.appendHLines();
       c.appendVLines();
    </script>
