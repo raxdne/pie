@@ -6,34 +6,57 @@
 
 function objGanttChart (strId, argW, argH, grid) {
 
-    this.grid = grid;
-
-    this.h = argH * this.grid;
-    this.w = argW * this.grid;
+    var self = this;
     
-    this.y_n = - this.grid / 2;
+    self.grid = grid;
 
-    this.barbackground = '#aaffaa';
+    self.h = argH * self.grid;
+    self.w = argW * self.grid;
     
-    this.svg = document.getElementById(strId);
-    if (this.svg == undefined) {
+    self.y_n = - self.grid / 2;
+
+    self.barbackground = '#aaffaa';
+    
+    self.svg = document.getElementById(strId);
+    if (self.svg == undefined) {
 	window.console.log('ERROR: No SVG element found!');
     } else {
-	this.svg.setAttribute('height',this.h);
-	this.svg.setAttribute('width',this.w);
+	self.svg.setAttribute('height',self.h);
+	self.svg.setAttribute('width',self.w);
 	var g = document.createElementNS('http://www.w3.org/2000/svg','g');
 	//g.setAttribute('transform','scale(0.5)');
-	this.svg.appendChild(g);
+	self.svg.appendChild(g);
 
 	var s = document.createElementNS('http://www.w3.org/2000/svg','style');
 	s.setAttribute('type',"text/css");
-	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + this.grid / 2 + 'pt; }'));
-	this.svg.appendChild(s);
+	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + self.grid / 2 + 'pt; }'));
+	self.svg.appendChild(s);
 
-	window.console.log(this.svg);
+	window.console.log(self.svg);
     }
+
+    var dT = new DataTransfer();
+
+    //https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/ClipboardEvent
+    var evt = new ClipboardEvent('paste', {clipboardData: dT});
     
-    return this;
+    //console.log('clipboardData available: ', evt.clipboardData);
+
+    document.onpaste = function(e) {
+
+	var s = e.clipboardData.getData('text/plain');
+
+	if (s == undefined || s == '') {
+	    console.log('onpaste: ', 'undefined');
+	} else {
+	    console.log('onpaste: ', s);
+	    self.append(self.parseInput(s));
+	}
+    };
+    
+    document.dispatchEvent(evt);
+    
+    return self;
 }
 
 
@@ -94,8 +117,13 @@ objGanttChart.prototype.append = function () {
     // TODO: image??
     
     for (var i = 0; i < arguments.length; i++) {
-
-	if (typeof arguments[i] === 'object' && arguments[i].hasOwnProperty("start") && arguments[i].hasOwnProperty("title")) {
+	
+	if (typeof arguments[i] === 'object' && arguments[i] instanceof Array) {
+	    window.console.log('Array');
+	    for (var j = 0; j < arguments[i].length; j++) {
+		this.append(arguments[i][j]);
+	    }
+	} else if (typeof arguments[i] === 'object' && arguments[i].hasOwnProperty("start") && arguments[i].hasOwnProperty("title")) {
 
 	    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
 
@@ -107,7 +135,7 @@ objGanttChart.prototype.append = function () {
 		g = a;
 	    }
 
-	    var t = arguments[i].start * this.grid;
+	    var t = (arguments[i].start - 1) * this.grid;
 	    
 	    if (arguments[i].hasOwnProperty("end") || arguments[i].hasOwnProperty("length")) {
 		
@@ -266,6 +294,8 @@ objGanttChart.prototype.append = function () {
 	
 	this.h = this.y_n + 2 * this.grid;
     }
+    
+    window.console.log(arguments);
     return this;
 }
 
@@ -316,4 +346,64 @@ objGanttChart.prototype.appendHLines = function () {
 	this.svg.children[0].prepend(l);
     }    
 }
+
+
+objGanttChart.prototype.parseInput = function (strInput) {
+
+    var s = new String(strInput);
+    var listResult = [];
+    
+    var a = s.split(/\r*\n/);
+    
+    window.console.log('Lines ' + a.length);
+
+    for (var i=0; i < a.length; i++) {
+	var l = new String(a[i]);
+	
+	var c = l.split(/[;,\t]/);
+	
+	window.console.log('Cells ' + c.length);
+
+	if (c.length == 3) {
+	    listResult.push({start: c[0], end: c[1], title: c[2]});
+	    //this.append({start: c[0], end: c[1], title: c[2]});
+	}
+    }
+    //window.console.log('Result ' + listResult.toString());
+
+    return listResult;
+}
+
+
+objGanttChart.prototype.getInput = function (strUrl) {
+
+    // https://wiki.selfhtml.org/wiki/JavaScript/XMLHttpRequest
+    
+    var self = this;
+    
+    var request = new XMLHttpRequest();
+
+    request.open("GET", strUrl);
+    //request.setRequestHeader("X-Test","test1");
+    //request.setRequestHeader("X-Test","test2");
+    
+    request.addEventListener('load', function(event) {
+	if (request.status >= 200 && request.status < 300) {
+	    console.log(request.responseType + ':' + request.responseText);
+	    // TODO: check request.responseType
+	    if (request.responseType == "text") {
+		self.append(self.parseInput(request.responseText));
+	    } else if (request.responseType == "json") {
+		self.append(JSON.parse(request.responseText));
+	    } else {
+		self.append(self.parseInput(request.responseText));
+	    }
+	} else {
+	    console.warn(request.statusText, request.responseText);
+	}
+    });
+    
+    request.send();    
+}
+
 
