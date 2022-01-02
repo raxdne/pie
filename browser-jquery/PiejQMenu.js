@@ -621,9 +621,9 @@ $(function(){
 
     var urlParams = new URLSearchParams(document.location.search);
 
-    if (urlParams.get('path').match(/\.(pie|mm|md|cxp|cal|txt|csv)$/i)) {
+    if (urlParams.get('path') == undefined || urlParams.get('path').match(/\.(pie|mm|md|cxp|cal|txt|csv)$/i)) {
 
-	if (urlParams.get('cxp').match(/PiejQCalendar/i)) {
+	if (urlParams.get('cxp') != undefined && urlParams.get('cxp').match(/PiejQCalendar/i)) {
 
 	    $.contextMenu({
 		selector: '#content', 
@@ -742,7 +742,7 @@ $(function(){
 
 	// non-editable format
 	
-	if (urlParams.get('cxp').match(/PiejQCalendar/i)) {
+	if (urlParams.get('cxp') != undefined && urlParams.get('cxp').match(/PiejQCalendar/i)) {
 
 	    $.contextMenu({
 		selector: '#content', 
