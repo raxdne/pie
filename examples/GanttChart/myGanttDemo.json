@@ -1,5 +1,7 @@
-[{"posx": 4, "posy": 8, "url": "https://frd-confluence.emea.zf-world.com/pages/viewpage.action?pageId=84883563", "title": "GPLM: Schedule"},
-	  {"start": 5, "end": 16, "height": 2, "title": "GPLM: Release 4 ✔", "url": "/cxproc/exe?path=PLM/3.07%20Document%20Management/PLM-DocumentManagement.txt&cxp=PiejQDefault#Release4_2021"},
-	  {"start": 14, "end": 20, "height": 2, "title": "GPLM: Release 5 ✔", "url": "/cxproc/exe?path=PLM/3.07%20Document%20Management/PLM-DocumentManagement.txt&cxp=PiejQDefault#Release5_2021"},
-	  {"start": 23, "end": 25, "height": 7, "title": "GPLM: Release 6 ✔", "url": "/cxproc/exe?path=PLM/3.07%20Document%20Management/PLM-DocumentManagement.txt&cxp=PiejQDefault#Release6_2021"},
-	  {"start": 11, "title": "GPLM: Release 7 Demo"}]
+[
+    {"posx": 4, "posy": 8, "url": "http://www.example.com/", "title": "ABCDE: Schedule"},
+    {"start": 5, "end": 16, "height": 2, "title": "ABCDE: Release 4 ✔"},
+    {"start": 14, "end": 20, "height": 2, "title": "ABCDE: Release 5"},
+    {"start": 23, "end": 25, "height": 7, "title": "ABCDE: Release 6"},
+    {"start": 11, "title": "ABCDE: Release 7 Demo"}
+]

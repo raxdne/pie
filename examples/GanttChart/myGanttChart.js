@@ -19,7 +19,7 @@ function objGanttChart (strId, argW, argH, grid) {
     
     self.svg = document.getElementById(strId);
     if (self.svg == undefined) {
-	window.console.log('ERROR: No SVG element found!');
+	window.console.error('ERROR: No SVG element found!');
     } else {
 	self.svg.setAttribute('height',self.h);
 	self.svg.setAttribute('width',self.w);
@@ -302,7 +302,7 @@ objGanttChart.prototype.append = function () {
 
 objGanttChart.prototype.appendVLines = function () {
 
-    for (i=0; i < this.w; i++) {
+    for (i = this.w / this.grid; i > -1; i--) {
 	l = document.createElementNS('http://www.w3.org/2000/svg','line');
 	l.setAttribute('x1',i * this.grid);
 	l.setAttribute('y1','0');
@@ -326,23 +326,24 @@ objGanttChart.prototype.appendVLines = function () {
 
 objGanttChart.prototype.appendHLines = function () {
 
-    for (i=0; i < this.h; i+=this.grid) {
+    for (i = this.h / this.grid; i > -1; i--) {
 	l = document.createElementNS('http://www.w3.org/2000/svg','line');
-	l.setAttribute('x1',0);
-	l.setAttribute('y1',i);
+	l.setAttribute('x1','0');
+	l.setAttribute('y1',i * this.grid);
 	l.setAttribute('x2',this.w);
-	l.setAttribute('y2',i);
-	if (i % 80 == 0) {
-	    l.setAttribute('stroke','rgb(0,0,0)');
-	    l.setAttribute('stroke-width','.5');
-
-	    t = document.createElementNS('http://www.w3.org/2000/svg','title');
-	    t.appendChild(document.createTextNode(i/10));
-	    l.appendChild(t);
+	l.setAttribute('y2',i * this.grid);
+	if (i % 4 == 0) {
+	    l.setAttribute('stroke','rgb(128,128,128)');
+	    //l.setAttribute('stroke-width','.5');
 	} else {
 	    l.setAttribute('stroke','rgb(128,128,128)');
-	    l.setAttribute('stroke-width','.25');
+	    l.setAttribute('stroke-width','.5');
 	}
+
+	//tt = document.createElementNS('http://www.w3.org/2000/svg','title');
+	//tt.appendChild(document.createTextNode(i));
+	//l.appendChild(tt);
+
 	this.svg.children[0].prepend(l);
     }    
 }
@@ -383,23 +384,41 @@ objGanttChart.prototype.getInput = function (strUrl) {
     
     var request = new XMLHttpRequest();
 
-    request.open("GET", strUrl);
-    //request.setRequestHeader("X-Test","test1");
-    //request.setRequestHeader("X-Test","test2");
+    request.open("GET", strUrl, false);
     
     request.addEventListener('load', function(event) {
 	if (request.status >= 200 && request.status < 300) {
-	    console.log(request.responseType + ':' + request.responseText);
-	    // TODO: check request.responseType
-	    if (request.responseType == "text") {
-		self.append(self.parseInput(request.responseText));
-	    } else if (request.responseType == "json") {
-		self.append(JSON.parse(request.responseText));
+	    if (request.responseText == undefined || request.responseText.length < 1) {
+		window.console.error('empty ' + request.responseText);
 	    } else {
-		self.append(self.parseInput(request.responseText));
+		var list;
+
+		try {
+		    list = JSON.parse(request.responseText); // try to parse as JSON first
+
+		    if (list == undefined) {
+			window.console.error('JSON ' + request.responseText + '');
+		    } else if (list.length < 1) {
+			window.console.error('empty JSON ' + request.responseText + '');
+		    } else {
+			self.append(list);
+		    }
+		} catch (e) {
+		    window.console.error('JSON.parse(' + e + ')');
+
+		    list = self.parseInput(request.responseText); // try to parse as CSV
+			
+		    if (list == undefined) {
+			window.console.error('CSV format');
+		    } else if (list.length < 1) {
+			window.console.error('empty CSV ' + request.responseText + '');
+		    } else {
+			self.append(list);
+		    }
+		}
 	    }
 	} else {
-	    console.warn(request.statusText, request.responseText);
+	    window.console.warn(request.statusText, request.responseText);
 	}
     });
     

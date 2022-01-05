@@ -63,21 +63,22 @@
 	  {start: 10, length: 6, title: 'Software Update: Strategy'},
       );
       
-      c.appendVBar(cw(2021,20),2,'Holidays 2021');
       c.addLabel(cw(2021,2),'CW02');
       c.addLabel(cw(2021,47),'CW47');
 
-      c.appendVBar(cw(2022,30),2,'Holidays 2022');
 
       // Ctrl+V
       
       //c.append(c.parseInput('1;2;AAA\n4;5;BBB\n6;7;CCC'));
 
-      //c.getInput('/Entwurf/myGanttDemo.csv');
+      c.getInput('/WorkGanttChart/myGanttDemo.csv');
 
-      //c.getInput('/Entwurf/myGanttDemo.json');
+      c.getInput('/WorkGanttChart/myGanttDemo.json');
 
-      //c.appendHLines();
+      c.appendVBar(cw(2022,30),2,'Holidays 2022');
+      c.appendVBar(cw(2021,20),2,'Holidays 2021');
+
+      c.appendHLines();
       c.appendVLines();
    </script>
   </body>
