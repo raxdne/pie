@@ -8,6 +8,7 @@
   <xsl:variable name="str_tagtime" select="''" />
   <xsl:variable name="int_count" select="1" />
   <xsl:output method="xml" />
+
   <xsl:template match="/">
     <xsl:element name="make">
       <xsl:for-each select="descendant::path[count(child::pkg:transition[position() &gt; 1 and descendant::*[@name = 'PATH']]) &lt; 1]">
@@ -19,6 +20,7 @@
       </xsl:for-each>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="path">
     <xsl:variable name="node_last" select="pkg:stelle[position()=last()]" />
     <xsl:choose>
@@ -45,33 +47,76 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+  <xsl:template match="SUBST">
+    <xsl:variable name="node_subst" select="ancestor::pkg:transition/preceding-sibling::pkg:*[child::make][1]"/>
+    <xsl:choose>
+      <xsl:when test="$node_subst[@id]">
+	<xsl:comment>
+	  <xsl:value-of select="concat(' substituted by ', $node_subst/@id)"/>
+	</xsl:comment>
+	<xsl:apply-templates select="$node_subst/child::make/*"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:comment>
+	  <xsl:value-of select="concat(' no substitution found ','')"/>
+	</xsl:comment>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="pkg:transition">
     <!--
     <xsl:comment>
       <xsl:value-of select="concat(' begin ',name(),' ',@id,' ')"/>
     </xsl:comment>
 -->
-    <xsl:apply-templates select="make/*" />
+    <xsl:variable name="str_id" select="@id"/>
+    <xsl:choose>
+      <xsl:when test="following-sibling::pkg:transition/descendant::SUBST">
+	<xsl:comment>
+	  <xsl:value-of select="concat(' skip ',name(),' ', $str_id,' due to later substitution ')"/>
+	</xsl:comment>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:apply-templates select="make/*" />
+      </xsl:otherwise>
+    </xsl:choose>
     <!--
     <xsl:comment>
       <xsl:value-of select="concat(' end ',name(),' ',@id,' ')"/>
     </xsl:comment>
 -->
   </xsl:template>
+
   <xsl:template match="pkg:stelle">
+    <xsl:variable name="str_id" select="@id"/>
     <xsl:comment>
       <xsl:value-of select="concat(' ',name(),' ',@id)" />
     </xsl:comment>
-    <xsl:if test="position() = 1 and not(following-sibling::pkg:transition[1]/make/descendant::*[@name = 'PATH'])">
+
+    <xsl:choose>
+      <xsl:when test="following-sibling::pkg:transition/descendant::SUBST">
+	<xsl:comment>
+	  <xsl:value-of select="concat(' skip ',name(),' ', $str_id,' due to later substitution ')"/>
+	</xsl:comment>
+      </xsl:when>
+      <xsl:when test="position() = 1 and not(following-sibling::pkg:transition[1]/make/descendant::*[@name = 'PATH'])">
       <!-- very first source -->
-      <xsl:apply-templates select="make/*" />
-    </xsl:if>
+	<xsl:apply-templates select="make/*" />
+      </xsl:when>
+      <xsl:otherwise>
+      </xsl:otherwise>
+    </xsl:choose>
+
   </xsl:template>
+
   <xsl:template match="pkg:relation">
     <xsl:comment>
       <xsl:value-of select="concat(' ',@from,' ⇒ ',@to,' ')" />
     </xsl:comment>
   </xsl:template>
+
   <xsl:template match="*">
     <xsl:element name="{name()}">
       <xsl:copy-of select="@*" />
@@ -138,4 +183,5 @@
       </xsl:choose>
     </xsl:element>
   </xsl:template>
+
 </xsl:stylesheet>

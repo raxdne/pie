@@ -898,14 +898,7 @@
 	      </xml>
 	    </col>
 	    <col id="content" name="Content">
-	      <xml>
-		<xml xpath="yes">
-		  <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
-		    <import name="PATH" locator="yes"/>
-		  </pie>
-		</xml>
-		<xsl name="RemoveHiddenLevel.xsl"/>
-	      </xml>
+	      <SUBST/>
 	    </col>
 	  </calendar>
 	</xml>

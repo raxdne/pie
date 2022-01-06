@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
   <xsl:import href="PiePlain.xsl"/>
+
   <xsl:output method="text" encoding="UTF-8"/>
+
   <xsl:variable name="newline">
     <xsl:text>
 </xsl:text>
   </xsl:variable>
+  
   <xsl:variable name="newpar">
     <xsl:text>
 
 </xsl:text>
   </xsl:variable>
 
-  <xsl:template match="/">
+  <xsl:template match="/|dir|file|block">
     <xsl:apply-templates/>
   </xsl:template>
+
   <xsl:template match="pie">
     <xsl:apply-templates/>
   </xsl:template>
@@ -30,13 +35,11 @@
     <xsl:value-of select="$newpar"/>
   </xsl:template>
   
-
   <xsl:template match="section">
     <xsl:apply-templates select="h"/>
     <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
     <xsl:value-of select="$newline"/>
   </xsl:template>
-
 
   <xsl:template match="task">
     <!--  -->
@@ -48,6 +51,17 @@
   </xsl:template>
 
   <xsl:template match="list">
+    <xsl:choose>
+      <xsl:when test="parent::p">
+	<xsl:value-of select="$newpar"/>
+      </xsl:when>
+      <xsl:when test="parent::list">
+	<xsl:value-of select="$newpar"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!--  -->
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -85,10 +99,10 @@
     <xsl:value-of select="$newline"/>
   </xsl:template>
 
-
   <xsl:template match="img">
     <xsl:value-of select="@src"/>
   </xsl:template>
+
   <xsl:template match="fig">
     <xsl:text>Abb. </xsl:text>
     <xsl:value-of select="img/@src"/>
@@ -98,10 +112,13 @@
     </xsl:if>
     <xsl:value-of select="$newpar"/>
   </xsl:template>
+
   <xsl:template match="pre">
     <xsl:value-of select="concat($newline,'&lt;','code','&gt;')"/>
     <xsl:copy-of select="text()"/>
     <xsl:value-of select="concat('&lt;','/code','&gt;',$newpar)"/>
   </xsl:template>
+
   <xsl:template match="*"/>
+
 </xsl:stylesheet>
