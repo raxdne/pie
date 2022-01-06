@@ -6,21 +6,11 @@
   <!-- -->
   <xsl:variable name="file_norm"></xsl:variable>
   <!--  -->
-  <xsl:variable name="file_css" select="'pie.css'"/>
+  <xsl:variable name="file_css" select="''"/>
   <!-- -->
-  <xsl:variable name="file_cxp" select="''"/>
-  <!--  -->
   <xsl:variable name="diff_delta_0" select="-2"/>
   <!-- -->
   <xsl:variable name="diff_delta_1" select="5"/>
-  <!-- -->
-  <xsl:variable name="nowYear" select="0"/>
-  <!-- -->
-  <xsl:variable name="nowMonth" select="0"/>
-  <!-- -->
-  <xsl:variable name="nowWeek" select="0"/>
-  <!-- -->
-  <xsl:variable name="nowDay" select="0"/>
   <!-- -->
   <xsl:variable name="ns_date" select="//task[not(@done or @class = 'done' or @state = 'done')]"/>
 
