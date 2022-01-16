@@ -63,7 +63,7 @@ function objGanttChart (strId, argW, argH, grid) {
 objGanttChart.prototype.addLabel = function (argT,argStr) {
 
     tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-    tx.setAttribute('x', argT * this.grid + 1);
+    tx.setAttribute('x', (argT - 1) * this.grid + 1);
     tx.setAttribute('y', this.grid / 2 + 1);
     tx.appendChild(document.createTextNode(argStr));
     
@@ -78,7 +78,7 @@ objGanttChart.prototype.appendVBar = function (argT,argL,argTitle,argColor) {
     window.console.log('vbar ' + argT);
     
     f = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    f.setAttribute('x',argT * this.grid);
+    f.setAttribute('x',(argT - 1) * this.grid);
     f.setAttribute('y',0);
     f.setAttribute('height',this.h);
     f.setAttribute('width',argL * this.grid);
@@ -175,8 +175,13 @@ objGanttChart.prototype.append = function () {
 		    f.setAttribute('opacity',0.6);
 		}
 		
+		var tip = arguments[i].title + ' (' + (t / this.grid) + ',' + (l / this.grid) +')';
+		if (arguments[i].hasOwnProperty("tip")) {
+		    tip += ', ' + arguments[i].tip;
+		}
+
 		tt = document.createElementNS('http://www.w3.org/2000/svg','title');
-		tt.appendChild(document.createTextNode(arguments[i].title + ' (' + (t / this.grid) + ',' + (l / this.grid) +')'));
+		tt.appendChild(document.createTextNode(tip));
 		f.appendChild(tt);
 		
 		g.appendChild(f);
@@ -196,7 +201,7 @@ objGanttChart.prototype.append = function () {
 
 		window.console.log('milestone');
 
-		t -= this.grid / 2;
+		t += this.grid / 2;
 		f = document.createElementNS('http://www.w3.org/2000/svg','polygon');
 		f.setAttribute('points',
 		               (t)               + ',' + (this.y_n)
@@ -277,7 +282,7 @@ objGanttChart.prototype.append = function () {
 	    if (arguments[i].hasOwnProperty("posy")) {
 		y = arguments[i].posy * this.grid;
 	    } else {
-		y = this.y_n + this.grid - 5;
+		y = this.y_n + 1.5 * this.grid;
 	    }
 
 	    tx = document.createElementNS('http://www.w3.org/2000/svg','text');
@@ -302,7 +307,7 @@ objGanttChart.prototype.append = function () {
 
 objGanttChart.prototype.appendVLines = function () {
 
-    for (i = this.w / this.grid; i > -1; i--) {
+    for (i = Math.floor(this.w / this.grid); i > -1; i--) {
 	l = document.createElementNS('http://www.w3.org/2000/svg','line');
 	l.setAttribute('x1',i * this.grid);
 	l.setAttribute('y1','0');
@@ -326,7 +331,7 @@ objGanttChart.prototype.appendVLines = function () {
 
 objGanttChart.prototype.appendHLines = function () {
 
-    for (i = this.h / this.grid; i > -1; i--) {
+    for (i = Math.floor(this.h / this.grid); i > -1; i--) {
 	l = document.createElementNS('http://www.w3.org/2000/svg','line');
 	l.setAttribute('x1','0');
 	l.setAttribute('y1',i * this.grid);

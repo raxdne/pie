@@ -34,13 +34,13 @@
 	  return cw(y,w);
       }
       
-      var c = new objGanttChart('gantt_diagram',105,0,20);
+      var c = new objGanttChart('gantt_diagram',0,0,20);
       
       //c.shift(cw(2021,5));
 
       c.append(
 	  {start: 10, length: 4, title: 'Project A / WP5010: Transfer Data'},
-	  {start: 13, end: 17, title: 'Project A / WP5020: Test Data'},
+	  {start: 13, end: 17, title: 'Project A / WP5020: Test Data', tip: 'Regression Tests'},
 	  {start: cw(2021,15), end: cw(2021,17), title: 'Project A / WP5030: Transfer Data'},
 	  {start: cw(2021,19), end: d(2021,8,9), title: 'Project A / WP5040: Transfer Data'},
 	  {start:  d(2021,8,9), end: d(2021,8,29), title: 'Project A / WP5050: Validate Data'},
@@ -66,14 +66,15 @@
       c.addLabel(cw(2021,2),'CW02');
       c.addLabel(cw(2021,47),'CW47');
 
+      c.appendVBar(1,1,'UUU');
 
       // Ctrl+V
       
       //c.append(c.parseInput('1;2;AAA\n4;5;BBB\n6;7;CCC'));
 
-      c.getInput('/WorkGanttChart/myGanttDemo.csv');
+//      c.getInput('/WorkGanttChart/myGanttDemo.csv');
 
-      c.getInput('/WorkGanttChart/myGanttDemo.json');
+//      c.getInput('/WorkGanttChart/myGanttDemo.json');
 
       c.appendVBar(cw(2022,30),2,'Holidays 2022');
       c.appendVBar(cw(2021,20),2,'Holidays 2021');
