@@ -6,7 +6,7 @@
   <xsl:output method="text" encoding="UTF-8"/>
 
   <xsl:template match="/">
-    <xsl:for-each select="pie/meta/t/t[@count]">
+    <xsl:for-each select="pie/meta/t/t">
       <xsl:sort order="ascending" select="."/>
       <xsl:value-of select="."/>
       <xsl:text>

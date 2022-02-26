@@ -2,9 +2,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PieHtml.xsl"/>
 
-  <!-- -->
-  <xsl:variable name="file_norm"></xsl:variable>
-  <!-- -->
+  <!-- use HTML 'ol' or 'ul' element -->
+  <xsl:variable name="flag_enum" select="false()"/>
+  
+  <!-- maximum depthfor output -->
   <xsl:variable name="int_depth" select="-1"/>
 
   <xsl:output method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"/>
@@ -42,7 +43,7 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="table">	<!-- TODO: transform table to list -->
+  <xsl:template match="tableYYY">	<!-- TODO: transform table to list -->
     <xsl:for-each select="tr[1]/*">
       <xsl:variable name="int_col" select="position()"/>
       <xsl:choose>
@@ -81,7 +82,7 @@
   <xsl:template match="list">
     <xsl:if test="child::node()">
       <xsl:choose>
-        <xsl:when test="@enum = 'yes'">
+        <xsl:when test="$flag_enum and @enum = 'yes'">
           <!-- numerated list -->
           <xsl:element name="ol">
             <xsl:apply-templates/>
@@ -106,8 +107,7 @@
 
   <xsl:template match="p">
     <!-- para -->
-    <xsl:variable name="int_depth_i" select="count(ancestor::p|ancestor::list|ancestor::task|ancestor::section)"/>
-    <xsl:if test="$int_depth &lt; 0 or $int_depth_i &lt;= $int_depth">
+    <xsl:if test="$int_depth &lt; 0 or count(ancestor::p|ancestor::list|ancestor::task|ancestor::section) &lt;= $int_depth">
       <xsl:element name="li">
 	<xsl:apply-templates/>
       </xsl:element>

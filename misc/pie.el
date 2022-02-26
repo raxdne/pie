@@ -135,9 +135,9 @@
 (defvar pie-plain-font-lock-keywords
   '(     ; Reihenfolge ist wichtig
    ;; section
-   ("^ *[\*%]+.*$" . font-lock-function-name-face)
+   ("^ *[\\*%]+.*$" . font-lock-function-name-face)
    ;; CPP-Anweisungen
-   ("^[ ;]*#+.*$" . font-lock-keyword-face)
+   ("^[ ;]*#(import|subst).*$" . font-lock-keyword-face)
    ;; Kommentare
    ("^ *;+.*$" . font-lock-comment-face)
 					; cite

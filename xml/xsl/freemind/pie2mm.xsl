@@ -297,6 +297,9 @@
       <xsl:when test="count(child::*[not(name()='meta')]) &gt; 1">
 	<!-- its a block with more than one child, create explicit node -->
         <xsl:element name="node">
+          <xsl:attribute name="TEXT">
+            <xsl:value-of select="@name"/>
+          </xsl:attribute>
           <xsl:apply-templates/>
         </xsl:element>
       </xsl:when>

@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       <!-- in valids -->
       <xsl:when test="@state = 'rejected'"/>
       <xsl:when test="@hidden"/>
-      <xsl:when test="@class = 'bug' or @class = 'req'"/>
+      <!-- <xsl:when test="@class = 'bug' or @class = 'req'"/> -->
       <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
       <xsl:otherwise>
 	<xsl:element name="{name()}">

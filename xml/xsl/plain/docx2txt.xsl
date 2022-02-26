@@ -147,6 +147,10 @@
     <xsl:value-of select="concat('__',.,'__')"/>
   </xsl:template>
 
+  <xsl:template match="w:t[preceding-sibling::w:rPr/child::w:rFonts[attribute::w:ascii = 'Courier New']]">
+    <xsl:value-of select="concat('`',.,'`')"/>
+  </xsl:template>
+
   <xsl:template match="w:tab">
     <xsl:value-of select="'	'"/>
   </xsl:template>
