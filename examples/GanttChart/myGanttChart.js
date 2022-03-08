@@ -6,63 +6,89 @@
 
 function objGanttChart (strId, argW, argH, grid) {
 
-    var self = this;
+    this.box = new Array();
 
-    self.box = new Array();
-
-    self.grid = grid;
-
-    self.h = argH * self.grid;
-    self.w = argW * self.grid;
+    this.items = new Array();
     
-    self.y_n = - self.grid / 2;
+    this.grid = grid;
 
-    self.flagCompress = false;
+    this.h = argH * this.grid;
+    this.w = argW * this.grid;
+    
+    this.y_n = - this.grid / 2;
+
+    this.flagCompress = false;
 	
-    self.barbackground = '#aaffaa';
+    this.barbackground = '#aaffaa';
+
+    this.id = strId;
+    this.svg = document.getElementById(this.id);
+
+    this.clean();
     
-    self.svg = document.getElementById(strId);
-    if (self.svg == undefined) {
-	window.console.error('ERROR: No SVG element found!');
-    } else {
-	self.svg.setAttribute('height',self.h);
-	self.svg.setAttribute('width',self.w);
-	var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-	//g.setAttribute('transform','scale(0.5)');
-	self.svg.appendChild(g);
-
-	var s = document.createElementNS('http://www.w3.org/2000/svg','style');
-	s.setAttribute('type',"text/css");
-	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + self.grid / 2 + 'pt; }'));
-	self.svg.appendChild(s);
-
-	window.console.log(self.svg);
-    }
-
     var dT = new DataTransfer();
 
     //https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/ClipboardEvent
     var evt = new ClipboardEvent('paste', {clipboardData: dT});
     
-    //console.log('clipboardData available: ', evt.clipboardData);
+    //window.console.log('clipboardData available: ', evt.clipboardData);
+
+    var self = this;
 
     document.onpaste = function(e) {
 
 	var s = e.clipboardData.getData('text/plain');
 
 	if (s == undefined || s == '') {
-	    console.log('onpaste: ', 'undefined');
+	    window.console.log('onpaste: ', 'undefined');
 	} else {
-	    console.log('onpaste: ', s);
+	    window.console.log('onpaste: ', s);
 	    self.append(self.parseInput(s));
 	    // TODO: check self.isHistogram()
-	    self.appendHistogram();
+	    //self.appendHistogram();
+	    self.clean();
+	    self.reDraw();
 	}
     };
     
     document.dispatchEvent(evt);
     
-    return self;
+    return this;
+}
+
+
+objGanttChart.prototype.clean = function () {
+
+    this.svg = document.getElementById(this.id);
+    if (this.svg == undefined) {
+	window.console.warn('No SVG element found!');
+    } else {
+	window.console.log('SVG id is ' + this.id);
+	
+	this.y_n = - this.grid / 2;
+
+	if (this.svg.children == undefined || this.svg.children.length < 1) {
+	    window.console.log('No SVG child to remove!');
+	} else {
+	    while (this.svg.firstChild) {
+		// Remove elements from DOM
+		this.svg.removeChild(this.svg.firstChild);
+	    }
+	}
+
+	var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+	//g.setAttribute('transform','scale(0.5)');
+	this.svg.appendChild(g);
+
+	var s = document.createElementNS('http://www.w3.org/2000/svg','style');
+	s.setAttribute('type',"text/css");
+	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + this.grid / 2 + 'pt; }'));
+	this.svg.appendChild(s);
+
+	window.console.log(this.svg);
+    }
+
+    return this;
 }
 
 
@@ -146,49 +172,73 @@ objGanttChart.prototype.shift = function (argX, argY) {
 
 objGanttChart.prototype.append = function () {
 
-    // TODO: image??
+    for (var i = 0; i < arguments.length; i++) {
+	if (typeof arguments[i] === 'object') {
+	    this.items.push(arguments[i]);
+	}
+    }	
+
+    //window.console.log(arguments);
+    return this;
+}
+
+
+objGanttChart.prototype.reDraw = function() {
+
+    if (arguments.length < 1) {
+	this.clean();
+	this.reDraw(this.items);
+	//this.appendHLines();
+	this.appendVLines();
+
+	return this;
+    }
     
     for (var i = 0; i < arguments.length; i++) {
+
+	var li = arguments[i];
+    
+	// TODO: image??
 	
-	if (this.flagCompress && arguments[i].hasOwnProperty("done") && arguments[i].done) {
+	if (this.flagCompress && li.hasOwnProperty("done") && li.done) {
 	    continue;	    
-	} else if (typeof arguments[i] === 'object' && arguments[i] instanceof Array) {
+	} else if (typeof li === 'object' && li instanceof Array) {
 	    window.console.log('Array');
-	    for (var j = 0; j < arguments[i].length; j++) {
-		this.append(arguments[i][j]);
+	    for (var j = 0; j < li.length; j++) {
+		this.reDraw(li[j]);
 	    }
-	} else if (typeof arguments[i] === 'object' && (arguments[i].hasOwnProperty("start") || arguments[i].hasOwnProperty("end")) && arguments[i].hasOwnProperty("title")) {
+	} else if (typeof li === 'object' && (li.hasOwnProperty("start") || li.hasOwnProperty("end")) && li.hasOwnProperty("title")) {
 
 	    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
 
-	    if (arguments[i].hasOwnProperty("url")) {
+	    if (li.hasOwnProperty("url")) {
 		a = document.createElementNS('http://www.w3.org/2000/svg','a');
-		a.setAttribute('href', arguments[i].url);
+		a.setAttribute('href', li.url);
 		a.setAttribute('target', 'blank');
 		g.appendChild(a);
 		g = a;
 	    }
 
-	    var t = (arguments[i].start - 1) * this.grid;
+	    var t = (li.start - 1) * this.grid;
 	    
-	    if (arguments[i].hasOwnProperty("end") || arguments[i].hasOwnProperty("length")) {
+	    if (li.hasOwnProperty("end") || li.hasOwnProperty("length")) {
 		
 		window.console.log('bar');
 
 		var l;
-		if (arguments[i].hasOwnProperty("length")) {
-		    if (arguments[i].hasOwnProperty("start")) {
-			arguments[i].end = arguments[i].start + arguments[i].length;
+		if (li.hasOwnProperty("length")) {
+		    if (li.hasOwnProperty("start")) {
+			li.end = li.start + li.length;
 		    } else {
-			arguments[i].start = arguments[i].end - arguments[i].length + 1;
+			li.start = li.end - li.length + 1;
 		    }
-		    l = arguments[i].length * this.grid;
+		    l = li.length * this.grid;
 		} else {
-		    l = (arguments[i].end - arguments[i].start + 1) * this.grid;
+		    l = (li.end - li.start + 1) * this.grid;
 		}
-		t = (arguments[i].start - 1) * this.grid;
+		t = (li.start - 1) * this.grid;
 		
-		for (var k = arguments[i].start; k <= arguments[i].end; k++) {
+		for (var k = li.start; k <= li.end; k++) {
 		    if (this.box[k] === undefined) {
 			this.box[k] = 1;
 		    } else {
@@ -197,19 +247,19 @@ objGanttChart.prototype.append = function () {
 		}
 
 		// BUG: use current week
-		if ( arguments[i].start <= 60 && arguments[i].end >= 60) {
+		if ( li.start <= 60 && li.end >= 60) {
 		} else if (this.flagCompress) {
 		    continue;
 		}
 		
 		var h = this.grid;
-		if (arguments[i].hasOwnProperty("height") && arguments[i].height > 1) {
-		    h = arguments[i].height  * this.grid;
+		if (li.hasOwnProperty("height") && li.height > 1) {
+		    h = li.height  * this.grid;
 		} else {
 		    h = this.grid;
 		}
 
-		if (arguments[i].hasOwnProperty("newline") && arguments[i].newline == false && this.flagCompress == false) {
+		if (li.hasOwnProperty("newline") && li.newline == false && this.flagCompress == false) {
 		} else {
 		    this.y_n += 1.35 * this.grid;
 		    this.svg.setAttribute('height',this.y_n + 2 * h);
@@ -223,15 +273,15 @@ objGanttChart.prototype.append = function () {
 		f.setAttribute('rx',5);
 		f.setAttribute('fill',this.barbackground);
 		
-		if (arguments[i].hasOwnProperty("opacity")) {
-		    f.setAttribute('opacity',arguments[i].opacity);
+		if (li.hasOwnProperty("opacity")) {
+		    f.setAttribute('opacity',li.opacity);
 		} else {
 		    f.setAttribute('opacity',0.6);
 		}
 		
-		var tip = arguments[i].title + ' (' + (t / this.grid) + ',' + (l / this.grid) +')';
-		if (arguments[i].hasOwnProperty("tip")) {
-		    tip += ', ' + arguments[i].tip;
+		var tip = li.title + ' (' + (t / this.grid) + ',' + (l / this.grid) +')';
+		if (li.hasOwnProperty("tip")) {
+		    tip += ', ' + li.tip;
 		}
 
 		tt = document.createElementNS('http://www.w3.org/2000/svg','title');
@@ -245,7 +295,7 @@ objGanttChart.prototype.append = function () {
 		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
 		tx.setAttribute('x', t + 4);
 		tx.setAttribute('y',this.y_n + this.grid - 5);
-		tx.appendChild(document.createTextNode(arguments[i].title));
+		tx.appendChild(document.createTextNode(li.title));
 		
 		g.appendChild(tx);
 
@@ -272,19 +322,19 @@ objGanttChart.prototype.append = function () {
 		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
 		tx.setAttribute('x', t + this.grid / 2 + 2);
 		tx.setAttribute('y',this.y_n + this.grid - 5);
-		//tx.appendChild(document.createTextNode(arguments[i].title + ' (' + arguments[i].start + ')'));
-		tx.appendChild(document.createTextNode(arguments[i].title));
+		//tx.appendChild(document.createTextNode(li.title + ' (' + li.start + ')'));
+		tx.appendChild(document.createTextNode(li.title));
 		
 		g.appendChild(tx);
 	    }
 	    
-	    if (arguments[i].hasOwnProperty("color")) {
-		f.setAttribute('fill',arguments[i].color);
+	    if (li.hasOwnProperty("color")) {
+		f.setAttribute('fill',li.color);
 	    }
 
 	    f.setAttribute('stroke-width','.5');
 	    
-	    if (arguments[i].hasOwnProperty("url")) {
+	    if (li.hasOwnProperty("url")) {
 		f.setAttribute('stroke','#0000ff');
 	    } else {
 		f.setAttribute('stroke','#000000');
@@ -298,7 +348,7 @@ objGanttChart.prototype.append = function () {
 	    	this.svg.setAttribute('width',this.w);
 	    }
 
-	} else if (typeof arguments[i] === 'object' && arguments[i].hasOwnProperty("color")) {
+	} else if (typeof li === 'object' && li.hasOwnProperty("color")) {
 
 	    this.y_n += 1.5 * this.grid;
 
@@ -317,27 +367,27 @@ objGanttChart.prototype.append = function () {
 
 	    this.y_n -= 0.5 * this.grid; // 
      
-	    this.barbackground = arguments[i].color;
+	    this.barbackground = li.color;
 
-	} else if (typeof arguments[i] === 'object' && arguments[i].hasOwnProperty("posx") && arguments[i].hasOwnProperty("url")) {
+	} else if (typeof li === 'object' && li.hasOwnProperty("posx") && li.hasOwnProperty("url")) {
 	    
 	    window.console.log('link');
 	    
 	    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
 
 	    a = document.createElementNS('http://www.w3.org/2000/svg','a');
-	    a.setAttribute('href', arguments[i].url);
+	    a.setAttribute('href', li.url);
 	    a.setAttribute('target', 'blank');
 	    a.setAttribute('fill','#0000ff');
 	    
 	    g.appendChild(a);
 	    g = a;
 	    
-	    var x = arguments[i].posx * this.grid + this.grid / 3;
+	    var x = li.posx * this.grid + this.grid / 3;
 	    
 	    var y;
-	    if (arguments[i].hasOwnProperty("posy")) {
-		y = arguments[i].posy * this.grid;
+	    if (li.hasOwnProperty("posy")) {
+		y = li.posy * this.grid;
 	    } else {
 		y = this.y_n + 1.5 * this.grid;
 	    }
@@ -346,7 +396,7 @@ objGanttChart.prototype.append = function () {
 	    tx.setAttribute('x', x);
 	    tx.setAttribute('y', y);
 	    tx.setAttribute('text-decoration', 'underline');
-	    tx.appendChild(document.createTextNode(arguments[i].title));
+	    tx.appendChild(document.createTextNode(li.title));
 	    
 	    g.appendChild(tx);
 	    this.svg.children[0].appendChild(g);
@@ -354,17 +404,26 @@ objGanttChart.prototype.append = function () {
 	} else {
 	}
 	
-	if (arguments[i].hasOwnProperty("done") && arguments[i].done) {
+	if (li.hasOwnProperty("done") && li.done) {
 	    g.appendChild(this.getDone(t+l-5,this.y_n + 0.2 * this.grid));
-	} else if (arguments[i].hasOwnProperty("flag") && arguments[i].flag) {
+	} else if (li.hasOwnProperty("flag") && li.flag) {
 	    g.appendChild(this.getFlag(t+l-5,this.y_n + 0.2 * this.grid));
 	}
 		
 	this.h = this.y_n + 2 * this.grid;
     }
     
-    window.console.log(arguments);
+    window.console.log('items: ' + this.items.toString());
+
     return this;
+}
+
+
+objGanttChart.prototype.toString = function() {
+    
+    //window.console.log(this.items);
+
+    return this.items;
 }
 
 
@@ -537,7 +596,7 @@ objGanttChart.prototype.appendHLines = function () {
 objGanttChart.prototype.parseInput = function (strInput) {
 
     var s = new String(strInput);
-    var listResult = [];
+    var listResult = new Array();
     
     var a = s.split(/\r*\n/);
     
@@ -599,6 +658,8 @@ objGanttChart.prototype.getInput = function (strUrl) {
 			window.console.error('empty CSV ' + request.responseText + '');
 		    } else {
 			self.append(list);
+			self.clean();
+			self.reDraw();
 		    }
 		}
 	    }
