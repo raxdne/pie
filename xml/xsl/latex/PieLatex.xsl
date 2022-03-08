@@ -100,7 +100,7 @@
         <xsl:text>\textit</xsl:text>
       </xsl:when>
       <xsl:when test="name() = 'strong'">
-        <xsl:text>\textit</xsl:text>
+        <xsl:text>\textbf</xsl:text>
       </xsl:when>
       <xsl:when test="name() = 'tt'">
         <xsl:text>\texttt</xsl:text>
