@@ -739,6 +739,16 @@
 	    </xsl:element>
 	    <xsl:text> </xsl:text>
 	  </xsl:for-each>
+	  <!-- -->
+	  <xsl:for-each select="pie/descendant::date">
+	    <xsl:sort order="ascending" data-type="number" select="@diff"/>
+	    <xsl:sort order="ascending" data-type="text" />
+	    <xsl:element name="span">
+	      <xsl:attribute name="class">date</xsl:attribute>
+	      <xsl:value-of select="."/>
+	    </xsl:element>
+	    <xsl:text> </xsl:text>
+	  </xsl:for-each>
 	</xsl:element>
 	<!-- -->
 	<xsl:element name="p">
