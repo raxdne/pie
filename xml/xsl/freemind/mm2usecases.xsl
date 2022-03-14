@@ -22,25 +22,41 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 -->
-  <xsl:variable name="file_css" select="''"/>
+<xsl:variable name="file_css" select="''"/>
 
 <xsl:output method='html' encoding='UTF-8'/>
 
-<xsl:variable name="str_uc_template">UC_Template.docx</xsl:variable>
-<xsl:variable name="str_m_template">Method_Template.pptx</xsl:variable>
-<xsl:variable name="str_tc_template">TC_Template.docx</xsl:variable>
 <xsl:variable name="flag_links" select="true()"/>
+
 <xsl:variable name="flag_attr" select="true()"/>
+
 <xsl:variable name="flag_task" select="false()"/>
+
 <xsl:variable name="int_depth_max" select="-1"/>
-<xsl:variable name="flag_req" select="true()"/>
-<xsl:variable name="flag_empty" select="false()"/>
-<xsl:variable name="flag_bat" select="false()"/>
-<xsl:variable name="flag_ext" select="false()"/>
+
+<xsl:variable name="flag_req" select="true()"/> <!-- table of requirements -->
+
+<xsl:variable name="flag_empty" select="false()"/> <!-- skip empty branches -->
+
+<xsl:variable name="flag_tests" select="true()"/> <!-- additional rows for Tests -->
+
+<xsl:variable name="flag_ext" select="false()"/> <!-- additional rows will be generated (Method etc) -->
+
 <xsl:variable name="flag_unfold" select="true()"/><!-- true: @FOLD is relevant, @FOLD='true' UC nodes are ignored -->
+
+<xsl:variable name="flag_bat" select="false()"/> <!-- text for BAT file will generated -->
+
+<xsl:variable name="str_uc_template">UC_Template.docx</xsl:variable>
+
+<xsl:variable name="str_m_template">Method_Template.pptx</xsl:variable>
+
+<xsl:variable name="str_tc_template">TC_Template.docx</xsl:variable>
+
 <xsl:key name="listattributes" match="attribute[@NAME]" use="@NAME"/>
 <xsl:variable name="list_attributes" select="//attribute[generate-id(.) = generate-id(key('listattributes',@NAME))]"/>
+
 <xsl:variable name="str_pathdir" select="''"/>
+
 <xsl:variable name="str_tag">
   <xsl:choose>
     <xsl:when test="/transform/@tag">
@@ -82,7 +98,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 <xsl:template match="map">
   <!--  or starts-with(@TEXT,'UC') -->
-  <xsl:variable name="nodeset_uclist" select="descendant::node[(starts-with(translate(@TEXT,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'USECASE ') or starts-with(@TEXT,'Function ')) and not(ancestor-or-self::node[child::icon[contains(@BUILTIN, 'cancel')]]) and (not(ancestor-or-self::node[attribute::FOLDED = 'true']) or $flag_unfold) and ($str_tag = '' or descendant-or-self::node[contains(@TEXT,$str_tag)])]"/>
+  <xsl:variable name="nodeset_uclist" select="descendant::node[(starts-with(translate(@TEXT,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'USECASE ') or starts-with(@TEXT,'Function ')) and not(ancestor-or-self::node[child::icon[contains(@BUILTIN, 'cancel')]]) and (not(ancestor-or-self::node[attribute::FOLDED = 'true']) or $flag_unfold) and ($str_tag = '' or descendant-or-self::node[contains(@TEXT,$str_tag) and not(ancestor-or-self::node[child::icon[contains(@BUILTIN, 'cancel')]])])]"/>
   <!--  and (child::attribute[@NAME='assignee' and contains(@VALUE,'Muller')]) -->
   <!--  and (child::attribute[@NAME='training' and contains(@VALUE,'c')]) -->
   <!-- create header -->
@@ -156,6 +172,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 		<xsl:attribute name="href">
                   <xsl:value-of select="@LINK"/>
 		</xsl:attribute>
+		<xsl:attribute name="target">
+		  <xsl:value-of select="'blank'"/>
+		</xsl:attribute>
 		<xsl:value-of select="@TEXT"/>
               </xsl:element>
             </xsl:when>
@@ -206,58 +225,63 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
         </xsl:element>
         <xsl:for-each select="child::node">
           <xsl:choose>
-            <xsl:when test="contains(@TEXT,'ExceptionYYY') or contains(@TEXT,'RelatedYYY')">
+            <xsl:when test="starts-with(@TEXT,'ExceptionYYY') or starts-with(@TEXT,'RelatedYYY') or starts-with(@TEXT,'Impact on') or starts-with(@TEXT,'ReleaseYYY') or starts-with(@TEXT,'MethodYYY') or starts-with(@TEXT,'GateYYY')">
 	      <!-- skip this categories -->
 	    </xsl:when>
             <xsl:when test="(starts-with(@TEXT,'Exception') or starts-with(@TEXT,'Test')) and count(child::node) &gt; 1">
-	      <xsl:for-each select="child::node[not(child::icon[contains(@BUILTIN,'cancel')]) and (not(attribute::FOLDED = 'true') or $flag_unfold) and (not(starts-with(attribute::TEXT,'REQ: ')) or $flag_req) and (not(starts-with(attribute::TEXT,'TODO: ')) or $flag_task)]">
-		<xsl:element name="tr">
-		<xsl:element name="td">
-		    <xsl:for-each select="parent::node">
-		      <!-- change to parent context back, cause of color attributes -->
-		      <xsl:call-template name="CREATEATTRIBUTES"/>
-		    </xsl:for-each>
-		  <xsl:choose>
-		    <xsl:when test="starts-with(parent::*/attribute::TEXT,'Exception')">
-                      <xsl:value-of select="concat('Exception ',position())"/>
-		    </xsl:when>
-		    <xsl:otherwise>
-                      <xsl:value-of select="concat('Test Case ',position())"/>
-		    </xsl:otherwise>
-		  </xsl:choose>
-		</xsl:element>
-		<xsl:element name="td">
-		  <xsl:element name="p">
-		    <xsl:call-template name="CREATEATTRIBUTES"/>
-		    <xsl:element name="a">
-		      <xsl:attribute name="name">
-			<xsl:value-of select="generate-id()"/>
-		      </xsl:attribute>
+              <xsl:if test="$flag_tests">
+		<xsl:for-each select="child::node[not(child::icon[contains(@BUILTIN,'cancel')]) and (not(attribute::FOLDED = 'true') or $flag_unfold) and (not(starts-with(attribute::TEXT,'REQ: ')) or $flag_req) and (not(starts-with(attribute::TEXT,'TODO: ')) or $flag_task)]">
+		  <xsl:element name="tr">
+		    <xsl:element name="td">
+		      <xsl:for-each select="parent::node">
+			<!-- change to parent context back, cause of color attributes -->
+			<xsl:call-template name="CREATEATTRIBUTES"/>
+		      </xsl:for-each>
+		      <xsl:choose>
+			<xsl:when test="starts-with(parent::*/attribute::TEXT,'Exception')">
+			  <xsl:value-of select="concat('Exception ',position())"/>
+			</xsl:when>
+			<xsl:otherwise>
+			  <xsl:value-of select="concat('Test Case ',position())"/>
+			</xsl:otherwise>
+		      </xsl:choose>
 		    </xsl:element>
-		    <xsl:choose>
-		      <xsl:when test="@LINK">
+		    <xsl:element name="td">
+		      <xsl:element name="p">
+			<xsl:call-template name="CREATEATTRIBUTES"/>
 			<xsl:element name="a">
-			  <xsl:attribute name="href">
-			    <xsl:value-of select="@LINK"/>
+			  <xsl:attribute name="name">
+			    <xsl:value-of select="generate-id()"/>
 			  </xsl:attribute>
-			  <xsl:value-of select="@TEXT"/>
 			</xsl:element>
-		      </xsl:when>
-		      <xsl:otherwise>
-			<xsl:value-of select="@TEXT"/>
-		      </xsl:otherwise>
-		    </xsl:choose>
-		  </xsl:element>
-		  <xsl:if test="child::node">
-		    <xsl:element name="ul">
-		      <xsl:call-template name="NODELIST">
-			<xsl:with-param name="nodeset_list" select="child::node"/>
-		      </xsl:call-template>
+			<xsl:choose>
+			  <xsl:when test="@LINK">
+			    <xsl:element name="a">
+			      <xsl:attribute name="href">
+				<xsl:value-of select="@LINK"/>
+			      </xsl:attribute>
+			      <xsl:attribute name="target">
+				<xsl:value-of select="'blank'"/>
+			      </xsl:attribute>
+			      <xsl:value-of select="@TEXT"/>
+			    </xsl:element>
+			  </xsl:when>
+			  <xsl:otherwise>
+			    <xsl:value-of select="@TEXT"/>
+			  </xsl:otherwise>
+			</xsl:choose>
+		      </xsl:element>
+		      <xsl:if test="child::node">
+			<xsl:element name="ul">
+			  <xsl:call-template name="NODELIST">
+			    <xsl:with-param name="nodeset_list" select="child::node"/>
+			  </xsl:call-template>
+			</xsl:element>
+		      </xsl:if>
 		    </xsl:element>
-		  </xsl:if>
-		</xsl:element>
-		</xsl:element>
-	      </xsl:for-each>
+		  </xsl:element>
+		</xsl:for-each>
+	      </xsl:if>
             </xsl:when>
 	    <xsl:otherwise>
               <xsl:element name="tr">
@@ -322,6 +346,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 			      <xsl:element name="a">
 				<xsl:attribute name="href">
 				  <xsl:value-of select="@LINK"/>
+				</xsl:attribute>
+				<xsl:attribute name="target">
+				  <xsl:value-of select="'blank'"/>
 				</xsl:attribute>
 				<xsl:value-of select="@TEXT"/>
 			      </xsl:element>
@@ -428,6 +455,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
             <xsl:value-of select="concat(position(),'.')"/>
           </xsl:element>
           <xsl:element name="td">
+            <xsl:for-each select="ancestor::node">
+              <xsl:if test="position() &gt; 1">
+		<xsl:value-of select="concat(@TEXT,' / ')"/>
+	      </xsl:if>
+	    </xsl:for-each>
             <xsl:element name="a">
               <xsl:if test="$flag_links">
                 <xsl:attribute name="href">
@@ -515,6 +547,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
               <xsl:if test="position() &gt; 1">
                 <xsl:text>, </xsl:text>
               </xsl:if>
+	      <xsl:choose>
+		<xsl:when test="@LINK">
+		  <xsl:element name="a">
+		    <xsl:attribute name="href">
+		      <xsl:value-of select="@LINK"/>
+		    </xsl:attribute>
+		    <xsl:attribute name="target">
+		      <xsl:value-of select="'blank'"/>
+		    </xsl:attribute>
+		    <xsl:value-of select="@TEXT"/>
+		  </xsl:element>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="@TEXT"/>
+		</xsl:otherwise>
+	      </xsl:choose>
+			<!--
               <xsl:choose>
 		<xsl:when test="starts-with(@TEXT,'REQ: ')">
 		  <xsl:value-of select="substring-after(@TEXT,'REQ: ')"/>
@@ -525,7 +574,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 		<xsl:otherwise>
 		  <xsl:value-of select="concat(', ',@TEXT)"/>
 		</xsl:otherwise>
-	      </xsl:choose>
+		</xsl:choose>
+		-->
             </xsl:for-each>
           </xsl:element>
         </xsl:element>
@@ -606,7 +656,7 @@ body {
 }
 
 table {
-  width: 95%;
+  width: 90%;
   font-size: 9pt;
   border: 1px solid grey;
   border-collapse: collapse;

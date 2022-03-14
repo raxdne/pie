@@ -34,16 +34,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       </xsl:choose>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="map">
     <xsl:copy-of select="@*"/>
     <xsl:apply-templates select="*"/>
   </xsl:template>
+
   <xsl:template match="pie">
     <xsl:copy-of select="file/map/@*"/>
     <xsl:apply-templates select="file/map/*"/>
   </xsl:template>
+
   <xsl:template match="*">
     <xsl:choose>
+      <xsl:when test="child::icon[@BUILTIN='button_cancel']"/>
       <xsl:when test="name()='node'">
         <xsl:element name="node">
           <xsl:copy-of select="@flocator"/>
@@ -70,4 +74,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
 </xsl:stylesheet>

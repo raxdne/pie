@@ -21,6 +21,8 @@ TODO: consolidate use of cxp:variable ✔
 - "file_norm|file_plain" ✔
 - flag_form
 
+BUG: caching of Browser, XHTTP Requests and ACE ++
+
 ### Mobile
 
 TODO: update jquery-mobile UI #v1 ++

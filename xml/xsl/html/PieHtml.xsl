@@ -6,6 +6,8 @@
   <!--  -->
   <xsl:variable name="str_link_prefix" select="''"/>
 
+  <xsl:key name="list-date" match="date" use="@iso"/> <!--  -->
+
   <xsl:template name="METAVARS">
     <!-- for debugging only
     <xsl:comment>
@@ -740,12 +742,12 @@
 	    <xsl:text> </xsl:text>
 	  </xsl:for-each>
 	  <!-- -->
-	  <xsl:for-each select="pie/descendant::date">
+	  <xsl:for-each select="pie/descendant::date[generate-id(.) = generate-id(key('list-date',@iso))]">
 	    <xsl:sort order="ascending" data-type="number" select="@diff"/>
 	    <xsl:sort order="ascending" data-type="text" />
 	    <xsl:element name="span">
 	      <xsl:attribute name="class">date</xsl:attribute>
-	      <xsl:value-of select="."/>
+	      <xsl:value-of select="@iso"/>
 	    </xsl:element>
 	    <xsl:text> </xsl:text>
 	  </xsl:for-each>
