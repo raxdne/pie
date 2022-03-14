@@ -6,14 +6,19 @@
 
 function objGanttChart (strId, argW, argH, grid) {
 
+    var self = this;
+
     this.box = new Array();
+
+    this.grid = grid;
 
     this.items = new Array();
     
     this.grid = grid;
 
-    this.h = argH * this.grid;
-    this.w = argW * this.grid;
+    this.flagCompress = false;
+
+    this.barbackground = '#aaffaa';
     
     this.y_n = - this.grid / 2;
 
@@ -105,6 +110,27 @@ objGanttChart.prototype.switchCompress = function (fArg) {
 }
 
 
+objGanttChart.prototype.toString = function () {
+
+    // TODO: list input as JSON string
+    
+    return this;
+}
+
+
+objGanttChart.prototype.switchCompress = function (fArg) {
+
+    if (fArg == undefined) {
+	this.flagCompress = ! this.flagCompress;
+    } else {
+	this.flagCompress = fArg;
+    }
+    console.log('flagCompress: ', this.flagCompress);
+    
+    return this.flagCompress;
+}
+
+
 objGanttChart.prototype.addLabel = function (argT,argStr) {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -122,37 +148,6 @@ objGanttChart.prototype.addLabel = function (argT,argStr) {
     g.appendChild(tx);
 
     this.svg.children[0].prepend(g);
-    
-    return this;
-}
-
-
-objGanttChart.prototype.appendVBar = function (argT,argL,argTitle,argColor) {
-
-    window.console.log('vbar ' + argT);
-    
-    f = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    f.setAttribute('x',(argT - 1) * this.grid);
-    f.setAttribute('y',0);
-    f.setAttribute('height',this.h);
-    f.setAttribute('width',argL * this.grid);
-    f.setAttribute('stroke','#000000');
-    f.setAttribute('stroke-width','.25');
-    if (argColor === undefined || argColor == "") {
-	f.setAttribute('fill','#cccccc');
-    } else {
-	f.setAttribute('fill',argColor);
-    }
-    f.setAttribute('opacity',0.6);
-
-    if (argTitle === undefined || argTitle == "") {
-    } else {
-	t = document.createElementNS('http://www.w3.org/2000/svg','title');
-	t.appendChild(document.createTextNode(argTitle));
-	f.appendChild(t);
-    }
-    
-    this.svg.children[0].prepend(f);
     
     return this;
 }
@@ -267,10 +262,18 @@ objGanttChart.prototype.reDraw = function() {
 		
 		f = document.createElementNS('http://www.w3.org/2000/svg','rect');
 		f.setAttribute('x',t);
-		f.setAttribute('y',this.y_n);
-		f.setAttribute('height',h);
+		
+		if (li.hasOwnProperty("vertical") && li.vertical) {
+		    window.console.log('vbar ');
+		    f.setAttribute('y',0);
+		    f.setAttribute('height',this.h);
+		} else {
+		    window.console.log('hbar ');
+		    f.setAttribute('y',this.y_n);
+		    f.setAttribute('height',h);
+		    f.setAttribute('rx',5);
+		}
 		f.setAttribute('width',l);
-		f.setAttribute('rx',5);
 		f.setAttribute('fill',this.barbackground);
 		
 		if (li.hasOwnProperty("opacity")) {
@@ -292,13 +295,16 @@ objGanttChart.prototype.reDraw = function() {
 
 		//this.appendFlag(t+l-10,this.y_n + this.grid - 5);
 
-		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-		tx.setAttribute('x', t + 4);
-		tx.setAttribute('y',this.y_n + this.grid - 5);
-		tx.appendChild(document.createTextNode(li.title));
+		if (li.hasOwnProperty("vertical") && li.vertical) {
+		} else {
+		    tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+		    tx.setAttribute('x', t + 4);
+		    tx.setAttribute('y',this.y_n + this.grid - 5);
+		    tx.appendChild(document.createTextNode(li.title));
+		    
+		    g.appendChild(tx);
+		}
 		
-		g.appendChild(tx);
-
 		if (h > this.grid) {
 		    this.y_n += h - this.grid;
 		}
@@ -340,7 +346,11 @@ objGanttChart.prototype.reDraw = function() {
 		f.setAttribute('stroke','#000000');
 	    }
 	    
-	    this.svg.children[0].appendChild(g);
+	    if (li.hasOwnProperty("vertical") && li.vertical) {
+		this.svg.children[0].prepend(g);
+	    } else {
+		this.svg.children[0].appendChild(g);
+	    }
 
 	    var w = t + l;
 	    if (this.svg.getAttribute('width') < w) { // extend SVG width if neccesary
@@ -420,6 +430,8 @@ objGanttChart.prototype.reDraw = function() {
 
 
 objGanttChart.prototype.toString = function() {
+    
+    // TODO: return a formatted JS string of this.items
     
     //window.console.log(this.items);
 
@@ -612,9 +624,12 @@ objGanttChart.prototype.parseInput = function (strInput) {
 	if (c.length == 3) {
 	    listResult.push({start: c[0], end: c[1], title: c[2]});
 	    //this.append({start: c[0], end: c[1], title: c[2]});
+	} else if (c[0].length > 0) {
+	    listResult.push({start: i + 1, length: (i + 1) * 2, title: c[0]});
+	    //this.append({start: c[0], end: c[1], title: c[2]});
 	}
     }
-    //window.console.log('Result ' + listResult.toString());
+    window.console.log('Result ' + listResult.toString());
 
     return listResult;
 }
