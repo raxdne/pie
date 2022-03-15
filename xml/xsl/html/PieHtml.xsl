@@ -1079,7 +1079,7 @@
 	<xsl:call-template name="MENUSET"/>
 	  <xsl:if test="@name">
 	    <xsl:element name="a">
-	      <xsl:copy-of select="@name"/>
+	      <xsl:apply-templates select="h" />
 	    </xsl:element>
 	  </xsl:if>
 	<xsl:if test="$flag_ancestor">
@@ -1099,7 +1099,7 @@
 		</xsl:when>
 		<xsl:otherwise>
 		  <xsl:for-each select="ancestor::section[position() &lt; 3]">
-		    <xsl:value-of select="h"/>
+		    <xsl:apply-templates select="h"/>
 		    <xsl:text>::</xsl:text>
 		  </xsl:for-each>
 		</xsl:otherwise>

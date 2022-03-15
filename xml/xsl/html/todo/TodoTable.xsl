@@ -98,12 +98,7 @@
 		<xsl:if test="position() &gt; 1">
 		  <xsl:text> :: </xsl:text>
 		</xsl:if>
-		<xsl:copy-of select="child::h/descendant::text()"/>
-		<!-- BUG: text nodes from other child nodes are missed
-		     <xsl:apply-templates select="child::h[1]"/>
-		     <xsl:copy-of select="child::h[1]/descendant::text()"/>
-		     <xsl:value-of select="normalize-space(child::h[1]//text())"/>
-		-->
+		<xsl:apply-templates select="h"/>
 	      </xsl:for-each>
 	    </xsl:element>
 	  </xsl:element>
