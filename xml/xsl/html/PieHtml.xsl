@@ -51,9 +51,14 @@
 
   <xsl:template match="htag|tag">
     <xsl:element name="span">
-      <xsl:attribute name="class">
-        <xsl:value-of select="name()"/>
-      </xsl:attribute>
+      <xsl:choose>
+	<xsl:when test="parent::link"/>
+	<xsl:otherwise>
+	  <xsl:attribute name="class">
+            <xsl:value-of select="name()"/>
+	  </xsl:attribute>
+	</xsl:otherwise>
+      </xsl:choose>
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
