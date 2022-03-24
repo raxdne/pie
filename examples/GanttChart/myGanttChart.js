@@ -6,11 +6,7 @@
 
 function objGanttChart (strId, argW, argH, grid) {
 
-    var self = this;
-
     this.box = new Array();
-
-    this.grid = grid;
 
     this.items = new Array();
     
@@ -97,19 +93,6 @@ objGanttChart.prototype.clean = function () {
 }
 
 
-objGanttChart.prototype.switchCompress = function (fArg) {
-
-    if (fArg == undefined) {
-	this.flagCompress = ! this.flagCompress;
-    } else {
-	this.flagCompress = fArg;
-    }
-    console.log('flagCompress: ', this.flagCompress);
-    
-    return this.flagCompress;
-}
-
-
 objGanttChart.prototype.toString = function () {
 
     // TODO: list input as JSON string
@@ -178,11 +161,27 @@ objGanttChart.prototype.append = function () {
 }
 
 
+objGanttChart.prototype.preDraw = function() {
+
+    //window.console.log(arguments);
+    return this;
+}
+
+
+objGanttChart.prototype.postDraw = function() {
+
+    //window.console.log(arguments);
+    return this;
+}
+
+
 objGanttChart.prototype.reDraw = function() {
 
     if (arguments.length < 1) {
 	this.clean();
+	this.preDraw();
 	this.reDraw(this.items);
+	this.postDraw();
 	//this.appendHLines();
 	this.appendVLines();
 

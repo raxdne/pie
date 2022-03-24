@@ -13,6 +13,34 @@
 
     <script type="text/javascript">
 
+      objGanttChart.prototype.preDraw = function() {
+
+	  window.console.log('Pre ');
+
+	  var today = new Date();
+
+	  for (var y = 2021; y < 2025; y++) {
+	      this.append({start: d(y,today.getMonth()+1,today.getDate()), length: 1, title: 'Current Week ' + y, color: '#ffcccc', vertical: true});
+	      for (var w = 2; w < 53; w += 4) {
+		  this.addLabel(cw(y,w),'CW' + w + '/' + y);
+	      }
+	  }
+	  this.y_n += 5 * this.grid;
+	  
+	  return this;
+      }
+
+      objGanttChart.prototype.postDraw = function() {
+
+	  window.console.log('Post ');
+
+	  this.appendHLines();
+	  this.appendVLines();
+	  this.appendHistogram();
+	  
+	  return this;
+      }
+
       function cw(y,w) {
 	  return ((y - 2021) * 52 + w);
       }
@@ -63,11 +91,14 @@
 	  {start: 10, length: 6, title: 'Software Update: Strategy'},
       );
 
-      c.reDraw();      
-      c.addLabel(cw(2021,2),'CW02');
-      c.addLabel(cw(2021,47),'CW47');
+      c.append(
+	  {color: '#ccccff'},
+	  {start: 5, length: 1, title: 'Test', vertical: true},
+	  {start: cw(2021,30), length: 6, title: 'Holidays 2021', vertical: true},
+	  {start: cw(2022,30), length: 6, title: 'Holidays 2022', vertical: true},
+      );
 
-      c.appendVBar(1,1,'UUU');
+      c.reDraw();      
 
       // Ctrl+V
       
@@ -76,9 +107,6 @@
 //      c.getInput('/WorkGanttChart/myGanttDemo.csv');
 
 //      c.getInput('/WorkGanttChart/myGanttDemo.json');
-
-      c.appendVBar(cw(2022,30),2,'Holidays 2022');
-      c.appendVBar(cw(2021,20),2,'Holidays 2021');
 
    </script>
   </body>
