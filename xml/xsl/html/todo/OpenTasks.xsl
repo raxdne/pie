@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       <xsl:otherwise>
 	<xsl:element name="{name()}">
 	  <xsl:element name="h">
-	    <xsl:value-of select="string(child::h)"/>
+	    <xsl:copy-of select="child::h/attribute::*|child::h/child::node()[not(name()='date')]|child::h/child::text()"/>
 	  </xsl:element>
 	  <xsl:apply-templates select="child::block|child::section|child::task|child::list|child::p"/>
 	</xsl:element>
@@ -58,8 +58,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
       <xsl:otherwise>
 	<xsl:element name="{name()}">
-	  <xsl:copy-of select="@*|h"/>
-          <xsl:apply-templates select="node()"/>
+	  <xsl:copy-of select="attribute::*|child::h"/>
+          <xsl:apply-templates select="child::node()[not(name()='h')]"/>
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
@@ -68,6 +68,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
   <xsl:template match="node()">
     <xsl:choose>
       <!-- in valids -->
+      <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@hidden"/>
       <xsl:when test="@valid = 'no'"/>
       <xsl:when test="self::meta">
 	<xsl:copy-of select="." />

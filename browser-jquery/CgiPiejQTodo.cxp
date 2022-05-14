@@ -21,7 +21,7 @@
               <cxp:xml eval="yes">
 		<cxp:include name="PieTransformation.cxp" search="yes"/>
               </cxp:xml>
-	      <cxp:xsl name="OpenTasks.xsl" valid="no"/>
+	      <cxp:xsl name="OpenTasks.xsl"/>
               <cxp:xsl name="TodoTable.xsl">
                 <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
               </cxp:xsl>
