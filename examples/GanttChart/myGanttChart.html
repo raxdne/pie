@@ -13,13 +13,14 @@
 
     <script type="text/javascript">
 
+      var today = new Date();
+      
       objGanttChart.prototype.preDraw = function() {
 
 	  window.console.log('Pre ');
 
-	  var today = new Date();
-
-	  for (var y = 2021; y < 2025; y++) {
+	  for (var y = today.getYear() + 1900 - 1; y < today.getYear() + 1900 + 1; y++) {
+	      //window.console.log('Year: ' + y);
 	      this.append({start: d(y,today.getMonth()+1,today.getDate()), length: 1, title: 'Current Week ' + y, color: '#ffcccc', vertical: true});
 	      for (var w = 2; w < 53; w += 4) {
 		  this.addLabel(cw(y,w),'CW' + w + '/' + y);
@@ -62,6 +63,8 @@
 	  return cw(y,w);
       }
       
+      var urlParams = new URLSearchParams(document.location.search);
+    
       var c = new objGanttChart('gantt_diagram',0,0,20);
       
       //c.shift(cw(2021,5));
@@ -97,6 +100,14 @@
 	  {start: cw(2021,30), length: 6, title: 'Holidays 2021', vertical: true},
 	  {start: cw(2022,30), length: 6, title: 'Holidays 2022', vertical: true},
       );
+
+      if (urlParams.has('c')) {
+        if (urlParams.get('c') > 0) {
+          c.switchCompress(urlParams.get('c'));
+        } else {
+          c.switchCompress(d(today.getYear()+1900,today.getMonth()+1,today.getDate()));
+        }
+      }
 
       c.reDraw();      
 
