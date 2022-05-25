@@ -854,7 +854,9 @@
 	    <xsl:attribute name="href">
 	      <xsl:value-of select="concat('#',generate-id(.))"/>
 	    </xsl:attribute>
-	    <xsl:value-of select="normalize-space(h)"/>
+	    <xsl:for-each select="h">
+	      <xsl:apply-templates select="text()|date/text()|link/text()|htag/text()"/>
+	    </xsl:for-each>
 	  </xsl:element>
 	  <xsl:if test="$str_id">
 	    <xsl:text> </xsl:text>

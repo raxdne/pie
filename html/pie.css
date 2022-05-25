@@ -114,7 +114,7 @@ a.geb {
 
 span.htag, span.htag-todo, span.htag-req, span.htag-bug, span.htag-test {
   border-radius: 5px;
-  background: #ffffaa;
+  color: #58a6fe;
 }
 
 span.htag-target {
@@ -469,22 +469,26 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   background-color:#EEEEEE;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
 *.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.section1 {
-  background-color:#ffdddd;
+  background-color:#ffffbb;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 *.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.section2 {
   background-color:#ddffdd;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 *.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.section3 {
   background-color:#ddddff;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
 *.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.p-done,*.h-done {
@@ -492,6 +496,7 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   background-color:#eeeeee;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
 /* 

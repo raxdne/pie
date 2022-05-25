@@ -65,7 +65,7 @@ table {
 	    <xsl:attribute name="width">
               <xsl:text>25%</xsl:text>
 	    </xsl:attribute>
-	    <xsl:text>#doing#now</xsl:text>
+	    <xsl:text>#doing#now#today#scope</xsl:text>
           </xsl:element>
           <xsl:element name="th">
 	    <xsl:attribute name="width">
@@ -91,7 +91,7 @@ table {
 	</xsl:element>
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 1 and (descendant::htag = '#doing' or descendant::htag = '#now') and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 1 and (descendant::htag = '#doing' or descendant::htag = '#now' or descendant::htag = '#scope' or descendant::htag = '#today' or descendant::date[@diff = 0]) and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
         <xsl:element name="td">

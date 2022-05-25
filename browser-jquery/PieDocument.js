@@ -75,6 +75,9 @@ document.createUI = function () {
 
 	    if (strClass.match(/^htag-.+/)) { // map combined class name to usable tag
 	        strValue = strClass.replace(/^htag-/, '#');
+	    } else if (strClass.match(/^htag$/)) {
+		strElement = 'htag';
+	        strValue = event.target.innerText;
 	    } else if (strClass.match(/date/)) {
 		strElement = 'date';
 	        strValue = event.target.innerText;
