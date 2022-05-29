@@ -64,29 +64,9 @@ document.createUI = function () {
     // https://stackoverflow.com/questions/16190455/how-to-detect-controlclick-in-javascript-from-an-onclick-div-attribute
     //
     $('*.tag,*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target,span.date').on('click change', function (event) {
-	var strElement = 't';
 	var strPattern;
-	var strValue;
+	var strPatternNew;
 
-	if (event.target instanceof HTMLInputElement) {
-	    strValue = event.target.value;
-	} else {
-	    var strClass = event.target.getAttribute("class");
-
-	    if (strClass.match(/^htag-.+/)) { // map combined class name to usable tag
-	        strValue = strClass.replace(/^htag-/, '#');
-	    } else if (strClass.match(/^htag$/)) {
-		strElement = 'htag';
-	        strValue = event.target.innerText;
-	    } else if (strClass.match(/date/)) {
-		strElement = 'date';
-	        strValue = event.target.innerText;
-	    } else {
-	        strValue = event.target.innerText;
-	    }
-	}
-	putsConsole('element: ' + strElement);
-	
 	var urlParamsTag = new URLSearchParams(document.location.search);
 	
 	if (urlParamsTag.has('pattern')) {
@@ -96,33 +76,47 @@ document.createUI = function () {
 	}
 	putsConsole('Old pattern: ' + strPattern);
 	
-	if (strValue == undefined || strValue == '') {
+	if (event.target instanceof HTMLInputElement) {
+	    strPatternNew = "t[contains(text(),'" + event.target.innerText + "')]";
+	} else {
+	    var strClass = event.target.getAttribute("class");
+
+	    if (strClass.match(/^htag-.+/)) { // map combined class name to usable tag
+		strPatternNew = "t[contains(text(),'" + strClass.replace(/^htag-/, '#') + "')]";
+	    } else if (strClass.match(/^htag$/)) {
+		strPatternNew = "(tag[contains(text(),'" + event.target.innerText + "')]|htag[contains(text(),'" + event.target.innerText + "')]|t[contains(text(),'" + event.target.innerText + "')])";
+	    } else if (strClass.match(/date/)) {
+		strPatternNew = "date[contains(text(),'" + event.target.innerText + "')]";
+	    } else {
+		strPatternNew = "t[contains(text(),'" + event.target.innerText + "')]";
+	    }
+	}
+	
+	if (strPatternNew == undefined || strPatternNew == '') {
 	    putsConsole('Empty');
-	} else if (strPattern == strValue) {
+	} else if (strPattern == strPatternNew) {
 	    putsConsole('No update (same value)');
 	} else { // something selected
-	    var strPatternNew;
 	    var strUrlNew;
 
-	    putsConsole('New pattern: ' + strValue);
-	    strPatternNew = strElement + "[contains(text(),'" + strValue + "')]";
+	    putsConsole('New Pattern: ' + strPatternNew);
 
 	    if (event.ctrlKey) {
-	        putsConsole(strValue + '<CRTL>' + ' logical OR');
+	        putsConsole('<CRTL>' + ' logical OR');
 		if (strPattern == '') {
 		    // no combination
 		} else {
 		    strPatternNew = '(' + strPattern + ' or ' + strPatternNew + ')';
 		}
 	    } else if (event.altKey) {
-	        putsConsole(strValue + '<ALT>' + ' logical AND');
+	        putsConsole('<ALT>' + ' logical AND');
 		if (strPattern == '') {
 		    // no combination
 		} else {
 		    strPatternNew = '(' + strPattern + ' and ' + strPatternNew + ')';
 		}
 	    } else if (event.shiftKey) {
-	        putsConsole(strValue + '<SHIFT>' + ' logical AND NOT');
+	        putsConsole('<SHIFT>' + ' logical AND NOT');
 		if (strPattern == '') {
 		    strPatternNew = 'not(' + strPatternNew + ')'; // BUG: 
 		} else {
@@ -131,7 +125,7 @@ document.createUI = function () {
 	    }
 
 	    urlParamsTag.set('pattern',strPatternNew);
-	    // urlParamsTag.set('hl',strValue);
+	    // TODO: urlParamsTag.set('hl',strValue);
 
 	    var strQuery = urlParamsTag.toString();
 	    if (strQuery == '') {
