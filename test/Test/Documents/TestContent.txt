@@ -13,6 +13,13 @@ T<C>
 
 TODO: 2020-01-04 BBBB
 
+#begin_of_pre
+T
+ E
+  S
+   T
+#end_of_pre
+
 ** 2020-01-01
 
 TODO: 2020-01-03 AAAA

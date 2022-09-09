@@ -43,6 +43,61 @@ a |picture.png|AAA| @mmm nnn
 
 2013-10-12T14:00:00−05:00 TTT
 
-20131013T146300Z TTT
+2013-10-12T14:00:00Z Zulu valid
 
+20131012T140000−05:00 compact valid
+
+20131013T146300Z invalid minutes
+
+** List of dates
+
+20131010,12,14,1103 an implicite list
+
+20131011,20131014,20130114 not an implicite list
+
+2013-10-11,10-14,01-14 not a list at all
+
+** ISO Ordinal date
+
+2022-010 valid Ordinal
+
+2022-299T11:22:33+04
+
+;2022-399 invalid
+
+** ISO Calendar Weeks
+
+2022-W29-5
+
+2020-W22
+
+2020-W12-3
+
+2020-W54
+
+2020-W32-8
+
+** ISO Calendar Interval
+
+2013-10-11/2013-11-11 YYY
+
+2013-10-12T14:00:00CST/2013-10-14T14:00:00CET TTT
+
+2013-10-12T14:00:00CST/P1Y4D
+
+2022-08-01/2022-08-07 Interval
+
+20220901/20220907 Interval
+
+2022-W31-1/2022-W31-5 Interval
+
+2022-W31-1/P2W Interval
+
+P3W/2022-11-01 Interval
+
+** ISO Calendar Recurrence
+
+R3/2022-W31-1/P2W Interval
+
+R7/P3W/2022-11-01 Interval
 

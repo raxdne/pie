@@ -69,7 +69,6 @@ function requestContent(objEditor,strQuery) {
     objEditor.setReadOnly(true);
 
     var urlParamsMeta = urlParams;
-    //urlParamsMeta.delete('cxp');
     urlParamsMeta.set('cxp','MetaJson');
     //putsConsole( "Meta URL: " + urlParamsMeta.toString());
     
@@ -86,10 +85,10 @@ function requestContent(objEditor,strQuery) {
 	    objEditor.setValue('No format information got!');
 	    return;
 	} else if (objInfo.mime.match(/^application\/(pie\+xml|mm\+xml)$/i)) { // TODO: cxp\+xml|
-	    putsConsole('XML Format "' + objInfo.mime + ' OK');
+	    putsConsole('XML Format ' + objInfo.mime + ' OK');
 	    flagXML = true;
 	} else if (objInfo.mime.match(/^text\//i)) {
-	    putsConsole('Text Format "' + objInfo.mime + ' OK');
+	    putsConsole('Text Format ' + objInfo.mime + ' OK');
 	} else {
 	    objEditor.setValue('No editable format recognized: "' + objInfo.mime + '"');
 	    return;
