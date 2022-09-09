@@ -13,7 +13,7 @@
 </xsl:variable>
 
   <xsl:template match="processing-instruction('regexp-tag')">
-    <xsl:value-of select="concat('TAGS: ',.,$newpar)"/>
+    <xsl:value-of select="concat($newline,'TAGS: ',.,$newline)"/>
   </xsl:template>
 
   <xsl:template match="processing-instruction()">
@@ -26,7 +26,7 @@
 	<xsl:value-of select="$newpar"/>
   </xsl:template>
 
-  <xsl:template match="tt">
+  <xsl:template match="tt|code">
     <!-- para -->
         <xsl:text>`</xsl:text>
 	<xsl:value-of select="."/>

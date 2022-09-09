@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
   <xsl:import href="PiePlain.xsl"/>
+
   <xsl:output method="text" encoding="UTF-8"/>
   
   <xsl:template match="section">
@@ -71,13 +73,17 @@
     <!-- para -->
   </xsl:template>
   
+  <xsl:template match="htag|tag">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
   <xsl:template match="pre">
+    <xsl:value-of select="$newline"/>
     <xsl:call-template name="PREBLOCK">
       <xsl:with-param name="StringToTransform">
 	<xsl:value-of select="."/>
       </xsl:with-param>
     </xsl:call-template>
-    <xsl:value-of select="$newpar"/>
   </xsl:template>
   
   <xsl:template name="PREBLOCK">
@@ -87,7 +93,6 @@
       <xsl:when test="contains($StringToTransform,$newline)">
 	<xsl:value-of select="concat('    ',substring-before($StringToTransform,$newline),$newline)"/>
 	<xsl:if test="string-length(substring-after($StringToTransform,$newline)) &gt; 0">
-	  <xsl:value-of select="concat('    ',$newline)"/>
 	  <!-- repeat for the remainder of the original string -->
 	  <xsl:call-template name="PREBLOCK">
             <xsl:with-param name="StringToTransform">
@@ -98,7 +103,7 @@
       </xsl:when>
       <!-- string does not contain newline, so just output it -->
       <xsl:when test="string-length($StringToTransform) &gt; 0">
-        <xsl:value-of select="concat('&gt; ',$StringToTransform,$newline)"/>
+        <xsl:value-of select="concat('    ',$StringToTransform,$newline)"/>
       </xsl:when>
       <xsl:otherwise>
 	<!-- ignoring empty string -->
@@ -135,7 +140,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="t|tag|meta">
+  <xsl:template match="t|meta">
     <!-- ignore normal text nodes -->
   </xsl:template>
 
