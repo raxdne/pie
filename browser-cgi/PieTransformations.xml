@@ -662,9 +662,6 @@
 	      <import name="PATH" locator="yes"/>
 	    </pie>
 	  </xml>
-	  <xsl name="ExtractDuration.xsl"/>
-	  <xsl name="RemoveHiddenLevel.xsl"/>
-	  <xsl name="RemoveDone.xsl" valid="no"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -886,7 +883,8 @@
       <h>import to calendar</h>
       <make>
 	<xml>
-	  <calendar columns="yes" subst="yes">
+	  <calendar>
+	    <!-- 
 	    <col id="legend" name="Legende">
 	      <xml>
 		<pie>
@@ -897,6 +895,7 @@
 		</pie>
 	      </xml>
 	    </col>
+	    -->
 	    <col id="content" name="Content">
 	      <SUBST/>
 	    </col>
@@ -909,6 +908,7 @@
       <make>
 	<xml>
 	  <calendar columns="yes" subst="yes">
+	    <!--
 	    <col id="legend" name="Legende">
 	      <xml>
 		<pie>
@@ -919,6 +919,7 @@
 		</pie>
 	      </xml>
 	    </col>
+	    -->
 	    <col id="content" name="Content">
 	      <xml>
 		<xml xpath="yes">
@@ -957,6 +958,7 @@
       <make>
 	<xml>
 	  <calendar columns="yes">
+	    <!--
 	    <col id="legend" name="Legende">
 	      <xml>
 		<pie>
@@ -967,6 +969,7 @@
 		</pie>
 	      </xml>
 	    </col>
+	    -->
 	    <col id="content">
 	      <xml>
 		<xml>
@@ -1339,7 +1342,7 @@
     <pkg:relation from="text/plain+calendar" to="importcal"/>
     <pkg:relation from="importcal" to="application/pie+proc+xml"/>
     <!-- -->
-    <pkg:relation from="text/plain" to="importtocalendar"/>
+    <pkg:relation from="text/plain" to="importtocalendar" valid="no"/>
     <pkg:relation from="text/calendar" to="importicstocalendar"/>
     <pkg:relation from="importicstocalendar" to="application/pie+cal+xml"/>
     <pkg:relation from="application/mm+xml" to="importmmtocalendar"/>

@@ -47,6 +47,7 @@
                 </cxp:calendar>
               </cxp:xml>
               <cxp:xsl name="CalendarTable.xsl">
+		<cxp:variable name="flag_extended" select="false()"/>
                 <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
               </cxp:xsl>
             </cxp:xhtml>
