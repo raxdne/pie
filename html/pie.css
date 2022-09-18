@@ -501,6 +501,12 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 
 /* 
  */
+td > div.block {
+  padding: 3px;
+}
+
+/* 
+ */
 *.invalid, *.task-rejected, *.target-rejected, *.test-rejected, *.bug-rejected, *.req-rejected {
   text-decoration: line-through;
 }

@@ -20,53 +20,8 @@
     <xsl:value-of select="concat('; ',name(),': ',.,$newpar)"/>
   </xsl:template>
   
-  <xsl:template match="hr">
-    <!-- para -->
-        <xsl:text>____</xsl:text>
-	<xsl:value-of select="$newpar"/>
-  </xsl:template>
-
-  <xsl:template match="tt|code">
-    <!-- para -->
-        <xsl:text>`</xsl:text>
-	<xsl:value-of select="."/>
-        <xsl:text>`</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="em">
-    <!-- para -->
-        <xsl:text>__</xsl:text>
-	<xsl:value-of select="."/>
-        <xsl:text>__</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="strong">
-    <!-- para -->
-        <xsl:text>___</xsl:text>
-	<xsl:value-of select="."/>
-        <xsl:text>___</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="link">
-    <xsl:choose>
-      <xsl:when test="starts-with(@href,'mailto:')">
-        <xsl:value-of select="@href"/>
-      </xsl:when>
-      <xsl:when test="@href = .">
-        <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat('[',.,'](',@href,')')"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="img">
-    <xsl:value-of select="concat('![',@title,'](',@src,')',$newpar)"/>
-  </xsl:template>
-
-  <xsl:template match="fig">
-    <xsl:value-of select="concat('Fig. ![',h,'](',img/@src,')',$newpar)"/>
+  <xsl:template match="htag|tag">
+    <xsl:value-of select="."/>
   </xsl:template>
 
   <xsl:template name="TAGTIME">

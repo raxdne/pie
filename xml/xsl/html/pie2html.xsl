@@ -7,6 +7,8 @@
 
   <xsl:import href="PieHtml.xsl"/>
 
+  <!--  -->
+  <xsl:variable name="flag_simplified" select="false()"/>
   <!-- -->
   <xsl:variable name="file_norm"></xsl:variable>
   <!-- -->
