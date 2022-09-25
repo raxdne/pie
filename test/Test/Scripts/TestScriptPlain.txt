@@ -11,25 +11,25 @@ This is an script error: script="ABC;" : postfix
 
 Embedded
 
-#begin_of_script
+<script>
 
 var A = 'XYZ';
 
 A + A + A;
-#end_of_script
+</script>
 
 Embedded
 
-#begin_of_script
+<script>
 
 var B = 128;
 
 B + B;
-#end_of_script
+</script>
 
 Embedded
 
-#begin_of_script
+<script>
 
 var strResult = '';
 var t = Date();
@@ -38,3 +38,4 @@ for (i=0; i<100; i++) {
     strResult = strResult + '* M' + i.toString() + '\n\n';
     strResult = strResult + 'TODO: ' + t.toString() + ' testing | abc\n\n';
 }
+</script>

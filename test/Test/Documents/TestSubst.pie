@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pie>
+  <subst regexp="(only)" to="[$1](http://$1/)" />
+  <section>
+    <h>“Test only”</h>
+    <p>dummy only</p>
+  </section>
+</pie>

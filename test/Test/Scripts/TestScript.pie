@@ -10,18 +10,21 @@
 		<p>Embedded</p>
 		<p>Embedded</p>
 	</section>
+	
 	<import type="script">
 
 var A = 'XYZ';
 
 A + A + A;
 	</import>
-	<import type="script" eval="no">
+	
+	<import type="script" eval="yes">
 
-var A = 'XYZ';
+var AA = 'ZYX';
 
-A + A + A;
+AA + '-' + A  + '-' + AA;
 	</import>
+	
 	<import type="script">
 
 var B = 128;

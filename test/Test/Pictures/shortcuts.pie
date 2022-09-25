@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<pie class="shortcuts">
+  <section>
+    <h>Shortcuts</h>
+    <p>
+      <img src="/pie/icons/folder-open.png"/>
+      <link target="_blank" href="?path=Test/Pictures/Tux.jpg&amp;cxp=image&amp;frame=10x10">Scale Image</link>
+    </p>
+    <p>
+      <img src="/pie/icons/folder-open.png"/>
+      <link target="_blank" href="?path=Test/Pictures/Tux.jpg&amp;cxp=image&amp;frame=100x100">Scale Image</link>
+    </p>
+  </section>
+</pie>
