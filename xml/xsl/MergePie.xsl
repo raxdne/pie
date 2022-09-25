@@ -77,13 +77,6 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
-          <xsl:if test="exif/size">
-            <xsl:variable name="int_width" select="200"/>
-            <xsl:variable name="int_image_width" select="exif/size/@x"/>
-            <xsl:attribute name="width">
-              <xsl:value-of select="$int_image_width * $int_width div $int_image_width"/>
-            </xsl:attribute>
-          </xsl:if>
           </xsl:element>
           <xsl:element name="h">
             <xsl:choose>

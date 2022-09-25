@@ -185,22 +185,9 @@
                     <!-- all images -->
                     <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
                   </xsl:when>
-		  <xsl:when test="@ext='fitx'">
-		    <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=Format','&amp;','b=text/html')"/>
-		  </xsl:when>
-		  <xsl:when test="@ext='cal' or @ext='gcal' or @ext='ics'">
-                    <!-- edit form for this type of files -->
-                    <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
-                  </xsl:when>
-                  <xsl:when test="starts-with(@type,'text/') or @ext='pie' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
-                    <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
-                  </xsl:when>
-                  <xsl:when test="@ext='cxp'">
+		  <xsl:when test="@ext='html'">
                     <xsl:value-of select="concat('/',$str_path)"/>
-                    <xsl:if test="cxp:make/cxp:description/@anchor">
-                      <xsl:value-of select="concat('#',cxp:make/cxp:description/@anchor)"/>
-                    </xsl:if>
-                  </xsl:when>
+		  </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="concat('?path=',$str_path)"/>
                   </xsl:otherwise>

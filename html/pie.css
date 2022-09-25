@@ -405,7 +405,7 @@ img {
  margin: 5px 5px 10px 10px;
 }
 .localsize {
- width: 90%;
+  /*width: 90%;*/
  margin: 5px 5px 10px 10px;
  border:none
 }
