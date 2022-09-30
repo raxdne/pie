@@ -9,7 +9,7 @@
   <!--  -->
   <xsl:variable name="flag_done" select="false()"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task[not(child::t = '#done')]"/>
+  <xsl:variable name="ns_task" select="/descendant::task[not(child::t = '#done') and @class = 'todo']"/>
   
   <!-- TODO: parameters/variables for tag strings ('#review' etc) -->
   
@@ -57,19 +57,19 @@ table {
         <xsl:element name="tr">
           <xsl:element name="th">
 	    <xsl:attribute name="width">
-              <xsl:text>25%</xsl:text>
+              <xsl:text>33%</xsl:text>
 	    </xsl:attribute>
 	    <xsl:text>#do (Backlog)</xsl:text>
           </xsl:element>
           <xsl:element name="th">
 	    <xsl:attribute name="width">
-              <xsl:text>25%</xsl:text>
+              <xsl:text>33%</xsl:text>
 	    </xsl:attribute>
 	    <xsl:text>#doing#now#today#scope</xsl:text>
           </xsl:element>
           <xsl:element name="th">
 	    <xsl:attribute name="width">
-              <xsl:text>25%</xsl:text>
+              <xsl:text>33%</xsl:text>
 	    </xsl:attribute>
 	    <xsl:text>#review</xsl:text>
           </xsl:element>
@@ -83,10 +83,10 @@ table {
 	  </xsl:if>
         </xsl:element>
       </xsl:element>
-      <xsl:element name="tr">
+      <xsl:element name="tr">	<!-- impact "1" -->
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 1 and not(descendant::htag = '#doing') and not(descendant::htag = '#now') and not(descendant::htag = '#review') and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 1 and not(descendant::htag = '#doing') and not(descendant::htag = '#now') and not(descendant::htag = '#scope') and not(descendant::htag = '#review') and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
         <xsl:element name="td">
@@ -107,15 +107,15 @@ table {
 	  </xsl:element>
 	</xsl:if>
       </xsl:element>
-      <xsl:element name="tr">
+      <xsl:element name="tr">	<!-- impact "2" -->
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 2 and not(descendant::htag = '#doing') and not(descendant::htag = '#now') and not(descendant::htag = '#review') and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 2 and not(descendant::htag = '#doing') and not(descendant::htag = '#now') and not(descendant::htag = '#scope') and not(descendant::htag = '#review') and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 2 and (descendant::htag = '#doing' or descendant::htag = '#now') and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[@impact = 2 and (descendant::htag = '#doing' or descendant::htag = '#now' or descendant::htag = '#scope' or descendant::htag = '#today' or descendant::date[@diff = 0]) and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
         <xsl:element name="td">
@@ -134,23 +134,23 @@ table {
       <xsl:element name="tr">
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[not(@impact) and not(@impact &gt; 2) and not(descendant::htag = '#doing') and not(descendant::htag = '#now') and not(descendant::htag = '#review') and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[not(@impact = 1) and not(@impact = 2) and not(descendant::htag = '#doing') and not(descendant::htag = '#now') and not(descendant::htag = '#scope') and not(descendant::htag = '#review') and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[not(@impact) and not(@impact &gt; 2) and (descendant::htag = '#doing' or descendant::htag = '#now') and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[not(@impact = 1) and not(@impact = 2) and (descendant::htag = '#doing' or descendant::htag = '#now' or descendant::htag = '#scope' or descendant::htag = '#today' or descendant::date[@diff = 0]) and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
         <xsl:element name="td">
 	  <xsl:call-template name="CELL">
-	    <xsl:with-param name="set_nodes" select="$ns_task[not(@impact) and not(@impact &gt; 2) and descendant::htag = '#review' and not(child::t = '#done')]"/>
+	    <xsl:with-param name="set_nodes" select="$ns_task[not(@impact = 1) and not(@impact = 2) and descendant::htag = '#review' and not(child::t = '#done')]"/>
 	  </xsl:call-template>
 	</xsl:element>
 	<xsl:if test="$flag_done">
           <xsl:element name="td">
 	    <xsl:call-template name="CELL">
-	      <xsl:with-param name="set_nodes" select="$ns_task[not(@impact) and not(@impact &lt; 2) and child::t = '#done']"/>
+	      <xsl:with-param name="set_nodes" select="$ns_task[not(@impact = 1) and not(@impact = 2) and child::t = '#done']"/>
 	    </xsl:call-template>
 	  </xsl:element>
 	</xsl:if>

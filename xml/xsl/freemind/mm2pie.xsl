@@ -253,6 +253,11 @@
         <xsl:value-of select="@COLOR"/>
       </xsl:attribute>
     </xsl:if>
+    <xsl:if test="contains(@TEXT,'+++')">
+      <xsl:attribute name="impact">
+        <xsl:value-of select="'1'"/>
+      </xsl:attribute>
+    </xsl:if>
     <!-- add all mindmap node attributes -->
     <xsl:for-each select="attribute">
       <xsl:choose>

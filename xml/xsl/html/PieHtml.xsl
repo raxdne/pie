@@ -289,6 +289,11 @@
       <xsl:attribute name="class">
 	<xsl:value-of select="name()"/>
       </xsl:attribute>
+      <xsl:if test="@iso">
+	<xsl:attribute name="title">
+	  <xsl:value-of select="@iso"/>
+	</xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -698,11 +703,15 @@
 	    <xsl:attribute name="type">button</xsl:attribute>
 	    <xsl:text>Reset Tags</xsl:text>
 	  </xsl:element>
-	  <xsl:element name="input">
-	    <xsl:attribute name="type">text</xsl:attribute>
-	    <xsl:attribute name="class">htag</xsl:attribute>
-	    <xsl:attribute name="maxlength">25</xsl:attribute>
-	    <xsl:attribute name="size">30</xsl:attribute>
+	  <xsl:element name="form">
+	    <xsl:attribute name="acation">/cxproc/exe?</xsl:attribute>
+	    <xsl:element name="input">
+	      <xsl:attribute name="type">text</xsl:attribute>
+	      <xsl:attribute name="class">htag</xsl:attribute>
+	      <xsl:attribute name="maxlength">25</xsl:attribute>
+	      <xsl:attribute name="size">30</xsl:attribute>
+	      <xsl:attribute name="name">pattern</xsl:attribute>
+	    </xsl:element>
 	  </xsl:element>
 	  <xsl:for-each select="pie/meta/t/t"> <!--  -->
 	    <xsl:sort order="ascending" data-type="text" select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
@@ -1176,12 +1185,12 @@ a.geb {
 
 span.htag, span.htag-todo, span.htag-req, span.htag-bug, span.htag-test {
   border-radius: 5px;
-  background: #ffffaa;
+  color: #58a6fe;
 }
 
 span.htag-target {
   border-radius: 5px;
-  background: #ee4444;
+  background: #dd4444;
 }
 
 span.htag-bug {
@@ -1230,13 +1239,13 @@ td {
   margin-bottom:0px;
 }
 .c11 {
-  background-color:#ffcccc;
+  background-color:#ffdddd;
 }
 .c12 {
-  background-color:#eeffee;
+  background-color:#ddffdd;
 }
 .c21 {
-  background-color:#ffeeee;
+  background-color:#ffdddd;
 }
 .c22 {
   background-color:#ffffff;
@@ -1420,7 +1429,7 @@ pre code {
 
 pre {
   background-color: #f8f8f8;
-  border: 1px solid #cccccc;
+  border: 1px solid #dddddd;
   font-size: 13px;
   line-height: 19px;
   overflow: auto;
@@ -1461,13 +1470,13 @@ img {
  border:none
 }
 .figure {
- background-color:#EEEEEE;
+ background-color:#eeeeee;
  border-style:solid;
  border-width:thin;
  margin: 5px 5px 10px 10px;
 }
 .localsize {
- width: 90%;
+  /*width: 90%;*/
  margin: 5px 5px 10px 10px;
  border:none
 }
@@ -1475,7 +1484,7 @@ img {
 input,textarea,select {
 }
 .additor {
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1497,7 +1506,7 @@ span.pieTab {
 
 input.pieTab {
   vertical-align: top;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1506,7 +1515,7 @@ input.pieTab {
 
 select.pieTab {
   vertical-align: top;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1515,7 +1524,7 @@ select.pieTab {
 
 textarea.pieTab {
   vertical-align: top;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1531,29 +1540,40 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   background-color:#EEEEEE;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
 *.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.section1 {
-  background-color:#ffcccc;
+  background-color:#ffffbb;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 *.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.section2 {
-  background-color:#ccffcc;
+  background-color:#ddffdd;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 *.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.section3 {
-  background-color:#ccccff;
+  background-color:#ddddff;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
 *.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.p-done,*.h-done {
   color:#AAAAAA;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   padding: 1px;
   margin: 1px 0px 1px 0px;
+  border-radius: 3px;
+}
+
+/* 
+ */
+td > div.block {
+  padding: 3px;
 }
 
 /* 

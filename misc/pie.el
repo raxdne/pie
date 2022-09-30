@@ -74,7 +74,9 @@
 
   (if (buffer-file-name)
       (if (string= (file-name-extension (buffer-file-name)) "txt")
-	  (pie-plain-minor-mode)
+	  (progn
+	    (pie-plain-minor-mode)
+	    (end-of-buffer))
 	(if (string= (file-name-extension (buffer-file-name)) "pie")
 	    (pie-xml-minor-mode)
 	  (message "Unknown extension")
@@ -194,7 +196,7 @@
 	(font-lock-fontify-buffer)
 	;; BUG: font-lock isnt active first time
 	;;
-	(goto-address)
+	(goto-address-mode)
 	;;  (goto-address-fontify)
 	;;
 	;; imenu
@@ -750,6 +752,36 @@
 				     ""
 				     (interactive)
 				     (insert " ✘"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-mail] '("Mail" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " \\u1F4E7"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-chat] '("Chat" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " \\u1F5EA"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-tel] '("Telephone" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " \\u1F4DE"))
 			  )
   t
   )

@@ -16,7 +16,7 @@
           <div id="content">
             <cxp:xhtml>
               <cxp:xml>
-                <cxp:dir depth="%CGIDEPTH%" verbosity="4" index="skip" urlencode="yes" imatch="\.(jpg|jpeg|png|gif|txt)$">
+                <cxp:dir depth="%CGIDEPTH%" verbosity="2" index="skip" urlencode="yes" imatch="\.(jpg|jpeg|png|gif)$">
                   <cxp:dir name="%CGIPATH%"/>
                 </cxp:dir>
               </cxp:xml>

@@ -178,6 +178,10 @@ function pieCleanup() {
     $('*').removeAttr("class").removeAttr("id").removeAttr("name");
     // TODO: remove jQuery handling at all (RMB etc) $('*').unbind(); ???
 
+    // https://quantumwarp.com/kb/articles/59-javascript/664-removing-or-replacing-a-css-stylesheet-with-javascript-jquery
+    //$('head').append('<link href="/mycustom.css" rel="stylesheet" id="newcss" />');
+    //$('link[href="/pie/html/pie.css"]').remove();
+    
     //var blobDOM = new Blob([document.documentElement.outerHTML], {type: 'text/html'});
     //var URL = window.URL.createObjectURL(blobDOM);
 
@@ -515,6 +519,8 @@ function callbackContent(key, options) {
 	window.open(window.location);
     } else if (key == 'cleanup') {
 	pieCleanup();
+    } else if (key == 'popout') {
+	window.open('?' + urlParams.toString());
     } else if (key == 'toc') {
 	if ($('#toc').css('display') == 'block') {
 	    $('#toc').css({'display': 'none'});
@@ -671,6 +677,7 @@ $(function(){
 		    "sep1": "---------",
 		    "reload": {name: "Reload", icon: "reload"},
 		    "editor": {name: "Editor", icon: "edit"},
+		    "popout": {name: "Pop out", icon: ""},
 		    "frame": {name: "Scope", icon: ""},
 		    "cleanup": {name: "Cleanup", icon: ""},
 		    //"sep2": "---------",
@@ -754,6 +761,7 @@ $(function(){
 		    "sep1": "---------",
 		    "reload": {name: "Reload", icon: "reload"},
 		    "editor": {name: "Editor", icon: "edit"},
+		    "popout": {name: "Pop out", icon: ""},
 		    "sep2": "---------",
 		    "contextYear": {name: "Context Year", icon: "link"},
 		    "contextMonth": {name: "Context Month", icon: "link"},
@@ -791,6 +799,7 @@ $(function(){
 		    //"sep1": "---------",
 		    "reload": {name: "Reload", icon: "reload"},
 		    //"editor": {name: "Editor", icon: "edit"},
+		    "popout": {name: "Pop out", icon: ""},
 		    "cleanup": {name: "Cleanup", icon: ""},
 		    "sep2": "---------",
 		    "toc": {name: "Table of Content", icon: "toc"},
