@@ -106,7 +106,7 @@
       <xsl:when test="substring-before(@name,'~')"/>
       <xsl:when test="starts-with(@name,'_')"/>
       <xsl:when test="starts-with(@name,'.') and not(@name = '.svn')"/>
-      <xsl:when test="@ext='txt' or @ext='mm' or @ext='pie' or @ext='csv' or @ext='cal' or @ext='gcal'">
+      <xsl:when test="@ext='txt' or @ext='mm' or @ext='pie' or @ext='csv'">
         <!-- Template content using cxproc -->
         <xsl:element name="option">
           <xsl:attribute name="value">

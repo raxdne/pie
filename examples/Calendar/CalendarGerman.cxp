@@ -16,18 +16,11 @@
 	      <cxp:calendar coordinate="+5231+01323" timezone="CET" year="%YEAR%" type="day">
 		<!-- Berlin: coordinate="+5231+01323" timezone="CET" -->
 		<!-- Shanghai: coordinate="+3112+12130" timezone="China Standard Time" -->
-		<cxp:col id="legende" name="Legende">
-		  <cxp:xml>
-		    <pie hidden="no">
-		      <import name="LegendGerman.gcal" type="log"/>
-		    </pie>
-		  </cxp:xml>
-		</cxp:col>
 		<cxp:col id="work" name="Feiertage">
 		  <cxp:xml>
 		    <pie hidden="no">
-		      <import name="HolidaysGerman.cal" type="log"/>
-		      <import name="Birthdays.cal" type="log"/>
+		      <import name="HolidaysGerman.txt"/>
+		      <import name="Birthdays.txt"/>
 		    </pie>
 		  </cxp:xml>
 		</cxp:col>

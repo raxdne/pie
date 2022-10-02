@@ -372,7 +372,7 @@
           </xsl:element>
         </xsl:for-each>
       </xsl:when>
-      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image) or @ext='cal' or @ext='gcal'">
+      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image)">
         <!-- dynamic content using cxproc -->
         <!-- single link to named file -->
         <xsl:element name="li">
@@ -399,7 +399,7 @@
                   <!-- all images -->
                   <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
                 </xsl:when>
-                <xsl:when test="@ext='cal' or @ext='gcal' or @ext='ics'">
+                <xsl:when test="@ext='ics'">
                   <!-- edit form for this type of files -->
                   <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
                 </xsl:when>

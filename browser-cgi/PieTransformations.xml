@@ -308,12 +308,6 @@
 	</xsl>
       </make>
     </pkg:transition>
-    <pkg:transition id="mm2gcal">
-      <h>mm2gcal</h>
-      <make>
-	<xsl name="mm2gcal.xsl"/>
-      </make>
-    </pkg:transition>
     <pkg:transition id="pie2tree">
       <h>pie2tree</h>
       <make>
@@ -425,12 +419,6 @@
       <h>pie2rss</h>
       <make>
 	<xsl name="pie202rss.xsl"/>
-      </make>
-    </pkg:transition>
-    <pkg:transition id="pie2gcal">
-      <h>pie2gcal</h>
-      <make>
-	<xsl name="pie2gcal.xsl"/>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2weight">
@@ -1197,8 +1185,6 @@
     <!--  -->
     <pkg:relation from="application/mm+xml" to="mm2mm"/>
     <pkg:relation to="application/mm+proc+xml" from="mm2mm"/>
-    <pkg:relation from="application/mm+proc+xml" to="mm2gcal"/>
-    <pkg:relation from="mm2gcal" to="text/plain+calendar"/>
     <pkg:relation from="application/pie+proc+xml" to="ShellMakeDir"/>
     <pkg:relation from="application/dir+xml" to="ShellMakeDir"/>
     <pkg:relation from="application/mm+proc+xml" to="ShellMakeDir"/>
@@ -1265,8 +1251,6 @@
     <!-- <pkg:relation from="application/pie+proc+xml" to="pie2rss"/> -->
     <pkg:relation from="application/pie+cal+xml" to="pie2rss"/>
     <pkg:relation from="pie2rss" to="application/rss+xml"/>
-    <pkg:relation from="application/pie+proc+xml" to="pie2gcal"/>
-    <pkg:relation from="pie2gcal" to="text/plain+calendar"/>
     <pkg:relation from="application/mm+xml" to="importmm"/>
     <pkg:relation from="importmm" to="application/pie+proc+xml"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2weight"/>

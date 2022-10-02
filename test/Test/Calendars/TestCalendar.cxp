@@ -4,15 +4,6 @@
   <xhtml name="-">
     <xml>
       <calendar columns="yes" type="day" context="year" subst="yes">
-        <col id="legende" name="Legende">
-          <xml>
-            <pie>
-              <p><date ref="00000000"/> %a %d.%m. (%j)</p>
-	      <import name="feiertage.gcal"/>
-            </pie>
-	    <xsl name="RemoveHiddenLevel.xsl"/>
-          </xml>
-        </col>
         <col id="content" name="Content">
           <xml>
             <xml xpath="yes">

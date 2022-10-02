@@ -30,7 +30,7 @@
               <tr>
                 <td>files named</td>
                 <td>
-                  <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|cal|mm)$"/>
+                  <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|csv|mm)$"/>
                 </td>
               </tr>
             </tbody>

@@ -626,7 +626,7 @@ $(function(){
 
     var urlParams = new URLSearchParams(document.location.search);
 
-    if (urlParams.get('path') == undefined || urlParams.get('path').match(/\.(pie|mm|md|cxp|cal|txt|csv)$/i)) {
+    if (urlParams.get('path') == undefined || urlParams.get('path').match(/\.(pie|mm|md|cxp|txt|csv)$/i)) {
 
 	if (urlParams.get('cxp') != undefined && urlParams.get('cxp').match(/PiejQCalendar/i)) {
 

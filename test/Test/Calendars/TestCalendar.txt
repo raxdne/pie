@@ -23,6 +23,8 @@ Months 202006
 
 Years 2020
 
+End 20231231
+
 ** UTC Time 20200701T13:01:05+05:30
 
 ** German dates
@@ -34,3 +36,10 @@ Years 2020
 04.1.2007 CCC
 
 05.01.2007 DDD
+
+** Birthdays
+
+R/2020-03-01/P1Y Birthday John Doe
+
+R10/2020-03-01/P1000D Birthday John Doe
+

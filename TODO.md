@@ -272,6 +272,65 @@ Serial letter
 
 - XSLT with document(XML)
 
+
+
+pie2mm.xsl: handling of nested lists (s. mm2xmmap.xsl)
+
+Macros and Highlighting for different Editors/Tools
+
+- ACE
+
+- AutoHotkey
+
+- Notepad++
+
+* cxp_calendar
+
+Configuration
+
+- detect local TAGS first (to overrule global hashtags)
+
+recognize calendar weeks for dates ([ISO standard 8601](https://en.wikipedia.org/wiki/ISO_8601)) 2022-W35
+
+- https://en.wikipedia.org/wiki/ISO_week_date
+
+find PI “tag-regexp” (“TAGS”) on top level of pie/block
+
+append task/t not to a parent list
+
+BUG: ampersant in CSV line
+
+#begin_of_csv
+*Protocol;Host;Path;Content;File;XPath;Archive;Locator;DB;Query
+HTTP[S]://;www.test.com;dir/sub/;;test.txt;
+HTTP[S]://;www.test.com;cxproc/exe;text/plain;;;;;;?search=test.txt cxp=
+HTTP[S]://;www.test.com;dir/sub;zip;;;archive.zip;/sub/test.txt;;;
+FTP[S]://;
+FILE://;
+MEM://;
+–;–;c:\Temp;;abc.zip;;;/sub/test.txt;;
+–;–;c:\Temp;;abc.db3;;;;;?SELECT * FROM directory
+–;
+#end_of_csv
+
+
+“URL -> Content” => `https://localhost/cxproc/exe`
+
+“URL -> Database -> SQL Query -> Content” => `https://localhost/Test/Database.db3`->Database Node->`?SELECT * FROM directory`
+
+“URL -> Archive Path -> Content”
+
+- `https://localhost/Test/Arcive.zip`->Archive Node->`Test/Text.txt`
+
+- `https://localhost/Test/Archive.zip`->Archive Node->`Test/Archive.zip`->Archive Node->`Test/Text.txt`
+
+“Directory -> Content”
+
+“Directory -> File -> Archive -> Archive Path -> Content”
+
+“Directory -> File -> Database -> SQL Query -> Content”
+
+
 ## Inspiration
 
 [impress.js](https://github.com/impress/impress.js/): It’s a presentation tool inspired by the idea behind
@@ -299,3 +358,4 @@ but keeps all your important events and tasks always visible on your desktop.
 [Semantic web](http://microformats.org/wiki/microformats2) ++
 
 [reStructuredText](https://en.wikipedia.org/wiki/ReStructuredText) (RST, ReST, or reST) is a file format for textual data used primarily in the Python programming language community for technical documentation.
+

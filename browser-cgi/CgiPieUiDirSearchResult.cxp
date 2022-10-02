@@ -2,7 +2,7 @@
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:subst string="%CGIPATH%" cgi="path" default=""/>
   <cxp:subst string="%NEEDLE%" cgi="needle" default=""/>
-  <cxp:subst string="%PATTERNNAME%" cgi="patternname" default="^.+(pie|xml|txt|cal|mm|htm|html)$"/>
+  <cxp:subst string="%PATTERNNAME%" cgi="patternname" default="^.+(pie|xml|txt|csc|mm|htm|html)$"/>
   <cxp:system message="Search for file with lines matching '%NEEDLE%' in '%CGIPATH%' ..."/>
   <cxp:xhtml name="-">
     <html>

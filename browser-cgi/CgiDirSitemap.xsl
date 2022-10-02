@@ -140,7 +140,7 @@
         </xsl:element>
         <xsl:element name="br"/>
       </xsl:when>
-      <xsl:when test="@ext='txt' or @ext='pie' or @ext='mm' or @ext='cal' or @ext='gcal' or @ext='mmap' or @ext='xmmap' or @ext='xmind'">
+      <xsl:when test="@ext='txt' or @ext='pie' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind'">
         <xsl:value-of select="$str_indent"/>
         <xsl:element name="a">
           <xsl:attribute name="class">cxp</xsl:attribute>
