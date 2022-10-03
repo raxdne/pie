@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pie class="shortcuts">
+  <section>
+    <h>Shortcuts</h>
+    <p>
+      <img src="/pie/icons/folder-open.png"/>
+      <link target="_blank" href="?db=TestContent.db3&amp;pattern=tcl">Search DB</link>
+    </p>
+  </section>
+</pie>
