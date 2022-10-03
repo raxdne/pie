@@ -21,7 +21,7 @@ ZZZZ
 
 + UUU
 
-#begin_of_csv
+<csv>
 sep=,
 
 ** Test 2a,Test 2b, TEST 2c
@@ -29,22 +29,22 @@ A,B,C
 D,E,F
 H,I,J
 
-#end_of_csv
+</csv>
 
 * Test 3
 
-#begin_of_script
+<script>
 128 * 2
-#end_of_script
+</script>
 
-#begin_of_cxp
+<make>
 <plain>
   <xml>
     <dir name="abc"/>
   </xml>
   <xsl name="dir2plain.xsl"/>
 </plain> 
-#end_of_cxp
+</make>
 
 #import("dummy.log",log)
 

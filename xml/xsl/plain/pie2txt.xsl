@@ -91,7 +91,7 @@
   
   <xsl:template match="table">
     <xsl:value-of select="$newpar"/>
-    <xsl:text>#begin_of_csv
+    <xsl:text>&lt;csv&gt;
 </xsl:text>
     <xsl:for-each select="tr">
       <xsl:for-each select="th|td"> <!-- TODO: use header markup -->
@@ -100,7 +100,7 @@
       <xsl:text>
 </xsl:text>
     </xsl:for-each>
-    <xsl:text>#end_of_csv
+    <xsl:text>&lt;/csv&gt;
     
 </xsl:text>
   </xsl:template>
@@ -120,11 +120,11 @@
   <xsl:template match="import[@type = 'script']">
     <xsl:value-of select="$newpar"/>
     <xsl:text>
-#begin_of_script
+&lt;script&gt;
 </xsl:text>
     <xsl:value-of select="text()"/>
     <xsl:text>
-#end_of_script
+&lt;/script&gt;
 </xsl:text>
     <xsl:value-of select="$newpar"/>
   </xsl:template>

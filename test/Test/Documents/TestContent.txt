@@ -3,7 +3,7 @@ TAGS: abc|GTD|Test|\u258A{1,4}|\u21AF+
 
 #subst("TODAY",now="%Y-%m-%d")
 
-* >>Test only<< | ÄÖÜ
+* >>Test only<< @ÄÖÜ
 
 #subst("abc","zyx")
 
@@ -32,13 +32,13 @@ Uvw
 
 --- dlkasjdla
 
-** AA & BB | Assignee
+** AA & BB  @assignee
 
-;TODO: might be done || john
+;TODO: might be done @john ++
 
 __EM EM__
 
-TODO: 20200317,0402,11 to be done  ✔ ||| me,myself andI
+TODO: 20200317,0402,11 to be done  ✔ @me @myself @andI +++
 
 yyyy & zzz 'AAA' @müller #TÄÄÄ
 
@@ -50,7 +50,7 @@ TTT http://def.com/a--b--c/
 
 preformated markup `<cxp:plain><cxp:html name="abc.html"/></cxp:plain>`
 
-TODO: |abc.html|ABC| @mö @me @her-majesty
+TODO: [ABC](abc.html) @mö @me @her-majesty
 
 REQ: requirement ABC
 
@@ -64,7 +64,7 @@ cccc `ls -la tmp`
 
 XML entity &#x21D2; or \u21D2 (s. https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references)
 
-TEST: to be ***tested*** | redundant redundant
+TEST: to be ***tested*** @redundant @redundant
 
 + step A
 
@@ -72,13 +72,13 @@ TEST: to be ***tested*** | redundant redundant
 
 + step C
 
-TODO: 20200317,0402,11 to be done ||| möller abc-def_hij
+TODO: 20200317,0402,11 to be done @möller @abc-def_hij +++
 
 ***    2020-04-30
 
 *** AAA @vvv ++
 
-TARGET: this is my next target TODAY | me_review @john
+TARGET: this is my next target TODAY @me #review @john
 
 text only +++
 
@@ -139,7 +139,7 @@ TODO: fix that error
 
 **** [AAAA](id:anchor)
 
-BUG: @me minor bug \u21AF @john @möll | Assignee
+BUG: @me minor bug \u21AF @john @möll @assignee
 
 - not reproducable
 
@@ -149,7 +149,7 @@ BUG: @me minor bug \u21AF @john @möll | Assignee
 
 **** 2020-03-07
 
-*** |http://www.demo.org/test/|TEST| ++
+*** [TEST](http://www.demo.org/test/) ++
 
 text only 2020-03-09 @may ▊▊
 
@@ -163,7 +163,7 @@ tel:+0123456789 @james
 
 *** BBB +++
 
-TODO: GTD categories '_org', '_do', '_review', '_rejected' | me_org john_do her_review he_rejected
+TODO: GTD categories '_org', '_do', '_review', '_rejected' @me#org @john#do @her#review @he#rejected
 
 TODO: can be done #abc @meReview ✔ 
 
@@ -173,9 +173,9 @@ DONE: 20200120 this was done @me
 
 http://www.dummy.com/test%20abc%20%28inside%29/#anchor
 
-TODO: has to be done \u258A\u258A\u258A || you
+TODO: has to be done \u258A\u258A\u258A @you ++
 
-TODO: must be done ||| me_do 
+TODO: must be done @me#do +++
 
 TODO: high impact but already done +++   ✔ 
 

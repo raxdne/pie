@@ -133,10 +133,10 @@
   </xsl:template>
 
   <xsl:template match="table:table">
-    <xsl:value-of select="concat('#begin_of_csv',$newline)"/>
+    <xsl:value-of select="concat('&lt;csv&gt;',$newline)"/>
     <xsl:value-of select="concat('sep=',$tabsep,$newline)"/>
     <xsl:apply-templates select="table:table-row"/>
-    <xsl:value-of select="concat('#end_of_csv',$newline)"/>
+    <xsl:value-of select="concat('&lt;/csv&gt;',$newline)"/>
   </xsl:template>
 
   <xsl:template match="table:table-row">

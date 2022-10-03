@@ -300,7 +300,7 @@ append task/t not to a parent list
 
 BUG: ampersant in CSV line
 
-#begin_of_csv
+<csv>
 *Protocol;Host;Path;Content;File;XPath;Archive;Locator;DB;Query
 HTTP[S]://;www.test.com;dir/sub/;;test.txt;
 HTTP[S]://;www.test.com;cxproc/exe;text/plain;;;;;;?search=test.txt cxp=
@@ -311,7 +311,7 @@ MEM://;
 –;–;c:\Temp;;abc.zip;;;/sub/test.txt;;
 –;–;c:\Temp;;abc.db3;;;;;?SELECT * FROM directory
 –;
-#end_of_csv
+</csv>
 
 
 “URL -> Content” => `https://localhost/cxproc/exe`

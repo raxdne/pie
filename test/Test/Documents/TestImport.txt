@@ -9,7 +9,7 @@ TODO: ttttt++
 
 * Test import CSV
 
-#begin_of_csv
+<csv>
 sep=,
 
 * Test 2
@@ -17,4 +17,4 @@ A,B,C
 D,E,F
 H,I,J
 
-#end_of_csv
+</csv>

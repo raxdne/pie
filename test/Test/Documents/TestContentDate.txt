@@ -17,7 +17,7 @@ s. https://en.wikipedia.org/wiki/ISO_8601
 
 Iteration 20200419,22,24 15.00 Test 5
 
-a |picture.png|AAA| @mmm nnn
+a [AAA](picture.png) @mmm nnn
 
 20131010 15.00 E
 

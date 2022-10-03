@@ -157,9 +157,9 @@
   </xsl:template>
 
   <xsl:template match="w:tbl">
-    <xsl:value-of select="concat('#begin_of_csv',$newline)"/>
+    <xsl:value-of select="concat('&lt;csv&gt;',$newline)"/>
     <xsl:apply-templates select="w:tr"/>
-    <xsl:value-of select="concat('#end_of_csv',$newpar)"/>
+    <xsl:value-of select="concat('&lt;/csv&gt;',$newpar)"/>
   </xsl:template>
 
   <xsl:template match="w:tr">
