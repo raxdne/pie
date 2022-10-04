@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:import href="../PieHtmlTable.xsl"/>
 
+  <xsl:import href="../PieHtmlTable.xsl"/>
   <!-- -->
   <xsl:variable name="file_norm"></xsl:variable>
   <!--  -->
@@ -73,9 +73,7 @@
       <xsl:otherwise>
 	<xsl:element name="tr">
 	  <xsl:element name="td">
-	    <xsl:call-template name="TASK">
-	      <xsl:with-param name="flag_line" select="true()"/>
-	    </xsl:call-template>
+	    <xsl:call-template name="TASK"/>
 	  </xsl:element>
 	</xsl:element>
 	<xsl:apply-templates select="descendant::task"/>

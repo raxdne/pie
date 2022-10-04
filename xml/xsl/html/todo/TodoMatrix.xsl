@@ -15,6 +15,7 @@
   <xsl:variable name="ns_date" select="//task[not(@done or @class = 'done' or @state = 'done')]"/>
 
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
+
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
@@ -100,6 +101,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="ROWURGENCY">
     <xsl:param name="ns_row"/>
     <xsl:param name="nr_row"/>
@@ -118,6 +120,7 @@
     </xsl:call-template>
  -->
   </xsl:template>
+
   <xsl:template name="COLIMPACT">
     <xsl:param name="ns_col"/>
     <xsl:param name="nr_cell"/>
@@ -142,28 +145,11 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="link">
-    <xsl:element name="a">
-      <xsl:choose>
-        <xsl:when test="@href">
-          <!--  -->
-          <xsl:attribute name="target">
-            <xsl:value-of select="''"/>
-          </xsl:attribute>
-          <xsl:attribute name="href">
-            <xsl:value-of select="@href"/>
-          </xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+  
   <xsl:template match="task">
     <xsl:call-template name="TASK">
-      <xsl:with-param name="flag_line" select="true()"/>
       <xsl:with-param name="flag_ancestor" select="true()"/>
     </xsl:call-template>
   </xsl:template>
+
 </xsl:stylesheet>

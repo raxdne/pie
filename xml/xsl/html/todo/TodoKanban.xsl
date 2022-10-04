@@ -178,7 +178,6 @@ table {
 		<xsl:text>unlined</xsl:text>
 	      </xsl:attribute>
 	      <xsl:call-template name="TASK">
-		<xsl:with-param name="flag_line" select="true()"/>
 		<xsl:with-param name="flag_ancestor" select="true()"/>
 	      </xsl:call-template>
 	    </xsl:element>

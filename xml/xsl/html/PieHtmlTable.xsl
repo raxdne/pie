@@ -13,22 +13,20 @@
   </xsl:template>
 
   <xsl:template match="section">
-    <xsl:if test="parent::section">
-      <xsl:text> :: </xsl:text>
-    </xsl:if>
-    <xsl:element name="i">
-      <xsl:apply-templates select="h"/>
+    <xsl:element name="span">
+      <xsl:attribute name="class">
+	<xsl:value-of select="name()"/>
+      </xsl:attribute>
+      <xsl:call-template name="MENUSET"/>
+      <xsl:apply-templates select="child::h/child::node()|child::h/child::text()"/>
     </xsl:element>
+    <xsl:text> :: </xsl:text>
     <xsl:apply-templates select="*[not(name()='h')]|text()"/>
-  </xsl:template>
-
-  <xsl:template match="task_YYY">
-    <!-- task element in a calendar table/tbody/tr/td -->
-    <xsl:call-template name="TASK"/>
   </xsl:template>
 
   <xsl:template name="TASK">
     <!-- callable for task element -->
+    <xsl:param name="flag_ancestor" select="false()"/>
     <xsl:element name="span">
       <xsl:call-template name="ADDSTYLE"/>
       <xsl:call-template name="CLASSATRIBUTE"/>
@@ -37,12 +35,27 @@
 	  <xsl:value-of select="translate(@xpath,'/*[]','_')"/>
 	</xsl:attribute>
       </xsl:if>
+      <xsl:if test="$flag_ancestor">
+	<xsl:call-template name="ANCESTORLOCATOR"/>
+      </xsl:if>
       <xsl:element name="span">
 	<xsl:call-template name="MENUSET"/>
 	<xsl:call-template name="FORMATTASKPREFIX"/>
 	<xsl:apply-templates select="h"/>
       </xsl:element>
       <xsl:apply-templates select="p|list"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template name="ANCESTORLOCATOR">
+    <xsl:element name="b">
+      <xsl:for-each select="ancestor::section">
+	<xsl:if test="position() = 1">
+	  <xsl:call-template name="MENUSET"/>
+	</xsl:if>
+	<xsl:apply-templates select="h"/>
+	<xsl:text> :: </xsl:text>
+      </xsl:for-each>
     </xsl:element>
   </xsl:template>
   

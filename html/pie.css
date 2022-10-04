@@ -499,6 +499,10 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   border-radius: 3px;
 }
 
+span.context-menu-section {
+  font-weight:bold;
+}
+
 /* 
  */
 td > div.block {

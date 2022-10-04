@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:import href="TodoTable.xsl"/>
 
+  <xsl:import href="TodoTable.xsl"/>
   <!-- -->
   <xsl:variable name="file_norm"></xsl:variable>
   <!--  -->
@@ -94,9 +94,8 @@ table {
 		<xsl:text>unlined</xsl:text>
 	      </xsl:attribute>
 	      <xsl:call-template name="TASK">
-		<xsl:with-param name="flag_line" select="true()"/>
 		<xsl:with-param name="flag_ancestor" select="true()"/>
-	      </xsl:call-template>
+	    </xsl:call-template>
 	    </xsl:element>
 	  </xsl:element>
 	</xsl:for-each>    
