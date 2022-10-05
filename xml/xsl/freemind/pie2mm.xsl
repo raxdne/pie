@@ -96,7 +96,6 @@
         <xsl:attribute name="TEXT">
           <xsl:call-template name="FORMATTASKPREFIX"/>
           <xsl:value-of select="string(h)"/>
-	  <xsl:call-template name="FORMATIMPACT"/>
         </xsl:attribute>
         <xsl:if test="h/@ref">
           <xsl:attribute name="LINK">
@@ -183,7 +182,6 @@
 	      </xsl:otherwise>
 	    </xsl:choose>
 	  </xsl:for-each>
-	  <xsl:call-template name="FORMATIMPACT"/>
         </xsl:attribute>
         <xsl:call-template name="CREATECOLORS"/>
         <xsl:if test="link/@href">

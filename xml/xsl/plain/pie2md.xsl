@@ -12,7 +12,6 @@
     </xsl:for-each>
     <xsl:text> </xsl:text>
     <xsl:apply-templates select="child::h/child::*|child::h/child::text()"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newline"/>
     <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
   </xsl:template>
@@ -20,7 +19,6 @@
   <xsl:template match="task">
     <xsl:value-of select="$newline"/>
     <xsl:call-template name="FORMATTASK"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newline"/>
     <xsl:apply-templates select="*[not(name()='h')]"/>
   </xsl:template>
@@ -60,13 +58,11 @@
         </xsl:choose>
         <xsl:text> </xsl:text>
 	<xsl:apply-templates/>
-	<xsl:call-template name="FORMATIMPACT"/>
 	<xsl:value-of select="$newline"/>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:value-of select="$newline"/>
 	<xsl:apply-templates/>
-	<xsl:call-template name="FORMATIMPACT"/>
 	<xsl:value-of select="$newline"/>
       </xsl:otherwise>
     </xsl:choose>

@@ -44,14 +44,12 @@
   
   <xsl:template match="section">
     <xsl:apply-templates select="h"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
     <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
   </xsl:template>
   
   <xsl:template match="task">
     <xsl:call-template name="FORMATTASK"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
     <xsl:apply-templates select="*[not(name()='h')]"/>
   </xsl:template>
@@ -74,7 +72,6 @@
   <xsl:template match="p">
     <xsl:call-template name="FORMATPREFIX"/>
     <xsl:apply-templates select="text()|child::*[not(name() = 'list')]"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:apply-templates select="child::list"/>
     <xsl:choose>
       <xsl:when test="child::list[position() = last()]">

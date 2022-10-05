@@ -74,20 +74,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="FORMATIMPACT">
-    <!--  -->
-    <xsl:choose>
-      <xsl:when test="@impact='1' and not(ancestor::*[@impact = '1'])">
-	<xsl:text> +++</xsl:text>
-      </xsl:when>
-      <xsl:when test="@impact='2' and not(ancestor::*[@impact &lt; 3])">
-	<xsl:text> ++</xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template name="MIMETYPE">
     <!-- converts MIME type string into RFC 1738 format -->
     <xsl:param name="str_type"/>

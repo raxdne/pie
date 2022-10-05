@@ -43,7 +43,6 @@
     <xsl:call-template name="FORMATTASKPREFIX"/>
     <xsl:text>}</xsl:text>
     <xsl:apply-templates select="h"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="concat('',$newpar)"/>
     <xsl:apply-templates select="*[not(name()='h')]"/>
   </xsl:template>
