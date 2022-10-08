@@ -538,7 +538,13 @@ function callbackContent(key, options) {
 	}
     } else if (key == 'selection') {
 	selection = window.getSelection();
-	strSelect = selection.toString();
+	if (selection == undefined || selection.toString() == '') {
+	    putsConsole('Nothing selected');
+	    strSelect = $('input:text').val();
+	    // TODO: use submit()
+	} else {
+	    strSelect = selection.toString();
+	}
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());

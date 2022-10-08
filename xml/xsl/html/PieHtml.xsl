@@ -698,21 +698,14 @@
 	<xsl:attribute name="id">tags</xsl:attribute>
 	<xsl:attribute name="style">display:none</xsl:attribute>
 	<xsl:element name="p">
-	  <xsl:element name="button">
-	    <xsl:attribute name="id">tag_reset</xsl:attribute>
-	    <xsl:attribute name="type">button</xsl:attribute>
-	    <xsl:text>Reset Tags</xsl:text>
+	  <xsl:element name="input">
+	    <xsl:attribute name="id">pattern</xsl:attribute>
+	    <xsl:attribute name="name">pattern</xsl:attribute>
+	    <xsl:attribute name="type">text</xsl:attribute>
+	    <xsl:attribute name="maxlength">50</xsl:attribute>
+	    <xsl:attribute name="size">50</xsl:attribute>
 	  </xsl:element>
-	  <xsl:element name="form">
-	    <xsl:attribute name="acation">/cxproc/exe?</xsl:attribute>
-	    <xsl:element name="input">
-	      <xsl:attribute name="type">text</xsl:attribute>
-	      <xsl:attribute name="class">htag</xsl:attribute>
-	      <xsl:attribute name="maxlength">25</xsl:attribute>
-	      <xsl:attribute name="size">30</xsl:attribute>
-	      <xsl:attribute name="name">pattern</xsl:attribute>
-	    </xsl:element>
-	  </xsl:element>
+	  <xsl:element name="br"/>
 	  <xsl:for-each select="pie/meta/t/t"> <!--  -->
 	    <xsl:sort order="ascending" data-type="text" select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 	    <xsl:sort order="descending" data-type="number" select="@count"/>
