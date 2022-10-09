@@ -257,6 +257,22 @@
     </xsl:comment>
     <xsl:if test="$flag_extended or child::col">
       <xsl:element name="tr">
+	<xsl:choose>
+	  <xsl:when test="$pwd/@diffy = '-1'">
+	    <!-- yesterday anchor -->
+	    <xsl:attribute name="id">
+	      <xsl:text>yesterday</xsl:text>
+	    </xsl:attribute>
+	  </xsl:when>
+	  <xsl:when test="$pwd/@today">
+	    <!-- today anchor -->
+	    <xsl:attribute name="id">
+	      <xsl:text>today</xsl:text>
+	    </xsl:attribute>
+	  </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
 	<xsl:attribute name="class">
           <xsl:choose>
 	    <xsl:when test="descendant-or-self::*[@holiday = 'yes']">
@@ -284,22 +300,6 @@
 	    <xsl:for-each select="$id_cols">
 	      <xsl:variable name="id_col" select="."/>
 	      <xsl:element name="td">
-		<!-- yesterday anchor -->
-		<xsl:if test="$pwd/@diff='-1' and position() = 1">
-		  <xsl:element name="a">
-		    <xsl:attribute name="id">
-		      <xsl:text>yesterday</xsl:text>
-		    </xsl:attribute>
-		  </xsl:element>
-		</xsl:if>
-		<!-- today anchor -->
-		<xsl:if test="$pwd/@today and position() = 1">
-		  <xsl:element name="a">
-		    <xsl:attribute name="id">
-		      <xsl:text>today</xsl:text>
-		    </xsl:attribute>
-		  </xsl:element>
-		</xsl:if>
 		<xsl:for-each select="$pwd/col[@idref=$id_col]">
 		  <xsl:apply-templates>
 		    <xsl:sort select="date[1]/@hour" data-type="number"/>
@@ -321,7 +321,6 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
-
 
   <xsl:template match="t|img|fig|pre"/>
 
