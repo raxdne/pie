@@ -40,9 +40,14 @@ CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 SUMMARY:TODO: </xsl:text><xsl:value-of select="normalize-space(string(parent::*))" /><xsl:text>
-DTSTART;TZID=Europe/Berlin:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
-DTEND;TZID=Europe/Berlin:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
-TRANSP:OPAQUE
+DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
+DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
+</xsl:text>
+<xsl:if test="parent::h/parent::task[@done]">
+<xsl:text>STATUS:COMPLETED
+</xsl:text>
+</xsl:if>
+<xsl:text>TRANSP:OPAQUE
 END:VTODO
 </xsl:text>
   </xsl:template>
@@ -53,8 +58,8 @@ CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 SUMMARY:</xsl:text><xsl:value-of select="normalize-space(string(parent::*))" /><xsl:text>
-DTSTART;TZID=Europe/Berlin:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
-DTEND;TZID=Europe/Berlin:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
+DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
+DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 TRANSP:OPAQUE
 END:VEVENT
 </xsl:text>
@@ -66,8 +71,8 @@ CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 SUMMARY:</xsl:text><xsl:value-of select="normalize-space(string(parent::*))" /><xsl:text>
-DTSTART;TZID=Europe/Berlin:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
-DTEND;TZID=Europe/Berlin:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
+DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
+DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 TRANSP:OPAQUE
 END:VEVENT
 </xsl:text>

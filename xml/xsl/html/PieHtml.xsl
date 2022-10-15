@@ -330,6 +330,41 @@
 
   <xsl:template match="p">
     <xsl:choose>
+      <xsl:when test="child::list">
+	<!-- list parent -->
+	<xsl:element name="div">
+	<xsl:choose>
+	  <xsl:when test="not(@hidden)">
+	    <!-- simple paragraph -->
+	    <xsl:element name="p">
+	      <xsl:call-template name="CLASSATRIBUTE"/>
+	      <xsl:call-template name="ADDSTYLE"/>
+	      <xsl:if test="@name">
+		<xsl:element name="a">
+		  <xsl:copy-of select="@name"/>
+		</xsl:element>
+	      </xsl:if>
+	      <xsl:if test="parent::list[@enum = 'yes']">
+		<xsl:attribute name="value">
+		  <xsl:value-of select="count(preceding-sibling::p) + 1"/>
+		</xsl:attribute>
+	      </xsl:if>
+	      <xsl:apply-templates/>
+	    </xsl:element>
+	  </xsl:when>
+	  <xsl:when test="@hidden &lt;= $level_hidden">
+	    <!-- hidden paragraph -->
+	    <xsl:element name="li">
+	      <xsl:attribute name="class">hidden</xsl:attribute>
+	      <xsl:apply-templates/>
+	    </xsl:element>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- really hidden paragraph -->
+	  </xsl:otherwise>
+	</xsl:choose>
+	</xsl:element>
+      </xsl:when>
       <xsl:when test="parent::list">
 	<!-- list item -->
 	<xsl:choose>
