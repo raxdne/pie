@@ -312,15 +312,15 @@
     <!-- ignore other elements --> 
   </xsl:template>
 
-  <xsl:template name="CREATECOLORS">
+  <xsl:template name="CREATECOLORS"> <!-- to be aligned with "html/pie.css" -->
     <xsl:if test="@impact">
       <xsl:attribute name="BACKGROUND_COLOR">
 	<xsl:choose>
 	  <xsl:when test="@impact = 1">
-	    <xsl:text>#ffcccc</xsl:text> <!-- value to be aligned with "html/pie.css" -->
+	    <xsl:text>#ffffbb</xsl:text>
 	  </xsl:when>
 	  <xsl:when test="@impact = 2">
-	    <xsl:text>#ccffcc</xsl:text>
+	    <xsl:text>#ddffdd</xsl:text>
 	  </xsl:when>
 	  <xsl:otherwise>
 	  </xsl:otherwise>

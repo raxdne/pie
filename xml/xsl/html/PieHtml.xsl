@@ -183,64 +183,18 @@
   </xsl:template>
 
   <xsl:template match="list">
-    <xsl:if test="child::*[not(@hidden) or @hidden &lt;= $level_hidden]">
-      <xsl:choose>
-	<xsl:when test="@enum = 'yes' or child::p[@enum = 'yes']">
-	  <!-- enumerated list -->
-	  <xsl:choose>
-	    <xsl:when test="parent::list">
-	      <xsl:element name="li"> <!-- create an hidden item for child list -->
-		<xsl:attribute name="style">
-		  <xsl:text>list-style-type: none;</xsl:text>
-		</xsl:attribute>
-		<xsl:if test="preceding-sibling::*[position() = 1 and name() = 'p' and @state = 'done']">
-		  <xsl:attribute name="class">
-		    <xsl:text>done</xsl:text>
-		  </xsl:attribute>
-		</xsl:if>
-		<xsl:element name="ol">
-		  <xsl:apply-templates/>
-		</xsl:element>
-	      </xsl:element>
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:element name="ol">
-		<xsl:apply-templates/>
-	      </xsl:element>
-	    </xsl:otherwise>
-	  </xsl:choose>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:choose>
-	    <xsl:when test="parent::list">
-	      <xsl:element name="li"> <!-- create an hidden item for child list -->
-		<xsl:attribute name="style">
-		  <xsl:text>list-style-type: none;</xsl:text>
-		</xsl:attribute>
-		<xsl:if test="preceding-sibling::*[position() = 1 and name() = 'p' and @state = 'done']">
-		  <xsl:attribute name="class">
-		    <xsl:text>done</xsl:text>
-		  </xsl:attribute>
-		</xsl:if>
-		<xsl:element name="ul">
-		  <xsl:apply-templates/>
-		</xsl:element>
-	      </xsl:element>
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:element name="ul">
-		<xsl:if test="preceding-sibling::*[position() = 1 and name() = 'p' and @state = 'done']">
-		  <xsl:attribute name="class">
-		    <xsl:text>done</xsl:text>
-		  </xsl:attribute>
-		</xsl:if>
-		<xsl:apply-templates/>
-	      </xsl:element>
-	    </xsl:otherwise>
-	  </xsl:choose>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="@enum = 'yes'">
+	<xsl:element name="ol">
+	  <xsl:apply-templates/>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:element name="ul">
+	  <xsl:apply-templates/>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="link">
@@ -329,94 +283,60 @@
   </xsl:template>
 
   <xsl:template match="p">
+    <xsl:variable name="name_element">
+      <xsl:choose>
+	<xsl:when test="parent::list">
+    	  <xsl:text>li</xsl:text>
+	</xsl:when>
+	<xsl:otherwise>
+    	  <xsl:text>p</xsl:text>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="child::list">
-	<!-- list parent -->
+      <xsl:when test="parent::section and child::list">
 	<xsl:element name="div">
-	<xsl:choose>
-	  <xsl:when test="not(@hidden)">
-	    <!-- simple paragraph -->
-	    <xsl:element name="p">
-	      <xsl:call-template name="CLASSATRIBUTE"/>
-	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:if test="@name">
-		<xsl:element name="a">
-		  <xsl:copy-of select="@name"/>
-		</xsl:element>
-	      </xsl:if>
-	      <xsl:if test="parent::list[@enum = 'yes']">
-		<xsl:attribute name="value">
-		  <xsl:value-of select="count(preceding-sibling::p) + 1"/>
-		</xsl:attribute>
-	      </xsl:if>
-	      <xsl:apply-templates/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:when test="@hidden &lt;= $level_hidden">
-	    <!-- hidden paragraph -->
-	    <xsl:element name="li">
-	      <xsl:attribute name="class">hidden</xsl:attribute>
-	      <xsl:apply-templates/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- really hidden paragraph -->
-	  </xsl:otherwise>
-	</xsl:choose>
+	  <xsl:call-template name="CLASSATRIBUTE"/>
+	  <xsl:call-template name="ADDSTYLE"/>
+	  <xsl:choose>
+	    <xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
+	      <!-- simple paragraph -->
+	      <xsl:element name="{$name_element}">
+		<xsl:call-template name="CLASSATRIBUTE"/>
+		<xsl:call-template name="ADDSTYLE"/>
+		<xsl:if test="@hidden">
+		  <!-- hidden paragraph -->
+		  <xsl:attribute name="class">hidden</xsl:attribute>
+		</xsl:if>
+		<xsl:apply-templates select="*[not(name(.) = 'list')]|text()"/>
+		<xsl:apply-templates select="list"/>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:when test="child::list">
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <!-- really hidden paragraph -->
+	    </xsl:otherwise>
+	  </xsl:choose>
 	</xsl:element>
-      </xsl:when>
-      <xsl:when test="parent::list">
-	<!-- list item -->
-	<xsl:choose>
-	  <xsl:when test="not(@hidden)">
-	    <!-- simple paragraph -->
-	    <xsl:element name="li">
-	      <xsl:call-template name="CLASSATRIBUTE"/>
-	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:if test="@name">
-		<xsl:element name="a">
-		  <xsl:copy-of select="@name"/>
-		</xsl:element>
-	      </xsl:if>
-	      <xsl:if test="parent::list[@enum = 'yes']">
-		<xsl:attribute name="value">
-		  <xsl:value-of select="count(preceding-sibling::p) + 1"/>
-		</xsl:attribute>
-	      </xsl:if>
-	      <xsl:apply-templates/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:when test="@hidden &lt;= $level_hidden">
-	    <!-- hidden paragraph -->
-	    <xsl:element name="li">
-	      <xsl:attribute name="class">hidden</xsl:attribute>
-	      <xsl:apply-templates/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- really hidden paragraph -->
-	  </xsl:otherwise>
-	</xsl:choose>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:choose>
 	  <xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
 	    <!-- simple paragraph -->
-	    <xsl:element name="p">
+	    <xsl:element name="{$name_element}">
 	      <xsl:call-template name="CLASSATRIBUTE"/>
 	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:if test="@name">
-		<xsl:element name="a">
-		  <xsl:copy-of select="@name"/>
-		</xsl:element>
-	      </xsl:if>
 	      <xsl:if test="@hidden">
 		<!-- hidden paragraph -->
 		<xsl:attribute name="class">hidden</xsl:attribute>
 	      </xsl:if>
 	      <xsl:apply-templates select="*[not(name(.) = 'list')]|text()"/>
+	      <xsl:apply-templates select="list"/>
 	    </xsl:element>
-	    <xsl:apply-templates select="list"/>
+	  </xsl:when>
+	  <xsl:when test="child::list">
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <!-- really hidden paragraph -->
@@ -1036,6 +956,7 @@
   </xsl:template>
 
   <xsl:template name="CLASSATRIBUTE">
+    <xsl:copy-of select="@id|@name"/>
     <xsl:choose>
       <xsl:when test="@class">
 	<xsl:attribute name="class">
