@@ -470,6 +470,7 @@
 		  </xsl:element>
 		  <xsl:for-each select="td|th">
 		    <xsl:element name="{name()}">
+		      <xsl:call-template name="CLASSATRIBUTE"/>
 		      <xsl:copy-of select="@*"/>
 		      <xsl:apply-templates select="*|text()"/>
 		    </xsl:element>
