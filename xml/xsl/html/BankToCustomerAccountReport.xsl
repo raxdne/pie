@@ -184,8 +184,7 @@
       <xsl:element name="thead">
 	<xsl:element name="tr">
 	  <xsl:element name="td">
-	  </xsl:element>
-	  <xsl:element name="td">
+	    <xsl:text>#</xsl:text>
 	  </xsl:element>
 	  <xsl:element name="th">
 	    <xsl:text>Amt</xsl:text>
@@ -221,8 +220,6 @@
 	  <xsl:element name="tr">
 	    <xsl:element name="td">
 	      <xsl:value-of select="position()"/>
-	    </xsl:element>
-	    <xsl:element name="td">
 	    </xsl:element>
 	    <xsl:element name="td">
 	      <xsl:attribute name="align">right</xsl:attribute>
