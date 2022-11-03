@@ -194,6 +194,9 @@
 	    <xsl:text>Amt</xsl:text>
 	  </xsl:element>
 	  <xsl:element name="th">
+	    <xsl:text>Diff</xsl:text>
+	  </xsl:element>
+	  <xsl:element name="th">
 	    <xsl:text>Nm</xsl:text>
 	  </xsl:element>
 	  <xsl:element name="th">
@@ -213,6 +216,8 @@
 	  <xsl:variable name="int_count">
 	    <xsl:value-of select="count(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/descendant::camt:Nm = $str_name]])"/>
 	  </xsl:variable>
+	  <xsl:variable name="sum_dbtr" select="sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Dbtr/camt:Nm = $str_name]]/camt:Amt)"/>
+	  <xsl:variable name="sum_cdtr" select="sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]]/camt:Amt)"/>
 	  <xsl:element name="tr">
 	    <xsl:element name="td">
 	      <xsl:value-of select="position()"/>
@@ -221,11 +226,15 @@
 	    </xsl:element>
 	    <xsl:element name="td">
 	      <xsl:attribute name="align">right</xsl:attribute>
-	      <xsl:value-of select="format-number(sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Dbtr/camt:Nm = $str_name]]/camt:Amt),'#,##0.00','f1')"/>
+	      <xsl:value-of select="format-number($sum_dbtr,'#,##0.00','f1')"/>
 	    </xsl:element>
 	    <xsl:element name="td">
 	      <xsl:attribute name="align">right</xsl:attribute>
-	      <xsl:value-of select="format-number(sum(/descendant::camt:Ntry[generate-id(.) = generate-id(key('list-unique',concat(camt:BookgDt/camt:Dt,'|',camt:Sts,'|',camt:Amt,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Cdtr/camt:Nm,'|',camt:NtryDtls/camt:TxDtls/camt:RltdPties/camt:Dbtr/camt:Nm))) and camt:NtryDtls/camt:TxDtls[camt:RltdPties/camt:Cdtr/camt:Nm = $str_name]]/camt:Amt),'#,##0.00','f1')"/>
+	      <xsl:value-of select="format-number($sum_cdtr,'#,##0.00','f1')"/>
+	    </xsl:element>
+	    <xsl:element name="td">
+	      <xsl:attribute name="align">right</xsl:attribute>
+	      <xsl:value-of select="format-number($sum_dbtr - $sum_cdtr,'#,##0.00','f1')"/>
 	    </xsl:element>
 	    <xsl:element name="td">
 	      <xsl:value-of select="$str_name"/>
