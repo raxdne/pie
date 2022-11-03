@@ -1,5 +1,5 @@
 sep=;
-* Test 1
+* Test 1+++
 
 ;ABC
 ;;1234567890|abc|def
@@ -11,13 +11,13 @@ sep=;
 ;;1234567890
 
 * Test 2
-A,B,C
-D,E,F
+A,B,C+++
+D,E,F++
 H,I,J
 
 * Test 3
 "ABC";"#DEF";"X <-> Z"
-"HIJ";"@KLM";"A <=> B";
+"HIJ"++;"@KLM";"A <=> B";
 "ABC";1234;✔
 "HIJ";786;"KLM \u2194";"";
 
