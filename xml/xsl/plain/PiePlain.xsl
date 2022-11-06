@@ -6,14 +6,10 @@
 
   <xsl:output method="text" encoding="UTF-8"/>
 
-<xsl:variable name="newpar">
-<xsl:text>
-
-</xsl:text>
-</xsl:variable>
+  <xsl:variable name="flag_md" select="false()"/>
 
   <xsl:template match="processing-instruction('regexp-tag')">
-    <xsl:value-of select="concat($newline,'TAGS: ',.,$newline)"/>
+    <xsl:value-of select="concat($newline,'TAGS: ',.,$newpar)"/>
   </xsl:template>
 
   <xsl:template match="processing-instruction()">
@@ -22,6 +18,73 @@
   
   <xsl:template match="htag|tag">
     <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="link">
+    <xsl:choose>
+      <xsl:when test="starts-with(@href,'mailto:')">
+        <xsl:value-of select="@href"/>
+      </xsl:when>
+      <xsl:when test="@href = .">
+	<xsl:choose>
+	  <xsl:when test="$flag_md">
+            <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+            <xsl:value-of select="."/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('[',.,'](',@href,')')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="import[@type = 'script']">
+    <xsl:choose>
+      <xsl:when test="parent::p|parent::h">
+	<xsl:value-of select="concat('script=','&quot;',text(),'&quot;')"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'&lt;script&gt;',$newline,text(),'&lt;/script&gt;',$newpar)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="img">
+    <xsl:value-of select="concat('![',@title,'](',@src,')',$newpar)"/>
+  </xsl:template>
+
+  <xsl:template match="fig">
+    <xsl:value-of select="concat('Fig. ![',h,'](',img/@src,')',$newpar)"/>
+  </xsl:template>
+
+  <xsl:template match="hr">
+    <!-- para -->
+        <xsl:text>____</xsl:text>
+	<xsl:value-of select="$newpar"/>
+  </xsl:template>
+
+  <xsl:template match="tt|code">
+    <!-- para -->
+        <xsl:text>`</xsl:text>
+	<xsl:value-of select="."/>
+        <xsl:text>`</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="em">
+    <!-- para -->
+        <xsl:text>__</xsl:text>
+	<xsl:value-of select="."/>
+        <xsl:text>__</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="strong">
+    <!-- para -->
+        <xsl:text>___</xsl:text>
+	<xsl:value-of select="."/>
+        <xsl:text>___</xsl:text>
   </xsl:template>
 
   <xsl:template name="TAGTIME">
@@ -100,16 +163,6 @@
 	</xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="TIMESTRING">
-    <xsl:if test="@hour">
-      <xsl:value-of select="concat(@hour,'.',@minute)"/>
-      <xsl:if test="@hour-end">
-	<xsl:value-of select="concat('-',@hour-end,'.',@minute-end)"/>
-      </xsl:if>
-    <xsl:value-of select="concat('',' ')"/>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template name="FORMATPREFIX">

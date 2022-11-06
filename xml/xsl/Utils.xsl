@@ -42,36 +42,21 @@
   <xsl:template name="FORMATTASKPREFIX">
     <xsl:choose>
       <xsl:when test="@class = 'todo' and @state = 'done'">
-	<xsl:value-of select="concat('DONE: ','')"/>
+	<xsl:text>DONE</xsl:text>
       </xsl:when>
       <xsl:when test="@class">
-        <xsl:value-of select="concat(translate(@class,'todnreqabugs','TODNREQABUGS'),': ')"/>
+        <xsl:value-of select="translate(@class,'todnreqabugs','TODNREQABUGS')"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="concat('TODO: ','')"/>
+	<xsl:text>TODO</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
+    <xsl:text>: </xsl:text>
   </xsl:template>
 
   <xsl:template name="FORMATTASK">
     <xsl:call-template name="FORMATTASKPREFIX"/>
     <xsl:apply-templates select="h"/>
-  </xsl:template>
-
-  <xsl:template name="DATESTRING">
-    <xsl:choose>
-      <xsl:when test="@done = '1'">
-	  <xsl:text> ✔ </xsl:text>
-      </xsl:when>
-      <xsl:when test="ancestor-or-self::*[@done]">
-	<xsl:value-of select="concat(ancestor-or-self::*[@done][1]/@done,' ✔ ')"/>
-      </xsl:when>
-      <xsl:when test="ancestor-or-self::*[@date]">
-	<xsl:value-of select="concat(ancestor-or-self::*[@date][1]/@date,' ')"/>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="MIMETYPE">

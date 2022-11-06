@@ -7,12 +7,6 @@
 
   <xsl:variable name="str_tagtime"></xsl:variable>
 
-  <xsl:variable name="newpar">
-    <xsl:text>
-
-</xsl:text>
-  </xsl:variable>
-
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="string-length($str_path) &gt; 0">
@@ -28,7 +22,7 @@
     <xsl:call-template name="TAGTIME">
       <xsl:with-param name="str_tagtime" select="concat('; ',$str_tagtime,$newpar)"/>
     </xsl:call-template>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="node()|text()|comment()"/>
   </xsl:template>
   
   <xsl:template match="h">
@@ -38,20 +32,19 @@
       </xsl:for-each>
       <xsl:text> </xsl:text>
     </xsl:if>
-    <xsl:call-template name="DATESTRING"/>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="node()|text()|comment()"/>
   </xsl:template>
   
   <xsl:template match="section">
     <xsl:apply-templates select="h"/>
     <xsl:value-of select="$newpar"/>
-    <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
+    <xsl:apply-templates select="*[not(name(.) = 'h')]|text()|comment()"/>
   </xsl:template>
   
   <xsl:template match="task">
     <xsl:call-template name="FORMATTASK"/>
     <xsl:value-of select="$newpar"/>
-    <xsl:apply-templates select="*[not(name()='h')]"/>
+    <xsl:apply-templates select="*[not(name()='h')]|text()|comment()"/>
   </xsl:template>
 
   <xsl:template match="list">
@@ -66,7 +59,7 @@
 	<!--  -->
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="node()|text()|comment()"/>
   </xsl:template>
 
   <xsl:template match="p">
@@ -110,18 +103,6 @@
     <xsl:value-of select="text()"/>
     <xsl:text>
 #end_of_pre
-</xsl:text>
-    <xsl:value-of select="$newpar"/>
-  </xsl:template>
-
-  <xsl:template match="import[@type = 'script']">
-    <xsl:value-of select="$newpar"/>
-    <xsl:text>
-&lt;script&gt;
-</xsl:text>
-    <xsl:value-of select="text()"/>
-    <xsl:text>
-&lt;/script&gt;
 </xsl:text>
     <xsl:value-of select="$newpar"/>
   </xsl:template>

@@ -55,7 +55,7 @@ END:VTIMEZONE
 	<xsl:otherwise>
 	  <xsl:for-each select="parent::*/child::node()|parent::*/child::text()">
 	    <xsl:if test="position() = 1">
-	      <xsl:value-of select="concat(parent::*/parent::*/attribute::class,': ')" />
+	      <xsl:value-of select="concat(translate(parent::*/parent::*/attribute::class,'todnreqabugs','TODNREQABUGS'),': ')" />
 	    </xsl:if>
 	    <xsl:choose>
 	      <xsl:when test="name() = 't'"/>
@@ -67,7 +67,6 @@ END:VTIMEZONE
 	  </xsl:for-each>	  
 	</xsl:otherwise>
       </xsl:choose>
-
     </xsl:variable>
     <xsl:variable name="str_category">
       <xsl:for-each select="ancestor::*[attribute::impact][1]">

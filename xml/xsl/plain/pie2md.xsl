@@ -3,6 +3,8 @@
 
   <xsl:import href="PiePlain.xsl"/>
 
+  <xsl:variable name="flag_md" select="true()"/>
+  
   <xsl:output method="text" encoding="UTF-8"/>
   
   <xsl:template match="section">
@@ -12,15 +14,15 @@
     </xsl:for-each>
     <xsl:text> </xsl:text>
     <xsl:apply-templates select="child::h/child::*|child::h/child::text()"/>
-    <xsl:value-of select="$newline"/>
-    <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
+    <xsl:value-of select="$newpar"/>
+    <xsl:apply-templates select="*[not(name(.) = 'h')]|text()|comment()"/>
   </xsl:template>
 
   <xsl:template match="task">
     <xsl:value-of select="$newline"/>
     <xsl:call-template name="FORMATTASK"/>
     <xsl:value-of select="$newline"/>
-    <xsl:apply-templates select="*[not(name()='h')]"/>
+    <xsl:apply-templates select="*[not(name()='h')]|text()|comment()"/>
   </xsl:template>
 
   <xsl:template match="list">
@@ -33,7 +35,7 @@
       <xsl:otherwise>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="node()|text()|comment()"/>
     <xsl:value-of select="$newline"/>
   </xsl:template>
 
@@ -57,12 +59,12 @@
           </xsl:otherwise>
         </xsl:choose>
         <xsl:text> </xsl:text>
-	<xsl:apply-templates/>
+	<xsl:apply-templates select="node()|text()|comment()"/>
 	<xsl:value-of select="$newline"/>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:value-of select="$newline"/>
-	<xsl:apply-templates/>
+	<xsl:apply-templates select="node()|text()|comment()"/>
 	<xsl:value-of select="$newline"/>
       </xsl:otherwise>
     </xsl:choose>
@@ -78,55 +80,6 @@
     </xsl:call-template>
   </xsl:template>
   
-  <xsl:template match="hr">
-    <!-- para -->
-        <xsl:text>____</xsl:text>
-	<xsl:value-of select="$newpar"/>
-  </xsl:template>
-
-  <xsl:template match="tt|code">
-    <!-- para -->
-        <xsl:text>`</xsl:text>
-	<xsl:value-of select="."/>
-        <xsl:text>`</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="em">
-    <!-- para -->
-        <xsl:text>__</xsl:text>
-	<xsl:value-of select="."/>
-        <xsl:text>__</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="strong">
-    <!-- para -->
-        <xsl:text>___</xsl:text>
-	<xsl:value-of select="."/>
-        <xsl:text>___</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="link">
-    <xsl:choose>
-      <xsl:when test="starts-with(@href,'mailto:')">
-        <xsl:value-of select="@href"/>
-      </xsl:when>
-      <xsl:when test="@href = .">
-        <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat('[',.,'](',@href,')')"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="img">
-    <xsl:value-of select="concat('![',@title,'](',@src,')',$newpar)"/>
-  </xsl:template>
-
-  <xsl:template match="fig">
-    <xsl:value-of select="concat('Fig. ![',h,'](',img/@src,')',$newpar)"/>
-  </xsl:template>
-
   <xsl:template name="PREBLOCK">
     <xsl:param name="StringToTransform"/>
     <xsl:choose>
@@ -182,7 +135,7 @@
   </xsl:template>
 
   <xsl:template match="t|meta">
-    <!-- ignore normal text nodes -->
+    <!-- ignore nodes -->
   </xsl:template>
 
 </xsl:stylesheet>

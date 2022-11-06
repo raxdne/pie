@@ -240,7 +240,6 @@
         <!-- par with hstr -->
         <xsl:element name="p">
           <xsl:copy-of select="@class"/>
-          <xsl:call-template name="TIMESTRING"/>
           <xsl:element name="i">
             <xsl:value-of select="@hstr"/>
           </xsl:element>
@@ -251,7 +250,6 @@
         <!-- para -->
         <xsl:element name="p">
           <xsl:copy-of select="@class"/>
-          <xsl:call-template name="TIMESTRING"/>
           <xsl:apply-templates/>
         </xsl:element>
       </xsl:otherwise>

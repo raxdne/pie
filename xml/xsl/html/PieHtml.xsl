@@ -946,16 +946,6 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template name="TIMESTRING">
-    <xsl:if test="@hour">
-      <xsl:value-of select="concat(@hour,'.',@minute)"/>
-      <xsl:if test="@hour-end">
-	<xsl:value-of select="concat('-',@hour-end,'.',@minute-end)"/>
-      </xsl:if>
-      <xsl:value-of select="concat('',' ')"/>
-    </xsl:if>
-  </xsl:template>
-
   <xsl:template name="CLASSATRIBUTE">
     <xsl:copy-of select="@id|@name"/>
     <xsl:choose>

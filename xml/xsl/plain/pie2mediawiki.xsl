@@ -43,8 +43,6 @@
 
   <xsl:template match="task">
     <!--  -->
-    <xsl:call-template name="DATESTRING"/>
-    <xsl:call-template name="TIMESTRING"/>
     <xsl:value-of select="normalize-space(h)"/>
     <xsl:value-of select="$newpar"/>
     <xsl:apply-templates select="p|list|pre"/>
@@ -93,8 +91,6 @@
       </xsl:otherwise>
     </xsl:choose>
     <!-- para -->
-    <xsl:call-template name="DATESTRING"/>
-    <xsl:call-template name="TIMESTRING"/>
     <xsl:apply-templates/>
     <xsl:value-of select="$newline"/>
   </xsl:template>
