@@ -84,7 +84,7 @@ function requestContent(objEditor,strQuery) {
 	if (objInfo.mime == undefined || objInfo.mime == '') {
 	    objEditor.setValue('No format information got!');
 	    return;
-	} else if (objInfo.mime.match(/^application\/(pie\+xml|mm\+xml)$/i)) { // TODO: cxp\+xml|
+	} else if (objInfo.mime.match(/^application\/(pie\+xml|cxp\+xml|mm\+xml)$/i)) {
 	    putsConsole('XML Format ' + objInfo.mime + ' OK');
 	    flagXML = true;
 	} else if (objInfo.mime.match(/^text\//i)) {
@@ -93,14 +93,13 @@ function requestContent(objEditor,strQuery) {
 	    objEditor.setValue('No editable format recognized: "' + objInfo.mime + '"');
 	    return;
 	}
-
-	// TODO: disable content caching
 	
 	requestContent = $.ajax({
 	    url: '/' + urlParams.get('path'),
 	    type: 'GET',
 	    encoding: urlParams.get('encoding'),
-	    dataType: 'text'
+	    dataType: 'text',
+	    cache: false
 	});
 
 	//
@@ -299,7 +298,8 @@ function saveText(objEditor,strPath) {
     var request = $.ajax({
 	url: '/cxproc/exe',
 	type: 'POST',
-	data: {path: strPath, cxp: 'SaveContentXml', strContent: objEditor.getValue()}
+	data: {path: strPath, cxp: 'SaveContentXml', strContent: objEditor.getValue()},
+	cache: false
     });
 
     request.done(function( msg ) {
