@@ -133,6 +133,14 @@
 			  </xsl:element>
 			</xsl:element>
 		      </xsl:if>
+		      <xsl:element name="tr">
+			<xsl:element name="td">
+			  <xsl:text>XML DOM Stat</xsl:text>
+			</xsl:element>
+			<xsl:element name="td">
+			  <a href="?xsl=pie2stat&amp;path=%CGIPATH%">stat</a>
+			</xsl:element>
+		      </xsl:element>
 		    </xsl:element>
 		  </xsl:element>
 		</xsl:template>

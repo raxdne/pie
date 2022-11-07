@@ -33,7 +33,7 @@
               </cxp:xsl>
             </cxp:xhtml>
             <hr/>
-            <p style="text-align:right">"%ROOT%%CGIPATH%" — <a href="?xsl=pie2stat&amp;path=%CGIPATH%">stat</a> "%CGITAG%", %TAGTIME%</p>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
           </div>
         </div>
         <a name="bottom"/>

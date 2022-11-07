@@ -383,7 +383,7 @@ function callbackSection(key, options) {
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'selection') {
 	selection = window.getSelection();
-	strSelect = selection.toString();
+	strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
@@ -447,7 +447,7 @@ function callbackTask(key, options) {
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'selection') {
 	selection = window.getSelection();
-	strSelect = selection.toString();
+	strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
@@ -543,7 +543,7 @@ function callbackContent(key, options) {
 	    strSelect = $('input:text').val();
 	    // TODO: use submit()
 	} else {
-	    strSelect = selection.toString();
+	    strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	}
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	urlParams.set('hl',strSelect);
@@ -585,7 +585,7 @@ function callbackContent(key, options) {
 	    //window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
 	} else if (key == 'selection') {
 	    selection = window.getSelection();
-	    strSelect = selection.toString();
+	    strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	    urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	    urlParams.set('hl',strSelect);
 	} else if (key == 'search') {
