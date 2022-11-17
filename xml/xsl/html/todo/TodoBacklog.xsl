@@ -7,7 +7,9 @@
   <!--  -->
   <xsl:variable name="file_css" select="''"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task"/>
+  <xsl:variable name="int_delta" select="0"/>
+  <!--  -->
+  <xsl:variable name="ns_task" select="/descendant::task[$int_delta = 0 or child::h/child::date[@diff &gt; $int_delta] or not(child::h/child::date)]"/>
 
   <xsl:output method="html"/>
   

@@ -3,23 +3,12 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14">
 
-  <xsl:output method="text" encoding="UTF-8"/>
+  <xsl:import href="docx2md.xsl"/>
 
-  <xsl:variable name="str_path"></xsl:variable>
+  <xsl:output method="text" encoding="UTF-8"/>
 
   <!-- header structure with templates 'Heading' 'berschrift' -->
 
-  <xsl:variable name="newline">
-<xsl:text>
-</xsl:text>
-</xsl:variable>
-  
-<xsl:variable name="newpar">
-<xsl:text>
-
-</xsl:text>
-</xsl:variable>
-  
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="string-length($str_path) &gt; 0">
@@ -149,6 +138,28 @@
 
   <xsl:template match="w:t[preceding-sibling::w:rPr/child::w:rFonts[attribute::w:ascii = 'Courier New']]">
     <xsl:value-of select="concat('`',.,'`')"/>
+  </xsl:template>
+
+  <xsl:template match="w:hyperlink">
+    <xsl:choose>
+      <xsl:when test="w:r[w:t]">
+	<xsl:value-of select="concat('[LINK](',w:r/w:t,')')"/> <!-- TODO: find href value  -->
+      </xsl:when>
+      <xsl:when test="attribute::r:id">
+	<xsl:variable name="str_url_id" select="attribute::r:id"/>
+	<xsl:choose>
+	  <xsl:when test="//Relationships/Relationship[@Id = $str_url_id]">
+	    <xsl:value-of select="concat('[',w:r/w:t,'](',//Relationships/Relationship[@Id = $str_url_id]/@Target,')')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="concat('[',w:r/w:t,']()')"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="w:r/w:t[1]"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="w:tab">

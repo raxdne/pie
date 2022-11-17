@@ -2,6 +2,7 @@
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
+  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
   <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
   <cxp:subst string="%CGIINDEX%" cgi="i"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
@@ -22,7 +23,7 @@
       <cxp:variable name="flag_form" select="true()"/>
       <cxp:variable name="level_hidden" select="1"/>
       <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
-      <cxp:variable name="str_link_prefix" select="'?cxp=image&amp;frame=1222x668&amp;path=%PREFIX%'"/>
+      <cxp:variable name="str_link_prefix">/%CGIPATHDIR%</cxp:variable>
     </cxp:xsl>
   </cxp:xhtml>
 </cxp:make>

@@ -21,28 +21,48 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 -->
   <xsl:import href="../PieHtml.xsl"/>
+  
   <xsl:output method="html" omit-xml-declaration="no" doctype-public="-//W3C//DTD HTML 4.01//EN" doctype-system="file:///tmp/dummy.dtd" encoding="UTF-8"/>
+
   <!-- normalized name of plain input file -->
   <xsl:variable name="file_norm"></xsl:variable>
   <!-- name of plain input file -->
   <xsl:variable name="file_plain" select="translate($file_norm,'\','/')"/>
   <!--  -->
   <xsl:variable name="nr_slide" select="0"/>
+  <!--  -->
   <xsl:variable name="name_slide" select="'slide'"/>
+  <!--  -->
   <xsl:variable name="file_css" select="'presentation.css'"/>
+  <!--  -->
   <xsl:variable name="file_js" select="''"/>
+  <!--  -->
   <xsl:variable name="flag_form" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_agenda" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_title" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_toc" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_icons" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_timer" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_navigation" select="true()"/>
+  <!--  -->
   <xsl:variable name="flag_search" select="false()"/>
+  <!--  -->
   <xsl:variable name="flag_search_result" select="false()"/>
+  <!--  -->
   <xsl:variable name="str_xpath" select="'/'"/>
+  <!--  -->
   <xsl:variable name="type" select="''"/>
+  <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
+  <!--  -->
+  <xsl:variable name="str_link_prefix" select="'.'"/>
+
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>

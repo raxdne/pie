@@ -9,7 +9,9 @@
   <!--  -->
   <xsl:variable name="flag_done" select="false()"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task[not(child::t = '#done') and @class = 'todo']"/>
+  <xsl:variable name="int_delta" select="0"/>
+  <!--  -->
+  <xsl:variable name="ns_task" select="/descendant::task[not(child::t = '#done') and @class = 'todo' and ($int_delta = 0 or child::h/child::date[@diff &gt; $int_delta] or not(child::h/child::date))]"/>
   
   <!-- TODO: parameters/variables for tag strings ('#review' etc) -->
   
@@ -50,7 +52,7 @@ table {
 	      </xsl:choose>
 	    </xsl:attribute>
             <xsl:element name="b">
-              <xsl:value-of select="concat('Backlog (',count($ns_task),' items)')" />
+              <xsl:value-of select="concat('Backlog (',count($ns_task),' items, delta = ',$int_delta,')')" />
             </xsl:element>
           </xsl:element>
         </xsl:element>

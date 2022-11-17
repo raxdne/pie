@@ -54,7 +54,7 @@ END:VTIMEZONE
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:for-each select="parent::*/child::node()|parent::*/child::text()">
-	    <xsl:if test="position() = 1">
+	    <xsl:if test="position() = 1 and parent::*/parent::*/attribute::class">
 	      <xsl:value-of select="concat(translate(parent::*/parent::*/attribute::class,'todnreqabugs','TODNREQABUGS'),': ')" />
 	    </xsl:if>
 	    <xsl:choose>

@@ -198,7 +198,7 @@
   </xsl:template>
 
   <xsl:template match="link">
-    <xsl:param name="target" select="'mainframe'"/>
+    <xsl:param name="target" select="'_blank'"/>
     <xsl:element name="a">
       <xsl:copy-of select="@class"/>
       <xsl:choose>
@@ -221,7 +221,16 @@
 	      </xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
-	  <xsl:copy-of select="@href"/>
+	  <xsl:attribute name="href">
+	    <xsl:choose>
+	      <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+		<xsl:value-of select="@href"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat($str_link_prefix,'/',@href)"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:attribute>
 	</xsl:when>
 	<xsl:otherwise>
 	  <!-- without href attribute -->
@@ -756,6 +765,13 @@
     <xsl:copy-of select="."/>
   </xsl:template>
 
+  <xsl:template match="import[@type = 'script']">
+    <!--  -->
+    <xsl:element name="pre">
+      <xsl:copy-of select="text()"/>
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template name="PIETOC">
     <xsl:param name="display" select="block"/>
     <xsl:if test="count(//section[child::h and not(ancestor::section[@valid='no'])]) &gt; 3">
@@ -809,6 +825,7 @@
   </xsl:template>
 
   <xsl:template name="PIELINKLIST">
+    <xsl:param name="target" select="'_blank'"/>
     <xsl:if test="count(//link[not(ancestor::*[@valid='no']) and string-length(@href) &gt; 4]) &gt; 1">
       <xsl:element name="div">
 	<xsl:attribute name="id">links</xsl:attribute>
@@ -818,13 +835,26 @@
 	  <xsl:for-each select="//link[not(ancestor::*[@valid='no']) and string-length(@href) &gt; 4]">
 	    <xsl:element name="li">
 	      <xsl:element name="a">
+		<xsl:choose>
+		  <xsl:when test="@target">
+		    <xsl:copy-of select="@target"/>
+		  </xsl:when>
+		  <xsl:when test="starts-with(@href,'#')">
+		    <!-- local link only -->
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:attribute name="target">
+		      <xsl:value-of select="$target"/>
+		    </xsl:attribute>
+		  </xsl:otherwise>
+		</xsl:choose>
 		<xsl:attribute name="href">
 		  <xsl:choose>
-		    <xsl:when test="starts-with(@href,'\\')">
-		      <xsl:value-of select="concat('file://',@href)"/>
+		    <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+		      <xsl:value-of select="@href"/>
 		    </xsl:when>
 		    <xsl:otherwise>
-		      <xsl:value-of select="@href"/>
+		      <xsl:value-of select="concat($str_link_prefix,'/',@href)"/>
 		    </xsl:otherwise>
 		  </xsl:choose>
 		</xsl:attribute>

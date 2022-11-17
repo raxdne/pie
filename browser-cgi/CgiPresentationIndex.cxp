@@ -11,7 +11,7 @@
     <cxp:xsl name="ExtractPresentation.xsl"/>
     <cxp:xsl name="ExtractSlide.xsl">
       <cxp:variable name="flag_toc" select="true()"/>
-      <cxp:variable name="flag_timer" select="true()"/>
+      <cxp:variable name="flag_timer" select="false()"/>
       <cxp:variable name="flag_icons" select="false()"/>
       <cxp:variable name="file_css" select="'/html/presentation.css'"/>
       <cxp:variable name="file_norm">%CGIPATH%</cxp:variable>

@@ -7,6 +7,7 @@
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIDELTA%" cgi="delta" default="0"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
   <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
@@ -25,6 +26,7 @@
               <cxp:xsl name="TodoKanban.xsl">
                 <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
 		<cxp:variable name="flag_done" select="false()"/>
+		<cxp:variable name="int_delta" select="%CGIDELTA%"/>
               </cxp:xsl>
             </cxp:xhtml>
             <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
