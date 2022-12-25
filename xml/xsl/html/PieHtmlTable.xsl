@@ -49,10 +49,10 @@
 
   <xsl:template name="ANCESTORLOCATOR">
     <xsl:element name="b">
-      <xsl:for-each select="ancestor::section">
-	<xsl:if test="position() = 1">
-	  <xsl:call-template name="MENUSET"/>
-	</xsl:if>
+      <xsl:for-each select="ancestor-or-self::section[1]">
+	<xsl:call-template name="MENUSET"/>
+      </xsl:for-each>
+      <xsl:for-each select="ancestor-or-self::section">
 	<xsl:apply-templates select="h"/>
 	<xsl:text> :: </xsl:text>
       </xsl:for-each>

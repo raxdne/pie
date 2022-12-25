@@ -358,23 +358,19 @@ function callbackLink(key, options) {
 function callbackSection(key, options) {
     
     var urlParams = new URLSearchParams(document.location.search);
+    var strXPathBlock;
+    var strXPathGlobal;
+    var strLocator;
 	
     var m = "clicked: " + key;
     putsConsole(m); 
 
-    var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
-    //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
-
-    var strLocator;
-    if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	if (arrLocator[2] == undefined || arrLocator[2] == '') {
-	    putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
-	} else {
-	    strLocator = arrLocator[2];
-	}
-    } else {
-	strLocator = arrLocator[1];
+    if (options.$trigger == undefined || options.$trigger.attr("name") == undefined) {
+	putsConsole('Element not defined');
+	return;
     }
+    
+    [strLocator,strXPathBlock,strXPathGlobal] = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
 
     urlParams.delete('hl');
     if (key == 'view') {
@@ -388,118 +384,34 @@ function callbackSection(key, options) {
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'frame') { // scope
-	
-	if (arrLocator[0] == undefined || arrLocator[0] == '') {
-	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
+	if (strXPathBlock == '') {
+	    if (strXPathGlobal == '') {
+		if (strLocator == '') {
+		    // empty
+		} else {
+		    urlParams.delete('xpath');
+		    urlParams.set('path',strLocator);
+		}
+	    } else {
+		// global XPath defined, keep path
+		urlParams.set('xpath','/descendant-or-self::*[@xpath = "' + strXPathGlobal + '"]');
+	    }
 	} else {
-	    urlParams.set('path',arrLocator[0]);
+	    if (strLocator == '') {
+		// empty
+	    } else {
+		// new path and XPath for block defined
+		urlParams.set('path',strLocator);
+		urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock + '"]');
+		urlParams.set('cxp','PiejQDefault');
+	    }
 	}
-
-	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator + '"]');
-
-	urlParams.delete('pattern');
-	urlParams.set('cxp','PiejQDefault');
 	window.open('?' + urlParams.toString());
+	//window.location.assign('?' + urlParams.toString());
     } else if (key == 'hide') {
-	options.$trigger.parent().parent().parent().css({'display': 'none'});
-    } else if (key == 'top') {
-	
-	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator + '"]');
-
-	window.location.assign('?' + urlParams.toString());
-	
+	options.$trigger.parent().parent().css({'display': 'none'});
     } else if (key == 'up') {
-	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator.replace(/\/[^\/]+$/,'') + '"]');
-	window.location.assign('?' + urlParams.toString());
-    }
-}
-
-
-//
-// 
-//
-function callbackTask(key, options) {
-
-    var urlParams = new URLSearchParams(document.location.search);
-	
-    var m = "clicked: " + key;
-    putsConsole(m); 
-
-    var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
-    //putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
-
-    var strLocator;
-    if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	if (arrLocator[2] == undefined || arrLocator[2] == '') {
-	    putsConsole( "No valid global XPath found: " + options.$trigger.attr("name"));
-	} else {
-	    strLocator = arrLocator[2];
-	}
-    } else {
-	strLocator = arrLocator[1];
-    }
-
-    urlParams.delete('hl');
-    if (key == 'view') {
-	urlParams.delete('pattern');
-	urlParams.set('cxp','PiejQDefault');
-	urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,'')); // BUG: file internal XPath
-	window.location.assign('?' + urlParams.toString());
-    } else if (key == 'selection') {
-	selection = window.getSelection();
-	strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
-	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
-	urlParams.set('hl',strSelect);
-	window.location.assign('?' + urlParams.toString());
-    } else if (key == 'frame') { // scope
-	
-	if (arrLocator[0] == undefined || arrLocator[0] == '') {
-	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
-	} else {
-	    urlParams.set('path',arrLocator[0]);
-	}
-
-	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strLocator.replace(/\/[^\/]+$/,'') + '"]');
-
-	urlParams.delete('pattern');
-	urlParams.set('cxp','PiejQDefault');
-	window.open('?' + urlParams.toString());
-    } else if (key == 'hide') {
-	var classParentSelected;
-
-	classParentSelected = $('.context-menu-active').parent().attr('class');
-	if (classParentSelected == undefined) {
-	    classParentSelected = $('.context-menu-active').attr('class');
-	}
-	
-	if (classParentSelected == undefined) {
-	} else {
-	    classParentSelected = classParentSelected.replace(/ *context-menu-active/,'');
- 	    putsConsole('Hide all elements of class: ' + classParentSelected);
-	    $('.' + classParentSelected).hide();
-	}
-	
-    } else {
-
-	var arrLocator = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
-	//putsConsole( "trigger.attr: " + options.$trigger.attr("name"));
-
-	if (arrLocator[0] == undefined || arrLocator[0] == '') {
-	    putsConsole( "No valid file locator found: " + options.$trigger.attr("name"));
-	} else {
-	    urlParams.set('path',arrLocator[0]);
-	}
-
-	if (arrLocator[1] == undefined || arrLocator[1] == '') {
-	    putsConsole( "No valid XPath found: " + options.$trigger.attr("name"));
-	} else {
-	    urlParams.set('xpath',arrLocator[1]); // BUG: file internal XPath
-	}
-
-	if (key == 'top') {
-	} else if (key == 'up') {
-	    urlParams.set('xpath',urlParams.get('xpath').replace(/\/[^\/]+$/,''));
-	}
+	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock.replace(/\/[^\/]+$/,'') + '"]');
 	window.location.assign('?' + urlParams.toString());
     }
 }
@@ -727,7 +639,7 @@ $(function(){
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
-		"top": {name: "Top", icon: "hide"},
+//		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
 	    }
 	});
@@ -737,7 +649,7 @@ $(function(){
 	    trigger: 'right',
 	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
 	    autoHide: true,
-	    callback: callbackTask,
+	    callback: callbackSection,
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
@@ -745,7 +657,7 @@ $(function(){
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
-		"top": {name: "Top", icon: "hide"},
+//		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
 	    }
 	});
@@ -842,7 +754,7 @@ $(function(){
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
-		"top": {name: "Top", icon: "hide"},
+//		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
 	    }
 	});
@@ -852,15 +764,15 @@ $(function(){
 	    trigger: 'right',
 	    position: function(opt, x, y) {opt.$menu.css({top: y, left: x});},
 	    autoHide: true,
-	    callback: callbackTask,
+	    callback: callbackSection,
 	    items: {
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
 		"selection": {name: "Tag selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
-		//"up": {name: "Up", icon: "hide"},
-		//"top": {name: "Top", icon: "hide"},
+		"up": {name: "Up", icon: "hide"},
+//		"top": {name: "Top", icon: "hide"},
 		"hide": {name: "Hide", icon: "hide"}
 	    }
 	});

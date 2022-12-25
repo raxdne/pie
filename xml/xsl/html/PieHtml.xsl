@@ -938,17 +938,14 @@
   <xsl:template name="MENUSET">
     <xsl:attribute name="name">
       <xsl:choose>
-	<xsl:when test="@blocator">
-	  <xsl:value-of select="concat(translate(@blocator,'\','/'),':',@bxpath,':',@xpath)"/>
-	</xsl:when>
 	<xsl:when test="ancestor::block[@context]">
-	  <xsl:value-of select="concat(translate(ancestor::block[1]/@context,'\','/'),':',@bxpath,':',@xpath)"/>
+	  <xsl:value-of select="concat(translate(ancestor::block[@context][1]/@context,'\','/'),':',@bxpath,':',@xpath)"/>
 	</xsl:when>
 	<xsl:when test="string-length($file_norm) &gt; 0">
 	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@bxpath,':',@xpath)"/>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:value-of select="concat('',':',@xpath,':',@xpath)"/>
+	  <xsl:value-of select="concat('',':',':',@xpath)"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
