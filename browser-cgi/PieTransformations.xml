@@ -671,7 +671,6 @@
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
-	  <xsl name="ExtractDuration.xsl"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -694,7 +693,6 @@
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
-	  <xsl name="ExtractDuration.xsl"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -715,8 +713,6 @@
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
-	  <xsl name="ExtractDuration.xsl"/>
-	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -748,8 +744,6 @@
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
-	  <xsl name="ExtractDuration.xsl"/>
-	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -772,12 +766,10 @@
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
-	  <xsl name="ExtractDuration.xsl"/>
-	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
       </make>
     </pkg:transition>
-    <pkg:transition id="docx2plain">
+    <pkg:transition id="docx2plain" valid="no">
       <h>docx2plain</h>
       <make>
 	<plain>
@@ -807,8 +799,6 @@
 	    </pie>
 	  </xml>
 	  <xpath select="XPATH"/>
-	  <xsl name="ExtractDuration.xsl"/>
-	  <xsl name="RemoveHiddenLevel.xsl"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -915,7 +905,6 @@
 		  <xsl name="mm2pie.xsl"/>
 		</xml>
 		<xsl name="PieValidate.xsl" />
-		<xsl name="ExtractDuration.xsl"/>
 	      </xml>
 	    </col>
 	  </calendar>
@@ -934,7 +923,6 @@
 		    <import name="PATH" locator="yes" type="log"/>
 		  </pie>
 		</xml>
-		<xsl name="RemoveHiddenLevel.xsl"/>
 	      </xml>
 	    </col>
 	  </calendar>

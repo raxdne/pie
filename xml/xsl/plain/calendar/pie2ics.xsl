@@ -5,9 +5,11 @@
 
   <xsl:variable name="flag_todo" select="false()" /> <!-- default: false() handle task elements as ordinary VEVENT -->
 
-  <xsl:variable name="flag_interval" select="true()" /> <!-- default: true() only dates with an interval/period -->
+  <xsl:variable name="flag_interval" select="false()" /> <!-- default: true() only dates with an interval/period -->
 
   <xsl:variable name="str_ctime" select="translate(/pie/meta/@ctime2,'-:','')" />
+
+  <xsl:variable name="int_lmax" select="80" />
 
   <xsl:template match="/">
 <xsl:text>BEGIN:VCALENDAR
@@ -41,8 +43,22 @@ END:VTIMEZONE
   <xsl:template match="date">
     <xsl:variable name="str_summary">
       <xsl:choose>
-	<xsl:when test="name(parent::*) = 'td' or name(parent::*) = 'th'">
+	<xsl:when test="parent::td or parent::th">
 	  <xsl:for-each select="parent::*/parent::*/child::node()|parent::*/parent::*/child::text()">
+	    <xsl:choose>
+	      <xsl:when test="name() = 't'"/>
+	      <xsl:when test="name() = 'date'"/>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat(normalize-space(.),' ')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:for-each>	  
+	</xsl:when>
+	<xsl:when test="parent::p/parent::list/parent::task">
+	  <xsl:for-each select="parent::p/parent::list/parent::task/child::h|parent::*/child::text()">
+	    <xsl:if test="position() = 1 and parent::task/attribute::class">
+	      <xsl:value-of select="concat(translate(parent::task/attribute::class,'todnreqabugs','TODNREQABUGS'),': ')" />
+	    </xsl:if>
 	    <xsl:choose>
 	      <xsl:when test="name() = 't'"/>
 	      <xsl:when test="name() = 'date'"/>
@@ -91,7 +107,7 @@ END:VTIMEZONE
 CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
-SUMMARY:TODO: </xsl:text><xsl:value-of select="substring($str_summary,1,60)" /><xsl:text>
+SUMMARY:TODO: </xsl:text><xsl:value-of select="substring($str_summary,1,$int_lmax)" /><xsl:text>
 DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
 DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
@@ -107,12 +123,12 @@ END:VTODO
 </xsl:text>
       </xsl:when>
 
-      <xsl:otherwise>
+      <xsl:when test="parent::h/parent::task|parent::p/parent::list/parent::task|parent::p/parent::section">
     <xsl:text>BEGIN:VEVENT
 CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
-SUMMARY:</xsl:text><xsl:value-of select="substring($str_summary,1,70)" /><xsl:text>
+SUMMARY:</xsl:text><xsl:value-of select="substring($str_summary,1,$int_lmax)" /><xsl:text>
 DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
 DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
@@ -121,6 +137,9 @@ UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
 <xsl:text>TRANSP:OPAQUE
 END:VEVENT
 </xsl:text>
+      </xsl:when>
+
+      <xsl:otherwise>
       </xsl:otherwise>
 
     </xsl:choose>

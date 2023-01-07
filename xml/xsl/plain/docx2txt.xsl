@@ -142,19 +142,14 @@
 
   <xsl:template match="w:hyperlink">
     <xsl:choose>
-      <xsl:when test="w:r[w:t]">
-	<xsl:value-of select="concat('[LINK](',w:r/w:t,')')"/> <!-- TODO: find href value  -->
-      </xsl:when>
       <xsl:when test="attribute::r:id">
 	<xsl:variable name="str_url_id" select="attribute::r:id"/>
-	<xsl:choose>
-	  <xsl:when test="//Relationships/Relationship[@Id = $str_url_id]">
-	    <xsl:value-of select="concat('[',w:r/w:t,'](',//Relationships/Relationship[@Id = $str_url_id]/@Target,')')"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="concat('[',w:r/w:t,']()')"/>
-	  </xsl:otherwise>
-	</xsl:choose>
+	<xsl:variable name="str_url_target">
+	  <xsl:for-each select="/descendant::*[name() = 'Relationship' and attribute::Id = $str_url_id][1]">
+	    <xsl:value-of select="attribute::Target"/>
+	  </xsl:for-each>
+	</xsl:variable>
+	<xsl:value-of select="concat('[',w:r/w:t,'](',$str_url_target,')')"/>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:value-of select="w:r/w:t[1]"/>
