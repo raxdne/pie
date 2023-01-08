@@ -37,15 +37,19 @@ a [AAA](picture.png) @mmm nnn
 
 20131010 12.00-12.63 H
 
-2013-10-12T14:00:00+05:00 TTT
-
-2013-10-12T14:00:00CST TTT
-
-2013-10-12T14:00:00−05:00 TTT
+** Time zones
 
 2013-10-12T14:00:00Z Zulu valid
 
-20131012T140000−05:00 compact valid
+2013-10-12T14:00:00+05:00 TTT
+
+2013-10-12T14:00:00−05:00 TTT
+
+2013-10-12T14:00:00CST China Standard Time
+
+2013-10-12T14:00:00IST India Standard Time
+
+20131012T140000−0500 compact valid
 
 20131013T146300Z invalid minutes
 
@@ -95,9 +99,21 @@ a [AAA](picture.png) @mmm nnn
 
 P3W/2022-11-01 Interval
 
+** ISO Time Interval
+
+2022-W31-1T13:00:00/PT1H Interval
+
+2022-W31-1T14:00:00/PT66M Interval
+
 ** ISO Calendar Recurrence
 
 R3/2022-W31-1/P2W Interval
 
+R3/2022-W41-1T13:00:00/P2D Interval
+
 R7/P3W/2022-11-01 Interval
+
+R4/P1D/2022-12-20 Interval
+
+R4/2022-12-20T13:00:00/2022-12-20T16:00:00/P1D Interval
 

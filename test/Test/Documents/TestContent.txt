@@ -9,6 +9,8 @@ TAGS: abc|GTD|Test|\u258A{1,4}|\u21AF+
 
 T<C>
 
+AAA @abc GTD @def
+
 ** http://www.dummy.org/
 
 TODO: 2020-01-04 BBBB
