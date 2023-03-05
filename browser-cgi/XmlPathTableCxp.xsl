@@ -5,6 +5,7 @@
   <xsl:variable name="str_path"></xsl:variable>
   <xsl:variable name="str_xpath" select="'/*'" />
   <xsl:variable name="str_tag" select="''" />
+  <xsl:variable name="str_re" select="''" />
   <xsl:variable name="str_tagtime" select="''" />
   <xsl:variable name="int_count" select="1" />
   <xsl:output method="xml" />
@@ -165,6 +166,12 @@
       <xsl:if test="text() = 'TAG'">
         <!-- replace 'TAG' by path value and set type attribute -->
         <xsl:value-of select="$str_tag" />
+      </xsl:if>
+      <xsl:if test="attribute::regexp[. = 'RE']">
+        <!-- replace 'RE' by path value and set type attribute -->
+        <xsl:attribute name="regexp">
+          <xsl:value-of select="$str_re" />
+	</xsl:attribute>
       </xsl:if>
       <xsl:if test="attribute::select[. = 'TAGTIME']">
         <!-- replace 'TAGTIME' by path value and set type attribute -->

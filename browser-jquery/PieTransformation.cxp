@@ -10,6 +10,7 @@
   <cxp:xsl name="XmlPathTableCxp.xsl">
     <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
     <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
+    <cxp:variable name="str_re">%CGIRE%</cxp:variable>
     <cxp:variable name="str_tag">%CGITAG%</cxp:variable>
     <cxp:variable name="str_pathdir">/%CGIPATHDIR%</cxp:variable>
   </cxp:xsl>

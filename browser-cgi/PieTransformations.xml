@@ -646,7 +646,7 @@
       <make>
 	<xml>
 	  <xml>
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes" xpath="XPATH">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH">
 	      <import name="PATH" locator="yes"/>
 	    </pie>
 	  </xml>
