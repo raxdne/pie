@@ -384,6 +384,7 @@ function callbackSection(key, options) {
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'frame') { // scope
+	urlParams.delete('pattern');
 	if (strXPathBlock == '') {
 	    if (strXPathGlobal == '') {
 		if (strLocator == '') {

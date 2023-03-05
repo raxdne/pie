@@ -28,6 +28,7 @@
       (require 'speedbar)
       (speedbar-add-supported-extension ".txt")
       (speedbar-add-supported-extension ".pie")
+      (speedbar-add-supported-extension ".md")
       (require 'goto-addr)
       )
   )
@@ -77,12 +78,16 @@
 	  (progn
 	    (pie-plain-minor-mode)
 	    (end-of-buffer))
-	(if (string= (file-name-extension (buffer-file-name)) "pie")
-	    (pie-xml-minor-mode)
-	  (message "Unknown extension")
+	(if (string= (file-name-extension (buffer-file-name)) "md")
+	    (progn
+	      (pie-markdown-minor-mode)
+	      (end-of-buffer))
+	  (if (string= (file-name-extension (buffer-file-name)) "pie")
+	      (pie-xml-minor-mode)
+	    (message "Unknown extension")
+	    )
 	  )
 	)
-    (pie-plain-minor-mode)
     )
 
   (local-set-key "\e1"
@@ -116,7 +121,94 @@
   )
 
 (add-hook 'text-mode-hook 'pie-minor-mode)
+;(add-hook 'text-mode-hook 'pie-minor-mode)
 ;(add-hook 'text-mode-hook 'outline-minor-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; pie font lock
+;;;
+
+(defvar pie-font-lock-keywords
+  '(     ; Reihenfolge ist wichtig
+    ;; CPP-Anweisungen
+    ("^[;]*#(import|subst).*$" . font-lock-keyword-face)
+    ;; Kommentare
+    ("^;+.*$" . font-lock-comment-face)
+    ;; Todo
+    ("TODO:" . font-lock-reference-face)
+    ("TEST:" . font-lock-reference-face)
+    ("BUG:" . font-lock-reference-face)
+    ("TARGET:" . font-lock-reference-face)
+    ("REQ:" . font-lock-reference-face)
+    ("DONE:" . font-lock-reference-face)
+    ;; Abb
+    ("[Aa][Bb][Bb][\\.:]" . font-lock-reference-face)
+    ("[Ff][Ig][Gg][\\.:]" . font-lock-reference-face)
+    ;; Tags
+    ("[@#][a-zA-ZäöüÄÖÜß\\-_]+" . font-lock-reference-face)
+    )
+  )
+
+(font-lock-add-keywords 'text-mode pie-font-lock-keywords)
+(font-lock-add-keywords 'text-mode '(("^ *[\\*%]+.*$" . font-lock-function-name-face)))
+(font-lock-add-keywords 'markdown-mode pie-font-lock-keywords)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; pie markdown
+;;;
+
+(defvar pie-markdown-imenu-generic-expression
+  '(
+    ("Sections" "^[#]+ .*" 0)
+    ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
+					;("Remarks"  "^[;]+.*"  0)
+					;("Markups"  "^[#]+.*"   0)
+    ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
+  "Imenu generic expression for PIE mode.  See `imenu-generic-expression'.")
+
+(defun pie-markdown-minor-mode ()
+  "This is the markdown text mode for PIE."
+
+  (interactive)
+  ;;
+  (auto-fill-mode -1)
+  ;(setq fill-column 70)
+  ;;
+  (line-number-mode 1)
+  (column-number-mode 1)
+  ;;
+  (local-set-key    [S-f1] 'pie-plain-insert-task)
+  ;;
+  (local-set-key [C-f1] 'pie-plain-toggle-todo)
+  (if window-system
+      (progn
+	;; font-lock 
+	(font-lock-mode t)
+	(font-lock-fontify-buffer)
+	;; BUG: font-lock isnt active first time
+	;;
+	(goto-address-mode)
+	;;  (goto-address-fontify)
+	;;
+	;; imenu
+	;; sonst entsprechend imenu-example--* anpassen
+	(set (make-local-variable 'imenu-generic-expression)
+	     pie-markdown-imenu-generic-expression)
+	(setq
+	 imenu-case-fold-search nil
+	 speedbar-tag-hierarchy-method '(speedbar-trim-words-tag-hierarchy)
+	 )
+	)
+    (progn				; Text-Modus
+      )
+    )
+  (set (make-local-variable 'pie-mode-enabled) t)
+  (message "'pie-markdown-minor-mode' loaded")
+;  (run-mode-hooks 'text-mode-hook)
+  )
+;; (pie-markdown-minor-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -128,51 +220,10 @@
   '(
     ("Sections" "^[*%]+.*" 0)
     ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
-    ("Remarks"  "^[;]+.*"  0)
-    ("Markups"  "^[#]+.*"   0)
+    ;("Remarks"  "^[;]+.*"  0)
+    ;("Markups"  "^[#]+.*"   0)
     ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
   "Imenu generic expression for PIE mode.  See `imenu-generic-expression'.")
-
-
-(defvar pie-plain-font-lock-keywords
-  '(     ; Reihenfolge ist wichtig
-   ;; section
-   ("^ *[\\*%]+.*$" . font-lock-function-name-face)
-   ;; CPP-Anweisungen
-   ("^[ ;]*#(import|subst).*$" . font-lock-keyword-face)
-   ;; Kommentare
-   ("^ *;+.*$" . font-lock-comment-face)
-					; cite
-					;("\\[[a-zA-Z0-9\,\-]*\\]" . font-lock-variable-name-face)
-   ;; Todo
-   ("TODO:" . font-lock-reference-face)
-   ("TEST:" . font-lock-reference-face)
-   ("BUG:" . font-lock-reference-face)
-   ("TARGET:" . font-lock-reference-face)
-   ("REQ:" . font-lock-reference-face)
-   ("DONE:" . font-lock-reference-face)
-   ;; Abb
-   ("[Aa][Bb][Bb][\\.:]" . font-lock-reference-face)
-   ("[Ff][Ig][Gg][\\.:]" . font-lock-reference-face)
-   ;; Tab
-					;("[Tt][Aa][Bb][\\.:]" . font-lock-reference-face)
-   ;; Tags
-   ("[@#][a-zA-ZäöüÄÖÜß\\-_]+" . font-lock-reference-face)
-   ;; Aufzaehlungen
-   ("^ *[\-\+]+" . font-lock-variable-name-face)
-   ;; quotes
-   ("[><]+" . font-lock-variable-name-face)
-					; ldots
-					;("\\.\\.\\." . font-lock-variable-name-face)
-					; i.d.R.
-					;("i\\. *d\\. *R\\." . font-lock-variable-name-face)
-					; z.B.
-					;("z\\. *B\\." . font-lock-variable-name-face)
-					; d.h.
-					;("d\\. *h\\." . font-lock-variable-name-face)
-   )
-  "font-lock expressions for PIE mode.  See `'.")
-
 
 (defun pie-plain-minor-mode ()
   "This is the plain text mode for PIE."
@@ -192,7 +243,6 @@
       (progn
 	;; font-lock
 	(font-lock-mode t)
-	(setq font-lock-keywords pie-plain-font-lock-keywords)
 	(font-lock-fontify-buffer)
 	;; BUG: font-lock isnt active first time
 	;;
@@ -245,27 +295,6 @@
 ;; (pie-plain-toggle-todo)
 
 
-(defun pie-plain-insert-task ()
-  "insert a task element"
-  (interactive)
-  ;;
-  (setq pie-position (point))
-  (setq pie-task-date-str
-	(read-from-minibuffer "date: "))
-  (setq pie-task-h-str
-	(read-from-minibuffer "h: "))
-  ;;
-  (insert (concat "TODO: "
-		  (if (> (length pie-task-date-str) 0)
-		      (concat pie-task-date-str " ")
-		    )
-		  pie-task-h-str " | \n\n")
-	  )
-					;(goto-char (match-end 0))
-  (previous-line 2)
-  )
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 (defun pie-alphabet ()
@@ -286,6 +315,8 @@
 ;;;
 ;;; pie XML
 ;;;
+
+;(font-lock-add-keywords 'xml-mode pie-plain-font-lock-keywords)
 
 (defun pie-xml-minor-mode ()
   ""

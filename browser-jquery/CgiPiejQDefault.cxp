@@ -6,6 +6,7 @@
   <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGITITLE%" cgi="title" default="YYY"/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
@@ -29,6 +30,7 @@
                 <cxp:variable name="flag_tags" select="true()"/>
                 <cxp:variable name="flag_llist" select="true()"/>
 		<cxp:variable name="str_tag">%CGITAG%</cxp:variable>
+		<cxp:variable name="str_title">%CGITITLE%</cxp:variable>
                 <cxp:variable name="str_link_prefix">/%CGIPATHDIR%</cxp:variable>
               </cxp:xsl>
             </cxp:xhtml>

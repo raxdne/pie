@@ -9,7 +9,7 @@
   <!--  -->
   <xsl:variable name="int_delta" select="0"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task[$int_delta = 0 or child::h/child::date[@diff &gt; $int_delta] or not(child::h/child::date)]"/>
+  <xsl:variable name="ns_task" select="/descendant::task[not(@state='done') and not(@done='yes') and ($int_delta = 0 or child::h[child::date[@diff &lt; $int_delta] or not(child::date)])]"/>
 
   <xsl:output method="html"/>
   
@@ -47,7 +47,7 @@ table {
         <xsl:element name="tr">
           <xsl:element name="th">
             <xsl:element name="b">
-              <xsl:value-of select="concat('Backlog (',count($ns_task),' items)')" />
+              <xsl:value-of select="concat('Backlog (',count($ns_task),' items in ',$int_delta,' days)')" />
             </xsl:element>
           </xsl:element>
         </xsl:element>

@@ -43,7 +43,7 @@
 	<xsl:call-template name="FORMATTASKPREFIX"/>
 	<xsl:apply-templates select="h"/>
       </xsl:element>
-      <xsl:apply-templates select="p|list"/>
+      <!-- no recursion due to XPath "/descendant::task" -->
     </xsl:element>
   </xsl:template>
 

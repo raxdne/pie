@@ -33,6 +33,8 @@
   <xsl:variable name="toc_display"  select="'none'"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="'.'"/>
+  <!--  -->
+  <xsl:variable name="str_title" select="''"/>
 
   <xsl:output 
     method="html"

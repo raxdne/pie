@@ -5,6 +5,8 @@
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="''"/>
+  <!--  -->
+  <xsl:variable name="str_title" select="''"/>
 
   <xsl:key name="list-date" match="date" use="@iso"/> <!--  -->
 
@@ -632,6 +634,9 @@
       </xsl:element>
       <xsl:element name="title">
 	<xsl:choose>
+	  <xsl:when test="string-length($str_title) &gt; 0">
+	    <xsl:value-of select="$str_title"/>
+	  </xsl:when>
 	  <xsl:when test="/pie/descendant::section[1]/h">
 	    <xsl:value-of select="/pie/descendant::section[1]/h"/>
 	  </xsl:when>

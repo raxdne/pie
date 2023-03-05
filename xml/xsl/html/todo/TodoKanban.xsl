@@ -11,7 +11,7 @@
   <!--  -->
   <xsl:variable name="int_delta" select="0"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task[not(child::t = '#done') and @class = 'todo' and ($int_delta = 0 or child::h/child::date[@diff &gt; $int_delta] or not(child::h/child::date))]"/>
+  <xsl:variable name="ns_task" select="/descendant::task[not(@state='done') and not(@done='yes') and ($int_delta = 0 or child::h[child::date[@diff &lt; $int_delta] or not(child::date)])]"/>
   
   <!-- TODO: parameters/variables for tag strings ('#review' etc) -->
   
