@@ -102,21 +102,23 @@
             <xsl:value-of select="h/@ref"/>
           </xsl:attribute>
         </xsl:if>
-        <xsl:if test="@done">
-          <xsl:element name="icon">
-            <xsl:attribute name="BUILTIN">
-              <xsl:text>button_ok</xsl:text>
-            </xsl:attribute>
-          </xsl:element>
-        </xsl:if>
         <xsl:call-template name="CREATECOLORS"/>
-        <xsl:if test="@valid = 'no' or @hidden">
-          <xsl:element name="icon">
-            <xsl:attribute name="BUILTIN">
-              <xsl:text>button_cancel</xsl:text>
-            </xsl:attribute>
-          </xsl:element>
-        </xsl:if>
+	<xsl:choose>
+          <xsl:when test="@done">
+            <xsl:element name="icon">
+              <xsl:attribute name="BUILTIN">
+		<xsl:text>button_ok</xsl:text>
+              </xsl:attribute>
+            </xsl:element>
+	  </xsl:when>
+          <xsl:when test="@valid = 'no' or @hidden">
+            <xsl:element name="icon">
+              <xsl:attribute name="BUILTIN">
+		<xsl:text>button_cancel</xsl:text>
+              </xsl:attribute>
+            </xsl:element>
+	  </xsl:when>
+	</xsl:choose>
         <xsl:call-template name="CREATEATTRIBUTES"/>
         <xsl:apply-templates select="child::*[not(name()='h')]"/>
       </xsl:element>
