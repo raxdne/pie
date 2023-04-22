@@ -8,6 +8,7 @@
   <cxp:subst string="%CGIMIN%" cgi="min" default="-3"/>
   <cxp:subst string="%CGIMAX%" cgi="max" default="3"/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIRE%" cgi="re" default=""/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>

@@ -5,6 +5,7 @@
   <xsl:variable name="str_path" select="''"/>
   <xsl:variable name="str_xpath" select="'/*'"/>
   <xsl:variable name="str_tag" select="''" />
+  <xsl:variable name="str_re" select="''" />
   <xsl:output method="html"/>
   <xsl:template match="/">
     <xsl:element name="html">
@@ -13,6 +14,7 @@
 	  str_path: <xsl:value-of select="$str_path"/>
 	  str_xpath: <xsl:value-of select="$str_xpath"/>
 	  str_tag: <xsl:value-of select="$str_tag"/>
+	  str_re: <xsl:value-of select="$str_re"/>
 	</xsl:comment>
         <xsl:element name="h3">
           <xsl:value-of select="concat('Transform ','&quot;',$type,'&quot;',' into')"/>
@@ -49,13 +51,20 @@
 	  </xsl:call-template>
           <xsl:if test="not($str_xpath='/' or $str_xpath='/*')">
             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
-          </xsl:if>
-          <xsl:if test="not($str_tag = '')">
+	  </xsl:if>
+	  <xsl:choose>
+          <xsl:when test="not($str_re = '')">
+            <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+          </xsl:when>
+          <xsl:when test="not($str_tag = '')">
 	    <xsl:text>&amp;pattern=</xsl:text>
 	    <xsl:call-template name="hashtag2code">
 	      <xsl:with-param name="StringToTransform" select="$str_tag"/>
 	    </xsl:call-template>
-          </xsl:if>
+          </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	  </xsl:choose>
         </xsl:attribute>
         <xsl:value-of select="h"/>
       </xsl:element>

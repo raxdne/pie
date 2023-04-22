@@ -4,6 +4,7 @@
   <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIRE%" cgi="re" default=""/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%CGISUB%" cgi="sub" default="default"/>
   <cxp:subst string="%START%" type="%CGIPATH%" default="inode/directory"/> <!-- empty '%CGIPATH%' means root directory -->
@@ -19,6 +20,7 @@
       <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
       <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
       <cxp:variable name="str_tag">%CGITAG%</cxp:variable>
+      <cxp:variable name="str_re">%CGIRE%</cxp:variable>
       <cxp:variable name="str_tagtime">%TAGTIME%</cxp:variable>
       <cxp:variable name="str_pathdir">%CGIPATHDIR%</cxp:variable>
       <cxp:variable name="int_count" select="10"/>

@@ -658,7 +658,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes">
 	      <import type="cxp">
 		<xml>
 		  <xml locator="yes">
@@ -679,7 +679,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes">
 	      <import type="cxp">
 		<xml>
 		  <xml locator="yes">
@@ -701,7 +701,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes">
 	      <import type="cxp">
 		<plain>
 		  <xml locator="yes">
@@ -732,7 +732,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes">
 	      <import type="cxp">
 		<plain>
 		  <xml locator="yes">
@@ -752,7 +752,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" import="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" import="yes" validation="yes">
 	      <import type="cxp">
 		<plain>
 		  <xml>
@@ -787,7 +787,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="yes" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes">
 	      <import type="cxp">
 		<plain>
 		  <xml locator="yes">
@@ -818,7 +818,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes">
 	      <import name="PATH" locator="yes" type="csv"/>
 	    </pie>
 	  </xml>
@@ -830,7 +830,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes">
 	      <import name="PATH" locator="yes" type="log"/>
 	    </pie>
 	  </xml>
@@ -842,7 +842,7 @@
       <make>
 	<xml>
 	  <xml xpath="yes">
-	    <pie url="yes" tags="yes" pattern="TAG" figure="no" offset="yes" validation="yes">
+	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes">
 	      <import type="cxp">
 		<xml>
 		  <xml locator="yes">

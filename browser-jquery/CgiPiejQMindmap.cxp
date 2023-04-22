@@ -5,6 +5,7 @@
   <cxp:subst string="%CGIPATH%" cgi="path"/> <!-- TODO: encode UTF-8 value to rfc1738 -->
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
+  <cxp:subst string="%CGIRE%" cgi="re" default=""/>
   <cxp:subst string="%HOST%" env="HTTP_HOST"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>

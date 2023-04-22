@@ -6,6 +6,7 @@
   <cxp:subst string="%CGISUB%" cgi="sub"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
+  <cxp:subst string="%CGIRE%" cgi="re" default=""/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%START%" type="%CGIPATH%"/>
   <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>

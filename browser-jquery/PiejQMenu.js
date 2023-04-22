@@ -373,6 +373,7 @@ function callbackSection(key, options) {
     [strLocator,strXPathBlock,strXPathGlobal] = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
 
     urlParams.delete('hl');
+    //urlParams.delete('re');
     if (key == 'view') {
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
@@ -381,6 +382,7 @@ function callbackSection(key, options) {
 	selection = window.getSelection();
 	strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	//urlParams.set('re',strSelect);
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'frame') { // scope
@@ -427,6 +429,7 @@ function callbackContent(key, options) {
     var strHashNew = '';
 
     urlParams.delete('hl');
+    //urlParams.delete('re');
     
     if (key == 'frame') {
 	window.open(window.location);
@@ -459,6 +462,7 @@ function callbackContent(key, options) {
 	    strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	}
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	//urlParams.set('re',strSelect);
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'link') {
@@ -485,11 +489,13 @@ function callbackContent(key, options) {
 	    urlParams.delete('tag');
 	    urlParams.delete('xpath');
 	    urlParams.delete('pattern');
+	    urlParams.delete('re');
 	    urlParams.set('cxp','PiejQDefault');
 	} else if (key == 'editor') {
 	    urlParams.delete('tag');
 	    urlParams.delete('xpath');
 	    urlParams.delete('pattern');
+	    urlParams.delete('re');
 	    urlParams.set('cxp','PiejQEditor');
 	} else if (key == 'calendar') {
 	    urlParams.set('cxp','PiejQCalendar');
@@ -500,11 +506,13 @@ function callbackContent(key, options) {
 	    selection = window.getSelection();
 	    strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	    urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
+	    //urlParams.set('re',strSelect);
 	    urlParams.set('hl',strSelect);
 	} else if (key == 'search') {
 	    selection = window.getSelection();
 	    strSelect = selection.toString();
 	    urlParams.delete('pattern');
+	    urlParams.delete('re');
 	    urlParams.delete('path'); // search in all files of this site
 	    urlParams.set('cxp','PiejQDirSearchResult');
 	    urlParams.set('needle', strSelect);
