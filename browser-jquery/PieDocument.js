@@ -86,7 +86,13 @@ document.createUI = function () {
 	    } else if (strClass.match(/^htag$/)) {
 		strPatternNew = "(tag[contains(text(),'" + event.target.innerText + "')]|htag[contains(text(),'" + event.target.innerText + "')]|t[contains(text(),'" + event.target.innerText + "')])";
 	    } else if (strClass.match(/date/)) {
-		strPatternNew = "date[contains(text(),'" + event.target.innerText + "')]";
+		var strISO = event.target.getAttribute("title");
+		
+		if (strISO == undefined || strISO == '') {
+	            putsConsole('No ISO date found');
+		} else {
+		    strPatternNew = "date[contains(text(),'" + event.target.getAttribute("title") + "') or @iso = '" + event.target.getAttribute("title") + "']";
+		}
 	    } else {
 		strPatternNew = "t[contains(text(),'" + event.target.innerText + "')]";
 	    }
