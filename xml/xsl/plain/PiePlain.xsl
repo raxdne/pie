@@ -57,7 +57,7 @@
   </xsl:template>
 
   <xsl:template match="fig">
-    <xsl:value-of select="concat($newpar,'Fig. ![',h,'](',img/@src,')',$newline)"/>
+    <xsl:value-of select="concat($newpar,'![',h,'](',img/@src,')',$newline)"/>
   </xsl:template>
 
   <xsl:template match="hr">

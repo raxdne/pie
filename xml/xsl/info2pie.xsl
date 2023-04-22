@@ -14,7 +14,7 @@
           <xsl:element name="h">
             <xsl:element name="link">
               <xsl:attribute name="href">
-                <xsl:value-of select="@ns"/>
+                <xsl:value-of select="namespace-uri()"/>
               </xsl:attribute>
               <xsl:value-of select="@name"/>
             </xsl:element>
