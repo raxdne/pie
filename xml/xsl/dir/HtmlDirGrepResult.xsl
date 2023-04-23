@@ -76,8 +76,8 @@
       <xsl:element name="ol">
 	<xsl:for-each select="child::grep/child::match">
 	  <xsl:element name="li">
-		<!-- 
 	    <xsl:element name="a">
+		<!-- 
               <xsl:attribute name="href">
 		<xsl:value-of select="concat('?path=',$file_path_url,'&amp;','cxp=',$str_cxp)"/>
 		<xsl:if test="$file_xpath">
