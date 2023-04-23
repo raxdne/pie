@@ -203,7 +203,7 @@ TODO: use XMLHttpRequest()
 </form>
 	    
 <h3>Search directory</h3>
-<form method="post">
+<form>
   <input type="hidden" name="cxp" value="PiejQDirSearchResult"/>
   <input type="hidden" name="path" value="%CGIPATH%"/>
   <p>
@@ -212,6 +212,18 @@ TODO: use XMLHttpRequest()
     <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|md|csv|ods|odt|mm|mmap|xmmap)$"/>
   </p>
 </form>
+
+<!-- TODO: re search
+<form>
+  <input type="hidden" name="cxp" value="PiejQDirSearchResult"/>
+  <input type="hidden" name="path" value="%CGIPATH%"/>
+  <p>
+    <input type="submit" value="RegExp"/> in '%CGIPATH%' for files containing 
+    <input class="additor" name="re" type="text" size="30" value=""/> files named 
+    <input class="additor" name="patternname" type="text" size="30" value="^.+(pie|txt|md|csv|ods|odt|mm|mmap|xmmap)$"/>
+  </p>
+</form>
+-->
 
 <h3>Actions</h3>
 <ul class="ui-menu">

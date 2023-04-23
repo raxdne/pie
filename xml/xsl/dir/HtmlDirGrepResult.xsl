@@ -65,7 +65,7 @@
     <xsl:element name="h3">
       <xsl:element name="a">
         <xsl:attribute name="href">
-          <xsl:value-of select="concat('/cxproc/exe?path=',$file_path_url,'&amp;','cxp=',$str_cxp)"/>
+          <xsl:value-of select="concat('?path=',$file_path_url,'&amp;','cxp=',$str_cxp)"/>
         </xsl:attribute>
         <xsl:value-of select="$file_path"/>
       </xsl:element>
@@ -76,13 +76,15 @@
       <xsl:element name="ol">
 	<xsl:for-each select="child::grep/child::match">
 	  <xsl:element name="li">
+		<!-- 
 	    <xsl:element name="a">
               <xsl:attribute name="href">
-		<xsl:value-of select="concat('/cxproc/exe?path=',$file_path_url,'&amp;','cxp=',$str_cxp)"/>
+		<xsl:value-of select="concat('?path=',$file_path_url,'&amp;','cxp=',$str_cxp)"/>
 		<xsl:if test="$file_xpath">
 		  <xsl:value-of select="concat('&amp;','xpath=',@xpath,'/ancestor-or-self::section[1]')"/>
 		</xsl:if>
               </xsl:attribute>
+		-->
               <xsl:value-of select="concat(name(child::*[1]),' ',.,child::*[1]/attribute::*)"/>
 	    </xsl:element>
 	  </xsl:element>
