@@ -9,34 +9,6 @@
 
   <!-- header structure with templates 'Heading' 'berschrift' -->
 
-  <xsl:template match="/">
-    <xsl:choose>
-      <xsl:when test="string-length($str_path) &gt; 0">
-	<xsl:value-of select="concat('ORIGIN: ', $str_path, $newpar)"/>
-      </xsl:when>
-      <xsl:when test="pie/file/@name">
-	<xsl:value-of select="concat('ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<!-- no locator found -->
-      </xsl:otherwise>
-    </xsl:choose>
-    <xsl:apply-templates select="//w:document/w:body"/>
-    <!-- all table cells containing markup 'TODO:' -->
-    <xsl:if test="count(descendant::w:p[parent::w:tc and descendant::w:t[contains(.,'TODO:')]]) &gt; 0">
-      <xsl:value-of select="concat('*** Tasks from the table',$newpar,$newpar)"/>
-      <xsl:apply-templates select="descendant::w:p[parent::w:tc and descendant::w:t[contains(.,'TODO:')]]"/>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Title')]">
-    <xsl:value-of select="concat('___',.,'___',$newpar)"/>
-  </xsl:template>
-
-  <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Subtitle')]">
-    <xsl:value-of select="concat('__',.,'__',$newpar)"/>
-  </xsl:template>
-
   <xsl:template match="w:p[contains(w:pPr/w:pStyle/@w:val,'Heading') or contains(w:pPr/w:pStyle/@w:val,'berschrift')]">
     <xsl:if test="descendant::w:strike or descendant::w:dstrike"> <!-- text strike -->
       <xsl:text>;</xsl:text>
@@ -68,7 +40,7 @@
 	  <xsl:text>;</xsl:text>
 	</xsl:if>
 	<xsl:choose>
-	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)">
+	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)"> <!-- BUG: string value is not portable -->
 	    <xsl:text>+</xsl:text>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -79,40 +51,6 @@
     </xsl:call-template>
     <xsl:apply-templates/>
     <xsl:value-of select="$newpar"/>
-  </xsl:template>
-
-  <xsl:template name="SECTION">
-    <xsl:param name="level"/>
-    <xsl:param name="str_markup" select="'*'"/>
-    <xsl:choose>
-      <xsl:when test="$level &gt; 0">
-	<xsl:value-of select="$str_markup"/>
-	<xsl:call-template name="SECTION">
-	  <xsl:with-param name="str_markup" select="$str_markup"/>
-	  <xsl:with-param name="level" select="$level - 1"/>
-	</xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:text> </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="ENUM">
-    <xsl:param name="level"/>
-    <xsl:param name="str_markup" select="' '"/>
-    <xsl:value-of select="$str_markup"/>
-    <xsl:choose>
-      <xsl:when test="$level &gt; 0">
-	<xsl:call-template name="ENUM">
-	  <xsl:with-param name="level" select="$level - 1"/>
-	  <xsl:with-param name="str_markup" select="$str_markup"/>
-	</xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:text> </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="w:p">
@@ -126,59 +64,6 @@
 	<xsl:value-of select="$newpar"/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="w:t[preceding-sibling::w:rPr/w:b]">
-    <xsl:value-of select="concat('___',.,'___')"/>
-  </xsl:template>
-
-  <xsl:template match="w:t[preceding-sibling::w:rPr/w:i]">
-    <xsl:value-of select="concat('__',.,'__')"/>
-  </xsl:template>
-
-  <xsl:template match="w:t[preceding-sibling::w:rPr/child::w:rFonts[attribute::w:ascii = 'Courier New']]">
-    <xsl:value-of select="concat('`',.,'`')"/>
-  </xsl:template>
-
-  <xsl:template match="w:hyperlink">
-    <xsl:choose>
-      <xsl:when test="attribute::r:id">
-	<xsl:variable name="str_url_id" select="attribute::r:id"/>
-	<xsl:variable name="str_url_target">
-	  <xsl:for-each select="/descendant::*[name() = 'Relationship' and attribute::Id = $str_url_id][1]">
-	    <xsl:value-of select="attribute::Target"/>
-	  </xsl:for-each>
-	</xsl:variable>
-	<xsl:value-of select="concat('[',w:r/w:t,'](',$str_url_target,')')"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="w:r/w:t[1]"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="w:tab">
-    <xsl:value-of select="'	'"/>
-  </xsl:template>
-
-  <xsl:template match="w:tbl">
-    <xsl:value-of select="concat('&lt;csv&gt;',$newline)"/>
-    <xsl:apply-templates select="w:tr"/>
-    <xsl:value-of select="concat('&lt;/csv&gt;',$newline)"/>
-  </xsl:template>
-
-  <xsl:template match="w:tr">
-    <xsl:apply-templates select="w:tc"/>
-    <xsl:value-of select="$newline"/>
-  </xsl:template>
-  
-  <xsl:template match="w:tc">
-    <xsl:apply-templates/>
-    <xsl:text>;</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="w:drawing">
-    <xsl:value-of select="concat('Fig. ',wp:inline/@wp14:editId,' ',wp:inline/wp:docPr/@descr,' (',wp:inline/wp:docPr/@name,')',$newpar)"/>
   </xsl:template>
 
 </xsl:stylesheet>

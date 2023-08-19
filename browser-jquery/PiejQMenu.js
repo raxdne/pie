@@ -373,7 +373,6 @@ function callbackSection(key, options) {
     [strLocator,strXPathBlock,strXPathGlobal] = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
 
     urlParams.delete('hl');
-    //urlParams.delete('re');
     if (key == 'view') {
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
@@ -385,8 +384,21 @@ function callbackSection(key, options) {
 	//urlParams.set('re',strSelect);
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
+    } else if (key == 'google') {
+	selection = window.getSelection();
+	strSelect = selection.toString().replace(/^\s+/,'+').replace(/\s+$/,'');
+	if (confirm('open "https://www.google.de/search?q=' + strSelect + '"')) {
+	    window.open('https://www.google.de/search?q=' + strSelect);
+	}
+    } else if (key == 'translate') {
+	selection = window.getSelection();
+	strSelect = selection.toString().replace(/^\s+/,'+').replace(/\s+$/,'');
+	if (confirm('Translate "' + strSelect + '"?')) {
+	    window.open('https://www.deepl.com/translator#de/en/' + strSelect);
+	}
     } else if (key == 'frame') { // scope
 	urlParams.delete('pattern');
+	urlParams.delete('re');
 	if (strXPathBlock == '') {
 	    if (strXPathGlobal == '') {
 		if (strLocator == '') {
@@ -467,6 +479,18 @@ function callbackContent(key, options) {
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'link') {
 	$('#links').css({'display': 'block'});
+    } else if (key == 'google') {
+	selection = window.getSelection();
+	strSelect = selection.toString().replace(/^\s+/,'+').replace(/\s+$/,'');
+	if (confirm('open "https://www.google.de/search?q=' + strSelect + '"')) {
+	    window.open('https://www.google.de/search?q=' + strSelect);
+	}
+    } else if (key == 'translate') {
+	selection = window.getSelection();
+	strSelect = selection.toString().replace(/^\s+/,'+').replace(/\s+$/,'');
+	if (confirm('Translate "' + strSelect + '"?')) {
+	    window.open('https://www.deepl.com/translator#de/en/' + strSelect);
+	}
     } else {
 
 	// actions to change the URL
@@ -618,6 +642,8 @@ $(function(){
 		    "tags": {name: "Tag cloud", icon: "tags"},
 		    "selection": {name: "Tag selection", icon: "tags"},
 		    "search": {name: "Search selection", icon: "tags"},
+		    "translate": {name: "Translate selection", icon: "tags"},
+		    "google": {name: "Google selection", icon: "tags"},
 		    "link": {name: "Link list", icon: "link"},
 		    "sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
@@ -645,6 +671,8 @@ $(function(){
 		"sep1": "---------",
 		//"view": {name: "View", icon: "view"},
 		"selection": {name: "Tag selection", icon: "tags"},
+		"translate": {name: "Translate selection", icon: "tags"},
+		"google": {name: "Google selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
@@ -663,6 +691,8 @@ $(function(){
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
 		"selection": {name: "Tag selection", icon: "tags"},
+		"translate": {name: "Translate selection", icon: "tags"},
+		"google": {name: "Google selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
@@ -733,6 +763,8 @@ $(function(){
 		    "tags": {name: "Tag cloud", icon: "tags"},
 		    "selection": {name: "Tag selection", icon: "tags"},
 		    "search": {name: "Search selection", icon: "tags"},
+		    "translate": {name: "Translate selection", icon: "tags"},
+		    "google": {name: "Google selection", icon: "tags"},
 		    "link": {name: "Link list", icon: "link"},
 		    "sep3": "---------",
 		    "layout": {name: "Layout", icon: ""},
@@ -760,6 +792,8 @@ $(function(){
 		"sep1": "---------",
 		//"view": {name: "View", icon: "view"},
 		"selection": {name: "Tag selection", icon: "tags"},
+		"translate": {name: "Translate selection", icon: "tags"},
+		"google": {name: "Google selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},
@@ -778,6 +812,8 @@ $(function(){
 		"task": {name: "Task", icon: "task"},
 		"sep1": "---------",
 		"selection": {name: "Tag selection", icon: "tags"},
+		"translate": {name: "Translate selection", icon: "tags"},
+		"google": {name: "Google selection", icon: "tags"},
 		"frame": {name: "Scope", icon: ""},
 		"sep2": "---------",
 		"up": {name: "Up", icon: "hide"},

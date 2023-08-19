@@ -69,6 +69,7 @@
       </xsl:with-param>
     </xsl:call-template>
     <xsl:apply-templates/>
+    <xsl:value-of select="$newline"/>
   </xsl:template>
 
   <xsl:template match="w:p[w:pPr/w:numPr]">
@@ -79,7 +80,7 @@
 	  <xsl:text>;</xsl:text>
 	</xsl:if>
 	<xsl:choose>
-	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)">
+	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)"> <!-- BUG: string value is not portable -->
 	    <xsl:text>1)</xsl:text>
 	  </xsl:when>
 	  <xsl:otherwise>
@@ -150,6 +151,26 @@
 
   <xsl:template match="w:t[preceding-sibling::w:rPr/child::w:rFonts[attribute::w:ascii = 'Courier New']]">
     <xsl:value-of select="concat('`',.,'`')"/>
+  </xsl:template>
+
+  <xsl:template match="w:hyperlink">
+    <xsl:variable name="str_url_display">
+      <xsl:copy-of select="w:r//w:t/text()"/>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="attribute::r:id">
+	<xsl:variable name="str_url_id" select="attribute::r:id"/>
+	<xsl:variable name="str_url_target">
+	  <xsl:for-each select="/descendant::*[name() = 'Relationship' and attribute::Id = $str_url_id][1]">
+	    <xsl:value-of select="attribute::Target"/>
+	  </xsl:for-each>
+	</xsl:variable>
+	<xsl:value-of select="concat('[',$str_url_display,'](',$str_url_target,')')"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$str_url_display"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="w:tab">

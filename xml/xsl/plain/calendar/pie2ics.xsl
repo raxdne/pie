@@ -9,7 +9,9 @@
 
   <xsl:variable name="str_ctime" select="translate(/pie/meta/@ctime2,'-:','')" />
 
-  <xsl:variable name="int_lmax" select="80" />
+  <xsl:variable name="int_delta" select="-1" /> <!-- time period in days to filter events, if value "-1" no filtering -->
+
+  <xsl:variable name="int_lmax" select="100" /> <!-- maximum length of an event summary -->
 
   <xsl:template match="/">
 <xsl:text>BEGIN:VCALENDAR
@@ -36,7 +38,7 @@ RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
 END:STANDARD
 END:VTIMEZONE
 </xsl:text>
-    <xsl:apply-templates select="descendant::date"/>
+    <xsl:apply-templates select="descendant::date[$int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]"/>
 <xsl:text>END:VCALENDAR</xsl:text>
   </xsl:template>
   
