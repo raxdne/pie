@@ -301,6 +301,11 @@ li {
   margin-left:0px;
   /* text-indent:0.1cm; */
 }
+.hr {
+  font-size:2%;
+  clear: both;
+  padding: 0px 5px 0px 5px ;
+}
 
 /* misc tags
 

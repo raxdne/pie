@@ -40,7 +40,7 @@
 	  <xsl:text>;</xsl:text>
 	</xsl:if>
 	<xsl:choose>
-	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)"> <!-- BUG: string value is not portable -->
+	  <xsl:when test="contains('18',w:pPr/w:numPr/w:numId/@w:val)"> <!-- BUG: string value is not portable -->
 	    <xsl:text>+</xsl:text>
 	  </xsl:when>
 	  <xsl:otherwise>

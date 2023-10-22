@@ -70,6 +70,10 @@
 		  </xsl:with-param>
 		</xsl:call-template>
               </xsl:element>
+              <xsl:element name="li">
+		<xsl:attribute name="class">hr</xsl:attribute>
+		<xsl:element name="hr"/>
+	      </xsl:element>
 	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']">
 		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
 		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
@@ -314,39 +318,58 @@
       <xsl:when test="@name = 'shortcuts.pie'">
         <!-- list of links in shortcut file -->
         <xsl:copy-of select="descendant::script"/>
-        <!-- <xsl:element name="hr"/> -->
-        <xsl:for-each select="descendant::p[not(ancestor-or-self::*[@valid='no'])]">
+	<xsl:if test="count(preceding-sibling::file) &gt; 2"> <!-- parent::dir/child::file -->
           <xsl:element name="li">
-            <xsl:attribute name="class">ui-dir-file</xsl:attribute>
-            <xsl:copy-of select="child::img[@src]"/>
-	    <xsl:for-each select="child::node()|child::text()">
-              <xsl:choose>
-		<xsl:when test="name() = 'link'">
-                  <xsl:element name="a">
-		    <xsl:copy-of select="@class|@style|@title|parent::p/@class"/>
-		    <xsl:attribute name="target">
-		      <xsl:choose>
-			<xsl:when test="@target">
-                          <xsl:value-of select="@target"/>
-			</xsl:when>
-			<xsl:otherwise>
-                          <xsl:value-of select="$str_frame"/>
-			</xsl:otherwise>
-		      </xsl:choose>
-		    </xsl:attribute>
-		    <xsl:copy-of select="@href"/>
-		    <xsl:value-of select="."/>
-                  </xsl:element>
-		</xsl:when>
-		<xsl:when test="self::text()">
-		  <xsl:value-of select="."/>
-		</xsl:when>
-		<xsl:otherwise>
-		</xsl:otherwise>
-              </xsl:choose>
-	    </xsl:for-each>
+	    <xsl:attribute name="class">hr</xsl:attribute>
+            <xsl:element name="hr"/>
+	  </xsl:element>
+	</xsl:if>
+        <xsl:for-each select="descendant::p[not(ancestor-or-self::*[@valid='no'])]|descendant::hr">
+          <xsl:element name="li">
+            <xsl:choose>
+	      <xsl:when test="name() = 'hr'">
+		<xsl:attribute name="class">hr</xsl:attribute>
+		<xsl:copy-of select="self::node()"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:attribute name="class">ui-dir-file</xsl:attribute>
+		<xsl:copy-of select="child::img[@src]"/>
+		<xsl:for-each select="child::node()|child::text()">
+		  <xsl:choose>
+		    <xsl:when test="name() = 'link'">
+                      <xsl:element name="a">
+			<xsl:copy-of select="@class|@style|@title|parent::p/@class"/>
+			<xsl:attribute name="target">
+			  <xsl:choose>
+			    <xsl:when test="@target">
+                              <xsl:value-of select="@target"/>
+			    </xsl:when>
+			    <xsl:otherwise>
+                              <xsl:value-of select="$str_frame"/>
+			    </xsl:otherwise>
+			  </xsl:choose>
+			</xsl:attribute>
+			<xsl:copy-of select="@href"/>
+			<xsl:value-of select="."/>
+                      </xsl:element>
+		    </xsl:when>
+		    <xsl:when test="self::text()">
+		      <xsl:value-of select="."/>
+		    </xsl:when>
+		    <xsl:otherwise>
+		    </xsl:otherwise>
+		  </xsl:choose>
+		</xsl:for-each>
+	      </xsl:otherwise>
+            </xsl:choose>
 	  </xsl:element>
         </xsl:for-each>
+	<xsl:if test="count(following-sibling::file) &gt; 3"> <!-- parent::dir/child::file -->
+          <xsl:element name="li">
+	    <xsl:attribute name="class">hr</xsl:attribute>
+            <xsl:element name="hr"/>
+	  </xsl:element>
+	</xsl:if>
       </xsl:when>
       <xsl:when test="@name = 'shortcuts.txt'">
         <!-- list of links in shortcut file -->

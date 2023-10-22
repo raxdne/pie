@@ -140,6 +140,43 @@
 	  <xsl:call-template name="HR_HISTOGRAM"/>
 	</xsl:element>
       </xsl:if>
+      
+      <xsl:if test="hist[@param='heart_rate_blocks']">
+	<xsl:element name="div">
+	  <xsl:attribute name="style">display:inline-block</xsl:attribute>
+	  <xsl:for-each select="hist[@param='heart_rate_blocks']">
+	    <xsl:element name="table">
+	      <xsl:attribute name="id">meta_table_</xsl:attribute>
+	      <xsl:element name="thead">
+		<xsl:element name="tr">
+		  <xsl:element name="th">count</xsl:element>
+		  <xsl:element name="th">
+		    <xsl:value-of select="concat('interval (↗',@hr_1,' ↘',@hr_2,')')"/>
+		  </xsl:element>
+		</xsl:element>
+	      </xsl:element>
+	      <xsl:element name="tbody">
+		<xsl:for-each select="c[. &gt; 0]">
+		  <xsl:element name="tr">
+		    <xsl:element name="td">
+		      <xsl:value-of select="."/>
+		    </xsl:element>
+		    <xsl:element name="td">
+		      <xsl:call-template name="ISOTIME">
+			<xsl:with-param name="s" select="@v"/>
+		      </xsl:call-template>
+		      <xsl:value-of select="' .. '"/>
+		      <xsl:call-template name="ISOTIME">
+			<xsl:with-param name="s" select="following-sibling::c[1]/@v"/>
+		      </xsl:call-template>
+		    </xsl:element>
+		  </xsl:element>
+		</xsl:for-each>
+	      </xsl:element>
+	    </xsl:element>
+	  </xsl:for-each>
+	</xsl:element>
+      </xsl:if>
     </xsl:element>
 
     <xsl:if test="hist[@param='speed']">
@@ -149,7 +186,6 @@
 	  <xsl:text>Speed Histogram</xsl:text>
 	</xsl:element>
       </xsl:element>
-
       <xsl:call-template name="SPEED_HISTOGRAM"/>
     </xsl:if>
     

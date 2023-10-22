@@ -3,6 +3,10 @@
 
   <xsl:output method="text"/>
 
+  <!-- BUG: redundant events due to multiple equal dates -->
+
+  <!-- TODO: <xsl:key name="listevents" match="*[@date and not(@done)]" use="parent::node()"/> -->
+
   <xsl:variable name="flag_todo" select="false()" /> <!-- default: false() handle task elements as ordinary VEVENT -->
 
   <xsl:variable name="flag_interval" select="false()" /> <!-- default: true() only dates with an interval/period -->
@@ -38,7 +42,7 @@ RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
 END:STANDARD
 END:VTIMEZONE
 </xsl:text>
-    <xsl:apply-templates select="descendant::date[$int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]"/>
+    <xsl:apply-templates select="descendant::date[$int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]"/> <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
 <xsl:text>END:VCALENDAR</xsl:text>
   </xsl:template>
   
