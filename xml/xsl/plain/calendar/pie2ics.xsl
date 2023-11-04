@@ -11,7 +11,7 @@
 
   <xsl:variable name="flag_interval" select="false()" /> <!-- default: true() only dates with an interval/period -->
 
-  <xsl:variable name="str_ctime" select="translate(/pie/meta/@ctime2,'-:','')" />
+  <xsl:variable name="str_ctime" select="concat(translate(/pie/meta/@ctime2,'-:',''),'Z')" />
 
   <xsl:variable name="int_delta" select="-1" /> <!-- time period in days to filter events, if value "-1" no filtering -->
 
@@ -30,7 +30,7 @@ BEGIN:DAYLIGHT
 TZOFFSETFROM:+0100
 TZOFFSETTO:+0200
 TZNAME:CEST
-DTSTART:19700329T020000
+DTSTART:19700329T020000Z
 RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
 END:DAYLIGHT
 BEGIN:STANDARD
@@ -114,8 +114,8 @@ CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 SUMMARY:TODO: </xsl:text><xsl:value-of select="substring($str_summary,1,$int_lmax)" /><xsl:text>
-DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
-DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
+DTSTART</xsl:text><xsl:if test="not(contains(@DTSTART,'T'))"><xsl:text>;VALUE=DATE</xsl:text></xsl:if><xsl:text>:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
+DTEND</xsl:text><xsl:if test="not(contains(@DTEND,'T'))"><xsl:text>;VALUE=DATE</xsl:text></xsl:if><xsl:text>:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
 </xsl:text>
 <xsl:value-of select="$str_category" />
@@ -135,8 +135,8 @@ CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 SUMMARY:</xsl:text><xsl:value-of select="substring($str_summary,1,$int_lmax)" /><xsl:text>
-DTSTART:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
-DTEND:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
+DTSTART</xsl:text><xsl:if test="not(contains(@DTSTART,'T'))"><xsl:text>;VALUE=DATE</xsl:text></xsl:if><xsl:text>:</xsl:text><xsl:value-of select="@DTSTART"/><xsl:text>
+DTEND</xsl:text><xsl:if test="not(contains(@DTEND,'T'))"><xsl:text>;VALUE=DATE</xsl:text></xsl:if><xsl:text>:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
 </xsl:text>
 <xsl:value-of select="$str_category" />
