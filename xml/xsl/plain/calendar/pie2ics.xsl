@@ -113,7 +113,7 @@ END:VTIMEZONE
 CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 DTSTAMP:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
-SUMMARY:TODO: </xsl:text><xsl:value-of select="substring($str_summary,1,$int_lmax)" /><xsl:text>
+SUMMARY:</xsl:text><xsl:value-of select="substring($str_summary,1,$int_lmax)" /><xsl:text>
 DTSTART</xsl:text><xsl:if test="not(contains(@DTSTART,'T'))"><xsl:text>;VALUE=DATE</xsl:text></xsl:if><xsl:text>:</xsl:text><xsl:value-of select="@DTSTART" /><xsl:text>
 DTEND</xsl:text><xsl:if test="not(contains(@DTEND,'T'))"><xsl:text>;VALUE=DATE</xsl:text></xsl:if><xsl:text>:</xsl:text><xsl:value-of select="@DTEND" /><xsl:text>
 UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
