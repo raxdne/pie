@@ -152,7 +152,7 @@
     <pkg:stelle id="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disposition="attachement;filename=cxproc.xml">
       <h>MS Office Excel (XML)</h>
       <make>
-	<xml locator="yes">
+	<xml locator="no">
 	  <file name="PATH" verbosity="5"/>
 	</xml>
       </make>

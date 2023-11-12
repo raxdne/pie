@@ -1014,6 +1014,11 @@
 	  <xsl:value-of select="concat(name(),@impact)"/>
 	</xsl:attribute>
       </xsl:when>
+      <xsl:when test="@name">
+	<xsl:attribute name="title">
+	  <xsl:value-of select="@name"/>
+	</xsl:attribute>
+      </xsl:when>
       <xsl:otherwise>
       </xsl:otherwise>
     </xsl:choose>

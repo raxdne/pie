@@ -395,7 +395,7 @@
           </xsl:element>
         </xsl:for-each>
       </xsl:when>
-      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image)">
+      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='xlsx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image)">
         <!-- dynamic content using cxproc -->
         <!-- single link to named file -->
         <xsl:element name="li">
@@ -431,7 +431,7 @@
                   <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                   <!-- <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=csv')"/> -->
                 </xsl:when>
-                <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='log' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
+                <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='log' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='xlsx' or @ext='odt' or @ext='ods' or @ext='odp'">
                   <!--  or @ext='html' -->
                   <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
                 </xsl:when>

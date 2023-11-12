@@ -17,7 +17,7 @@
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
       <body>
-        <script type="text/javascript">$(document).ready(function() { $("#localTable").tablesorter(); } );</script> 
+        <script type="text/javascript">$(document).ready(function() { $("#localTable").tablesorter({theme : 'blue', widgets: ["filter"]}); });</script> 
         <div id="ui">
           <div id="content">
             <cxp:xhtml>
