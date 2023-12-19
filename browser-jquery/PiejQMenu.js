@@ -320,6 +320,39 @@ function saveText(objEditor,strPath) {
 }
 
 //
+// 
+//
+function evalText(objEditor) {
+
+    if (objEditor.getValue() == '') {
+    	alert( 'Empty Code');
+	objEditor.focus();
+	return;
+    }
+
+    var request = $.ajax({
+	url: '',
+	type: 'POST',
+	data: {
+	    cxp: 'EvalScript',
+	    strContent: objEditor.getValue()
+	},
+	cache: false
+    });
+
+    request.done(function( msg ) {
+	document.getElementById("strValue").textContent = msg;
+	objEditor.focus();
+    });
+
+    request.fail(function( jqXHR, textStatus ) {
+    	alert( 'Request failed: ' + textStatus);
+	document.getElementById("strValue").textContent = msg;
+	objEditor.focus();
+    });
+}
+
+//
 // s. http://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery
 // https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
 //

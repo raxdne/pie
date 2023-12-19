@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%SCRIPT%" argv="2" cgi="strContent" default="1+2;"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" default="'REPL'"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+	<script type="text/javascript" src="/ace/js/ace.js">//..</script>
+        <div id="ui">
+	  <h1>REPL of Server-side JavaScript</h1>
+          <div id="content" style="display: inline-block; white-space: nowrap;">
+	    <pre id="strValue">Press Ctrl+S to evaluate the input!</pre>
+            <form method="post" accept-charset="UTF-8">
+              <!-- this form is needed for reference only -->
+            </form>
+            <div id="strContent" style="margin:5px; height: 50%;">%SCRIPT%</div>
+          </div>
+          <p align="right">Powered by <a target="_blank" href="http://ace.c9.io/">ACE</a> and <a target="_blank" href="https://duktape.org/">Duktape</a></p>
+        </div>
+            <script language="Javascript" type="text/javascript"> 
+var editor = ace.edit("strContent");
+editor.setTheme("ace/theme/katzenmilch");
+editor.getSession().setMode("ace/mode/javascript");
+
+editor.commands.addCommand({
+  name: 'myEvalCommand',
+  bindKey: {linux: 'Ctrl-S',  win: 'Ctrl-S',  mac: 'Command-S'},
+  exec: function(objEditor) {
+  //alert(objEditor.getValue());
+  evalText(objEditor);
+  },
+  readOnly: false // false if this command should not apply in readOnly mode
+  });
+    
+// TODO: ask for saving content when page is left
+// $( window ).unload(function() {
+//   alert( "Handler for .unload() called." );
+// });
+
+  $('#strContent').after(getToolsStr('editor'));
+
+</script>
+      </body>
+   </html>
+  </cxp:xhtml>
+</cxp:make>
