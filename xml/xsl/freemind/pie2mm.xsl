@@ -128,6 +128,12 @@
   <xsl:template match="list">
     <xsl:if test="$flag_p">
       <xsl:choose>
+	<xsl:when test="count(ancestor::section) &lt; 1">
+	  <xsl:element name="node">
+            <xsl:attribute name="TEXT"/>
+            <xsl:apply-templates select="*"/>
+	  </xsl:element>
+	</xsl:when>
 	<xsl:when test="not(child::*)">
           <!-- ignore the list without child elements -->
 	</xsl:when>

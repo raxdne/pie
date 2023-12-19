@@ -496,7 +496,11 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   border-radius: 3px;
 }
 
-*.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.p-done,*.h-done {
+*.p-done {
+  color:#AAAAAA;
+}
+
+*.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.h-done {
   color:#AAAAAA;
   background-color:#eeeeee;
   padding: 1px;
