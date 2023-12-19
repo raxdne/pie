@@ -3,6 +3,7 @@
   <subst regexp="(only)" to="[$1](http://$1/)" />
   <section>
     <h>“Test only”</h>
-    <p>dummy only</p>
+    <p>dummy only <code> Demo only </code></p>
+    <pre>only Demo</pre>
   </section>
 </pie>

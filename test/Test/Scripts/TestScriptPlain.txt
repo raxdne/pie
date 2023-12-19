@@ -34,8 +34,18 @@ Embedded
 var strResult = '';
 var t = Date();
 
-for (i=0; i<100; i++) {
+for (i=0; i<10; i++) {
     strResult = strResult + '* M' + i.toString() + '\n\n';
-    strResult = strResult + 'TODO: ' + t.toString() + ' testing | abc\n\n';
+    strResult = strResult + 'TODO: ' + t.toString() + ' testing #abc\n\n';
 }
 </script>
+
+* Test Script Accumulator
+
+A = script="var a = 1;a"
+
+B = script="a++;a"
+
+C = script="c=++a;c"
+
+D = script="++c"

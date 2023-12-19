@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" log="4">
+  <cxp:description>Simple Demo REPL</cxp:description>
+  <cxp:subst string="%SCRIPT%" argv="2" cgi="script" default="1+1"/>
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:system message="Script '%SCRIPT%'"/>
+  <cxp:xhtml name="-">
+    <html>
+      <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="cache-control" content="no-cache"/>
+	<meta http-equiv="pragma" content="no-cache"/>
+      </head>    
+      <body>
+        <div id="ui">
+	  <h1>Simple Demo REPL of Server-side JavaScript</h1>
+	  <pre>
+	    <cxp:plain>
+	      <cxp:script>%SCRIPT%</cxp:script>
+	    </cxp:plain>
+	  </pre>
+	  <hr/>
+	  <form method="post">
+	    <label for="script">Script: <input id="script" maxlength="100" size="80" name="script" value="%SCRIPT%"/></label>
+	  </form>
+	  <p style="text-align:right">%TAGTIME%</p>
+	</div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>
