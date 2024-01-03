@@ -55,7 +55,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
   <!--  -->
   <xsl:variable name="flag_search_result" select="false()"/>
   <!--  -->
-  <xsl:variable name="str_xpath" select="'/'"/>
+  <xsl:variable name="str_xpath" select="'/*'"/>
+  <!--  -->
+  <xsl:variable name="str_re" select="''"/>
   <!--  -->
   <xsl:variable name="type" select="''"/>
   <!--  -->
@@ -126,6 +128,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                     <xsl:if test="not($str_xpath='/')">
                       <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                     </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+                    </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="$name_slide"/>
@@ -161,6 +166,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                           <xsl:if test="not($str_xpath='/')">
                             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                           </xsl:if>
+			  <xsl:if test="not($str_re='')">
+			    <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+			  </xsl:if>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="$name_slide"/>
@@ -190,6 +198,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                     <xsl:value-of select="concat('?cxp=PresentationIndex','&amp;','path=',$file_plain)"/>
                     <xsl:if test="not($str_xpath='/')">
                       <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
+                    </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
                     </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
@@ -239,6 +250,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                         <xsl:if test="not($str_xpath='/')">
                           <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                         </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+                    </xsl:if>
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:value-of select="$name_slide"/>
@@ -276,6 +290,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                     </xsl:choose>
                     <xsl:if test="not($str_xpath='/')">
                       <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
+                    </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
                     </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
@@ -328,6 +345,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                         <xsl:if test="not($str_xpath='/')">
                           <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                         </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+                    </xsl:if>
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:value-of select="$name_slide"/>
@@ -494,6 +514,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                           <xsl:if test="not($str_xpath='/')">
                             <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                           </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+                    </xsl:if>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="$name_slide"/>
@@ -531,6 +554,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                             <xsl:if test="not($str_xpath='/')">
                               <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                             </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+                    </xsl:if>
                           </xsl:when>
                           <xsl:otherwise>
                             <xsl:value-of select="$name_slide"/>
@@ -609,6 +635,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
                       <xsl:if test="not($str_xpath='/')">
                         <xsl:value-of select="concat('&amp;','xpath=',$str_xpath)"/>
                       </xsl:if>
+                    <xsl:if test="not($str_re='')">
+                      <xsl:value-of select="concat('&amp;','re=',$str_re)"/>
+                    </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="$name_slide"/>
