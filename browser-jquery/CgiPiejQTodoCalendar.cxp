@@ -49,7 +49,7 @@
               </cxp:xml>
               <cxp:xsl name="CalendarTable.xsl">
 		<cxp:variable name="flag_extended" select="false()"/>
-                <cxp:variable name="file_css" select="'/pie/html/pie.css'"/>
+		<!-- <cxp:variable name="context" select="'week'"/> -->
               </cxp:xsl>
             </cxp:xhtml>
             <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>

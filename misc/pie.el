@@ -132,22 +132,17 @@
 (defvar pie-font-lock-keywords
   '(     ; Reihenfolge ist wichtig
     ;; CPP-Anweisungen
-    ("^[;]*#(import|subst).*$" . font-lock-keyword-face)
+    ("^[;]*#(import|subst).*$" . 'font-lock-keyword-face)
     ;; Kommentare
-    ("^;+.*$" . font-lock-comment-face)
+    ("^;+.*$" . 'font-lock-comment-face)
     ;; Todo
-    ("TODO:" . font-lock-reference-face)
-    ("TEST:" . font-lock-reference-face)
-    ("BUG:" . font-lock-reference-face)
-    ("TARGET:" . font-lock-reference-face)
-    ("REQ:" . font-lock-reference-face)
-    ("DONE:" . font-lock-reference-face)
+    ("\\(TODO\\|DONE\\|TEST\\|BUG\\|TARGET\\|REQ\\):" 1 'font-lock-doc-markup-face)
     ;; Abb
-    ("[Aa][Bb][Bb][\\.:]" . font-lock-reference-face)
-    ("[Ff][Ig][Gg][\\.:]" . font-lock-reference-face)
+    ("\\(Abb\\|ABB\\|Fig\\|FIG\\)\\[\\.:\\]" 1 'font-lock-doc-markup-face)
     ;; Tags
-    ("[@#][a-zA-ZäöüÄÖÜß\\-_]+" . font-lock-reference-face)
+    ("[@#][a-zA-ZäöüÄÖÜß\\-_]+" . 'font-lock-doc-markup-face)
     )
+  "Keywords for cxproc/PIE"
   )
 
 (font-lock-add-keywords 'text-mode pie-font-lock-keywords)
@@ -185,8 +180,8 @@
   (if window-system
       (progn
 	;; font-lock 
-	(font-lock-mode t)
-	(font-lock-fontify-buffer)
+	;(font-lock-mode t)
+	;(font-lock-fontify-buffer)
 	;; BUG: font-lock isnt active first time
 	;;
 	(goto-address-mode)
@@ -210,6 +205,7 @@
   )
 ;; (pie-markdown-minor-mode)
 
+(add-hook 'markdown-mode-hook 'pie-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

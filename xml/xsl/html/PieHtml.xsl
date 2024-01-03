@@ -1059,9 +1059,9 @@
 
 body,table {
   background-color:#ffffff;
-  font-family: Arial,sans-serif;
+  /* font-family: Arial,sans-serif; */
   /* font-family:Courier; */
-  font-size:12px;
+  /* font-size:12px; */
   margin: 5px 5px 5px 5px;
 }
 
@@ -1349,6 +1349,11 @@ li {
   margin-left:0px;
   /* text-indent:0.1cm; */
 }
+.hr {
+  font-size:2%;
+  clear: both;
+  padding: 0px 5px 0px 5px ;
+}
 
 /* misc tags
 
@@ -1390,7 +1395,7 @@ li.hidden,p.hidden {
 code, tt {
   margin: 0 2px;
   padding: 0 5px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   border: 1px solid #eaeaea;
   background-color: #f8f8f8;
   border-radius: 3px;
@@ -1407,7 +1412,7 @@ pre code {
 pre {
   background-color: #f8f8f8;
   border: 1px solid #dddddd;
-  font-size: 13px;
+  /* font-size: 13px; */
   line-height: 19px;
   overflow: auto;
   padding: 6px 10px;
@@ -1520,26 +1525,30 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   border-radius: 3px;
 }
 
-*.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.section1 {
+*.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.th1, *.td1, *.section1 {
   background-color:#ffffbb;
   padding: 1px;
   margin: 1px 0px 1px 0px;
   border-radius: 3px;
 }
-*.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.section2 {
+*.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.th2, *.td2, *.section2 {
   background-color:#ddffdd;
   padding: 1px;
   margin: 1px 0px 1px 0px;
   border-radius: 3px;
 }
-*.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.section3 {
+*.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.th3, *.td3, *.section3 {
   background-color:#ddddff;
   padding: 1px;
   margin: 1px 0px 1px 0px;
   border-radius: 3px;
 }
 
-*.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.p-done,*.h-done {
+*.p-done {
+  color:#AAAAAA;
+}
+
+*.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.h-done {
   color:#AAAAAA;
   background-color:#eeeeee;
   padding: 1px;
@@ -1547,10 +1556,22 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   border-radius: 3px;
 }
 
+span.context-menu-section {
+  font-weight:bold;
+}
+
 /* 
  */
 td > div.block {
   padding: 3px;
+}
+
+tr:has(.th1, .td1) {
+  background-color:#ffffbb;
+}
+
+tr:has(.th2, .td2) {
+  background-color:#ddffdd;
 }
 
 /* 

@@ -46,7 +46,9 @@
     <xsl:choose>
       <xsl:when test="true()">
         <xsl:element name="html">
-          <xsl:call-template name="HEADER"/>
+	  <xsl:if test="$flag_header">
+            <xsl:call-template name="HEADER"/>
+	  </xsl:if>
           <xsl:element name="body">
             <xsl:if test="$flag_toc">
               <xsl:call-template name="PIETOC">

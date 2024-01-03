@@ -12,42 +12,49 @@
 	<script type="text/javascript" src="/pie/js/PieUtils.js">// not empty!!!</script>
 	<script type="text/javascript" src="/pie/js/PieDocument.js">// not empty!!!</script>
 	<script type="text/javascript" src="/pie/js/PieEditor.js">// not empty!!!</script>
-	<title>REPL</title>
+	<title>Markdown Formatter</title>
       </head>
       <body>
 	<script type="text/javascript" src="/ace/js/ace.js">//..</script>
         <div id="ui">
-	  <h1>REPL of Server-side JavaScript</h1>
+	  <h1>Server-side Markdown Formatter</h1>
           <div id="content">
-	    <pre id="strValue">Press Ctrl+S to evaluate the input!</pre>
+	    <div id="strValue">Press Ctrl+S to evaluate the input!</div>
             <form method="post" accept-charset="UTF-8">
               <!-- this form is needed for reference only -->
             </form>
             <div id="strContent" style="margin:5px; height: 50%;"/>
           </div>
-          <p align="right">Powered by <a target="_blank" href="http://ace.c9.io/">ACE</a> and <a target="_blank" href="https://duktape.org/">Duktape</a></p>
+          <p align="right">Powered by <a target="_blank" href="http://ace.c9.io/">ACE</a> and <a target="_blank" href="https://github.com/commonmark/cmark">libcmark</a></p>
         </div>
             <script language="Javascript" type="text/javascript"> 
 var editor = ace.edit("strContent");
 editor.setTheme("ace/theme/katzenmilch");
-editor.getSession().setMode("ace/mode/javascript");
+editor.getSession().setMode("ace/mode/markdown");
 $('#strContent').after(getToolsStr('editor'));
-editor.setValue('1 + 2;');
 editor.focus();
+
+var strContent = localStorage.getItem('strContent');
+if (strContent == undefined) {
+  editor.setValue('# BBB');
+} else {
+  editor.setValue(strContent);
+}
 
 editor.commands.addCommand({
   name: 'myEvalCommand',
   bindKey: {linux: 'Ctrl-S',  win: 'Ctrl-S',  mac: 'Command-S'},
   exec: function(objEditor) {
-  //alert(objEditor.getValue());
-  evalScript(objEditor);
+    //alert(objEditor.getValue());
+    localStorage.setItem('strContent', objEditor.getValue());
+    formatMarkdown(objEditor);
   },
   readOnly: false // false if this command should not apply in readOnly mode
   });
     
 $( window ).on( "beforeunload", function() {
   return "Handler for `unload` called.";
-} );
+});
 </script>
       </body>
    </html>

@@ -59,14 +59,21 @@
       <xsl:attribute name="cellspacing">
         <xsl:text>1</xsl:text>
       </xsl:attribute>
-      <xsl:element name="tbody">
+      <xsl:element name="thead">
+	<xsl:variable name="float_split" select="0.1"/>
         <xsl:choose>
           <xsl:when test="$node_cols">
             <xsl:element name="tr">
 	      <xsl:element name="th">
+		<xsl:attribute name="width">
+                  <xsl:value-of select="concat(100 * $float_split,'%')"/>
+		</xsl:attribute>
 	      </xsl:element>
               <xsl:for-each select="$node_cols">
 		<xsl:element name="th">
+		  <xsl:attribute name="width">
+                    <xsl:value-of select="concat((1.0 - $float_split) * 100 div count($node_cols),'%')"/>
+		  </xsl:attribute>
 		  <xsl:choose>
                     <xsl:when test="@name">
                       <xsl:value-of select="@name"/>
@@ -82,7 +89,9 @@
           <xsl:otherwise>
           </xsl:otherwise>
 	</xsl:choose>
+      </xsl:element>
         <!--  -->
+      <xsl:element name="tbody">
         <xsl:choose>
           <xsl:when test="$context='month'">
             <xsl:choose>

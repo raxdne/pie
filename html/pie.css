@@ -11,9 +11,9 @@
 
 body,table {
   background-color:#ffffff;
-  font-family: Arial,sans-serif;
+  /* font-family: Arial,sans-serif; */
   /* font-family:Courier; */
-  font-size:12px;
+  /* font-size:12px; */
   margin: 5px 5px 5px 5px;
 }
 
@@ -347,7 +347,7 @@ li.hidden,p.hidden {
 code, tt {
   margin: 0 2px;
   padding: 0 5px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   border: 1px solid #eaeaea;
   background-color: #f8f8f8;
   border-radius: 3px;
@@ -364,7 +364,7 @@ pre code {
 pre {
   background-color: #f8f8f8;
   border: 1px solid #dddddd;
-  font-size: 13px;
+  /* font-size: 13px; */
   line-height: 19px;
   overflow: auto;
   padding: 6px 10px;

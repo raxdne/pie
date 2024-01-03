@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
-  <cxp:subst string="%SCRIPT%" argv="2" cgi="strContent" default=";"/>
+  <cxp:subst string="%CONTENT%" argv="2" cgi="strContent" default=";"/>
   <cxp:plain name="-">
-    <cxp:script>%SCRIPT%</cxp:script>
+    <cxp:script>%CONTENT%</cxp:script>
   </cxp:plain>
 </cxp:make>
