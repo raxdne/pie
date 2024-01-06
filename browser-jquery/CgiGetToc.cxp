@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <!-- \deprecated ? -->
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:plain name="-">
     <cxp:xml name="%CGIPATH%" xpath="yes"/>

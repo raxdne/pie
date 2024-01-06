@@ -10,7 +10,7 @@
   <xsl:template name="PIENAVMOBILEHEADER">
     <xsl:element name="div">
       <xsl:attribute name="data-role">header</xsl:attribute>
-      <xsl:attribute name="data-add-back-btn">true</xsl:attribute>
+      <xsl:attribute name="data-add-back-btn">false</xsl:attribute>
       <xsl:call-template name="PIENAVBAR"/>
       <xsl:element name="h1">
         <xsl:value-of select="/pie/section/h"/>
@@ -63,6 +63,15 @@
               <xsl:text>javascript:window.location.assign(window.document.URL.replace(/(cxp|xsl)=[^&amp;]*/i,'cxp=PiejQEditor'));</xsl:text>
             </xsl:attribute>
             <xsl:text>Editor</xsl:text>
+          </xsl:element>
+        </xsl:element>
+        <xsl:element name="li">
+          <xsl:element name="a">
+            <xsl:attribute name="data-icon">bars</xsl:attribute>
+            <xsl:attribute name="href">
+              <xsl:text>javascript:window.location.assign(window.document.URL.replace(/(cxp|xsl)=[^&amp;]*/i,'cxp=PiejQDefault'));</xsl:text>
+            </xsl:attribute>
+            <xsl:text>Desktop</xsl:text>
           </xsl:element>
         </xsl:element>
       </xsl:element>

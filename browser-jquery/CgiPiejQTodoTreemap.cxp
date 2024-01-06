@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
-  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
-  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
-  <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
-  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
-  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <!-- \todo update for d3.js -->
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
   <cxp:subst string="%CGIMIN%" cgi="min" default="-3"/>
   <cxp:subst string="%CGIMAX%" cgi="max" default="3"/>
-  <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
-  <cxp:subst string="%CGIRE%" cgi="re" default=""/>
-  <cxp:subst string="%START%" type="%CGIPATH%"/>
-  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
-  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
-  <cxp:plain name=".history" mode="append">%SCRIPT%?%QUERY%&#10;</cxp:plain>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
-  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
-  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
-  <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
-  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
-  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
-  <cxp:subst string="%CGITAG%" cgi="tag" default=""/>
-  <cxp:subst string="%START%" type="%CGIPATH%"/>
-  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQmHead.xhtml" search="yes"/>
@@ -20,6 +12,8 @@
 	  <cxp:xsl name="pie2jqm.xsl">
 	    <cxp:variable name="flag_header" select="false()"/>
 	    <cxp:variable name="flag_footer" select="false()"/>
+	    <cxp:variable name="str_tag">%CGITAG%</cxp:variable>
+	    <cxp:variable name="str_re">%CGIRE%</cxp:variable>
 	  </cxp:xsl>
 	</cxp:xhtml>
       </body>
