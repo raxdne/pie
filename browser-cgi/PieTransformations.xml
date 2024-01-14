@@ -1357,6 +1357,7 @@
     <pkg:relation from="text/calendar" to="parseFile"/>
     <pkg:relation from="text/vcard" to="parseFile"/>
     <pkg:relation from="text/plain" to="parseFile"/>
+    <pkg:relation from="text/markdown" to="parseFile"/>
     <pkg:relation from="application/xmmap+xml" to="parseFile"/>
     <pkg:relation from="application/mmap+xml" to="parseFile"/>
     <pkg:relation from="application/mm+xml" to="parseFile"/>

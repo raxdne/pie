@@ -772,7 +772,7 @@
 
   <xsl:template match="import[@type = 'script']">
     <!--  -->
-    <xsl:element name="pre">
+    <xsl:element name="code">
       <xsl:copy-of select="text()"/>
     </xsl:element>
   </xsl:template>
