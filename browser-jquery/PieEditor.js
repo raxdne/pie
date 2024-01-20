@@ -6,9 +6,7 @@ function getToolsStr(strNameEditor) {
 
     var strResult = '<p style="font-size:150%">';
 
-    strResult += '<a onclick="' + 'insertDate(' + strNameEditor + ')' + '" title="Insert picked date.">'
-     	+ '<img src="/pie/icons/x-office-calendar.png" title="Insert picked date"/>'
-     	+ '</a> ';
+    strResult += '<a onclick="' + 'insertDate(' + strNameEditor + ')' + '" title="Insert picked date.">&#x1F4C5;</a> ';
 
     var strUTF = '✔ ✘ „“ ‚‘ “” () [] {} ‒ ← ↑ → ↓ ↔ ↕ ↖ ↗ ↘ ↙ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕ ⇖ ⇗ ⇘ ⇙ ⇚ ⇛'; // UTF-8 characters to show,
 
@@ -133,9 +131,7 @@ function requestContent(objEditor,strQuery) {
 	    }
 	    objEditor.setReadOnly(false);
 
-	    $('#strContent').before('<a onclick="' + strEvent + '" title="Save the editor content.">'
-     				    + '<img src="/pie/icons/document-save.png" title="Save"/>'
-     				    + '</a>');
+	    $('#strContent').before('<a onclick="' + strEvent + '" title="Save the editor content.">&#x1F4BE;</a>');
 
 	    $('#strContent').before(' <b>' + urlParams.get('path') + (urlParams.has('xpath') ? urlParams.get('xpath') : '') + '</b>');
 
@@ -181,7 +177,8 @@ function insertDate(objEditor) {
 	putsConsole("Date: " + strDate); 
 	objEditor.insert(strDate);
 	objEditor.focus();
-    }, { showWeek: true, showButtonPanel: false, dateFormat: "yymmdd"});
+    }, {showWeek: true, showButtonPanel: false, dateFormat: "yy-mm-dd"});
+    // TODO: calendarType: 'week', calendarSize: 3, showWeek: true, firstSelectDay: 1, showButtonPanel: false, returnFormat: 'iso8601'
 }
 
 
@@ -330,6 +327,31 @@ function formatMarkdown(objEditor) {
 	dataType: 'html',
 	success: function (response){
 	    $('#strValue').append('<hr/>' + response);
+	    objEditor.focus();
+	},
+	error: function (jqXHR,textStatus,errorThrown){
+    	    alert( 'Request failed: ' + textStatus);
+	    //$('#strValue').append('<hr/>' + textStatus);
+	    objEditor.focus();
+	},
+	cache: false
+    });
+}
+
+//
+// 
+//
+function formatPlain(objEditor) {
+
+    var request = $.ajax({
+	type: 'POST',
+	data: {
+	    cxp: 'FormatPlain',
+	    strContent: objEditor.getValue()
+	},
+	dataType: 'text',
+	success: function (response){
+	    $('#strValue').append('<pre>' + response + '</pre>');
 	    objEditor.focus();
 	},
 	error: function (jqXHR,textStatus,errorThrown){

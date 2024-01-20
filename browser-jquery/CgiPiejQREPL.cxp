@@ -2,18 +2,7 @@
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:xhtml name="-">
     <html>
-      <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta http-equiv="cache-control" content="no-cache"/>
-	<meta http-equiv="pragma" content="no-cache"/>
-	<link rel="stylesheet" type="text/css" href="/pie/html/pie.css"/>
-	<link rel="stylesheet" type="text/css" href="/pie/non-js/CgiPieUi.css" />
-	<script type="text/javascript" src="/jquery/jquery.js">// not empty!!!</script>
-	<script type="text/javascript" src="/pie/js/PieUtils.js">// not empty!!!</script>
-	<script type="text/javascript" src="/pie/js/PieDocument.js">// not empty!!!</script>
-	<script type="text/javascript" src="/pie/js/PieEditor.js">// not empty!!!</script>
-	<title>REPL</title>
-      </head>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
       <body>
 	<script type="text/javascript" src="/ace/js/ace.js">//..</script>
         <div id="ui">
@@ -23,7 +12,7 @@
             <form method="post" accept-charset="UTF-8">
               <!-- this form is needed for reference only -->
             </form>
-            <div id="strContent" style="margin:5px; height: 50%;"/>
+            <div id="strContent" style="margin:5px; height: 50%; border:1px solid black;"/>
           </div>
           <p align="right">Powered by <a target="_blank" href="http://ace.c9.io/">ACE</a> and <a target="_blank" href="https://duktape.org/">Duktape</a></p>
         </div>

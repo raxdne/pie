@@ -765,11 +765,6 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="script">
-    <!--  -->
-    <xsl:copy-of select="."/>
-  </xsl:template>
-
   <xsl:template match="import[@type = 'script']">
     <!--  -->
     <xsl:element name="code">
@@ -1061,7 +1056,8 @@ body,table {
   background-color:#ffffff;
   /* font-family: Arial,sans-serif; */
   /* font-family:Courier; */
-  /* font-size:12px; */
+  font: inherit;
+  font-size:12px;
   margin: 5px 5px 5px 5px;
 }
 
@@ -1392,6 +1388,12 @@ li.hidden,p.hidden {
  font-size:120%;
 }
 
+/* fixed font */
+
+*.ace_editor {
+  font-family: monospace;
+}
+
 code, tt {
   margin: 0 2px;
   padding: 0 5px;
@@ -1399,6 +1401,7 @@ code, tt {
   border: 1px solid #eaeaea;
   background-color: #f8f8f8;
   border-radius: 3px;
+  font-family: monospace;
 }
 
 pre code {
@@ -1407,6 +1410,7 @@ pre code {
   white-space: pre;
   border: none;
   background: transparent;
+  font-family: monospace;
 }
 
 pre {
@@ -1417,11 +1421,7 @@ pre {
   overflow: auto;
   padding: 6px 10px;
   border-radius: 3px;
-}
-
-pre code, pre tt {
-  background-color: transparent;
-  border: none;
+  font-family: monospace;
 }
 
 dt {

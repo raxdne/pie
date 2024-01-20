@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cxp="http://www.tenbusch.info/cxproc" version="1.0">
   <!--   -->
   <xsl:import href="../PieHtmlTable.xsl"/>
   <!-- -->
@@ -12,6 +12,18 @@
   <!--  -->
   <xsl:variable name="node_cols" select="/calendar/col[@id]"/>
   <xsl:variable name="id_cols" select="/calendar/col/@id"/>
+
+  <xsl:variable name="int_cols">
+    <xsl:choose>
+      <xsl:when test="/calendar/meta/cxp:calendar[@type = 'mday']">
+	<xsl:value-of select="count($id_cols) + 1"/> <!-- extra column for legend -->
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="count($id_cols)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
   <xsl:variable name="context" select="''"/>
   <!--  -->
   <xsl:variable name="str_tag"></xsl:variable>
@@ -64,11 +76,13 @@
         <xsl:choose>
           <xsl:when test="$node_cols">
             <xsl:element name="tr">
-	      <xsl:element name="th">
-		<xsl:attribute name="width">
-                  <xsl:value-of select="concat(100 * $float_split,'%')"/>
-		</xsl:attribute>
-	      </xsl:element>
+	      <xsl:if test="/calendar/meta/cxp:calendar[@type = 'mday']">
+		<xsl:element name="th">
+		  <xsl:attribute name="width">
+                    <xsl:value-of select="concat(100 * $float_split,'%')"/>
+		  </xsl:attribute>
+		</xsl:element>
+	      </xsl:if>
               <xsl:for-each select="$node_cols">
 		<xsl:element name="th">
 		  <xsl:attribute name="width">
@@ -147,7 +161,7 @@
     <xsl:element name="tr">
       <xsl:element name="th">
         <xsl:attribute name="colspan">
-          <xsl:value-of select="count($id_cols) + 1"/>
+          <xsl:value-of select="$int_cols"/>
         </xsl:attribute>
         <xsl:value-of select="@ad"/>
       </xsl:element>
@@ -187,7 +201,7 @@
     <xsl:element name="tr">
       <xsl:element name="th">
         <xsl:attribute name="colspan">
-          <xsl:value-of select="count($id_cols) + 1"/>
+          <xsl:value-of select="$int_cols"/>
         </xsl:attribute>
         <xsl:value-of select="concat(@name,' / ',../@ad)"/>
       </xsl:element>
@@ -227,7 +241,7 @@
     <xsl:element name="tr">
       <xsl:element name="th">
         <xsl:attribute name="colspan">
-          <xsl:value-of select="count($id_cols)"/>
+          <xsl:value-of select="$int_cols"/>
         </xsl:attribute>
         <xsl:value-of select="concat('Week ',@nr,' / ',../@ad)"/>
       </xsl:element>
@@ -264,7 +278,7 @@
     <xsl:comment>
       <xsl:value-of select="name()"/>
     </xsl:comment>
-    <xsl:if test="$flag_extended or child::col">
+    <xsl:if test="$flag_extended or child::col or @today">
       <xsl:element name="tr">
 	<xsl:choose>
 	  <xsl:when test="$pwd/@diffy = '-1'">

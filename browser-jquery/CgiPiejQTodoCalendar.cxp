@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
+  <cxp:subst string="%CGIYEAR%" cgi="year" default="content"/>
+  <cxp:subst string="%CGICONTEXT%" cgi="context" default="mday"/>
   <cxp:subst string="%CGIFORM%" cgi="form" default="true()"/>
-  <cxp:xhtml name="-">
+  <cxp:xhtml name="-" >
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
       <body>
@@ -10,7 +12,7 @@
           <div id="content">
             <cxp:xhtml>
               <cxp:xml>
-                <cxp:calendar>
+                <cxp:calendar type="%CGICONTEXT%" year="%CGIYEAR%">
                   <cxp:col id="tasks" name="Tasks">
                     <cxp:xml>
                       <cxp:xml eval="yes">

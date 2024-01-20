@@ -255,6 +255,8 @@ function callbackContent(key, options) {
 	    urlParams.set('cxp','PiejQTodo');
 	} else if (key == 'todocalendar') {
 	    urlParams.set('cxp','PiejQTodoCalendar');
+	    urlParams.set('context','month');
+	    strHashNew = '#today';
 	} else if (key == 'todomatrix') {
 	    urlParams.set('cxp','PiejQTodoMatrix');
 	} else if (key == 'todocontact') {

@@ -13,8 +13,8 @@ body,table {
   background-color:#ffffff;
   /* font-family: Arial,sans-serif; */
   /* font-family:Courier; */
-  /* font-size:12px; */
   font: inherit;
+  font-size:12px;
   margin: 5px 5px 5px 5px;
 }
 
