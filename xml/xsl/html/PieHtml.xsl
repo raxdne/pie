@@ -225,7 +225,7 @@
           </xsl:choose>
 	  <xsl:attribute name="href">
 	    <xsl:choose>
-	      <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+	      <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'mailto:') or starts-with(@href,'tel:') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
 		<xsl:value-of select="@href"/>
 	      </xsl:when>
 	      <xsl:otherwise>
