@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14">
 
   <xsl:output method="text" encoding="UTF-8"/>
-
+  
   <xsl:variable name="str_path"></xsl:variable>
 
   <!-- header structure with templates 'Heading' 'berschrift' -->
@@ -25,8 +25,8 @@
       <xsl:when test="string-length($str_path) &gt; 0">
 	<xsl:value-of select="concat('ORIGIN: ', $str_path, $newpar)"/>
       </xsl:when>
-      <xsl:when test="pie/file/@name">
-	<xsl:value-of select="concat('ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+      <xsl:when test="dir/file/@name">
+	<xsl:value-of select="concat('ORIGIN: ', dir/file/@prefix,'/',dir/file/@name, $newpar)"/>
       </xsl:when>
       <xsl:otherwise>
 	<!-- no locator found -->
@@ -81,7 +81,7 @@
 	</xsl:if>
 	<xsl:choose>
 	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)"> <!-- BUG: string value is not portable -->
-	    <xsl:text>1)</xsl:text>
+	    <xsl:text>-</xsl:text>
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:text>-</xsl:text>
@@ -112,16 +112,24 @@
 
   <xsl:template name="ENUM">
     <xsl:param name="level"/>
-    <xsl:param name="str_markup" select="' '"/>
-    <xsl:value-of select="$str_markup"/>
+    <xsl:param name="str_markup" select="'-'"/>
     <xsl:choose>
       <xsl:when test="$level &gt; 0">
+	<xsl:choose>
+	  <xsl:when test="$str_markup = '1)'">
+	    <xsl:text>   </xsl:text>		<!-- BUG: spacing depends on type of parent enum -->
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:text>  </xsl:text>
+	  </xsl:otherwise>
+	</xsl:choose>
 	<xsl:call-template name="ENUM">
 	  <xsl:with-param name="level" select="$level - 1"/>
 	  <xsl:with-param name="str_markup" select="$str_markup"/>
 	</xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
+	<xsl:value-of select="$str_markup"/>
 	<xsl:text> </xsl:text>
       </xsl:otherwise>
     </xsl:choose>
@@ -178,9 +186,9 @@
   </xsl:template>
 
   <xsl:template match="w:tbl">
-    <xsl:value-of select="concat('&lt;csv&gt;',$newline)"/>
+    <xsl:value-of select="concat('~~~',$newline)"/>
     <xsl:apply-templates select="w:tr"/>
-    <xsl:value-of select="concat('&lt;/csv&gt;',$newpar)"/>
+    <xsl:value-of select="concat('~~~',$newpar)"/>
   </xsl:template>
 
   <xsl:template match="w:tr">

@@ -285,6 +285,10 @@ $(function(){
     // $('a').off('contextmenu');
     // $('a[class="context-menu-list context-menu-root"]').off();
 
+    // $('[href]').contextMenu(function () {
+    // 	return false;
+    // });
+
     var urlParams = new URLSearchParams(document.location.search);
 
     if (urlParams.get('path') == undefined || urlParams.get('path').match(/\.(pie|mm|md|cxp|txt|csv)$/i)) {
@@ -368,6 +372,7 @@ $(function(){
 		    "presentation": {name: "Presentation", icon: ""}
 		}
 	    });
+
 	}
 
 	$.contextMenu({
@@ -533,5 +538,7 @@ $(function(){
 	});
 	
     }
+
+    //$('[href]').unbind();
 
 });

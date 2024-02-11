@@ -2,7 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   
   <xsl:include href="../Utils.xsl"/>
+
   <xsl:output method="xml" version="1.0" encoding="US-ASCII"/>
+
   <xsl:variable name="flag_p" select="true()"/>
   <xsl:variable name="flag_attr" select="false()"/>
   <xsl:variable name="flag_fold" select="true()"/>
@@ -33,9 +35,6 @@
         <xsl:element name="node">
           <xsl:attribute name="TEXT">
             <xsl:value-of select="$str_title"/>
-            <xsl:if test="date or author">
-              <xsl:value-of select="concat('&#10;',date,'&#10;',author)"/>
-            </xsl:if>
           </xsl:attribute>
           <xsl:apply-templates/>
         </xsl:element>
@@ -55,23 +54,16 @@
         </xsl:attribute>
       </xsl:if>
       <xsl:for-each select="child::h">
-	<xsl:choose>
-	  <xsl:when test="@ref">
-            <xsl:attribute name="LINK">
-              <xsl:value-of select="@ref"/>
-            </xsl:attribute>
-	  </xsl:when>
-	  <xsl:when test="link[@href]">
-            <xsl:attribute name="LINK">
-              <xsl:value-of select="link[1]/@href"/>
-            </xsl:attribute>
-	  </xsl:when>
-	  <xsl:otherwise>
-	  </xsl:otherwise>
-	</xsl:choose>
+	<xsl:if test="link[@href]">
+          <xsl:attribute name="LINK">
+            <xsl:value-of select="link[1]/@href"/>
+          </xsl:attribute>
+	</xsl:if>
 	<xsl:call-template name="CREATECOLORS"/>
 	<xsl:attribute name="TEXT">
-          <xsl:value-of select="normalize-space(.)"/>
+	  <xsl:for-each select="child::*[not(name()='t')]|child::text()">
+            <xsl:value-of select="."/>
+	  </xsl:for-each>
 	</xsl:attribute>
       </xsl:for-each>
       <xsl:element name="font">
@@ -150,7 +142,9 @@
       <xsl:if test="h">
         <!-- write header as TEXT in this node -->
         <xsl:attribute name="TEXT">
-          <xsl:value-of select="normalize-space(h)"/>
+	  <xsl:for-each select="child::h/child::*[not(name()='t')]|child::h/child::text()">
+            <xsl:value-of select="."/>
+	  </xsl:for-each>
         </xsl:attribute>
       </xsl:if>
       <xsl:if test="img/@src">
@@ -170,10 +164,6 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="link">
-    <xsl:value-of select="text()"/>
-  </xsl:template>
-
   <xsl:template match="p">
     <xsl:if test="$flag_p">
       <xsl:element name="node">
@@ -183,10 +173,10 @@
 	      <xsl:when test="self::list"/>
 	      <xsl:when test="self::t"/>
 	      <xsl:when test="self::text()">
-		<xsl:copy-of select="."/>
+		<xsl:value-of select="."/>
 	      </xsl:when>
 	      <xsl:otherwise>
-		<xsl:value-of select="normalize-space(.)"/>
+		<xsl:value-of select="."/>
 	      </xsl:otherwise>
 	    </xsl:choose>
 	  </xsl:for-each>
@@ -217,65 +207,60 @@
   </xsl:template>
 
   <xsl:template match="table">
-    <xsl:for-each select="tr[1]/*">
+    <xsl:for-each select="child::tr[1]/child::*[name() = 'th' or name() = 'td']"> <!-- first row defines columns -->
       <xsl:variable name="int_col" select="position()"/>
-      <xsl:choose>
-        <xsl:when test="self::th">
-          <!-- there is a header cell -->
-	  <xsl:element name="node">
-	    <xsl:attribute name="TEXT">
-              <xsl:apply-templates/>
-	    </xsl:attribute>
-            <xsl:for-each select="../../tr[position() &gt; 1]">
-              <xsl:for-each select="*[position() = $int_col]">
-		<xsl:element name="node">
-		  <xsl:attribute name="TEXT">
-                    <xsl:apply-templates/>
-		  </xsl:attribute>
-		</xsl:element>
-              </xsl:for-each>
-            </xsl:for-each>
-	  </xsl:element>
-        </xsl:when>
-        <xsl:otherwise>
-          <!-- there is no header cell -->
-	  <xsl:element name="node">
-            <xsl:for-each select="../../tr">
-              <xsl:for-each select="*[position() = $int_col]">
-		<xsl:element name="node">
-		  <xsl:attribute name="TEXT">
-		    <xsl:apply-templates/>
-		  </xsl:attribute>
-		</xsl:element>
-              </xsl:for-each>
-            </xsl:for-each>
-	  </xsl:element>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:element name="node">
+	<xsl:attribute name="TEXT">
+          <xsl:value-of select="$int_col"/>
+	</xsl:attribute>
+	<xsl:for-each select="parent::tr/parent::table/child::tr">
+	  <xsl:variable name="int_row" select="position()"/>
+          <xsl:apply-templates select="child::*[position() = $int_col]"/>
+	</xsl:for-each>
+      </xsl:element>
     </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="tableYYY">
+    <xsl:apply-templates select="tr"/>
   </xsl:template>
 
   <xsl:template match="tr">
     <xsl:element name="node">
       <xsl:attribute name="TEXT">
-        <xsl:value-of select="''"/>
+        <xsl:value-of select="position()"/>
       </xsl:attribute>
-      <xsl:apply-templates select="*"/>
+      <xsl:apply-templates select="th|td"/>
     </xsl:element>
   </xsl:template>
 
   <xsl:template match="th">
     <xsl:element name="node">
       <xsl:attribute name="TEXT">
-        <xsl:apply-templates/>
+	<xsl:for-each select="child::*[not(name()='t')]|child::text()">
+          <xsl:value-of select="."/>
+	</xsl:for-each>
       </xsl:attribute>
+      <xsl:element name="font">
+	<xsl:attribute name="BOLD">
+          <xsl:text>true</xsl:text>
+	</xsl:attribute>
+        <xsl:attribute name="NAME">
+          <xsl:value-of select="$str_font"/>
+        </xsl:attribute>
+        <xsl:attribute name="SIZE">
+          <xsl:value-of select="$int_fontsize"/>
+        </xsl:attribute>
+      </xsl:element>
     </xsl:element>
   </xsl:template>
 
   <xsl:template match="td">
     <xsl:element name="node">
       <xsl:attribute name="TEXT">
-        <xsl:apply-templates/>
+	<xsl:for-each select="child::*[not(name()='t')]|child::text()">
+          <xsl:value-of select="."/>
+	</xsl:for-each>
       </xsl:attribute>
     </xsl:element>
   </xsl:template>

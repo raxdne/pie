@@ -823,14 +823,4 @@
   t
   )
 
-(define-key-after
-  (lookup-key global-map [menu-bar tools])
-  [current-insert-effort] '("Effort" . (lambda ()
-				     ""
-				     (interactive)
-				     (insert " \u258A\u258A\u258A"))
-			  )
-  t
-  )
-
 (provide 'pie)
