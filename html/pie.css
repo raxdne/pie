@@ -407,6 +407,10 @@ dd {
 img {
  /* margin: 10px 10px 20px 20px; */
  border:none
+ max-height:80%;
+ max-width:80%;
+ height:auto;
+ width:auto;
 }
 .figure {
  background-color:#eeeeee;
@@ -490,12 +494,6 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 }
 *.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.th2, *.td2, *.section2 {
   background-color:#ddffdd;
-  padding: 1px;
-  margin: 1px 0px 1px 0px;
-  border-radius: 3px;
-}
-*.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.th3, *.td3, *.section3 {
-  background-color:#ddddff;
   padding: 1px;
   margin: 1px 0px 1px 0px;
   border-radius: 3px;

@@ -17,6 +17,8 @@
 
   <xsl:variable name="int_lmax" select="100" /> <!-- maximum length of an event summary -->
 
+  <xsl:variable name="ns_date" select="descendant::date[$int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]" /> <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
+
   <xsl:template match="/">
 <xsl:text>BEGIN:VCALENDAR
 PRODID:-//CXPROC PIE Calendar//DE
@@ -42,7 +44,7 @@ RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
 END:STANDARD
 END:VTIMEZONE
 </xsl:text>
-    <xsl:apply-templates select="descendant::date[$int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]"/> <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
+    <xsl:apply-templates select="$ns_date"/>
 <xsl:text>END:VCALENDAR</xsl:text>
   </xsl:template>
   
@@ -129,7 +131,7 @@ END:VTODO
 </xsl:text>
       </xsl:when>
 
-      <xsl:when test="parent::h/parent::task|parent::p/parent::list/parent::task|parent::p/parent::section">
+      <xsl:when test="parent::h/parent::task|parent::p/parent::list/parent::task|self::*[attribute::interval &gt; 1]|ancestor::*[attribute::impact &lt; 3]">
     <xsl:text>BEGIN:VEVENT
 CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
