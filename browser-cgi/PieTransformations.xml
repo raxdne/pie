@@ -37,14 +37,6 @@
       <h>Text plain tree</h>
       <p>An unicode tree layout.</p>
     </pkg:stelle>
-    <pkg:stelle id="text/plain+lines" type="text/plain">
-      <h>Text plain lines</h>
-      <p>A simple line layout (e.g. Freemind, Mindmanager).</p>
-    </pkg:stelle>
-    <pkg:stelle id="text/plain+journal" type="text/plain">
-      <h>Text plain Journal</h>
-      <p>A simple journal layout.</p>
-    </pkg:stelle>
     <pkg:stelle id="text/calendar" type="text/calendar" disposition="attachement;filename=cxproc.ics">
       <h>Text ICS Calendar</h>
       <make>
@@ -69,7 +61,7 @@
     </pkg:stelle>
     <pkg:stelle id="text/plain+indent" type="text/plain">
       <h>Text plain indent layout</h>
-      <p>A text only layout build indented lines.</p>
+      <p>A simple line layout (e.g. Freemind, Mindmanager).</p>
     </pkg:stelle>
     <pkg:stelle id="application/rss+xml" type="application/rss+xml">
       <h>XML RSS</h>
@@ -261,7 +253,7 @@
       <h>Text Wiki</h>
     </pkg:stelle>
     <pkg:stelle id="text/plain+dirpath" type="text/plain">
-      <h>Text Paths</h>
+      <h>Text Paths ('mkdir')</h>
     </pkg:stelle>
     <pkg:stelle id="application/json+tree" type="application/json">
       <h>JSON Tree</h>
@@ -296,10 +288,10 @@
       </make>
     </pkg:stelle>
     <!--  -->
-    <pkg:transition id="ShellMakeDir">
-      <h>ShellMakeDir</h>
+    <pkg:transition id="x2paths">
+      <h>x2paths</h>
       <make>
-	<xsl name="ShellMakeDir.xsl"/>
+	<xsl name="x2paths.xsl"/>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2jsontree">
@@ -365,14 +357,6 @@
       <make>
 	<xsl name="mm2tree.xsl">
 	  <variable name="flag_spacing" select="false()"/>
-	</xsl>
-      </make>
-    </pkg:transition>
-    <pkg:transition id="mm2lines">
-      <h>mm2lines</h>
-      <make>
-	<xsl name="mm2lines.xsl">
-	  <variable name="str_sep" select="'	'"/>
 	</xsl>
       </make>
     </pkg:transition>
@@ -506,10 +490,10 @@
 	</xsl>
       </make>
     </pkg:transition>
-    <pkg:transition id="pie2indentplain">
-      <h>pie2indentplain</h>
+    <pkg:transition id="x2indents">
+      <h>x2indents</h>
       <make>
-	<xsl name="pie2indentplain.xsl">
+	<xsl name="x2indents.xsl">
 	  <variable name="str_tab" select="'  '" />
 	</xsl>
       </make>
@@ -659,7 +643,7 @@
 	<xml>
 	  <xml>
 	    <pie url="yes" tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH">
-	      <import name="PATH" locator="yes"/>
+	      <import name="PATH" locator="yes" subst="yes" />
 	    </pie>
 	  </xml>
 	</xml>
@@ -1171,12 +1155,6 @@
 	<xsl name="pie2ics.xsl"/>
       </make>
     </pkg:transition>
-    <pkg:transition id="ics2journal">
-      <h>ics2journal</h>
-      <make>
-	<xsl name="xCal2journal.xsl"/>
-      </make>
-    </pkg:transition>
     <pkg:transition id="vcf2pie">
       <h>vcf2pie</h>
       <make>
@@ -1198,18 +1176,16 @@
     <!--  -->
     <pkg:relation from="application/mm+xml" to="mm2mm"/>
     <pkg:relation to="application/mm+proc+xml" from="mm2mm"/>
-    <pkg:relation from="application/pie+proc+xml" to="ShellMakeDir"/>
-    <pkg:relation from="application/dir+xml" to="ShellMakeDir"/>
-    <pkg:relation from="application/mm+proc+xml" to="ShellMakeDir"/>
-    <pkg:relation from="ShellMakeDir" to="text/plain+dirpath"/>
+    <pkg:relation from="application/pie+proc+xml" to="x2paths"/>
+    <pkg:relation from="application/dir+xml" to="x2paths"/>
+    <pkg:relation from="application/mm+proc+xml" to="x2paths"/>
+    <pkg:relation from="x2paths" to="text/plain+dirpath"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2jsontree"/>
     <pkg:relation from="pie2jsontree" to="application/json+tree"/>
     <pkg:relation from="application/mm+proc+xml" to="mm2dot"/>
     <pkg:relation from="mm2dot" to="text/dot" />
     <pkg:relation from="application/mm+proc+xml" to="mm2tree" />
     <pkg:relation from="mm2tree" to="text/plain+tree" />
-    <pkg:relation from="application/mm+proc+xml" to="mm2lines" />
-    <pkg:relation from="mm2lines" to="text/plain+lines" />
     <pkg:relation from="application/vnd.garmin.tcx+xml" to="tcx2csv" />
     <pkg:relation from="tcx2csv" to="text/csv" />
     <pkg:relation from="application/vnd.garmin.fit+xml" to="fitx2html" />
@@ -1257,8 +1233,6 @@
     <pkg:relation from="pie2ics" to="text/calendar"/>
     <pkg:relation from="text/calendar" to="ics2pie"/>
     <pkg:relation from="ics2pie" to="application/pie+proc+xml"/>
-    <pkg:relation from="text/calendar" to="ics2journal"/>
-    <pkg:relation from="ics2journal" to="text/plain+journal"/>
     <pkg:relation from="text/vcard" to="vcf2pie"/>
     <pkg:relation from="vcf2pie" to="application/pie+proc+xml"/>
     <pkg:relation from="application/rss+xml" to="rss2pie"/>
@@ -1288,8 +1262,10 @@
     <pkg:relation from="mm2tab" to="text/html+tab"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2indent"/>
     <pkg:relation from="pie2indent" to="text/html+indent"/>
-    <pkg:relation from="application/pie+proc+xml" to="pie2indentplain"/>
-    <pkg:relation from="pie2indentplain" to="text/plain+indent"/>
+    <pkg:relation from="application/pie+proc+xml" to="x2indents"/>
+    <pkg:relation from="application/dir+xml" to="x2indents"/>
+    <pkg:relation from="application/mm+proc+xml" to="x2indents"/>
+    <pkg:relation from="x2indents" to="text/plain+indent"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2backlog"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2matrix"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2kanban"/>

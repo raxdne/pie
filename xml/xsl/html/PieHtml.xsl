@@ -409,46 +409,25 @@
 
   <xsl:template name="TABLEHEADER">
     <!-- create a table header cell for every column -->
-    <xsl:param name="numCols" select="-1"/>
-    <xsl:param name="numColMax" select="-1"/>
-    <xsl:choose>
-      <xsl:when test="$numCols &lt; 0"> <!-- first column -->
-	<xsl:element name="thead">
-	  <xsl:element name="tr">
-	    <xsl:element name="th">
-	      <xsl:text>&#x2800;</xsl:text>
-	    </xsl:element>
-	    <xsl:call-template name="TABLEHEADER"> <!-- recursion, initial call -->
-	      <xsl:with-param name="numCols" select="1"/>
-	      <xsl:with-param name="numColMax">
-		<xsl:choose>
-		  <xsl:when test="@cols">
-		    <xsl:value-of select="@cols"/> <!-- initial value of table/@cols -->
-		  </xsl:when>
-		  <xsl:otherwise>
-		    <xsl:value-of select="count(child::tr[1]/child::td)"/> <!-- initial value, count of childs -->
-		  </xsl:otherwise>
-		</xsl:choose>
-	      </xsl:with-param>
-	    </xsl:call-template>
-	  </xsl:element>
-	</xsl:element>
-      </xsl:when>
-      <xsl:when test="$numCols &gt; $numColMax">
-	<!-- end recursion -->
-      </xsl:when>
-      <xsl:otherwise>
+    <xsl:for-each select="tr[th[@col]|td[@col]][1]">
+      <xsl:element name="tr">
 	<xsl:element name="th">
-	  <xsl:value-of select="$numCols"/>
+	  <xsl:text>&#x2800;</xsl:text>
 	</xsl:element>
-	<xsl:call-template name="TABLEHEADER"> <!-- recursion -->
-	  <xsl:with-param name="numCols">
-	    <xsl:value-of select="$numCols + 1"/> <!-- decrement value -->
-	  </xsl:with-param>
-	  <xsl:with-param name="numColMax" select="$numColMax"/> <!-- keep max value -->
-	</xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
+	<xsl:for-each select="th|td">
+	  <xsl:element name="th">
+	    <xsl:choose>
+	      <xsl:when test="@col">
+		<xsl:value-of select="@col"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="position()"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:element>
+	</xsl:for-each>
+      </xsl:element>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="table">

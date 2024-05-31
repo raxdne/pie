@@ -4,16 +4,23 @@
       (shell-command (concat "xsltproc" " " (buffer-file-name) " " "~/cxproc-build/cxproc/t-xslx.xml") "test.out" "test.err")
   -->
   <xsl:output method="xml"/>
+  
   <xsl:variable name="ns_si" select="//sst:sst"/>
+  
   <xsl:variable name="ns_hyperlink" select="//sst:hyperlink"/>
+  
   <xsl:template match="/">
     <xsl:element name="pie">
       <xsl:apply-templates select="//sst:worksheet"/>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="sst:worksheet">
     <xsl:variable name="ns_cols" select="sst:cols"/>
     <xsl:element name="table">
+      <xsl:attribute name="cells">
+	<xsl:value-of select="sst:dimension/attribute::ref"/>
+      </xsl:attribute>
       <xsl:attribute name="name">
 	<xsl:value-of select="parent::file/attribute::name"/>
       </xsl:attribute>
@@ -55,10 +62,12 @@
       </xsl:for-each>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="sst:c[@t = 's' and sst:v]">
     <xsl:variable name="int_index" select="sst:v"/>
       <xsl:value-of select="$ns_si/sst:si[position() = $int_index + 1]//sst:t"/>
   </xsl:template>
+  
   <xsl:template name="CELL">
     <xsl:param name="int_row" select="-1"/>
     <xsl:param name="int_col" select="-1"/>
