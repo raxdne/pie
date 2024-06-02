@@ -407,31 +407,6 @@
       </xsl:element>
   </xsl:template>
 
-  <xsl:template name="TABLEHEADER">
-    <!-- create a table header cell for every column -->
-    <xsl:for-each select="tr[th[@col]|td[@col]][1]">
-      <xsl:element name="thead">
-	<xsl:element name="tr">
-	  <xsl:element name="th">
-	    <xsl:text>&#x2800;</xsl:text>
-	  </xsl:element>
-	  <xsl:for-each select="th|td">
-	    <xsl:element name="th">
-	      <xsl:choose>
-		<xsl:when test="@col">
-		  <xsl:value-of select="@col"/>
-		</xsl:when>
-		<xsl:otherwise>
-		  <xsl:value-of select="position()"/>
-		</xsl:otherwise>
-	      </xsl:choose>
-	    </xsl:element>
-	  </xsl:for-each>
-	</xsl:element>
-      </xsl:element>
-    </xsl:for-each>
-  </xsl:template>
-
   <xsl:template match="table">
     <xsl:element name="center">
       <xsl:element name="table">
@@ -446,32 +421,57 @@
 	</xsl:attribute>
 	<xsl:copy-of select="@*"/>
 	<xsl:attribute name="width">90%</xsl:attribute>
+	<xsl:for-each select="thead">
+	  <xsl:element name="{name()}">
+	    <xsl:for-each select="tr[1]">
+	      <xsl:element name="{name()}">
+		<xsl:for-each select="th|td">
+		  <xsl:if test="position() = 1">
+		    <xsl:element name="{name()}">
+		      <xsl:text>&#x2800;</xsl:text>
+		    </xsl:element>
+		  </xsl:if>
+		  <xsl:copy-of select="."/>
+		</xsl:for-each>
+	      </xsl:element>
+	    </xsl:for-each>
+	  </xsl:element>
+	</xsl:for-each>
 	<xsl:choose>
-	  <xsl:when test="thead">
-	    <!-- OK -->
-	    <xsl:copy-of select="*[not(name()='t')]|text()"/>
+	  <xsl:when test="child::tbody">
+	    <xsl:for-each select="tbody">
+	      <xsl:element name="{name()}">
+		<xsl:for-each select="tr">
+		  <xsl:element name="{name()}">
+		    <xsl:element name="th">
+		      <xsl:value-of select="position()"/>
+		    </xsl:element>
+		    <xsl:for-each select="th|td">
+		      <xsl:element name="{name()}">
+			<xsl:copy-of select="@*"/>
+			<xsl:call-template name="CLASSATRIBUTE"/>
+			<xsl:apply-templates select="*|text()"/>
+		      </xsl:element>
+		    </xsl:for-each>
+		  </xsl:element>
+		</xsl:for-each>
+	      </xsl:element>
+	    </xsl:for-each>	    
 	  </xsl:when>
 	  <xsl:otherwise>
-	    <xsl:call-template name="TABLEHEADER"/>
-	    <tbody>
-	      <xsl:for-each select="tr">
-		<xsl:element name="{name()}">
-		  <xsl:call-template name="CLASSATRIBUTE"/>
-		  <xsl:element name="th">
-		    <xsl:value-of select="position()"/>
-		  </xsl:element>
-		  <xsl:for-each select="td|th">
-		    <xsl:element name="{name()}">
-		      <xsl:call-template name="CLASSATRIBUTE"/>
-		      <xsl:copy-of select="@*"/>
-		      <xsl:apply-templates select="*|text()"/>
-		    </xsl:element>
-		  </xsl:for-each>
-		</xsl:element>
-	      </xsl:for-each>
-	    </tbody>
 	  </xsl:otherwise>
 	</xsl:choose>
+	<xsl:for-each select="tr">
+	  <xsl:element name="{name()}">
+	    <xsl:for-each select="th|td">
+	      <xsl:element name="{name()}">
+		<xsl:copy-of select="@*"/>
+		<xsl:call-template name="CLASSATRIBUTE"/>
+		<xsl:apply-templates select="*|text()"/>
+	      </xsl:element>
+	    </xsl:for-each>
+	  </xsl:element>
+	</xsl:for-each>
       </xsl:element>
     </xsl:element>
   </xsl:template>
