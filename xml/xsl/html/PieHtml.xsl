@@ -410,22 +410,24 @@
   <xsl:template name="TABLEHEADER">
     <!-- create a table header cell for every column -->
     <xsl:for-each select="tr[th[@col]|td[@col]][1]">
-      <xsl:element name="tr">
-	<xsl:element name="th">
-	  <xsl:text>&#x2800;</xsl:text>
-	</xsl:element>
-	<xsl:for-each select="th|td">
+      <xsl:element name="thead">
+	<xsl:element name="tr">
 	  <xsl:element name="th">
-	    <xsl:choose>
-	      <xsl:when test="@col">
-		<xsl:value-of select="@col"/>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="position()"/>
-	      </xsl:otherwise>
-	    </xsl:choose>
+	    <xsl:text>&#x2800;</xsl:text>
 	  </xsl:element>
-	</xsl:for-each>
+	  <xsl:for-each select="th|td">
+	    <xsl:element name="th">
+	      <xsl:choose>
+		<xsl:when test="@col">
+		  <xsl:value-of select="@col"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="position()"/>
+		</xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:element>
+	  </xsl:for-each>
+	</xsl:element>
       </xsl:element>
     </xsl:for-each>
   </xsl:template>
@@ -434,10 +436,10 @@
     <xsl:element name="center">
       <xsl:element name="table">
 	<xsl:attribute name="id">
-	  <xsl:text>localTable</xsl:text> <!-- TODO: handle multiple tables -->
+	  <xsl:value-of select="concat('table',position())"/>
 	</xsl:attribute>
 	<xsl:attribute name="class">
-	  <xsl:text>tablesorter</xsl:text>
+	  <xsl:text>localTable</xsl:text>
 	</xsl:attribute>
 	<xsl:attribute name="border">
 	  <xsl:text>1</xsl:text>

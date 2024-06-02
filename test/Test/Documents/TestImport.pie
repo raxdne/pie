@@ -2,6 +2,13 @@
 <pie class="article">
   <section>
     <h>Test import PIE</h>
+
+    <import name="Dummy/TestImport.txt"/>
+
+    <import name="SubDir/TestImport.txt"/>
+
+    <import name="TestImportName.txt"/>
+    
     <import name="TestContent.txt"/>
     <import type="cxp">
       <plain>

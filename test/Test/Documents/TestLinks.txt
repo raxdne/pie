@@ -2,6 +2,12 @@
 
 * Link Test
 
+abc@web.de
+
+mailto:dummy@gmail.com
+
+tel:+18999203820
+
 Search engines http://www.google.de http://www.froogle.de http://www.metager.de
 
 Auskunft

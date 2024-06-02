@@ -145,6 +145,14 @@ document.createUI = function () {
 	    window.location.assign(strUrlNew);
 	}
     });
+
+    $("table.localTable").tablesorter({
+	theme : 'ice',
+	widgets: ["filter"],
+	widgetOptions : {
+	    filter_ignoreCase : true
+	}
+  });
 }
 
 

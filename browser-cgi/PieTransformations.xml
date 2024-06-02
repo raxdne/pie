@@ -981,7 +981,7 @@
       <h>Parse Directory</h>
       <make>
 	<xml>
-	  <dir name="PATH" verbosity="5"/>
+	  <dir name="PATH" verbosity="1"/>
 	</xml>
       </make>
     </pkg:transition>
