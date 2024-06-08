@@ -204,27 +204,28 @@
     <xsl:element name="a">
       <xsl:copy-of select="@class"/>
       <xsl:choose>
+        <xsl:when test="@target">
+	  <xsl:copy-of select="@target"/>
+        </xsl:when>
+        <xsl:otherwise>
+	  <xsl:attribute name="target">
+	    <xsl:value-of select="$target"/>
+	  </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
 	<xsl:when test="@id">
 	  <xsl:attribute name="name">
             <xsl:value-of select="@id"/>
 	  </xsl:attribute>
 	</xsl:when>
 	<xsl:when test="@href">
-          <xsl:choose>
-            <xsl:when test="@target">
-	      <xsl:copy-of select="@target"/>
-            </xsl:when>
-	    <xsl:when test="starts-with(@href,'#')">
-	      <!-- local link only -->
-	    </xsl:when>
-            <xsl:otherwise>
-	      <xsl:attribute name="target">
-		<xsl:value-of select="$target"/>
-	      </xsl:attribute>
-            </xsl:otherwise>
-          </xsl:choose>
 	  <xsl:attribute name="href">
 	    <xsl:choose>
+	      <xsl:when test="starts-with(@href,'#')">
+		<!-- local link only -->
+		<xsl:value-of select="@href"/>
+	      </xsl:when>
 	      <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'mailto:') or starts-with(@href,'tel:') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
 		<xsl:value-of select="@href"/>
 	      </xsl:when>
