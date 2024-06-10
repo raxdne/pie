@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:import href="../html/PieHtml.xsl"/>
+  
   <xsl:variable name="flag_result" select="//result"/>
   <xsl:variable name="dir_plain" select="''"/>
   <xsl:variable name="prefix_tmp" select="''"/>
   <xsl:variable name="prefix_tmpi" select="translate($prefix_tmp,'\','/')"/>
+
 
   <xsl:output method="html" encoding="UTF-8"/>  
   <!--  -->
@@ -43,29 +46,42 @@
   </xsl:variable>
   <!--  -->
   <xsl:choose>
-    <xsl:when test="contains('pngjpgjpeggif',@ext)">
+    <xsl:when test="starts-with(@type,'image/')">
       <xsl:element name="p">
-          <xsl:element name="img">
-            <xsl:attribute name="title">
-              <xsl:value-of select="@name"/>
-            </xsl:attribute>
-            <xsl:attribute name="src">
-              <xsl:value-of select="@name"/>
-            </xsl:attribute>
-          </xsl:element>
+        <xsl:element name="img">
+          <xsl:attribute name="title">
+            <xsl:value-of select="@name"/>
+          </xsl:attribute>
+          <xsl:attribute name="alt">
+            <xsl:value-of select="@name"/>
+          </xsl:attribute>
+	  <xsl:choose>
+	    <xsl:when test="child::base64">
+	      <xsl:attribute name="src">
+		<xsl:value-of select="concat('data:',@type,';base64,',child::base64/child::text())"/>
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:otherwise>
+              <xsl:attribute name="src">
+		<xsl:value-of select="@name"/>
+              </xsl:attribute>
+	    </xsl:otherwise>
+	  </xsl:choose>
+        </xsl:element>
       </xsl:element>
     </xsl:when>
-    <xsl:when test="true()">
-      <xsl:element name="p">
-          <xsl:element name="a">
-            <xsl:attribute name="href">
-              <xsl:value-of select="@name"/>
-            </xsl:attribute>
-            <xsl:value-of select="@name"/>
-          </xsl:element>
-      </xsl:element>
+    <xsl:when test="starts-with(@type,'text/')">
+      <xsl:apply-templates select="pie/*"/>
     </xsl:when>
     <xsl:otherwise>
+      <xsl:element name="p">
+        <xsl:element name="a">
+          <xsl:attribute name="href">
+            <xsl:value-of select="@name"/>
+          </xsl:attribute>
+          <xsl:value-of select="@name"/>
+        </xsl:element>
+      </xsl:element>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>

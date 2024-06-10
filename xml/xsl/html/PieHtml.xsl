@@ -370,42 +370,56 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="@src">
-      <xsl:element name="a">
+      <xsl:element name="a">	<!-- anchor to jump on -->
 	<xsl:attribute name="name">
 	  <xsl:value-of select="@src"/>
 	</xsl:attribute>
       </xsl:element>
     </xsl:if>
-      <xsl:element name="a">
-      <xsl:attribute name="href">
-	<xsl:value-of select="$str_src"/>
-      </xsl:attribute>
-      <xsl:attribute name="target">
-	<xsl:value-of select="'blank'"/>
-      </xsl:attribute>
-    <xsl:element name="{name()}">
-      <xsl:copy-of select="@*"/>
-      <xsl:attribute name="class">
-	<xsl:value-of select="'localsize'"/>
-      </xsl:attribute>
-      <xsl:attribute name="title">
-	<xsl:value-of select="@src"/>
-      </xsl:attribute>
-	<xsl:attribute name="alt">
-	<xsl:choose>
-	  <xsl:when test="parent::fig/child::h">
-	    <xsl:value-of select="parent::fig/child::h"/>
-	  </xsl:when>
-	  <xsl:otherwise>
+    <xsl:choose>
+      <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
+	<xsl:element name="{name()}">
+	  <xsl:attribute name="title">
+	    <xsl:value-of select="@src"/>
+	  </xsl:attribute>
+	  <xsl:attribute name="src">
+	    <xsl:value-of select="concat('data:',@type,';base64,',child::base64/child::text())"/>
+	  </xsl:attribute>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>		<!-- build a href -->
+	<xsl:element name="a">
+	  <xsl:attribute name="href">
 	    <xsl:value-of select="$str_src"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:attribute>
-      <xsl:attribute name="src">
-	<xsl:value-of select="$str_src"/>
-      </xsl:attribute>
-    </xsl:element>
-      </xsl:element>
+	  </xsl:attribute>
+	  <xsl:attribute name="target">
+	    <xsl:value-of select="'blank'"/>
+	  </xsl:attribute>
+	  <xsl:element name="{name()}">
+	    <xsl:copy-of select="@*"/>
+	    <xsl:attribute name="class">
+	      <xsl:value-of select="'localsize'"/>
+	    </xsl:attribute>
+	    <xsl:attribute name="title">
+	      <xsl:value-of select="$str_src"/>
+	    </xsl:attribute>
+	    <xsl:attribute name="alt">
+	      <xsl:choose>
+		<xsl:when test="parent::fig/child::h">
+		  <xsl:value-of select="parent::fig/child::h"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="$str_src"/>
+		</xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:attribute>
+            <xsl:attribute name="src">
+	      <xsl:value-of select="$str_src"/>
+            </xsl:attribute>
+	  </xsl:element>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="table">

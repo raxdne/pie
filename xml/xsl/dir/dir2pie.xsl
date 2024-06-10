@@ -52,6 +52,18 @@
             <xsl:value-of select="@name"/>
           </xsl:element>
       </xsl:element>
+      <xsl:choose>
+	<xsl:when test="child::base64">
+	  <xsl:element name="img">
+            <xsl:attribute name="src">
+	      <xsl:text>data:image/jpeg;base64,</xsl:text>
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+	  </xsl:element>
+	</xsl:when>
+      <xsl:otherwise>
+      </xsl:otherwise>
+    </xsl:choose>
     </xsl:when>
     <xsl:otherwise>
     </xsl:otherwise>
