@@ -364,6 +364,9 @@
 	<xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
 	  <xsl:value-of select="@src"/>
 	</xsl:when>
+	<xsl:when test="ancestor::block[@context]">
+	  <xsl:value-of select="concat('/',ancestor::block[@context][1]/@context,'/../',@src)"/> <!-- derive location from block context -->
+	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
 	</xsl:otherwise>
@@ -379,6 +382,7 @@
     <xsl:choose>
       <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
 	<xsl:element name="{name()}">
+	  <xsl:copy-of select="@*"/>
 	  <xsl:attribute name="title">
 	    <xsl:value-of select="@src"/>
 	  </xsl:attribute>
@@ -401,12 +405,22 @@
 	      <xsl:value-of select="'localsize'"/>
 	    </xsl:attribute>
 	    <xsl:attribute name="title">
-	      <xsl:value-of select="$str_src"/>
+	      <xsl:choose>
+		<xsl:when test="@alt">
+		  <xsl:value-of select="@alt"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="$str_src"/>
+		</xsl:otherwise>
+	      </xsl:choose>
 	    </xsl:attribute>
 	    <xsl:attribute name="alt">
 	      <xsl:choose>
 		<xsl:when test="parent::fig/child::h">
 		  <xsl:value-of select="parent::fig/child::h"/>
+		</xsl:when>
+		<xsl:when test="@alt">
+		  <xsl:value-of select="@alt"/>
 		</xsl:when>
 		<xsl:otherwise>
 		  <xsl:value-of select="$str_src"/>
