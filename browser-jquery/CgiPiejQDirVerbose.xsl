@@ -29,6 +29,8 @@
               <xsl:element name="th">Byte</xsl:element>
               <xsl:element name="th">MTime</xsl:element>
               <xsl:element name="th">MIME</xsl:element>
+              <xsl:element name="th">Archive</xsl:element>
+              <xsl:element name="th">Cache</xsl:element>
               <xsl:element name="th">Trash</xsl:element>
 	    </xsl:element>
 	  </xsl:element>
@@ -312,6 +314,18 @@
 		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Archive')"/>
 	      </xsl:attribute>
 	      <xsl:text>[Archive]</xsl:text>
+	    </xsl:element>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:element name="a">
+	      <xsl:attribute name="class">cxp</xsl:attribute>
+	      <xsl:attribute name="title">
+		<xsl:value-of select="@name"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Cache')"/>
+	      </xsl:attribute>
+	      <xsl:text>[Cache]</xsl:text>
 	    </xsl:element>
 	  </xsl:element>
 	  <xsl:element name="td">

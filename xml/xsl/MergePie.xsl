@@ -20,7 +20,9 @@
 	<xsl:element name="h">
 	  <xsl:value-of select="@name"/>
 	</xsl:element>
-	<xsl:apply-templates/>
+        <xsl:apply-templates>
+	  <xsl:sort select="@mtime"/>
+	</xsl:apply-templates>
       </xsl:element>
     </xsl:element>
   </xsl:template>

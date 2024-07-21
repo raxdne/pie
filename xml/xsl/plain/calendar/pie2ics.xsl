@@ -17,7 +17,7 @@
 
   <xsl:variable name="int_lmax" select="100" /> <!-- maximum length of an event summary -->
 
-  <xsl:variable name="ns_date" select="descendant::date[$int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]" /> <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
+  <xsl:variable name="ns_date" select="descendant::date[parent::h/parent::task[@class='target'] or @interval &gt; 7 or $int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]" /> <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
 
   <xsl:template match="/">
 <xsl:text>BEGIN:VCALENDAR
@@ -97,6 +97,7 @@ END:VTIMEZONE
 	<xsl:value-of select="concat('CATEGORIES:',name(.),attribute::impact,'&#10;')" />
       </xsl:for-each>
     </xsl:variable>
+
     <xsl:choose>
       <xsl:when test="$flag_interval and not(attribute::interval) and not(ancestor-or-self::*[attribute::impact] = 1)"/>
       
@@ -131,7 +132,7 @@ END:VTODO
 </xsl:text>
       </xsl:when>
 
-      <xsl:when test="parent::h/parent::task|parent::p/parent::list/parent::task|self::*[attribute::interval &gt; 1]|ancestor::*[attribute::impact &lt; 3]">
+      <xsl:when test="parent::h/parent::task|parent::p/parent::section|parent::p/parent::list/parent::task|self::*[attribute::interval &gt; 1]|ancestor::*[attribute::impact &lt; 3]">
     <xsl:text>BEGIN:VEVENT
 CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>

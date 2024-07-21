@@ -376,7 +376,7 @@ pre {
   /* font-size: 13px; */
   line-height: 19px;
   overflow: auto;
-  padding: 6px 10px;
+  padding: 6px 6px;
   border-radius: 3px;
   font-family: monospace;
 }
@@ -481,21 +481,21 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 
 *.task, *.todo, *.test, *.bug, *.req, *.target {
   background-color:#EEEEEE;
-  padding: 1px;
-  margin: 1px 0px 1px 0px;
+  /* padding: 1px; */
+  margin: 0px 0px 0px 0px;
   border-radius: 3px;
 }
 
 *.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.th1, *.td1, *.section1 {
   background-color:#ffffbb;
-  padding: 1px;
-  margin: 1px 0px 1px 0px;
+  /* padding: 1px; */
+  margin: 0px 0px 0px 0px;
   border-radius: 3px;
 }
 *.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.th2, *.td2, *.section2 {
   background-color:#ddffdd;
-  padding: 1px;
-  margin: 1px 0px 1px 0px;
+  /* padding: 1px; */
+  margin: 0px 0px 0px 0px;
   border-radius: 3px;
 }
 
@@ -506,13 +506,17 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 *.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.h-done {
   color:#AAAAAA;
   background-color:#eeeeee;
-  padding: 1px;
-  margin: 1px 0px 1px 0px;
-  border-radius: 3px;
+  padding: 0px;
+  margin: 0px 0px 0px 0px;
+  /* border-radius: 3px; */
 }
 
 span.context-menu-section {
   font-weight:bold;
+}
+
+*.context-menu-task {
+  margin: 0px 0px 0px 0px;
 }
 
 /* 
