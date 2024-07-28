@@ -33,6 +33,9 @@
 	    <xsl:for-each select="ap:TextLabels/ap:TextLabel">
               <xsl:value-of select="concat(' #',translate(@TextLabelName,' ','_'))"/>
 	    </xsl:for-each>
+            <xsl:if test="ap:Task[@TaskPercentage='100']">
+	      <xsl:text> ✔</xsl:text>
+	    </xsl:if>
           </xsl:attribute>
           <xsl:if test="$flag_folded and ap:SubTopics and ap:TopicViewGroup/ap:Collapsed/@Collapsed">
             <xsl:attribute name="FOLDED">
@@ -159,6 +162,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  
   <xsl:template match="*|@*"/>
 
   <xsl:template name="BR2NODE">

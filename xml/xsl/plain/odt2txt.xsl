@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:php="http://php.net/xsl" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dc="urn:oasis:names:dc" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="xhtml php xsl office style text table draw fo xlink">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:php="http://php.net/xsl" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dc="urn:oasis:names:dc" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" exclude-result-prefixes="xhtml php xsl office style text table draw fo xlink">
 
   <xsl:output method="text" encoding="UTF-8"/>
 
@@ -37,6 +37,9 @@
     <xsl:choose>
       <xsl:when test="pie//file/archive/file[@name = 'content.xml']/office:document-content">
 	<xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
+	  <xsl:for-each select="/descendant::file[@name='thumbnail.png']">
+	    <xsl:value-of select="concat($newpar,'data:',@type,';base64,',base64,$newpar)"/>
+	  </xsl:for-each>	  
 	  <xsl:apply-templates select="pie//file/archive/file[@name = 'content.xml']/office:document-content/office:body/office:text"/>
 	</xsl:element>
       </xsl:when>
@@ -115,6 +118,12 @@
     <xsl:value-of select="$newpar"/>
   </xsl:template>
 
+  <xsl:template match="draw:frame">
+    <xsl:variable name="str_name" select="substring-after(draw:image/@xlink:href,'/')"/>
+    <xsl:variable name="node_file" select="/descendant::file[@name=$str_name]"/>
+    <xsl:value-of select="concat($newpar,'data:',$node_file/@type,';base64,',$node_file/base64,$newpar)"/>
+  </xsl:template>
+  
   <xsl:template name="ENUM">
     <xsl:param name="level"/>
     <xsl:param name="str_markup" select="' '"/>
