@@ -37,9 +37,11 @@
     <xsl:choose>
       <xsl:when test="pie//file/archive/file[@name = 'content.xml']/office:document-content">
 	<xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
+	  <!--
 	  <xsl:for-each select="/descendant::file[@name='thumbnail.png']">
 	    <xsl:value-of select="concat($newpar,'data:',@type,';base64,',base64,$newpar)"/>
-	  </xsl:for-each>	  
+	    </xsl:for-each>
+	    -->
 	  <xsl:apply-templates select="pie//file/archive/file[@name = 'content.xml']/office:document-content/office:body/office:text"/>
 	</xsl:element>
       </xsl:when>
@@ -119,9 +121,20 @@
   </xsl:template>
 
   <xsl:template match="draw:frame">
-    <xsl:variable name="str_name" select="substring-after(draw:image/@xlink:href,'/')"/>
+    <xsl:variable name="str_name" select="substring-after(descendant::draw:image/@xlink:href,'/')"/>
+    <xsl:variable name="str_title" select="descendant::text:p"/>
     <xsl:variable name="node_file" select="/descendant::file[@name=$str_name]"/>
-    <xsl:value-of select="concat($newpar,'data:',$node_file/@type,';base64,',$node_file/base64,$newpar)"/>
+    <xsl:choose>
+      <xsl:when test="string-length($str_title) &gt; 0 and $node_file[@type and @name and child::base64]">
+	<xsl:value-of select="concat($newpar,'![',$str_title,']','(data:',$node_file/@type,';base64,',$node_file/base64,')',$newpar)"/>
+      </xsl:when>
+      <xsl:when test="$node_file[@type and @name and child::base64]">
+	<xsl:value-of select="concat($newpar,'data:',$node_file/@type,';base64,',$node_file/base64,$newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'; image ',$str_title,' ',$str_name,$newpar)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="ENUM">

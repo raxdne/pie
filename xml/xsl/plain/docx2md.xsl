@@ -211,7 +211,7 @@
     <xsl:for-each select="//file[@name=substring-after($path_image,'/')]">
       <xsl:value-of select="concat('; Fig. ',$id_image)"/>
       <xsl:if test="child::base64">
-	<xsl:value-of select="concat($newpar,'data:',@type,';base64,',base64,$newpar)"/>
+	<xsl:value-of select="concat($newpar,'data:',@type,';base64,',child::base64,$newpar)"/>
       </xsl:if>
     </xsl:for-each>
     

@@ -58,14 +58,16 @@
 
   <xsl:template match="ap:OneImage">
     <xsl:variable name="str_name" select="substring-after(ap:Image/ap:ImageData/cor:Uri,'mmarch://bin/')"/>
-      <xsl:element name="img">
-	<xsl:copy-of select="/descendant::file[@name=$str_name]/base64"/>
-      </xsl:element>
-      <!--
-	  <xsl:element name="fig">
-	  <xsl:element name="t">#fig</xsl:element>
-	  </xsl:element>
-      -->
+    <xsl:element name="img">
+      <xsl:choose>
+	<xsl:when test="ap:Image/ap:ImageData[@ImageType='urn:mindjet:PngImage']">
+	  <xsl:attribute name="type">image/png</xsl:attribute>
+	</xsl:when>
+	<xsl:otherwise>
+	</xsl:otherwise>
+      </xsl:choose>
+      <xsl:copy-of select="/descendant::file[@name=$str_name]/base64"/>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="ap:Topic">

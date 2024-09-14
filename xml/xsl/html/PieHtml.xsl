@@ -359,26 +359,6 @@
   </xsl:template>
 
   <xsl:template match="img">
-    <xsl:variable name="str_src">
-      <xsl:choose>
-	<xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
-	  <xsl:value-of select="@src"/>
-	</xsl:when>
-	<xsl:when test="ancestor::block[@context]">
-	  <xsl:value-of select="concat('/',ancestor::block[@context][1]/@context,'/../',@src)"/> <!-- derive location from block context -->
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:if test="@src">
-      <xsl:element name="a">	<!-- anchor to jump on -->
-	<xsl:attribute name="name">
-	  <xsl:value-of select="@src"/>
-	</xsl:attribute>
-      </xsl:element>
-    </xsl:if>
     <xsl:choose>
       <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
 	<xsl:element name="{name()}">
@@ -392,6 +372,26 @@
 	</xsl:element>
       </xsl:when>
       <xsl:otherwise>		<!-- build a href -->
+	<xsl:variable name="str_src">
+	  <xsl:choose>
+	    <xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
+	      <xsl:value-of select="@src"/>
+	    </xsl:when>
+	    <xsl:when test="ancestor::block[@context]">
+	      <xsl:value-of select="concat('/',ancestor::block[@context][1]/@context,'/../',@src)"/> <!-- derive location from block context -->
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:variable>
+	<xsl:if test="@src">
+	  <xsl:element name="a">	<!-- anchor to jump on -->
+	    <xsl:attribute name="name">
+	      <xsl:value-of select="@src"/>
+	    </xsl:attribute>
+	  </xsl:element>
+	</xsl:if>
 	<xsl:element name="a">
 	  <xsl:attribute name="href">
 	    <xsl:value-of select="$str_src"/>

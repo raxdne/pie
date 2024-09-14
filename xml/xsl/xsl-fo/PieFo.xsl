@@ -79,23 +79,28 @@
     </xsl:comment>
     <xsl:if test="h">
       <xsl:element name="fo:block" use-attribute-sets="paragraph header">
-        <!-- <xsl:attribute name="page-break-before">always</xsl:attribute> -->
-        <xsl:attribute name="font-size">
-          <xsl:choose>
-            <xsl:when test="count(ancestor::section) &lt; 1">
-              <!-- -->
+        <xsl:choose>
+          <xsl:when test="count(ancestor::section) &lt; 1">
+            <!-- -->
+            <xsl:attribute name="font-size">
               <xsl:text>14pt</xsl:text>
-            </xsl:when>
-            <xsl:when test="count(ancestor::section) &lt; 2">
-              <!-- -->
+            </xsl:attribute>
+            <xsl:attribute name="page-break-before">always</xsl:attribute>
+          </xsl:when>
+          <xsl:when test="count(ancestor::section) &lt; 2">
+            <!-- -->
+            <xsl:attribute name="font-size">
               <xsl:text>12pt</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-              <!--  -->
+	    </xsl:attribute>
+            <xsl:attribute name="page-break-before">auto</xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <!--  -->
+            <xsl:attribute name="font-size">
               <xsl:text>10pt</xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
+	    </xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:if test="h/@hidden">
           <xsl:attribute name="font-style">italic</xsl:attribute>
         </xsl:if>
@@ -255,25 +260,24 @@
   </xsl:template>
 
   <xsl:template match="link">
-    <xsl:choose>
-      <xsl:when test="@href">
-        <xsl:element name="fo:inline">
-          <xsl:attribute name="color">#0000ff</xsl:attribute>
-          <xsl:attribute name="text-decoration">underline</xsl:attribute>
-          <xsl:element name="fo:basic-link">
-            <!--  -->
-            <xsl:attribute name="external-destination">
-              <xsl:value-of select="@href"/>
-            </xsl:attribute>
-            <xsl:value-of select="."/>
-          </xsl:element>
-        </xsl:element>
-        <xsl:text> </xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
+    <xsl:element name="fo:inline">
+      <xsl:attribute name="color">#0000ff</xsl:attribute>
+      <xsl:attribute name="text-decoration">none</xsl:attribute>
+      <xsl:element name="fo:basic-link">
+        <!--  -->
+        <xsl:attribute name="external-destination">
+	  <xsl:choose>
+	    <xsl:when test="@href">
+	      <xsl:value-of select="@href"/>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:value-of select="."/>
+	    </xsl:otherwise>
+	  </xsl:choose>
+        </xsl:attribute>
         <xsl:value-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
+      </xsl:element>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="fig">
@@ -303,7 +307,16 @@
       <xsl:attribute name="margin">10pt</xsl:attribute>
       <xsl:attribute name="text-align">center</xsl:attribute>
       <xsl:element name="fo:external-graphic">
-        <xsl:copy-of select="@src"/>
+	<xsl:choose>
+	  <xsl:when test="child::base64"> <!-- embedd base64 encoding here -->
+	    <xsl:attribute name="src">
+	      <xsl:value-of select="concat('data:',@type,';base64,',child::base64/child::text())"/>
+	    </xsl:attribute>
+	  </xsl:when>
+	  <xsl:otherwise>
+            <xsl:copy-of select="@src"/>
+	  </xsl:otherwise>
+	</xsl:choose>
       </xsl:element>
     </xsl:element>
   </xsl:template>

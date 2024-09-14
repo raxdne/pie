@@ -53,11 +53,31 @@
   </xsl:template>
 
   <xsl:template match="img">
-    <xsl:value-of select="concat($newpar,'![',@title,'](',@src,')',$newline)"/>
+    <xsl:choose>
+      <xsl:when test="parent::fig and child::base64">
+	<xsl:value-of select="concat($newpar,'![',@title,'](','data:',@type,';base64,',child::base64,')',$newpar)"/>
+      </xsl:when>
+       <xsl:when test="child::base64">
+	<xsl:value-of select="concat('data:',@type,';base64,',child::base64,$newline)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'![',@title,'](',@src,')',$newline)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="fig">
-    <xsl:value-of select="concat($newpar,'![',h,'](',img/@src,')',$newline)"/>
+    <xsl:choose>
+      <xsl:when test="child::img[starts-with(@src,'data:') and child::h]">
+	<xsl:value-of select="concat($newpar,'![',child::h,'](',child::img/@src,')',$newline)"/>
+      </xsl:when>
+       <xsl:when test="child::img[child::base64 and child::h]">
+	<xsl:value-of select="concat($newpar,'![',child::h,'](','data:',@type,';base64,',child::base64,')',$newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'![',@title,'](',@src,')',$newline)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="hr">
