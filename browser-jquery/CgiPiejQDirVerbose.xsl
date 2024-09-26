@@ -304,42 +304,44 @@
 	  <xsl:element name="td">
 	    <xsl:value-of select="@type"/>
 	  </xsl:element>
-	  <xsl:element name="td">
-	    <xsl:element name="a">
-	      <xsl:attribute name="class">cxp</xsl:attribute>
-	      <xsl:attribute name="title">
-		<xsl:value-of select="@name"/>
-	      </xsl:attribute>
-	      <xsl:attribute name="href">
-		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Archive')"/>
-	      </xsl:attribute>
-	      <xsl:text>[Archive]</xsl:text>
+	  <xsl:if test="parent::dir[attribute::write='yes']">
+	    <xsl:element name="td">
+	      <xsl:element name="a">
+		<xsl:attribute name="class">cxp</xsl:attribute>
+		<xsl:attribute name="title">
+		  <xsl:value-of select="@name"/>
+		</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Archive')"/>
+		</xsl:attribute>
+		<xsl:text>[Archive]</xsl:text>
+	      </xsl:element>
 	    </xsl:element>
-	  </xsl:element>
-	  <xsl:element name="td">
-	    <xsl:element name="a">
-	      <xsl:attribute name="class">cxp</xsl:attribute>
-	      <xsl:attribute name="title">
-		<xsl:value-of select="@name"/>
-	      </xsl:attribute>
-	      <xsl:attribute name="href">
-		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Cache')"/>
-	      </xsl:attribute>
-	      <xsl:text>[Cache]</xsl:text>
+	    <xsl:element name="td">
+	      <xsl:element name="a">
+		<xsl:attribute name="class">cxp</xsl:attribute>
+		<xsl:attribute name="title">
+		  <xsl:value-of select="@name"/>
+		</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Cache')"/>
+		</xsl:attribute>
+		<xsl:text>[Cache]</xsl:text>
+	      </xsl:element>
 	    </xsl:element>
-	  </xsl:element>
-	  <xsl:element name="td">
-	    <xsl:element name="a">
-	      <xsl:attribute name="class">cxp</xsl:attribute>
-	      <xsl:attribute name="title">
-		<xsl:value-of select="@name"/>
-	      </xsl:attribute>
-	      <xsl:attribute name="href">
-		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Trash')"/>
-	      </xsl:attribute>
-	      <xsl:text>[Trash]</xsl:text>
+	    <xsl:element name="td">
+	      <xsl:element name="a">
+		<xsl:attribute name="class">cxp</xsl:attribute>
+		<xsl:attribute name="title">
+		  <xsl:value-of select="@name"/>
+		</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Trash')"/>
+		</xsl:attribute>
+		<xsl:text>[Trash]</xsl:text>
+	      </xsl:element>
 	    </xsl:element>
-	  </xsl:element>
+	  </xsl:if>
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>

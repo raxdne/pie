@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
-  <!-- \deprecated ? -->
-  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
+  <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
@@ -9,6 +9,7 @@
 	<script type="text/javascript">$(document).ready(function() { $("#localTable").tablesorter(); } );</script> 
         <div id="ui">
           <div id="content">
+	    <h2>%CGIPATH%</h2>
             <cxp:xhtml>
               <cxp:xml>
 		<cxp:dir depth="%CGIDEPTH%" verbosity="2" urlencode="yes">

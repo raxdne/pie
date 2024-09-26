@@ -2,6 +2,7 @@
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
   <cxp:subst string="%CGIFRAME%" cgi="frame" default="600x600"/>
+  <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>

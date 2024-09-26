@@ -3,7 +3,5 @@
   <cxp:subst string="%CACHEDIR%" env="CXP_CACHE" default="Cache"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:subst string="%CGIDIR%" dir="%CGIPATH%"/>
-  <!-- TODO: check value of 'path' -->
-  <cxp:plain name="-" response="OK">Move '%CGIPATH%' to '%CACHEDIR%/%CGIDIR%' </cxp:plain>
   <cxp:copy from="%CGIPATH%" to="%CACHEDIR%/%CGIDIR%/" delete="yes"/>
 </cxp:make>
