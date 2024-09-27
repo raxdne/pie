@@ -312,7 +312,7 @@
 		  <xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:attribute name="href">
-		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Archive')"/>
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=MoveFileTo&amp;to=Archive')"/>
 		</xsl:attribute>
 		<xsl:text>[Archive]</xsl:text>
 	      </xsl:element>
@@ -324,7 +324,7 @@
 		  <xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:attribute name="href">
-		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Cache')"/>
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=MoveFileTo&amp;to=Cache')"/>
 		</xsl:attribute>
 		<xsl:text>[Cache]</xsl:text>
 	      </xsl:element>
@@ -336,7 +336,7 @@
 		  <xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:attribute name="href">
-		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Trash')"/>
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=MoveFileTo')"/>
 		</xsl:attribute>
 		<xsl:text>[Trash]</xsl:text>
 	      </xsl:element>
