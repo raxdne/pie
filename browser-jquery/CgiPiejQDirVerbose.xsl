@@ -7,6 +7,7 @@
   <!--  -->
   <xsl:variable name="write" select="'yes'"/>
   <xsl:output method="html" encoding="UTF-8"/>
+
   <xsl:template match="/pie">
     <xsl:element name="html">
       <xsl:element name="body">
@@ -43,6 +44,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="file">
     <!--  -->
     <xsl:variable name="str_path">
@@ -54,6 +56,9 @@
       </xsl:for-each>
       <xsl:value-of select="@urlname" />
     </xsl:variable>
+
+    <xsl:variable name="flag_write" select="attribute::write='yes' and parent::dir[attribute::write='yes'] and not(ancestor::archive)"/>
+
     <xsl:choose>
       <xsl:when test="@name = ''"/>
       <xsl:when test="@hidden = 'yes'"/>
@@ -270,7 +275,7 @@
 	    </xsl:element>
 	  </xsl:element>
 	  <xsl:element name="td">
-	    <xsl:if test="@ext='pie' or @ext='mm' or @ext='cxp' or starts-with(@type,'text')">
+	    <xsl:if test="$flag_write and (@ext='pie' or @ext='mm' or @ext='cxp' or starts-with(@type,'text'))">
 	      <xsl:element name="a">
 		<xsl:attribute name="class">cxp</xsl:attribute>
 		<xsl:attribute name="title">
@@ -304,8 +309,8 @@
 	  <xsl:element name="td">
 	    <xsl:value-of select="@type"/>
 	  </xsl:element>
-	  <xsl:if test="parent::dir[attribute::write='yes']">
-	    <xsl:element name="td">
+	  <xsl:element name="td">
+	    <xsl:if test="$flag_write">
 	      <xsl:element name="a">
 		<xsl:attribute name="class">cxp</xsl:attribute>
 		<xsl:attribute name="title">
@@ -316,20 +321,24 @@
 		</xsl:attribute>
 		<xsl:text>[Archive]</xsl:text>
 	      </xsl:element>
-	    </xsl:element>
-	    <xsl:element name="td">
+	    </xsl:if>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:if test="$flag_write">
 	      <xsl:element name="a">
 		<xsl:attribute name="class">cxp</xsl:attribute>
 		<xsl:attribute name="title">
 		  <xsl:value-of select="@name"/>
 		</xsl:attribute>
 		<xsl:attribute name="href">
-		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=MoveFileTo&amp;to=Cache')"/>
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Cache')"/>
 		</xsl:attribute>
 		<xsl:text>[Cache]</xsl:text>
 	      </xsl:element>
-	    </xsl:element>
-	    <xsl:element name="td">
+	    </xsl:if>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:if test="$flag_write">
 	      <xsl:element name="a">
 		<xsl:attribute name="class">cxp</xsl:attribute>
 		<xsl:attribute name="title">
@@ -340,8 +349,8 @@
 		</xsl:attribute>
 		<xsl:text>[Trash]</xsl:text>
 	      </xsl:element>
-	    </xsl:element>
-	  </xsl:if>
+	    </xsl:if>
+	  </xsl:element>
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>

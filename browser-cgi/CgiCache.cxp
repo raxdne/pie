@@ -2,6 +2,6 @@
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
   <cxp:subst string="%CACHEDIR%" env="CXP_CACHE" default="Cache"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIDIR%" dir="%CGIPATH%"/>
-  <cxp:copy from="%CGIPATH%" to="%CACHEDIR%/%CGIDIR%/" delete="yes"/>
+  <cxp:subst string="%DIR%" dir="%CGIPATH%"/>
+  <cxp:copy from="%CGIPATH%" to="%DIR%%CACHEDIR%/" delete="yes"/>
 </cxp:make>

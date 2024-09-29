@@ -33,7 +33,11 @@ addShortcuts(editor,'%CGIPATH%');
 // TODO: Syntax Highlighting + Code Folding https://ace.c9.io/#nav=higlighter
     
 $( window ).on( "beforeunload", function() {
+if ($('#flagChange').text().match(/\*$/) == null) {
+  // no content changes made
+} else {
   return "Handler for `unload` called.";
+}
 });
 
 $('#strContent').after(getToolsStr('editor'));

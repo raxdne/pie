@@ -138,7 +138,10 @@ function requestContent(objEditor,strQuery) {
 	    // indicator for content changes (TODO: change to a variable with change event?)
 	    $('#strContent').before(' <a id="flagChange">|</a>');
 	    objEditor.on("change", function(e) {
-		$('#flagChange').append("*");
+		if ($('#flagChange').text().match(/\*$/) == null) {
+		    // append asterisk only once
+		    $('#flagChange').append("*");
+		}
 	    });
 
 	});
