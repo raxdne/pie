@@ -182,7 +182,7 @@ TODO: use XMLHttpRequest()
 <form action="?" method="post" enctype="multipart/form-data">
   <button>Upload</button>
   <input name="target" size="50" value="%CGIPATH%/BBB.txt"/> 
-  <label>Select a local text file (*.txt, *.xml etc)</label>  
+  <label>Select a local text file (*.txt, *.xml, *.zip etc)</label>  
   <input name="content" type="file" size="50" maxlength="1000000" /> 
   <input name="cxp" type="hidden" value="PieUpload"/> 
 </form>
@@ -226,6 +226,7 @@ TODO: use XMLHttpRequest()
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=DiskUsage">DiskUsage</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=PiejQDirCalendar&amp;depth=10#yesterday">Calendar</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirSitemap">Sitemap</a></li>
+<li><a target="_blank" href="?path=%CGIPATH%&amp;depth=1&amp;cxp=DirZip">TEST: ZIP archive</a></li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQMerge&amp;frame=800x800&amp;depth=1">Merge</a> all PIE files in current directory (*.pie, *.txt, *.mm, *.jpg, *.png).</li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=Wallpaper&amp;frame=600x600&amp;depth=1">Wallpaper of</a> all Image files in current directory.</li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=PiejQmDir">Mobile Layout</a> of current directory.</li>

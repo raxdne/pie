@@ -21,8 +21,6 @@
 		      </cxp:xml>
 		      <cxp:xsl name="MergePie.xsl">
 			<cxp:variable name="dir_name">%CGIPATH%</cxp:variable>
-			<cxp:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
-			<cxp:variable name="opt_cxp" select="'cxp=image&amp;frame=%CGIFRAME%&amp;path='"/>
 		      </cxp:xsl>
 		    </cxp:xml>
 		  </import>
