@@ -3,7 +3,7 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/package/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
 
-  <xsl:import href="../xml/xsl/plain/docx2md.xsl"/>
+  <xsl:import href="docx2md.xsl"/>
 
   <xsl:output method="text" encoding="UTF-8"/>
 
@@ -21,15 +21,17 @@
   <xsl:choose>
     <xsl:when test="string-length($str_path) &gt; 0">
       <xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+      <xsl:value-of select="concat($char_header,' Presentation ',$str_path,$newpar)"/>
     </xsl:when>
     <xsl:when test="pie/file/@name">
       <xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+      <xsl:value-of select="concat($char_header,' Presentation ',pie/file/@name,$newpar)"/>
     </xsl:when>
     <xsl:otherwise>
       <!-- no locator found -->
+      <xsl:value-of select="concat($char_header,' Presentation',$newpar)"/>
     </xsl:otherwise>
   </xsl:choose>
-  <xsl:value-of select="concat($newpar,$char_header,' Presentation',$newpar)"/>
   <xsl:call-template name="MAINLOOP"/>
 </xsl:template>
 
