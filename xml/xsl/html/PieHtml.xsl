@@ -437,6 +437,7 @@
   </xsl:template>
 
   <xsl:template match="table">
+    <xsl:variable name="flag_cellnames" select="false()"/>
     <xsl:element name="center">
       <xsl:element name="table">
 	<xsl:attribute name="id">
@@ -450,31 +451,35 @@
 	</xsl:attribute>
 	<xsl:copy-of select="@*"/>
 	<xsl:attribute name="width">90%</xsl:attribute>
-	<xsl:for-each select="thead">
-	  <xsl:element name="{name()}">
-	    <xsl:for-each select="tr[1]">
-	      <xsl:element name="{name()}">
-		<xsl:for-each select="th|td">
-		  <xsl:if test="position() = 1">
-		    <xsl:element name="{name()}">
-		      <xsl:text>&#x2800;</xsl:text>
-		    </xsl:element>
-		  </xsl:if>
-		  <xsl:copy-of select="."/>
-		</xsl:for-each>
-	      </xsl:element>
-	    </xsl:for-each>
-	  </xsl:element>
-	</xsl:for-each>
+	<xsl:if test="$flag_cellnames">
+	  <xsl:for-each select="thead">
+	    <xsl:element name="{name()}">
+	      <xsl:for-each select="tr[1]">
+		<xsl:element name="{name()}">
+		  <xsl:for-each select="th|td">
+		    <xsl:if test="position() = 1">
+		      <xsl:element name="{name()}">
+			<xsl:text>&#x2800;</xsl:text>
+		      </xsl:element>
+		    </xsl:if>
+		    <xsl:copy-of select="."/>
+		  </xsl:for-each>
+		</xsl:element>
+	      </xsl:for-each>
+	    </xsl:element>
+	  </xsl:for-each>
+	</xsl:if>
 	<xsl:choose>
 	  <xsl:when test="child::tbody">
 	    <xsl:for-each select="tbody">
 	      <xsl:element name="{name()}">
 		<xsl:for-each select="tr">
 		  <xsl:element name="{name()}">
-		    <xsl:element name="th">
-		      <xsl:value-of select="position()"/>
-		    </xsl:element>
+		    <xsl:if test="$flag_cellnames">
+		      <xsl:element name="th">
+			<xsl:value-of select="position()"/>
+		      </xsl:element>
+		    </xsl:if>
 		    <xsl:for-each select="th|td">
 		      <xsl:element name="{name()}">
 			<xsl:copy-of select="@*"/>

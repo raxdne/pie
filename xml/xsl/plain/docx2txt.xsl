@@ -66,12 +66,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="w:tbl">
-    <xsl:value-of select="concat('&lt;csv&gt;',$newline)"/>
-    <xsl:apply-templates select="w:tr"/>
-    <xsl:value-of select="concat('&lt;/csv&gt;',$newpar)"/>
-  </xsl:template>
-
   <xsl:template name="ENUM">
     <xsl:param name="level"/>
     <xsl:param name="str_markup" select="'-'"/>

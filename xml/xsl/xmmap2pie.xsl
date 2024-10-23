@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003" xmlns:cor="http://schemas.mindjet.com/MindManager/Core/2003" xmlns:cxp="http://www.tenbusch.info/cxproc" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003" xmlns:cor="http://schemas.mindjet.com/MindManager/Core/2003" xmlns:pri="http://schemas.mindjet.com/MindManager/Primitive/2003" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cst0="http://schemas.mindjet.com/MindManager/UpdateCompatibility/2004" xmlns:cst1="http://schemas.iaresearch.com/PTMAddin" xmlns:cxp="http://www.tenbusch.info/cxproc" version="1.0">
 
   <!-- converts a Mindmanager xmmap file into pie format -->
 
   <xsl:variable name="flag_folded" select="true()"/> <!-- default true(): ignore folded state of branches -->
+
+  <xsl:variable name="flag_images" select="true()"/> <!-- default true(): ignore folded state of branches -->
 
   <xsl:variable name="h_max" select="3"/> <!-- default 3: -->
 
@@ -15,10 +17,12 @@
 
   <xsl:template match="ap:Map">
     <xsl:element name="pie">
-      <xsl:element name="img">
-	<xsl:copy-of select="../../file[@name='Preview.png']/@type"/>
-	<xsl:copy-of select="../../file[@name='Preview.png']/base64"/>
-      </xsl:element>
+      <xsl:if test="$flag_images and ../../file[@name='Preview.png']">
+	<xsl:element name="img">
+	  <xsl:copy-of select="../../file[@name='Preview.png']/@type"/>
+	  <xsl:copy-of select="../../file[@name='Preview.png']/base64"/>
+	</xsl:element>
+      </xsl:if>
       <!--
       <xsl:for-each select="../../dir[@name='bin']/file">
       <xsl:element name="img">
@@ -26,6 +30,8 @@
 	<xsl:copy-of select="base64"/>
       </xsl:element>
       </xsl:for-each>
+      <xsl:copy-of select="descendant::ap:NotesXhtmlData//*[name() = 'html'][1]"/>
+      <xsl:copy-of select="descendant::ap:NotesXhtmlData/*[name() = 'html']"/>
       -->
       <xsl:apply-templates />
     </xsl:element>
@@ -48,6 +54,7 @@
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
+    <!-- <xsl:apply-templates select="descendant::ap:NotesGroup"/> -->
   </xsl:template>
 
   <xsl:template match="ap:SubTopics|ap:FloatingTopics">
@@ -58,16 +65,23 @@
 
   <xsl:template match="ap:OneImage">
     <xsl:variable name="str_name" select="substring-after(ap:Image/ap:ImageData/cor:Uri,'mmarch://bin/')"/>
-    <xsl:element name="img">
-      <xsl:choose>
-	<xsl:when test="ap:Image/ap:ImageData[@ImageType='urn:mindjet:PngImage']">
-	  <xsl:attribute name="type">image/png</xsl:attribute>
-	</xsl:when>
-	<xsl:otherwise>
-	</xsl:otherwise>
-      </xsl:choose>
-      <xsl:copy-of select="/descendant::file[@name=$str_name]/base64"/>
-    </xsl:element>
+    <xsl:if test="$flag_images and /descendant::file[@name=$str_name]/base64">
+      <xsl:element name="img">
+	<xsl:choose>
+	  <xsl:when test="ap:Image/ap:ImageData[@ImageType='urn:mindjet:PngImage']">
+	    <xsl:attribute name="type">image/png</xsl:attribute>
+	  </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:copy-of select="/descendant::file[@name=$str_name]/base64"/>
+	<!--
+	    <xsl:element name="fig">
+	    <xsl:element name="t">#fig</xsl:element>
+	    </xsl:element>
+	-->
+      </xsl:element>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="ap:Topic">
@@ -90,6 +104,9 @@
 	  </xsl:if>
 	  <xsl:element name="h">
 	    <xsl:apply-templates select="ap:Text"/>
+	    <xsl:call-template name="TAGRESOURCES">
+	      <xsl:with-param name="str_arg" select="ap:Task/@Resources"/>
+	    </xsl:call-template>
 	  </xsl:element>
 	  <xsl:apply-templates select="ap:OneImage"/>
           <xsl:if test="$flag_folded or not(ap:TopicViewGroup/ap:Collapsed[@Collapsed='true'])">
@@ -101,6 +118,9 @@
 	<xsl:element name="section">
 	  <xsl:element name="h">
 	    <xsl:apply-templates select="ap:Text"/>
+	    <xsl:call-template name="TAGRESOURCES">
+	      <xsl:with-param name="str_arg" select="ap:Task/@Resources"/>
+	    </xsl:call-template>
 	  </xsl:element>
 	  <xsl:apply-templates select="ap:OneImage"/>
           <xsl:if test="$flag_folded or not(ap:TopicViewGroup/ap:Collapsed[@Collapsed='true'])">
@@ -118,7 +138,19 @@
 	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
+    <!-- <xsl:apply-templates select="ap:NotesGroup"/> -->
   </xsl:template>
+
+<!-- 
+  <xsl:template match="ap:NotesGroup">
+    <xsl:copy-of select="child::ap:NotesXhtmlData/child::html"/>
+    <xsl:copy-of select="ap:NotesXhtmlData/*[name() = 'html']"/>
+	  <xsl:element name="block">
+	    <xsl:attribute name="type">text/html</xsl:attribute>
+	    <xsl:copy-of select="ap:NotesXhtmlData/*[name() = 'html']/*"/>
+	  </xsl:element>
+  </xsl:template>
+-->
 
   <xsl:template match="ap:Text">
 
@@ -177,9 +209,12 @@
 	      <xsl:text> ✔</xsl:text>
 	    </xsl:if>
 
-          <xsl:if test="following-sibling::ap:NotesGroup/ap:NotesXhtmlData">
+          <xsl:if test="following-sibling::ap:NotesGroup/ap:NotesXhtmlData_YYY">
 	    <!-- TODO: either ap:NotesGroup/ap:NotesXhtmlData/html or ap:NotesGroup/ap:NotesXhtmlData/@PreviewPlainText -->
-	    <xsl:copy-of select="following-sibling::ap:NotesGroup/ap:NotesXhtmlData/html"/>
+	  <xsl:element name="block">
+	    <xsl:attribute name="type">text/html</xsl:attribute>
+	    <xsl:copy-of select="following-sibling::ap:NotesGroup/ap:NotesXhtmlData/*[name() = 'html']/*"/>
+	  </xsl:element>
           </xsl:if>
 
   </xsl:template>
@@ -196,6 +231,32 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@PlainText"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:for-each select="../ap:HyperlinkGroup/ap:IndexedHyperlink">
+      <xsl:text> </xsl:text>
+      <xsl:element name="link">
+	<xsl:attribute name="href">
+          <xsl:value-of select="@Url"/>
+	</xsl:attribute>
+        <xsl:value-of select="concat('[',position(),']')"/>
+      </xsl:element>
+    </xsl:for-each>
+  </xsl:template>
+  
+  <xsl:template name="TAGRESOURCES">
+    <xsl:param name="str_arg" select="''"/>
+    <xsl:choose>
+      <xsl:when test="string-length($str_arg) &lt; 1">
+      </xsl:when>
+      <xsl:when test="string-length(substring-before($str_arg,', ')) &lt; 1">
+        <xsl:value-of select="concat(' @',$str_arg)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat(' @',substring-before($str_arg,', '))"/>
+	<xsl:call-template name="TAGRESOURCES">
+	  <xsl:with-param name="str_arg" select="substring-after($str_arg,', ')"/>
+	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

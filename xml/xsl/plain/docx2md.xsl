@@ -149,16 +149,16 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="w:t[preceding-sibling::w:rPr/w:b]">
-    <xsl:value-of select="concat('___',.,'___')"/>
+  <xsl:template match="w:r[w:rPr/w:b]">
+    <xsl:value-of select="concat('**',w:t,'**')"/>
   </xsl:template>
 
-  <xsl:template match="w:t[preceding-sibling::w:rPr/w:i]">
-    <xsl:value-of select="concat('__',.,'__')"/>
+  <xsl:template match="w:r[w:rPr/w:i]">
+    <xsl:value-of select="concat('__',w:t,'__')"/>
   </xsl:template>
 
-  <xsl:template match="w:t[preceding-sibling::w:rPr/child::w:rFonts[attribute::w:ascii = 'Courier New']]">
-    <xsl:value-of select="concat('`',.,'`')"/>
+  <xsl:template match="w:r[contains(w:rPr/w:rFonts/attribute::w:ascii,'Courier') or contains(w:rPr/w:rFonts/attribute::w:ascii,'Monospace')]">
+    <xsl:value-of select="concat('`',w:t,'`')"/>
   </xsl:template>
 
   <xsl:template match="w:hyperlink">
@@ -186,19 +186,17 @@
   </xsl:template>
 
   <xsl:template match="w:tbl">
-    <xsl:value-of select="concat('~~~',$newline)"/>
-    <xsl:apply-templates select="w:tr"/>
-    <xsl:value-of select="concat('~~~',$newpar)"/>
-  </xsl:template>
-
-  <xsl:template match="w:tr">
-    <xsl:apply-templates select="w:tc"/>
-    <xsl:value-of select="$newline"/>
-  </xsl:template>
-  
-  <xsl:template match="w:tc">
-    <xsl:apply-templates/>
-    <xsl:text>;</xsl:text>
+    <xsl:value-of select="concat($newline,'&lt;csv&gt;',$newline)"/>
+    <xsl:for-each select="descendant::w:tr">
+      <xsl:for-each select="descendant::w:tc">
+	<xsl:if test="position() &gt; 1">
+	  <xsl:text>;</xsl:text>
+	</xsl:if>
+	<xsl:copy-of select="descendant::w:t"/>
+      </xsl:for-each>
+      <xsl:value-of select="$newline"/>
+    </xsl:for-each>
+    <xsl:value-of select="concat('&lt;/csv&gt;',$newline)"/>
   </xsl:template>
 
   <xsl:template match="w:drawing">
@@ -214,7 +212,17 @@
 	<xsl:value-of select="concat($newpar,'data:',@type,';base64,',child::base64,$newpar)"/>
       </xsl:if>
     </xsl:for-each>
-    
+  </xsl:template>
+
+  <xsl:template match="w:object">
+    <xsl:variable name="id_object">
+      <xsl:value-of select="o:OLEObject/@r:id"/>
+    </xsl:variable>
+    <xsl:variable name="path_object">
+      <xsl:value-of select="//file[@name='document.xml.rels']/child::*[1]/child::*[name()='Relationship' and @Id=$id_object]/@Target"/>
+    </xsl:variable>
+    <xsl:value-of select="concat($newpar,'[OLE Object](?path=',$str_path,'/',$path_object,')',$newpar)"/>
+
   </xsl:template>
 
 </xsl:stylesheet>

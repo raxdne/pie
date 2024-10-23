@@ -795,12 +795,12 @@
 	<xml>
 	  <xml xpath="yes">
 	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
-	      <import type="cxp">
-		<plain>
+	      <import type="cxp" >
+		<plain type="text/markdown">
 		  <xml locator="yes">
 		    <file name="PATH" verbosity="5"/>
 		  </xml>
-		  <xsl name="pptx2txt.xsl"/>
+		  <xsl name="pptx2md.xsl"/>
 		</plain>
 	      </import>
 	    </pie>
