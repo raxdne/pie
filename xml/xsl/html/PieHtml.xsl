@@ -437,7 +437,7 @@
   </xsl:template>
 
   <xsl:template match="table">
-    <xsl:variable name="flag_cellnames" select="false()"/>
+    <xsl:variable name="flag_cellnames" select="true()"/>
     <xsl:element name="center">
       <xsl:element name="table">
 	<xsl:attribute name="id">

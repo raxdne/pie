@@ -75,7 +75,7 @@
 		<xsl:attribute name="class">hr</xsl:attribute>
 		<xsl:element name="hr"/>
 	      </xsl:element>
-	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']">
+	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']"> <!-- ignoring symlinks -->
 		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
 		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
 		<xsl:with-param name="path_prefix">
@@ -149,6 +149,30 @@
         </xsl:apply-templates>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="link">
+    <xsl:element name="li">
+      <xsl:attribute name="class">ui-dir-link</xsl:attribute>
+      <xsl:element name="a">
+        <xsl:attribute name="target">_blank</xsl:attribute>
+	<xsl:choose>
+	  <xsl:when test="child::dir">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('/',@urlname)"/>
+            </xsl:attribute>
+	  </xsl:when>
+	  <xsl:when test="child::file">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('/',@urlname)"/>
+            </xsl:attribute>
+	  </xsl:when>
+          <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
+        <xsl:value-of select="@name"/>
+      </xsl:element>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="file">

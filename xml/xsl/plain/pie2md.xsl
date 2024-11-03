@@ -2,8 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
   <xsl:import href="PiePlain.xsl"/>
-
-  <xsl:variable name="flag_md" select="true()"/>
   
   <xsl:output method="text" encoding="UTF-8"/>
   

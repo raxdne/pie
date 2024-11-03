@@ -6,8 +6,6 @@
 
   <xsl:output method="text" encoding="UTF-8"/>
 
-  <xsl:variable name="flag_md" select="false()"/>
-
   <xsl:template match="processing-instruction('regexp-tag')">
     <xsl:value-of select="concat($newline,'TAGS: ',.,$newpar)"/>
   </xsl:template>
@@ -25,15 +23,8 @@
       <xsl:when test="starts-with(@href,'mailto:')">
         <xsl:value-of select="@href"/>
       </xsl:when>
-      <xsl:when test="@href = .">
-	<xsl:choose>
-	  <xsl:when test="$flag_md">
-            <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-            <xsl:value-of select="."/>
-	  </xsl:otherwise>
-	</xsl:choose>
+      <xsl:when test="not(@href) or @href = text()">
+        <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="concat('[',.,'](',@href,')')"/>

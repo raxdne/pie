@@ -224,6 +224,7 @@ TODO: use XMLHttpRequest()
 <li><a target="_blank"><i>Upload Zip directory to Server</i></a></li>
 -->
 <li><a target="_blank" href="?path=%CGIPATH%&amp;cxp=DiskUsage">DiskUsage</a></li>
+<li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=PiejQDirVerbose&amp;depth=1">Directory Table</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=PiejQDirCalendar&amp;depth=10#yesterday">Calendar</a></li>
 <li><a target="piemain" href="?path=%CGIPATH%&amp;cxp=DirSitemap">Sitemap</a></li>
 <li><a target="_blank" href="?path=%CGIPATH%&amp;depth=1&amp;cxp=DirZip">TEST: ZIP archive</a></li>

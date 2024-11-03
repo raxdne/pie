@@ -823,4 +823,55 @@
   t
   )
 
+
+(defun pie-text-to-markdown ()
+  "transforms a plain text to markdown format and saves buffer as new file (see also 'pie/misc/pietext2markdown.py')"
+  
+  (interactive)
+
+  (let ((file-a (buffer-file-name))
+	(file-b (concat (file-name-base (buffer-file-name)) ".md"))
+	(list-of-substs '(("^;*\[\\\\+\\\\-\]\\{5\\}\s" . "        - ")
+			 ("^;*\[\\\\+\\\\-\]\\{4\\}\s" . "      - ")
+			 ("^;*\[\\\\+\\\\-\]\\{3\\}\s" . "    - ")
+			 ("^;*\[\\\\+\\\\-\]\\{2\\}\s" . "  - ")
+			 ("^;*\[\\\\+\\\\-\]\s" . "- ")
+			 ("^;*\[\\\\*\\\\%\]\\{5\\}\s" . "##### ")
+			 ("^;*\[\\\\*\\\\%\]\\{4\\}\s" . "#### ")
+			 ("^;*\[\\\\*\\\\%\]\\{3\\}\s" . "### ")
+			 ("^;*\[\\\\*\\\\%\]\\{2\\}\s" . "## ")
+			 ("^;*\[\\\\*\\\\%\]\s" . "# ")
+			 (">>" . "„")
+			 ("<<" . "“")
+			 ("^#begin_of_skip" . "<skip>\n")
+			 ("^#end_of_skip" . "</skip>\n")
+			 ("^<pre>" . "~~~\n")
+			 ("^#begin_of_pre" . "~~~\n")
+			 ("^</pre>" . "~~~\n")
+			 ("^#end_of_pre" . "~~~\n")
+			 ("^#begin_of_script" . "<script>\n")
+			 ("^#end_of_script" . "</script>\n")
+			 ("^#begin_of_csv" . "<csv>\n")
+			 ("^#end_of_csv" . "</csv>\n")
+			 ("|\\([^|]+\\)|\\([^|]+\\)*|" . "[\\2](\\1)")
+			 ;; specific tags
+			 ;;("#(john|lisa)" . "@\\1")
+			 ;;("\n\n" . "\n")
+			 ("\n\n\\( *\\-\\)" . "\n\\1")
+			 )
+		       ))
+
+    (while list-of-substs
+      (beginning-of-buffer)
+      (replace-regexp (car (car list-of-substs)) (cdr (car list-of-substs)))
+      (setq list-of-substs (cdr list-of-substs))
+      )
+    
+    (write-file file-b t)
+    (markdown-mode)
+    ;; provide a comparison
+    (ediff-files file-a file-b)
+    )
+  )
+
 (provide 'pie)
