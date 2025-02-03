@@ -363,11 +363,8 @@
       <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
 	<xsl:element name="{name()}">
 	  <xsl:copy-of select="@*"/>
-	  <xsl:attribute name="title">
-	    <xsl:value-of select="@src"/>
-	  </xsl:attribute>
 	  <xsl:attribute name="src">
-	    <xsl:value-of select="concat('data:',@type,';base64,',child::base64/child::text())"/>
+	    <xsl:value-of select="concat('data:',child::base64/attribute::type,';base64,',child::base64/child::text())"/>
 	  </xsl:attribute>
 	</xsl:element>
       </xsl:when>

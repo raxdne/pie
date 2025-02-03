@@ -340,7 +340,7 @@
           </xsl:element>
         </xsl:element>
       </xsl:when>
-      <xsl:when test="@name = 'shortcuts.pie'">
+      <xsl:when test="@name = 'shortcuts.pie' or @name = 'shortcuts.md' or @name = 'shortcuts.txt'">
         <!-- list of links in shortcut file -->
         <xsl:copy-of select="descendant::script"/>
 	<xsl:if test="count(preceding-sibling::file) &gt; 2"> <!-- parent::dir/child::file -->
@@ -396,28 +396,13 @@
 	  </xsl:element>
 	</xsl:if>
       </xsl:when>
-      <xsl:when test="@name = 'shortcuts.txt'">
+      <xsl:when test="@name = 'shortcuts.html'">
         <!-- list of links in shortcut file -->
-        <xsl:for-each select="pie//*[(name()='link' or (name()='p' and not(child::*))) and not(parent::*[@valid='no']) and not(@valid='no')]">
-          <xsl:element name="li">
+        <xsl:for-each select="descendant::ul[@class='shortcuts']/li">
+          <xsl:element name="{name()}">
             <xsl:attribute name="class">ui-dir-file</xsl:attribute>
-            <xsl:element name="a">
-              <xsl:attribute name="target">
-                <xsl:text>piemain</xsl:text>
-	      </xsl:attribute>
-              <xsl:attribute name="href">
-                <xsl:choose>
-                  <xsl:when test="@target">
-                    <xsl:value-of select="@target"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="."/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:attribute>
-              <xsl:value-of select="substring(.,-20,100)"/>
-            </xsl:element>
-          </xsl:element>
+            <xsl:copy-of select="@*|*"/>
+	  </xsl:element>
         </xsl:for-each>
       </xsl:when>
       <xsl:when test="@ext='docx' or @ext='pptx' or @ext='xlsx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image)">

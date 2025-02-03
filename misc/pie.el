@@ -117,6 +117,29 @@
 		     )
 		   )
 		 )
+
+  (local-set-key [S-f2] (lambda ()
+			  "inserts current date as ISO 8601"
+			  (interactive)
+			  (insert (format-time-string "%Y-%m-%d"))
+			  )
+		 )
+
+  (local-set-key [C-f2] (lambda ()
+			  "inserts current date as ISO 8601 week"
+			  (interactive)
+			  (insert (format-time-string "%Y-W%V-%u"))
+			  )
+		 )
+
+  (local-set-key [M-f2]
+		 (lambda ()
+		   "inserts current time as ISO 8601"
+		   (interactive)
+		   (insert (format-time-string "%Y-%m-%dT%H:%M:00CET"))
+		   )
+		 )
+
   ;;
   )
 
@@ -824,6 +847,35 @@
   )
 
 
+(defun pie-file-base64 ()
+  ""
+  
+  (interactive)
+
+  (let ((ext nil)
+	(buf (get-buffer-create "* base64 *"))
+	(cmd (read-shell-command "Run command: " "base64 -w 80 ")))
+    
+    (message cmd)
+    (setq ext (file-name-extension (car (last (split-string cmd)))))
+    (switch-to-buffer buf)
+    (erase-buffer)
+    (insert (if (member ext '( "jpg" "jpeg"))
+		"data:image/jpeg;base64,"
+	      (if (member ext '("tif" "tiff"))
+		  "data:image/tiff;base64,"
+		(if (member ext '("gif" "png" "bmp"))
+		    (format "data:image/%s;base64," ext)
+		  ;; TODO: add other MIME types
+		  "data:type/unknown;base64,"))))
+    (shell-command cmd buf)
+    (switch-to-buffer (other-buffer))
+    (insert-buffer buf)
+    )
+  )
+;; (pie-file-base64)
+
+
 (defun pie-text-to-markdown ()
   "transforms a plain text to markdown format and saves buffer as new file (see also 'pie/misc/pietext2markdown.py')"
   
@@ -853,7 +905,8 @@
 			 ("^#end_of_script" . "</script>\n")
 			 ("^#begin_of_csv" . "<csv>\n")
 			 ("^#end_of_csv" . "</csv>\n")
-			 ("|\\([^|]+\\)|\\([^|]+\\)*|" . "[\\2](\\1)")
+			 ("|\\([^|\\\n]+\\)|\\([^|\\\n]+\\)*|" . "[\\2](\\1)")
+			 ("|\\{1,5\\}\s" . " @")
 			 ;; specific tags
 			 ;;("#(john|lisa)" . "@\\1")
 			 ;;("\n\n" . "\n")

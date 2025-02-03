@@ -498,6 +498,20 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
   margin: 0px 0px 0px 0px;
   border-radius: 3px;
 }
+*.p-2, *.h-2, *.fig-2, *.task-2, *.todo-2, *.test-2, *.bug-2, *.req-2, *.target-2, *.tr-2, *.th-2, *.td-2, *.section-2 {
+  /* background-color:#ffbbbb; */
+  /* padding: 1px; */
+  color:#AAAAAA;
+  margin: 0px 0px 0px 0px;
+  border-radius: 3px;
+}
+*.p-3, *.h-3, *.fig-3, *.task-3, *.todo-3, *.test-3, *.bug-3, *.req-3, *.target-3, *.tr-3, *.th-3, *.td-3, *.section-3 {
+  /* kground-color:#ffdddd; */
+  /* padding: 1px; */
+  color:#666666;
+  margin: 0px 0px 0px 0px;
+  border-radius: 3px;
+}
 
 *.p-done {
   color:#AAAAAA;
