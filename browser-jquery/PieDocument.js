@@ -146,7 +146,7 @@ document.createUI = function () {
 	}
     });
 
-    $("table.localTable").tablesorter({
+    $(".localTable").tablesorter({
 	theme : 'ice',
 	widgets: ["filter"],
 	widgetOptions : {

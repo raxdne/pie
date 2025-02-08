@@ -371,7 +371,7 @@
       <xsl:otherwise>		<!-- build a href -->
 	<xsl:variable name="str_src">
 	  <xsl:choose>
-	    <xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
+	    <xsl:when test="starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://')">
 	      <xsl:value-of select="@src"/>
 	    </xsl:when>
 	    <xsl:when test="ancestor::block[@context]">
@@ -438,7 +438,7 @@
     <xsl:element name="center">
       <xsl:element name="table">
 	<xsl:attribute name="id">
-	  <xsl:value-of select="concat('table',position())"/>
+	  <xsl:value-of select="concat('table-',generate-id())"/>
 	</xsl:attribute>
 	<xsl:attribute name="class">
 	  <xsl:text>localTable</xsl:text>

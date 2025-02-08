@@ -150,11 +150,11 @@
   </xsl:template>
 
   <xsl:template match="w:r[w:rPr/w:b]">
-    <xsl:value-of select="concat('**',w:t,'**')"/>
+    <xsl:value-of select="concat('__',w:t,'__')"/>
   </xsl:template>
 
   <xsl:template match="w:r[w:rPr/w:i]">
-    <xsl:value-of select="concat('__',w:t,'__')"/>
+    <xsl:value-of select="concat('_',w:t,'_')"/>
   </xsl:template>
 
   <xsl:template match="w:r[contains(w:rPr/w:rFonts/attribute::w:ascii,'Courier') or contains(w:rPr/w:rFonts/attribute::w:ascii,'Monospace')]">
@@ -201,7 +201,7 @@
 
   <xsl:template match="w:drawing">
     <xsl:variable name="id_image">
-      <xsl:value-of select="wp:inline/a:graphic/a:graphicData//a:blip/@r:embed"/>
+      <xsl:value-of select="wp:inline/a:graphic//a:blip/@r:embed"/>
     </xsl:variable>
     <xsl:variable name="path_image">
       <xsl:value-of select="//file[@name='document.xml.rels']/child::*[1]/child::*[name()='Relationship' and @Id=$id_image]/@Target"/>
@@ -222,7 +222,8 @@
       <xsl:value-of select="//file[@name='document.xml.rels']/child::*[1]/child::*[name()='Relationship' and @Id=$id_object]/@Target"/>
     </xsl:variable>
     <xsl:value-of select="concat($newpar,'[OLE Object](?path=',$str_path,'/',$path_object,')',$newpar)"/>
-
   </xsl:template>
+
+  <xsl:template match="w:instrText"/>
 
 </xsl:stylesheet>

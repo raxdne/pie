@@ -9,6 +9,10 @@
   <xsl:variable name="flag_num" select="false()"/>
 
   <xsl:variable name="flag_fig" select="true()"/>
+  <!--  -->
+  <xsl:variable name="str_link_prefix" select="''"/>
+  <!--  -->
+  <xsl:variable name="str_title" select="''"/>
 
   <xsl:attribute-set name="paragraph">
     <!-- <xsl:attribute name="font-family">Courier</xsl:attribute> -->
@@ -137,7 +141,7 @@
 
   <xsl:template match="list">
     <xsl:choose>
-      <xsl:when test="count(child::p) = 0"/>
+      <xsl:when test="count(child::p[not(attribute::valid = 'no')]) = 0"/>
       <xsl:when test="parent::p">
         <!-- list item -->
         <xsl:element name="fo:block">
@@ -259,22 +263,46 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="link">
+  <xsl:template match="link[text()]">
     <xsl:element name="fo:inline">
       <xsl:attribute name="color">#0000ff</xsl:attribute>
       <xsl:attribute name="text-decoration">none</xsl:attribute>
+
       <xsl:element name="fo:basic-link">
-        <!--  -->
-        <xsl:attribute name="external-destination">
-	  <xsl:choose>
-	    <xsl:when test="@href">
-	      <xsl:value-of select="@href"/>
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:value-of select="."/>
-	    </xsl:otherwise>
-	  </xsl:choose>
-        </xsl:attribute>
+	<xsl:choose>
+	  <xsl:when test="@id_YYY">
+	    <xsl:attribute name="name">
+              <xsl:value-of select="@id"/>
+	    </xsl:attribute>
+	  </xsl:when>
+	  <xsl:when test="@href">
+	    <xsl:choose>
+	      <xsl:when test="starts-with(@href,'#')">
+		<!-- local link only -->
+		<xsl:attribute name="internal-destination">
+		  <xsl:value-of select="@href"/>
+		</xsl:attribute>
+	      </xsl:when>
+	      <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'mailto:') or starts-with(@href,'tel:') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+		<xsl:attribute name="external-destination">
+		  <xsl:value-of select="@href"/>
+		</xsl:attribute>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:attribute name="external-destination">
+		  <xsl:value-of select="concat($str_link_prefix,'/',@href)"/>
+		</xsl:attribute>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- without href attribute -->
+            <xsl:attribute name="external-destination">
+	      <xsl:value-of select="text()"/>
+	    </xsl:attribute>
+	  </xsl:otherwise>
+	</xsl:choose>
+
         <xsl:value-of select="."/>
       </xsl:element>
     </xsl:element>

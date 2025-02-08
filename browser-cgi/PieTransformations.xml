@@ -29,7 +29,7 @@
       <h>Text plain clean Import</h>
       <p>A XML conformant UTF-8 text</p>
     </pkg:stelle>
-    <pkg:stelle id="text/markdown" type="text/markdown" disposition="attachement;filename=cxproc.md">
+    <pkg:stelle id="text/markdown" type="text/plain" disposition="attachement;filename=cxproc.md">
       <h>Text Markdown</h>
       <p>A Markdown text</p>
     </pkg:stelle>
@@ -223,6 +223,10 @@
     </pkg:stelle>
     <pkg:stelle id="text/html+gantt" type="text/html">
       <h>HTML Gantt layout</h>
+      <p>A full Gantt table layout with header and content rows.</p>
+    </pkg:stelle>
+    <pkg:stelle id="application/json+gantt" type="application/json">
+      <h>JSON data for Gantt layout</h>
       <p>A full Gantt table layout with header and content rows.</p>
     </pkg:stelle>
     <pkg:stelle id="application/vnd.oasis.opendocument.text" type="application/openoffice">
@@ -540,6 +544,12 @@
 	  <variable name="file_css" select="'/pie/html/pie.css'"/>
   	  <variable name="str_year" select="''"/>
 	</xsl>
+      </make>
+    </pkg:transition>
+    <pkg:transition id="period2json">
+      <h>period2json</h>
+      <make>
+	<xsl name="period2json.xsl"/>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2psp">
@@ -1180,6 +1190,8 @@
     <pkg:relation from="x2paths" to="text/plain+dirpath"/>
     <pkg:relation from="application/pie+proc+xml" to="pie2jsontree"/>
     <pkg:relation from="pie2jsontree" to="application/json+tree"/>
+    <pkg:relation from="application/pie+proc+xml" to="period2json"/>
+    <pkg:relation from="period2json" to="application/json+gantt"/>
     <pkg:relation from="application/mm+proc+xml" to="mm2dot"/>
     <pkg:relation from="mm2dot" to="text/dot" />
     <pkg:relation from="application/mm+proc+xml" to="mm2tree" />
