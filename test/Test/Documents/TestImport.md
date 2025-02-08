@@ -1,13 +1,15 @@
 
 TODO: ttttt++
 
-* Test import plain
+# Test import plain
+
+#import("Test 2020-01-01.txt")
 
 #import("TestContent.txt")
 
 #import("TestContent.pie")
 
-* Test import CSV
+# Test import CSV
 
 <csv>
 sep=,
@@ -20,9 +22,5 @@ H,I,J
 </csv>
 
 #import("TestContent.csv")
-
-Import file name containing a ISO8601 date
-
-#import("Test 2021-W03.txt")
 
 END

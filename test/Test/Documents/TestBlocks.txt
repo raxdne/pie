@@ -62,7 +62,7 @@ par1 par1 par1 par1 par1 par1 par1 par1 par1
 
 par2 par2 par2 par2 par2 par2 par2 par2 par2
 
-#import("TestBlocks.txt")
+#import(".//../Documents/TestBlocks.txt")
 
 #begin_of_skip
 SKIP 2 SKIP 2 SKIP

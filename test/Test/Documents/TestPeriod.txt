@@ -1,0 +1,21 @@
+
+* Test Period A
+
+TODO: 2024-11-10/P3D A
+
+** Test Period A.1 2024-11-02/P3D
+
+Paragraph  A.1a
+
+TODO: 2024-11-06/P3D A.1aa
+
+Paragraph  A.1b
+
+** Test Period A.2 2024-10-02/P3D
+
+This paragraph contains a 2024-10-06/P3D
+
+** Test Period A.3 2024-09-02/P3D
+
+Paragraph  A.3a
+
