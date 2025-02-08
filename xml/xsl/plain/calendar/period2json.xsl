@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+  <xsl:output method="text" encoding="UTF-8"/>
+
+<xsl:variable name="newline">
+<!-- a newline xsl:text element -->
+<xsl:text>
+</xsl:text>
+</xsl:variable>
+
+  <xsl:template match="/">
+<xsl:text>[
+</xsl:text>
+<xsl:apply-templates select="descendant::h[child::date[@interval &gt; 1] and parent::section]|descendant::h[child::date[@iso] and parent::task[@class='target']]"/> <!-- descendant::section/child::h[child::date[@interval &gt; 1]]||descendant::task/child::h[parent::task[@class='target']] -->
+<xsl:text>{}]
+</xsl:text>
+  </xsl:template>
+  
+  <xsl:template match="h">
+    <xsl:variable name="str_title">
+      <xsl:if test="parent::section/parent::section/child::h">
+	<xsl:choose>
+	  <xsl:when test="parent::section/parent::section/child::h/child::link">
+	    <xsl:value-of select="concat(parent::section/parent::section/child::h/child::link/text(), ' :: ')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="concat(parent::section/parent::section/child::h/child::text(), ' :: ')"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:if>
+      <xsl:for-each select="descendant-or-self::*[name(.) != 'htag' and name(.) != 't' and name(.) != 'date']">
+	<xsl:value-of select="child::text()"/> <!-- descendant::text()[not(parent::t)] -->
+      </xsl:for-each>
+    </xsl:variable>
+
+    <xsl:variable name="str_url">
+      <xsl:choose>
+	<xsl:when test="child::link">
+	  <xsl:value-of select="concat(',','&quot;','url','&quot;',': ','&quot;',child::link[1]/attribute::href,'&quot;')"/>
+	</xsl:when>
+	<xsl:when test="ancestor::block[@context]">
+	  <xsl:value-of select="concat(',','&quot;','url','&quot;',': ','&quot;','/cxproc/exe?path=',translate(ancestor::block[@context][1]/@context,'\','/'))"/>
+	  <xsl:if test="ancestor-or-self::*[@bxpath]">
+	    <!-- <xsl:value-of select="concat('&amp;','xpath=/descendant-or-self::*[@bxpath = ',ancestor::*[@bxpath][1]/@bxpath,']')"/> -->
+	    <xsl:text>&amp;xpath=/descendant-or-self::*[@bxpath='</xsl:text>
+	    <xsl:value-of select="ancestor-or-self::*[@bxpath][2]/@bxpath"/>
+	    <xsl:text>']</xsl:text>
+	  </xsl:if>
+	  <xsl:value-of select="concat('&amp;','cxp=PiejQDefault','&quot;','')"/>
+	</xsl:when>
+	<xsl:otherwise>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$str_title = ''">
+	<!-- to be ignored -->
+      </xsl:when>
+      <xsl:otherwise>
+	<!--
+	    <xsl:if test="position() = 1">
+	    <xsl:text>,</xsl:text>
+	    </xsl:if>
+	-->
+    <xsl:for-each select="date">
+	<xsl:value-of select="concat('{',$newline)"/>
+	<xsl:value-of select="concat('&quot;','_comment','&quot;',': ','&quot;',text(),'&quot;',',')"/>
+	<xsl:choose>
+	  <xsl:when test="@interval">
+	    <xsl:value-of select="concat('&quot;','dt_0','&quot;',': ','&quot;',@begin,'&quot;',',')"/>
+	    <xsl:value-of select="concat('&quot;',  'dt_1','&quot;',': ','&quot;',@end,  '&quot;',',')"/>
+	    <xsl:value-of select="concat('&quot;','title','&quot;',': ','&quot;',$str_title,'&quot;')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="concat('&quot;','dt_0','&quot;',': ','&quot;',@iso,'&quot;',',')"/>
+	    <xsl:value-of select="concat('&quot;','title','&quot;',': ','&quot;',$str_title,'&quot;')"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:if test="ancestor::*[attribute::done = 'yes']">
+	  <xsl:value-of select="concat(',','&quot;','done','&quot;',': ','true')"/>
+	</xsl:if>
+	<xsl:if test="ancestor::*[attribute::impact]">
+	  <xsl:value-of select="concat(',','&quot;','flag','&quot;',': ','true')"/>
+	</xsl:if>
+	<xsl:if test="ancestor::*[attribute::impact]">
+	  <xsl:value-of select="concat(',','&quot;','class','&quot;',': ','&quot;','h',ancestor::*[attribute::impact][1]/attribute::impact,'&quot;')"/>
+	</xsl:if>
+	<xsl:value-of select="concat($str_url,'},',$newline)"/>
+    </xsl:for-each>
+      </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+</xsl:stylesheet>

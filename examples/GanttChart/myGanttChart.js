@@ -1,25 +1,178 @@
 //
-// myGanttChart (p) 2021,2022 A. Tenbusch
+// myGanttChart (p) 2021,2022,2024 A. Tenbusch
 //
+
+// TODO: #review `moment.js` https://day.js.org/en/
+
+// https://github.com/csnover/js-iso8601
+// https://www.twilio.com/en-us/blog/parse-iso8601-duration-javascript
+// https://github.com/EvanHahn/HumanizeDuration.js
+// https://www.epoch-calendar.com/javascript_calendar/index.html
+
+// default format for Dates
+Date.prototype.getDateString = function () {
+
+    //return this.toLocaleDateString('de-DE', { year: 'numeric', month: 'numeric', day: 'numeric'});
+    return this.toISOString().substring(0,10);
+}
+
+
+/**
+ * Returns the week number for this date.  dowOffset is the day of week the week
+ * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
+ * the week returned is the ISO 8601 week number.
+ * @param int dowOffset
+ * @return int
+ */
+Date.prototype.getWeek = function (dowOffset) {
+/*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.epoch-calendar.com */
+
+	dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 0; //default dowOffset to zero
+	var newYear = new Date(this.getFullYear(),0,1);
+	var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+	day = (day >= 0 ? day : day + 7);
+	var daynum = Math.floor((this.getTime() - newYear.getTime() - 
+	(this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
+	var weeknum;
+	//if the year starts before the middle of a week
+	if(day < 4) {
+		weeknum = Math.floor((daynum+day-1)/7) + 1;
+		if(weeknum > 52) {
+			nYear = new Date(this.getFullYear() + 1,0,1);
+			nday = nYear.getDay() - dowOffset;
+			nday = nday >= 0 ? nday : nday + 7;
+			/*if the next year starts before the middle of
+ 			  the week, it is week #1 of that year*/
+			weeknum = nday < 4 ? 1 : 53;
+		}
+	}
+	else {
+		weeknum = Math.floor((daynum+day-1)/7);
+	}
+	//return weeknum;
+    return (1900 + this.getYear()) + '-W' + weeknum;
+};
+
+
+// https://stackoverflow.com/questions/16590500/calculate-date-from-week-number-in-javascript
+/**
+ * Get the date from an ISO 8601 week and year
+ *
+ * https://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {number} week ISO 8601 week number
+ * @param {number} year ISO year
+ *
+ * Examples:
+ *  getDateOfIsoWeek(53, 1976) -> Mon Dec 27 1976
+ *  getDateOfIsoWeek( 1, 1978) -> Mon Jan 02 1978
+ *  getDateOfIsoWeek( 1, 1980) -> Mon Dec 31 1979
+ *  getDateOfIsoWeek(53, 2020) -> Mon Dec 28 2020
+ *  getDateOfIsoWeek( 1, 2021) -> Mon Jan 04 2021
+ *  getDateOfIsoWeek( 0, 2023) -> Invalid (no week 0)
+ *  getDateOfIsoWeek(53, 2023) -> Invalid (no week 53 in 2023)
+ */
+function getDateOfIsoWeek(week, year) {
+    week = parseFloat(week);
+    year = parseFloat(year);
+  
+    if (week < 1 || week > 53) {
+      throw new RangeError("ISO 8601 weeks are numbered from 1 to 53");
+    } else if (!Number.isInteger(week)) {
+      throw new TypeError("Week must be an integer");
+    } else if (!Number.isInteger(year)) {
+      throw new TypeError("Year must be an integer");
+    }
+  
+    const simple = new Date(year, 0, 1 + (week - 1) * 7);
+    const dayOfWeek = simple.getDay();
+    const isoWeekStart = simple;
+
+    // Get the Monday past, and add a week if the day was
+    // Friday, Saturday or Sunday.
+  
+    isoWeekStart.setDate(simple.getDate() - dayOfWeek + 1);
+    if (dayOfWeek > 4) {
+        isoWeekStart.setDate(isoWeekStart.getDate() + 7);
+    }
+
+    // The latest possible ISO week starts on December 28 of the current year.
+    if (isoWeekStart.getFullYear() > year ||
+        (isoWeekStart.getFullYear() == year &&
+         isoWeekStart.getMonth() == 11 &&
+         isoWeekStart.getDate() > 28)) {
+        throw new RangeError(`${year} has no ISO week ${week}`);
+    }
+  
+    return isoWeekStart;
+}
+
+
+//
+// returns timestamp of 'dt'
+//
+function ISO8601_parse(dt) {
+
+    var t_result = 0;
+    
+    if (typeof dt === 'string') {
+	if (dt.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
+            t_result = Date.parse(dt); // UTC time
+	} else if (dt.match(/[0-9]{4}-W[0-9]{2}-[0-9]/)) {
+	    // TODO: ISO week + day of week
+	    var d = dt.split(/-/);
+	} else if (dt.match(/[0-9]{4}-W[0-9]{2}/)) {
+	    // ISO week
+	    var d = dt.split(/-W/);
+	    //ISO8601_parse(dt + '-1'); // Monday by default
+	    t_result = ISO8601_parse(getDateOfIsoWeek(d[1],d[0]));
+	} else {
+	    // ???
+	}
+    } else if (dt instanceof Date) {
+	t_result = dt.getTime();
+    } else if (typeof dt === 'number' && dt > 0) {
+	t_result = dt;
+    }
+    return t_result;
+}
 
 // s. https://developer.mozilla.org/en-US/docs/Web/SVG
 
-function objGanttChart (strId, argW, argH, grid) {
+function objGanttChart (strId, dt_0, dt_1, scale) {
 
-    this.box = new Array();
-
-    this.items = new Array();
+    this.format_date = { year: 'numeric', month: 'numeric', day: 'numeric'};
     
-    this.grid = grid;
-    
-    this.y_n = - this.grid / 2;
+    this.t_0 = ISO8601_parse(dt_0);
 
-    this.intCompress = -1;
+    this.t_1 = ISO8601_parse(dt_1);
+
+    this.t_now = new Date().getTime();
+
+    if (scale == undefined || scale == null || scale < 10) {
+      this.scale_ = 20;
+    } else {
+      this.scale_ = scale;
+    }
+
+    // TODO: configure unit as hours, days, weeks, months, years
+    this.unit = (1000 * 60 * 60 * 24 * 7);
+
+    this.intCompress = -1; // TODO: deprecated? to be removed
 	
     this.barbackground = '#aaffaa';
 
     this.id = strId;
     this.svg = document.getElementById(this.id);
+    if (this.svg == null) {
+        this.svg = document.getElementsByTagName('body')[0].appendChild(document.createElementNS('http://www.w3.org/2000/svg','svg'));
+        this.svg.setAttribute('id',this.id);
+    }
+
+    this.height = 100;
+    this.offset_draw = this.scale(4); // delta
+
+    this.compact = false;
 
     this.clean();
     
@@ -39,18 +192,45 @@ function objGanttChart (strId, argW, argH, grid) {
 	if (s == undefined || s == '') {
 	    window.console.log('onpaste: ', 'undefined');
 	} else {
+	    self.clean();
 	    window.console.log('onpaste: ', s);
-	    self.append(self.parseInput(s));
+	    self.append(self.parseCsvInput(s));
 	    // TODO: check self.isHistogram()
 	    //self.appendHistogram();
-	    self.clean();
-	    self.reDraw();
+	    self.draw();
 	}
     };
     
     document.dispatchEvent(evt);
     
     return this;
+}
+
+
+objGanttChart.prototype.switchCompact = function () {
+
+    this.compact = ! this.compact;
+    
+    return this.compact;
+}
+
+
+objGanttChart.prototype.scale = function (v) {
+
+    if (v == undefined) {
+	return this.scale_;
+    }
+    return Math.round(v * this.scale_);
+}
+
+
+objGanttChart.prototype.setHeight = function (v) {
+
+    if (v == undefined) {
+    } else {
+	this.height = Math.round(v);
+    }
+    return this.height;
 }
 
 
@@ -62,7 +242,11 @@ objGanttChart.prototype.clean = function () {
     } else {
 	window.console.log('SVG id is ' + this.id);
 	
-	this.y_n = - this.grid / 2;
+	this.box = new Array();
+
+	this.items = new Array();
+	
+	this.y_n = this.scale();
 
 	if (this.svg.children == undefined || this.svg.children.length < 1) {
 	    window.console.log('No SVG child to remove!');
@@ -73,14 +257,14 @@ objGanttChart.prototype.clean = function () {
 	    }
 	}
 
-	var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+	//var g = document.createElementNS('http://www.w3.org/2000/svg','g');
 	//g.setAttribute('transform','scale(0.5)');
-	this.svg.appendChild(g);
+	//this.svg.appendChild(g);
 
 	var s = document.createElementNS('http://www.w3.org/2000/svg','style');
 	s.setAttribute('type',"text/css");
-	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + this.grid / 2 + 'pt; }'));
-	this.svg.appendChild(s);
+	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + this.scale(0.5) + 'pt; }'));
+	this.svg.prepend(s);
 
 	window.console.log(this.svg);
     }
@@ -89,11 +273,147 @@ objGanttChart.prototype.clean = function () {
 }
 
 
-objGanttChart.prototype.toString = function () {
+objGanttChart.prototype.setBegin = function (t) {
 
+    this.t_0 = ISO8601_parse(t);
+    
+    console.log('Set Begin: ', new Date(this.t_0).getDateString());
+    
+    return this.t_0;
+}
+
+
+objGanttChart.prototype.getBegin = function() {
+
+    return this.t_0;
+}
+
+objGanttChart.prototype.setEnd = function (t) {
+
+    this.t_1 = ISO8601_parse(t);
+    
+    console.log('Set End: ', new Date(this.t_1).getDateString());
+    
+    return this.t_1;
+}
+
+
+objGanttChart.prototype.getEnd = function() {
+
+    return this.t_1;
+}
+
+
+//
+// TODO: returns true if 'o' is currently running
+//
+objGanttChart.prototype.isRunning = function (o) {
+
+    var t_epsilon = 2 * this.unit;
+    var f_result = false; // default result
+    
+    //return true;
+
+    if (o == undefined) {
+	//
+    } else if (o.hasOwnProperty("t_1")) {
+	if ((o.t_0 < (this.t_now + t_epsilon)) && (o.t_1 > (this.t_now - t_epsilon))) {
+	    return ! f_result;
+	}
+    } else if (Math.abs(this.t_now - o.t_0) < t_epsilon) {
+	return ! f_result;
+    }
+    return f_result;
+}
+
+
+//
+// returns true if 'o' is not visible in current time window
+//
+objGanttChart.prototype.isOutOfScope = function (o) {
+
+    if (o == undefined) {
+	//
+    } else if (o.hasOwnProperty("t_0")) {
+	if (o.hasOwnProperty("t_1")) {
+	    return (o.t_1 < this.t_0 || o.t_0 > this.t_1);
+	} else {
+	    return (o.t_0 < this.t_0 || o.t_0 > this.t_1);
+	}
+    }
+    return true;
+}
+
+
+objGanttChart.prototype.delta2grid = function (t) {
+
+    if (typeof t === 'number') {
+	if (t < 1000) {
+	    return 0;
+	} else {
+	    //return Math.round(t / this.unit);
+	    return (t / this.unit);
+	}
+    }
+    return 1.0;
+}
+
+
+objGanttChart.prototype.date2grid = function (t) {
+
+    if (typeof t === 'string' && t.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
+        return this.date2grid(Date.parse(t));
+    } else if (t instanceof Date) {
+        return this.date2grid(t.getTime());
+    } else if (typeof t === 'number' && t > 0) {
+        return this.delta2grid(t - this.t_0);
+    }
+    return 0;
+}
+
+
+objGanttChart.prototype.grid2date = function (g) {
+
+    var d;
+    
+    if (g > 0) {
+	d = new Date(this.t_0.valueOf() + Math.round(g * this.unit));
+    } else {
+	d = new Date(this.t_0.valueOf());
+    }
+    return d;
+}
+
+
+objGanttChart.prototype.grid2delta = function (g) {
+
+    return (this.unit * g);
+}
+
+
+objGanttChart.prototype.toString = function() {
+    
+    // TODO: return a formatted JS string of this.items
+    
     // TODO: list input as JSON string
     
-    return this;
+    strResult = typeof this + ' ' + this.id + '\n\n';
+    
+    if (this.svg != null) {
+        strResult += this.svg.toString() + '\n\n';
+    }
+
+    if (this.box != null && this.box.length > 0) {
+        strResult += this.box.toString() + '\n\n';
+    }
+    
+    strResult += new Date(this.t_0).getDateString() + ' .. ' + new Date(this.t_1).getDateString() + '\n\n';
+    
+    for (var i = 0; i < this.items.length; i++) {
+	strResult += i + ' ' + this.items[i].toString() + '\n\n';
+    }
+    
+    return strResult;
 }
 
 
@@ -103,7 +423,7 @@ objGanttChart.prototype.switchCompress = function (intArg) {
 	//
     } else {
 	this.intCompress = intArg;
-	this.append({start: this.intCompress, length: 1, title: 'Cut', color: '#ffff88', vertical: true});
+	this.append({dt_0: this.intCompress, dt_length: 1, title: 'Cut', color: '#ffff88', vertical: true});
     }
     //console.log('intCompress: ', this.intCompress);
     
@@ -114,15 +434,20 @@ objGanttChart.prototype.switchCompress = function (intArg) {
 objGanttChart.prototype.addLabel = function (argT,argStr) {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('transform','rotate(-90,' + ((argT) * this.grid - 4) + ',' + (this.grid / 2) + ')');
+    //g.setAttribute('transform','rotate(-90,' + (this.scale(argT) - 4) + ',' + this.scale(1/3) + ')');
     //g.setAttribute('transform','rotate(-90)');
 
     tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-    tx.setAttribute('x', (argT - 4) * this.grid + 1);
-    tx.setAttribute('y', this.grid / 2);
+    tx.setAttribute('x', this.scale(argT) + 1);
+    tx.setAttribute('y', this.scale(1/2));
 
     //tx.setAttribute('x', 0);
     //tx.setAttribute('y', 0);
+    
+    // TODO: tooltip
+    //title = document.createElementNS('http://www.w3.org/2000/svg','desc');
+    //title.appendChild(document.createTextNode(argStr));
+    //g.appendChild(title);
     
     tx.appendChild(document.createTextNode(argStr));
     g.appendChild(tx);
@@ -136,24 +461,62 @@ objGanttChart.prototype.addLabel = function (argT,argStr) {
 objGanttChart.prototype.shift = function (argX, argY) {
 
     if (argY === undefined) {
-	this.svg.children[0].setAttribute('transform','translate(' + (argX * this.grid) + ',' + (0) + ')');
+	this.svg.children[0].setAttribute('transform','translate(' + this.scale(argX) + ',' + (0) + ')');
     } else {
-	this.svg.children[0].setAttribute('transform','translate(' + (argX * this.grid) + ',' + (argY * this.grid) + ')');
+	this.svg.children[0].setAttribute('transform','translate(' + this.scale(argX) + ',' + this.scale(argY) + ')');
     }
     
     return this;
 }
 
 
-objGanttChart.prototype.append = function () {
+objGanttChart.prototype.append = function (args) {
 
-    for (var i = 0; i < arguments.length; i++) {
-	if (typeof arguments[i] === 'object') {
-	    this.items.push(arguments[i]);
+    //window.console.log(args);
+
+    if (typeof args === 'object' && args.length == undefined) {
+	this.append([args]);
+    } else {
+	for (var i = 0; i < args.length; i++) {
+	    if (typeof args[i] === 'object') {
+		if (args[i].hasOwnProperty("title") && typeof args[i].title === 'string' && args[i].title.length > 0) {		
+		    if (args[i].hasOwnProperty("dt_0")) {
+			args[i].t_0 = ISO8601_parse(args[i].dt_0);
+			if (args[i].t_0 > 0) {
+			} else {
+			    delete args[i].t_0; // no longer required
+			}
+			if (args[i].hasOwnProperty("dt_1")) {
+			    args[i].t_1 = ISO8601_parse(args[i].dt_1);
+			    if (args[i].t_1 > 0) {
+				args[i].t_length = args[i].t_1 - args[i].t_0;
+			    } else {
+				delete args[i].t_1; // no longer required
+			    }
+			} else if (args[i].hasOwnProperty("dt_length")) {
+			    args[i].t_1 = args[i].t_0 + args[i].dt_length * this.unit;
+			} else {
+			    // milestone
+			}
+		    } else if (args[i].hasOwnProperty("dt_1") && args[i].hasOwnProperty("dt_length")) {
+			args[i].t_0 = args[i].t_1 - args[i].dt_length * this.unit;
+		    } else {
+			// REQ: this.getSvgHruler(this.y_n);
+			window.console.error(args[i]);
+			continue;
+		    }
+		    delete args[i].dt_0; // no longer required
+		    delete args[i].dt_1; // no longer required
+		    delete args[i].dt_length; // no longer required
+		    
+		    window.console.log(args[i]);
+		    this.items.push(args[i]);
+		}
+	    }
 	}
-    }	
-
-    //window.console.log(arguments);
+	// TODO: append hruler
+	this.items.push({});
+    }
     return this;
 }
 
@@ -161,6 +524,57 @@ objGanttChart.prototype.append = function () {
 objGanttChart.prototype.preDraw = function() {
 
     //window.console.log(arguments);
+    now = new Date(this.t_now);
+    var mon = now.getMonth();
+    var dom = now.getDate();
+    
+    for (var y = 2024; y < 2027; y++) {
+	var dt_y = new Date(y,mon,dom);
+
+	dt_y.setDate(dt_y.getDate() - (dt_y.getDay() === 0 ? 7 : dt_y.getDay()) + 1); // fix to previous Monday
+	
+	this.append({dt_0: dt_y, dt_length: 1, title: 'Current Week in ' + y, class: 'cw', vertical: true});
+    }
+
+
+    var i = this.date2grid(this.t_now);
+    var x_i = this.scale(i);
+	
+    var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',x_i);
+    l.setAttribute('y1',0);
+    l.setAttribute('x2',x_i);
+    l.setAttribute('y2',this.height);
+    l.setAttribute('stroke','rgb(256,0,0)');
+    l.setAttribute('stroke-width','.75');
+    this.svg.appendChild(l);
+    
+    return this;
+
+	  window.console.log('Pre ' + d_0 + ' ... ' + d_1);
+
+	      for (var d_w = d_0; d_w < d_1; d_w += this.unit) {
+		  this.addLabel(this.date2grid(d_w),'CW' + ISO8601_week_no(d_w) + '/' );
+	      }
+	  return this;
+	  
+	  for (var y = 2021; y < 2025; y++) {
+	      //this.append({dt_0: Date(y,now.getMonth()+1,now.getDate()), dt_length: 1, title: 'Current Week ' + y, color: '#ffcccc', vertical: true});
+	  }
+    //this.y_n += this.scale(5);
+    
+    // create grid labels
+    for (var g_i = 0; g_i < 10; g_i += 4) {
+	//this.append({dt_0: Date(y,now.getMonth()+1,now.getDate()), dt_length: 1, title: 'Current Week ' + y, color: '#ffcccc', vertical: true});
+	// for (var w = 2; w < 53; w += 4) {
+	// }
+
+	var d_i = new Date(this.grid2date(g_i));
+	this.addLabel(g_i,d_i.getweek());
+	//this.addLabel(g_i,g_i);
+    }
+    //this.y_n += this.scale(5);
+    
     return this;
 }
 
@@ -168,283 +582,351 @@ objGanttChart.prototype.preDraw = function() {
 objGanttChart.prototype.postDraw = function() {
 
     //window.console.log(arguments);
+    
     return this;
+
+	  window.console.log('Post ');
+
+	  //this.appendHLines();
+	  this.appendVLines();
+	  //this.appendHistogram();
+	  
 }
 
 
-objGanttChart.prototype.reDraw = function() {
+objGanttChart.prototype.getSvg = function(li) {
 
-    if (arguments.length < 1) {
-	this.clean();
-	this.preDraw();
-	this.reDraw(this.items);
-	this.postDraw();
-	//this.appendHLines();
-	this.appendVLines();
-
-	return this;
-    }
+    //window.console.log(arguments);
     
-    for (var i = 0; i < arguments.length; i++) {
-
-	var li = arguments[i];
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    var result = g;
     
-	// TODO: image??
+    if (typeof li === 'object'
+	&& (li.hasOwnProperty("t_0") || li.hasOwnProperty("t_1"))
+	&& li.hasOwnProperty("title")
+	&& ((! this.compact || (li.hasOwnProperty("class") || this.isRunning(li))) || li.hasOwnProperty("vertical"))) {
 	
-	if (this.intCompress > -1 && li.hasOwnProperty("done") && li.done) {
-	    continue;	    
-	} else if (typeof li === 'object' && li instanceof Array) {
-	    window.console.log('Array');
-	    for (var j = 0; j < li.length; j++) {
-		this.reDraw(li[j]);
-	    }
-	} else if (typeof li === 'object' && (li.hasOwnProperty("start") || li.hasOwnProperty("end")) && li.hasOwnProperty("title")) {
+	var f;
 
-	    var f;
+	var tip = li.title;
+
+	var a = document.createElementNS('http://www.w3.org/2000/svg','a');
+	if (li.hasOwnProperty("url")) {
+	    a.setAttribute('href', li.url);
+	    a.setAttribute('target', 'blank');
+	}
+	g.appendChild(a);
+	g = a;
+
+	var g_x = 0;
+	
+	if (li.hasOwnProperty("t_1") || li.hasOwnProperty("vertical")) {
+
+	    // REQ: t_0 + t_1 - title => Begin + End
 	    
-	    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-
-	    if (li.hasOwnProperty("url")) {
-		a = document.createElementNS('http://www.w3.org/2000/svg','a');
-		a.setAttribute('href', li.url);
-		a.setAttribute('target', 'blank');
-		g.appendChild(a);
-		g = a;
-	    }
-
-	    var t = (li.start - 1) * this.grid;
+	    // REQ: no t_0, t_1, title => Hruler
 	    
-	    if (li.hasOwnProperty("end") || li.hasOwnProperty("length")) {
-		
-		//window.console.log('bar');
+	    if (this.isOutOfScope(li)) {
+		window.console.log('skipping ' + li);
+		return null;
+	    }
+	    
+	    var l_x = 0;
+	    
+	    window.console.log('horizontal bar ' + this.date2grid(li.t_0) + ' -- ' + this.date2grid(li.t_1));
 
-		var l;
-		if (li.hasOwnProperty("length")) {
-		    if (li.hasOwnProperty("start")) {
-			li.end = li.start + li.length - 1;
-		    } else {
-			li.start = li.end - li.length;
-		    }
-		} else {
-		    li.length = li.end - li.start + 1
-		}
-		l = li.length * this.grid;
-		t = (li.start - 1) * this.grid;
-		
-		for (var k = li.start; k <= li.end; k++) {
-		    if (this.box[k] === undefined) {
-			this.box[k] = 1;
-		    } else if (li.length > 0) {
-			this.box[k]++;
-		    }
-		}
+	    if (li.t_0 < this.t_0) {
+		// period starts before time frame of diagram
+		g_x = 0;
+		l_x = this.scale(this.delta2grid(li.t_1 - this.t_0));
+	    } else {
+		g_x = this.scale(this.date2grid(li.t_0));
+		l_x = this.scale(this.delta2grid(li.t_1 - li.t_0));
+	    }
+	    
+	    var h = this.scale();
 
-		if (li.start <= this.intCompress && li.end >= this.intCompress) {
-		    // 
-		} else if (li.hasOwnProperty("vertical")) {
-		    // add all vertical bars
-		} else if (this.intCompress > -1) {
-		    continue;
-		}
-		
-		var h = this.grid;
-		if (li.hasOwnProperty("height") && li.height > 1) {
-		    h = li.height  * this.grid;
-		} else {
-		    h = this.grid;
-		}
+	    if (li.hasOwnProperty("newline") && li.newline == false && this.intCompress == -1) {
+		// keep same line
+	    } else {
+		//this.y_n += 1.35 * this.scale;
+		//this.svg.setAttribute('height',this.y_n + 2 * h);
+	    }
+	    
+	    f = document.createElementNS('http://www.w3.org/2000/svg','rect');
+	    f.setAttribute('class','bar');
+	    f.setAttribute('x',g_x);
+	    g.appendChild(f);
+	    
+	    if (li.hasOwnProperty("vertical") && li.vertical) {
+		//window.console.log('vbar ');
+		f.setAttribute('y',0);
+		f.setAttribute('height',this.height - this.offset_draw);
+	    } else {
+		//window.console.log('hbar ');
+		f.setAttribute('y',this.y_n);
+		f.setAttribute('height',h);
+		f.setAttribute('rx',5);
+	    }
+	    
+	    f.setAttribute('width',l_x);
 
-		if (li.hasOwnProperty("newline") && li.newline == false && this.intCompress == -1) {
-		    // keep same line
-		} else {
-		    this.y_n += 1.35 * this.grid;
-		    this.svg.setAttribute('height',this.y_n + 2 * h);
-		}
-		
-		f = document.createElementNS('http://www.w3.org/2000/svg','rect');
-		f.setAttribute('x',t);
-		
-		if (li.hasOwnProperty("vertical") && li.vertical) {
-		    //window.console.log('vbar ');
-		    f.setAttribute('y',0);
-		    f.setAttribute('height',this.h);
-		} else {
-		    //window.console.log('hbar ');
-		    f.setAttribute('y',this.y_n);
-		    f.setAttribute('height',h);
-		    f.setAttribute('rx',5);
-		}
-		f.setAttribute('width',l);
+	    if (li.hasOwnProperty("class")) {
+		f.setAttribute('class', li.class);
+	    } else if (li.hasOwnProperty("fill")) {
+		f.setAttribute('fill',li.fill);
+	    } else {
 		f.setAttribute('fill',this.barbackground);
-		
-		if (li.hasOwnProperty("opacity")) {
-		    f.setAttribute('opacity',li.opacity);
-		} else {
-		    f.setAttribute('opacity',0.6);
+	    }
+
+	    if (li.hasOwnProperty("flag") && li.flag) {
+		//g.appendChild(this.getSvgFlag(g_x + l_x - 5, this.y_n - this.scale(0.2)));
+	    }
+
+	    if (li.hasOwnProperty("opacity")) {
+		f.setAttribute('opacity',li.opacity);
+	    } else {
+		f.setAttribute('opacity',0.6);
+	    }
+	    
+	    //this.appendFlag(g_x+l_x-10,this.y_n + this.scale - 5);
+
+	    if (li.hasOwnProperty("vertical") && li.vertical) {
+		if (li.hasOwnProperty("class") == false) {
+		    f.setAttribute('class','vbar');
 		}
-		
-		var tip = li.title + ' (' + (t / this.grid) + ',' + (l / this.grid) +')';
-		if (li.hasOwnProperty("tip")) {
-		    tip += ', ' + li.tip;
-		}
-
-		tt = document.createElementNS('http://www.w3.org/2000/svg','title');
-		tt.appendChild(document.createTextNode(tip));
-		f.appendChild(tt);
-		
-		g.appendChild(f);
-
-		//this.appendFlag(t+l-10,this.y_n + this.grid - 5);
-
-		if (li.hasOwnProperty("vertical") && li.vertical) {
-		} else {
-		    tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-		    tx.setAttribute('x', t + 4);
-		    tx.setAttribute('y',this.y_n + this.grid - 5);
-		    tx.appendChild(document.createTextNode(li.title));
-		    
-		    g.appendChild(tx);
-		}
-		
-		if (h > this.grid) {
-		    this.y_n += h - this.grid;
-		}
-
-	    } else if (this.intCompress == -1 || li.start == this.intCompress) {
-
-		//window.console.log('milestone: ' + li.title);
-
-		t += this.grid / 2;
-		f = document.createElementNS('http://www.w3.org/2000/svg','polygon');
-		f.setAttribute('points',
-		               (t)               + ',' + (this.y_n)
-			       + ' ' + (t + this.grid / 2) + ',' + (this.y_n + this.grid / 2)
-			       + ' ' + (t)               + ',' + (this.y_n + this.grid)
-			       + ' ' + (t - this.grid / 2) + ',' + (this.y_n + this.grid / 2)
-			       + ' ' + (t)               + ',' + (this.y_n));
-		f.setAttribute('fill','#aaaaff');
-
-		g.appendChild(f);
-
+	    } else {
 		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-		tx.setAttribute('x', t + this.grid / 2 + 2);
-		tx.setAttribute('y',this.y_n + this.grid - 5);
+		tx.setAttribute('x', g_x + 4);
+		tx.setAttribute('y',this.y_n + this.scale() - 5);
 		tx.appendChild(document.createTextNode(li.title));
 		
 		g.appendChild(tx);
 	    }
+	    
+	    if (li.hasOwnProperty("vertical") && li.vertical) {
+		// no line feed
+	    } else {
+		this.y_n += this.scale(1.35);
+	    }
+	    
+	    tip += '\n(' + new Date(li.t_0).getDateString() + ' .. ' + new Date(li.t_1).getDateString() + ' = ' + Math.round((li.t_1 - li.t_0) / this.unit) + ')';	    
+	// if (li.hasOwnProperty("tip")) {
+	//     tip += ', ' + li.tip;
+	// }
+	// tt = document.createElementNS('http://www.w3.org/2000/svg','title');
+	// tt.appendChild(document.createTextNode(tip));
+	// g.appendChild(tt);
+	
+	} else {
 
-	    if (f != undefined) {
-		
-		if (li.hasOwnProperty("color")) {
-		    f.setAttribute('fill',li.color);
-		}
+	    if (this.isOutOfScope(li)) {
+		window.console.log('skipping ' + li);
+		return null;
+	    }
+	    
+	    window.console.log('milestone ' + this.date2grid(li.t_0));
 
-		f.setAttribute('stroke-width','.5');
+	    if (li.t_0 < this.t_0) {
+		// not visible
+	    } else {
+		//this.y_n -= this.scale(1.35);
+		g_x = this.scale(this.date2grid(li.t_0));
+
+		f = this.getSvgPolygon(g_x,this.y_n + this.scale(1/2));
 		
-		if (li.hasOwnProperty("url")) {
-		    f.setAttribute('stroke','#0000ff');
-		} else {
-		    f.setAttribute('stroke','#000000');
-		}
+		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+		tx.setAttribute('x', g_x + this.scale(1/2) + 2);
+		tx.setAttribute('y',this.y_n + this.scale() - 5);
+		tx.appendChild(document.createTextNode(li.title));
+		f.appendChild(tx);
+
+		title = document.createElementNS('http://www.w3.org/2000/svg','title');
+		title.appendChild(document.createTextNode(li.title));
+		f.appendChild(title);
 		
+		g.appendChild(f);
+		this.y_n += this.scale(1.35);
+		tip += '\n(' + new Date(li.t_0).getDateString() + ')';	    
+	    }
+	}
+
+	if (li.hasOwnProperty("done") && li.done) {
+	    //window.console.log('done ');
+	    g.appendChild(this.getSvgDone(g_x + this.scale(1),this.y_n - this.scale(1)));
+	}
+
+	if (f != undefined) {
+	    
+	    if (li.hasOwnProperty("color")) {
+		f.setAttribute('fill',li.color);
+	    }
+
+	    f.setAttribute('stroke-width','.5');
+	    
+	    if (li.hasOwnProperty("url")) {
+		f.setAttribute('stroke','#0000ff');
+	    } else {
+		f.setAttribute('stroke','#000000');
+	    }
+
+	    if (li.hasOwnProperty("tip")) {
+		tip += ', ' + li.tip;
+	    }
+	    tt = document.createElementNS('http://www.w3.org/2000/svg','title');
+	    tt.appendChild(document.createTextNode(tip));
+	    g.appendChild(tt);
+	    
+	    if (false) {		
+
+	    var tip = li.title + '\n(' + new Date(li.t_0).getDateString() + ' .. ' + new Date(li.t_1).getDateString() + ' = ' + Math.round((li.t_1 - li.t_0) / this.unit) + ')';	    
+	    //g.appendChild(f);
+
+
 		if (li.hasOwnProperty("vertical") && li.vertical) {
 		    this.svg.children[0].prepend(g);
 		} else {
 		    this.svg.children[0].appendChild(g);
 		}
 
-		var w = t + l;
+		var w = g_x + l_x + li.title.length * this.scale(1/2);
+		// TODO: calculate length of title
 		if (this.svg.getAttribute('width') < w) { // extend SVG width if neccesary
-		    this.w = w + this.grid;
+		    this.w = w + this.scale;
 	    	    this.svg.setAttribute('width',this.w);
 		}
 	    }
 	    
-	} else if (typeof li === 'object' && li.hasOwnProperty("color")) {
-
-	    this.y_n += 1.5 * this.grid;
-
-	    this.svg.setAttribute('height',this.y_n + 2 * this.grid);
-
-	    // x axis
-	    l = document.createElementNS('http://www.w3.org/2000/svg','line');
-	    l.setAttribute('x1',0);
-	    l.setAttribute('y1',this.y_n );
-	    l.setAttribute('x2',this.w);
-	    l.setAttribute('y2',this.y_n);
-	    l.setAttribute('stroke','#000000');
-	    //l.setAttribute('stroke-width','.5');		
-
-	    this.svg.children[0].appendChild(l);
-
-	    this.y_n -= 0.5 * this.grid; // 
-     
-	    this.barbackground = li.color;
-
-	} else if (typeof li === 'object' && li.hasOwnProperty("posx") && li.hasOwnProperty("url")) {
-	    
-	    //window.console.log('link');
-	    
-	    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-
-	    a = document.createElementNS('http://www.w3.org/2000/svg','a');
-	    a.setAttribute('href', li.url);
-	    a.setAttribute('target', 'blank');
-	    a.setAttribute('fill','#0000ff');
-	    
-	    g.appendChild(a);
-	    g = a;
-	    
-	    var x = li.posx * this.grid + this.grid / 3;
-	    
-	    var y;
-	    if (li.hasOwnProperty("posy")) {
-		y = li.posy * this.grid;
-	    } else {
-		y = this.y_n + 1.5 * this.grid;
-	    }
-
-	    tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-	    tx.setAttribute('x', x);
-	    tx.setAttribute('y', y);
-	    tx.setAttribute('text-decoration', 'underline');
-	    tx.appendChild(document.createTextNode(li.title));
-	    
-	    g.appendChild(tx);
-	    this.svg.children[0].appendChild(g);
-
-	} else {
 	}
 	
-	if (li.hasOwnProperty("done") && li.done) {
-	    g.appendChild(this.getDone(t+l-5,this.y_n + 0.2 * this.grid));
-	} else if (li.hasOwnProperty("flag") && li.flag) {
-	    g.appendChild(this.getFlag(t+l-5,this.y_n + 0.2 * this.grid));
+    } else if (typeof li === 'object' && li.hasOwnProperty("color")) {
+
+	//window.console.log('');
+	
+	//this.y_n += 1.5 * this.scale;
+
+	//this.svg.setAttribute('height',this.y_n + 2 * this.scale);
+
+	// x axis
+	l = document.createElementNS('http://www.w3.org/2000/svg','line');
+	l.setAttribute('x1',0);
+	l.setAttribute('y1',this.y_n );
+	l.setAttribute('x2',this.w);
+	l.setAttribute('y2',this.y_n);
+	l.setAttribute('stroke','#000000');
+	//l.setAttribute('stroke-width','.5');		
+
+	this.svg.children[0].appendChild(l);
+
+	//this.y_n -= 0.5 * this.scale; // 
+	
+	this.barbackground = li.color;
+
+    } else if (typeof li === 'object' && li.hasOwnProperty("posx") && li.hasOwnProperty("url")) {
+	
+	//window.console.log('link');
+	
+	a = document.createElementNS('http://www.w3.org/2000/svg','a');
+	a.setAttribute('href', li.url);
+	a.setAttribute('target', 'blank');
+	//a.setAttribute('fill','#0000ff');
+	
+	g.appendChild(a);
+	g = a;
+	
+	var x = this.scale(li.posx) + this.scale(1/3);
+	
+	var y;
+	if (li.hasOwnProperty("posy")) {
+	    y = this.scale(li.posy);
+	} else {
+	    y = this.y_n + this.scale(1.5);
 	}
-		
-	this.h = this.y_n + 2 * this.grid;
+
+	tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+	tx.setAttribute('x', x);
+	tx.setAttribute('y', y);
+	tx.setAttribute('text-decoration', 'underline');
+	tx.appendChild(document.createTextNode(li.title));
+	
+	g.appendChild(tx);
+	this.svg.children[0].appendChild(g);
+	
+    } else if (typeof li === 'object' && Object.keys(li).length === 0) {
+	// empty object as a hruler
+	g.appendChild(this.getSvgHruler(this.y_n - this.scale(1/5)));
     }
     
-    //window.console.log('items: ' + this.items.toString());
+    return result;
+} // end of .getSvg()
 
+
+objGanttChart.prototype.draw = function() {
+
+    if (arguments.length < 1) {
+	// init
+	//this.clean();
+	this.preDraw();
+	this.draw(this.items);
+	this.appendVLines();
+	//this.appendHLines();
+	this.postDraw();
+	
+	if (this.svg != null) {
+	    this.svg.setAttribute('width', this.scale(Math.ceil(this.date2grid(this.getEnd()))));
+	    this.svg.setAttribute('height', this.height + this.scale(4));
+	}
+
+    } else {
+
+	if (this.svg == undefined || this.svg == null) {
+	    //this.svg = this.getSvg(arguments[i]);
+	}
+	
+	var g = document.getElementById('draw');
+	if (g == undefined || g == null) {
+	    g = document.createElementNS('http://www.w3.org/2000/svg','g');
+	    g.setAttribute('id', 'draw');
+	    g.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
+	    this.svg.appendChild(g);
+	}
+
+	for (var i = 0; i < arguments.length; i++) {
+
+	    var li = arguments[i]; // shortcut
+
+	    // REQ: display images
+
+	    if (this.intCompress > -1 && arguments[i].hasOwnProperty("done") && arguments[i].done) {
+		continue;	    
+	    // } else if (this.isOutOfDisplay(arguments[i].t_0)) {
+	    // 	arguments[i].t_0 = this.t_0;
+	    } else if (typeof arguments[i] === 'object' && arguments[i] instanceof Array) {
+		window.console.log('Array');
+		for (var j = 0; j < arguments[i].length; j++) {
+		    this.draw(arguments[i][j]);
+		}
+	    } else if (arguments[i].hasOwnProperty("vertical") && arguments[i].vertical) {
+		g.prepend(this.getSvg(arguments[i]));
+	    } else {
+		g.append(this.getSvg(arguments[i]));
+		this.h = this.y_n + this.scale(2);
+	    }
+            // TODO: g.appendChild(this.getSvgHruler(this.y_n));
+	    this.h += this.y_n + this.scale(2);
+	}
+	
+	//window.console.log('items: ' + this.items.toString());
+    }
+    
     return this;
 }
 
 
-objGanttChart.prototype.toString = function() {
-    
-    // TODO: return a formatted JS string of this.items
-    
-    //window.console.log(this.items);
-
-    return this.items;
-}
-
-
-objGanttChart.prototype.getDone = function(x,y) {
+objGanttChart.prototype.getSvgDone = function(x,y) {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','done');
     //g.setAttribute('transform','rotate(15,' + x + ',' + y + ')');
 
     f = document.createElementNS('http://www.w3.org/2000/svg','polyline');
@@ -464,12 +946,51 @@ objGanttChart.prototype.getDone = function(x,y) {
 }
 
 
-objGanttChart.prototype.getFlag = function(x,y) {
+objGanttChart.prototype.getSvgHruler = function(y) {
+
+    window.console.log('hrule ' + y);
+   
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','hruler');
+
+    var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1','0');
+    l.setAttribute('y1',y);
+    l.setAttribute('x2',this.scale(this.date2grid(this.getEnd())));
+    l.setAttribute('y2',y);
+    l.setAttribute('stroke','rgb(128,128,128)');
+    l.setAttribute('stroke-width','.5');
+    
+    g.appendChild(l);
+    return g;
+}
+
+
+objGanttChart.prototype.getSvgPolygon = function(x,y) {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('transform','rotate(15,' + x + ',' + y + ')');
+    g.setAttribute('class','polygon');
 
-    //return g;
+    f = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    var half = this.scale(1/2);
+    f.setAttribute('points',
+		   (x - half) + ',' + (y)
+		   + ' ' + (x) + ',' + (y - half)
+		   + ' ' + (x + half)               + ',' + (y)
+		   + ' ' + (x) + ',' + (y + half)
+		   + ' ' + (x - half)               + ',' + (y));
+    //f.setAttribute('fill','#aaaaff');
+    
+    g.appendChild(f);
+    return g;
+}
+
+
+objGanttChart.prototype.getSvgFlag = function(x,y) {
+
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','flag');
+    g.setAttribute('transform','rotate(15,' + x + ',' + y + ')');
     
     f = document.createElementNS('http://www.w3.org/2000/svg','rect');
     f.setAttribute('x',x);
@@ -512,103 +1033,111 @@ objGanttChart.prototype.getFlag = function(x,y) {
 }
 
 
-objGanttChart.prototype.appendHistogram = function () {
-
-    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-
-    var threshold = 19;
-    var scale = 3;
-    
-    for (var k = 0; k < this.box.length; k++) {
-	if (this.box[k] === undefined) {
-	    // ignore
-	} else {
-	    //c.addLabel(k,this.box[k]);
-
-	    var f = document.createElementNS('http://www.w3.org/2000/svg','rect');
-	    f.setAttribute('x', (k - 1) * this.grid + 1);
-	    f.setAttribute('y', 0);
-	    f.setAttribute('height',this.box[k] * scale);
-	    f.setAttribute('width',this.grid - 2);
-	    //f.setAttribute('stroke','#000000');
-	    //f.setAttribute('stroke-width','.5');
-	    f.setAttribute('opacity','.5');
-
-	    f.setAttribute('fill', (this.box[k] > threshold) ? '#ff8888' : '#8888cc');
-
-	    var t = document.createElementNS('http://www.w3.org/2000/svg','title');
-	    t.appendChild(document.createTextNode(this.box[k]));
-	    f.appendChild(t);
-	    
-	    g.append(f);
-	}
-    }	
-
-    l = document.createElementNS('http://www.w3.org/2000/svg','line');
-    l.setAttribute('x1', 0);
-    l.setAttribute('y1', threshold * scale);
-    l.setAttribute('x2', this.w);
-    l.setAttribute('y2', threshold * scale);
-
-    l.setAttribute('stroke','#8888cc');
-    l.setAttribute('stroke-width','1');
-    
-    g.append(l);
-    
-    this.svg.children[0].prepend(g);
-}
-
-
 objGanttChart.prototype.appendVLines = function () {
 
-    for (i = Math.floor(this.w / this.grid); i > -1; i--) {
-	l = document.createElementNS('http://www.w3.org/2000/svg','line');
-	l.setAttribute('x1',i * this.grid);
-	l.setAttribute('y1','0');
-	l.setAttribute('x2',i * this.grid);
-	l.setAttribute('y2',this.h);
-	if (i % 4 == 0) {
-	    l.setAttribute('stroke','rgb(128,128,128)');
-	    //l.setAttribute('stroke-width','.5');
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('id', 'vlines');
+    var d_0 = new Date(this.getBegin());
+    // TODO: align to begin of same week
+    //g.setAttribute('transform','translate(' + -this.scale(1/4) + ',' + (0) + ')');
+    var j = 0;
+    //var y_d = this.y_n + this.scale(6);
+    
+    // TODO: visible grid in hours, days, weeks, months, years
+
+    for (var t_i = this.getBegin(); t_i < this.getEnd(); t_i += this.unit, j++) {
+	//window.console.log('t_i = ' + this.date2grid(t_i) + ' -> ' + this.scale(this.date2grid(t_i)));
+
+	var i = this.date2grid(t_i);
+	var x_i = this.scale(i);
+	
+	var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+	l.setAttribute('x1',x_i);
+	l.setAttribute('y1',0);
+	l.setAttribute('x2',x_i);
+	l.setAttribute('y2',this.height);
+	l.setAttribute('stroke','rgb(128,128,128)');
+	if (j % 4 == 0) {
+	    l.setAttribute('stroke-width','.75');
 	} else {
-	    l.setAttribute('stroke','rgb(128,128,128)');
 	    l.setAttribute('stroke-width','.5');
 	}
 
-	tt = document.createElementNS('http://www.w3.org/2000/svg','title');
-	tt.appendChild(document.createTextNode(i));
-	l.appendChild(tt);
+	var d = new Date(t_i);
 
-	this.svg.children[0].prepend(l);
-    }    
-}
+	var g_text = document.createElementNS('http://www.w3.org/2000/svg','g');
+	g_text.setAttribute('transform','rotate(-90,' + (this.scale(i) + 5) + ',' + this.scale(1/10) + ')');
 
-objGanttChart.prototype.appendHLines = function () {
-
-    for (i = Math.floor(this.h / this.grid); i > -1; i--) {
-	l = document.createElementNS('http://www.w3.org/2000/svg','line');
-	l.setAttribute('x1','0');
-	l.setAttribute('y1',i * this.grid);
-	l.setAttribute('x2',this.w);
-	l.setAttribute('y2',i * this.grid);
-	if (i % 4 == 0) {
-	    l.setAttribute('stroke','rgb(128,128,128)');
-	    //l.setAttribute('stroke-width','.5');
+	tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+	tx.setAttribute('x', this.scale(i));
+	tx.setAttribute('y', this.scale(1/2));
+	tx.setAttribute('text-anchor', 'end');
+	
+	//tx.appendChild(document.createTextNode(i));
+	if (this.unit > (1000 * 60 * 60 * 24)) {
+	    if (j % 4 == 0) {
+		tx.appendChild(document.createTextNode(d.getWeek()));
+		//tx.appendChild(document.createTextNode(d.toLocaleDateString('de-DE', this.format_date)));
+	    }
 	} else {
-	    l.setAttribute('stroke','rgb(128,128,128)');
-	    l.setAttribute('stroke-width','.5');
+	    tx.appendChild(document.createTextNode(d.toLocaleDateString('de-DE', this.format_date)));
 	}
+	g_text.appendChild(tx);
+	g.appendChild(g_text);
+	
 
 	//tt = document.createElementNS('http://www.w3.org/2000/svg','title');
 	//tt.appendChild(document.createTextNode(i));
 	//l.appendChild(tt);
-
-	this.svg.children[0].prepend(l);
+	g.append(l);
     }    
+    this.svg.prepend(g);
+    this.y_n += this.scale(4);
 }
 
 
-objGanttChart.prototype.parseInput = function (strInput) {
+objGanttChart.prototype.appendHLines = function () {
+
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('id', 'hlines');
+    g.setAttribute('transform','translate(' + 0 + ',' + this.scale(1/4) + ')');
+    
+    var j = Math.floor(this.height / this.scale()) + 1
+    window.console.log('hlines: ' + j);
+    
+    for (i = 0; i < j; i++) {
+	var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+	l.setAttribute('x1','0');
+	l.setAttribute('y1',this.scale(i));
+	l.setAttribute('x2',this.scale(this.date2grid(this.getEnd())));
+	l.setAttribute('y2',this.scale(i));
+	l.setAttribute('stroke','rgb(128,128,128)');
+	l.setAttribute('stroke-width','.5');
+	g.append(l);
+    }    
+    this.svg.prepend(g);
+}
+
+
+objGanttChart.prototype.appendForm = function (strInput) {
+
+    // TODO: textarea for input of CSV
+}
+
+
+objGanttChart.prototype.getCsvForm = function (strInput) {
+
+    // TODO: get input of CSV textarea
+}
+
+
+objGanttChart.prototype.getCsvOutput = function (strInput) {
+
+    // TODO: format this.item as CSV
+}
+
+
+objGanttChart.prototype.parseCsvInput = function (strInput) {
 
     var s = new String(strInput);
     var listResult = new Array();
@@ -622,14 +1151,12 @@ objGanttChart.prototype.parseInput = function (strInput) {
 	
 	var c = l.split(/[;,\t]/);
 	
-	window.console.log('Cells ' + c.length);
+	//window.console.log('Cells ' + c.length);
 
-	if (c.length == 3) {
-	    listResult.push({start: c[0], end: c[1], title: c[2]});
-	    //this.append({start: c[0], end: c[1], title: c[2]});
-	} else if (c[0].length > 0) {
-	    listResult.push({start: i + 1, length: (i + 1) * 2, title: c[0]});
-	    //this.append({start: c[0], end: c[1], title: c[2]});
+	if (c.length == 3 && c[0].length > 0 && c[1].length > 0) {
+	    listResult.push({dt_0: c[0], dt_1: c[1], title: c[2]});
+	} else if (c.length == 3 && c[0].length > 0) {
+	    listResult.push({dt_0: c[0], title: c[2]});
 	}
     }
     window.console.log('Result ' + listResult.toString());
@@ -655,6 +1182,7 @@ objGanttChart.prototype.getInput = function (strUrl) {
 	    } else {
 		var list;
 
+		//console.log(request.responseText);
 		try {
 		    list = JSON.parse(request.responseText); // try to parse as JSON first
 
@@ -663,12 +1191,14 @@ objGanttChart.prototype.getInput = function (strUrl) {
 		    } else if (list.length < 1) {
 			window.console.error('empty JSON ' + request.responseText + '');
 		    } else {
+			//self.clean();
 			self.append(list);
+			//self.draw();
 		    }
 		} catch (e) {
 		    window.console.error('JSON.parse(' + e + ')');
 
-		    list = self.parseInput(request.responseText); // try to parse as CSV
+		    list = self.parseCsvInput(request.responseText); // try to parse as CSV
 			
 		    if (list == undefined) {
 			window.console.error('CSV format');
@@ -676,8 +1206,8 @@ objGanttChart.prototype.getInput = function (strUrl) {
 			window.console.error('empty CSV ' + request.responseText + '');
 		    } else {
 			self.append(list);
-			self.clean();
-			self.reDraw();
+			//self.clean();
+			//self.draw();
 		    }
 		}
 	    }
@@ -688,5 +1218,4 @@ objGanttChart.prototype.getInput = function (strUrl) {
     
     request.send();    
 }
-
 

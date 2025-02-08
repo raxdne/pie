@@ -13,11 +13,13 @@
 
   <xsl:variable name="str_ctime" select="concat(translate(/pie/meta/@ctime2,'-:',''),'Z')" />
 
-  <xsl:variable name="int_delta" select="-1" /> <!-- time period in days to filter events, if value "-1" no filtering -->
+  <xsl:variable name="int_delta" select="7*8" /> <!-- time period in days to filter events, if value "-1" no filtering -->
 
   <xsl:variable name="int_lmax" select="100" /> <!-- maximum length of an event summary -->
 
-  <xsl:variable name="ns_date" select="descendant::date[parent::h/parent::task[@class='target'] or @interval &gt; 7 or $int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)]" /> <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
+  <xsl:variable name="ns_date" select="descendant::date[parent::h/parent::task[@class='target'] or parent::h/parent::*[@interval and @impact] or (parent::h/parent::task[@class='todo'] and ($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)))]" />
+  <!-- or @interval &gt; 1  -->
+  <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
 
   <xsl:template match="/">
 <xsl:text>BEGIN:VCALENDAR
