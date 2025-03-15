@@ -186,7 +186,7 @@
   </xsl:template>
 
   <xsl:template match="w:tbl">
-    <xsl:value-of select="concat($newline,'&lt;csv&gt;',$newline)"/>
+    <xsl:value-of select="concat($newline,'```csv',$newline)"/>
     <xsl:for-each select="descendant::w:tr">
       <xsl:for-each select="descendant::w:tc">
 	<xsl:if test="position() &gt; 1">
@@ -196,7 +196,7 @@
       </xsl:for-each>
       <xsl:value-of select="$newline"/>
     </xsl:for-each>
-    <xsl:value-of select="concat('&lt;/csv&gt;',$newline)"/>
+    <xsl:value-of select="concat('```',$newline)"/>
   </xsl:template>
 
   <xsl:template match="w:drawing">
