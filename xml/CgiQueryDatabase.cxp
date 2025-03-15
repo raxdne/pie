@@ -55,38 +55,50 @@
 		    <xsl:element name="h3">
 		      <xsl:text>&quot;Queries&quot;</xsl:text>
 		    </xsl:element>
-		    <xsl:for-each select="sql/table[1]">
-		      <xsl:choose>
-			<xsl:when test="error">
-			  <xsl:for-each select="error">
-			    <xsl:element name="p">
-			      <xsl:attribute name="class">error</xsl:attribute>
-			      <xsl:value-of select="concat('&quot;',../@query,'&quot;',' =&gt; ',text())"/>
-			    </xsl:element>
-			  </xsl:for-each>
-			</xsl:when>
-			<xsl:otherwise>
-			  <xsl:element name="table">
-			    <xsl:element name="tr">
-			      <xsl:for-each select="declaration/column[@name]">
-				<xsl:element name="th">
-				  <xsl:value-of select="@name"/>
+		    <xsl:choose>
+		      <xsl:when test="sql/error">
+			<xsl:for-each select="sql/error">
+			  <xsl:element name="p">
+			    <xsl:attribute name="class">error</xsl:attribute>
+			    <xsl:value-of select="concat('&quot;',text(),'&quot;')"/>
+			  </xsl:element>
+			</xsl:for-each>
+		      </xsl:when>
+		      <xsl:otherwise>
+			<xsl:for-each select="sql/table[1]">
+			  <xsl:choose>
+			    <xsl:when test="error">
+			      <xsl:for-each select="error">
+				<xsl:element name="p">
+				  <xsl:attribute name="class">error</xsl:attribute>
+				  <xsl:value-of select="concat('&quot;',../@query,'&quot;',' =&gt; ',text())"/>
 				</xsl:element>
 			      </xsl:for-each>
-			    </xsl:element>
-			    <xsl:for-each select="entry[query]">
-			      <xsl:element name="tr">
-				<xsl:element name="td">
-				  <xsl:element name="tt">
-				    <xsl:value-of select="query"/>
-				  </xsl:element>
+			    </xsl:when>
+			    <xsl:otherwise>
+			      <xsl:element name="table">
+				<xsl:element name="tr">
+				  <xsl:for-each select="declaration/column[@name]">
+				    <xsl:element name="th">
+				      <xsl:value-of select="@name"/>
+				    </xsl:element>
+				  </xsl:for-each>
 				</xsl:element>
+				<xsl:for-each select="entry[query]">
+				  <xsl:element name="tr">
+				    <xsl:element name="td">
+				      <xsl:element name="tt">
+					<xsl:value-of select="query"/>
+				      </xsl:element>
+				    </xsl:element>
+				  </xsl:element>
+				</xsl:for-each>
 			      </xsl:element>
-			    </xsl:for-each>
-			  </xsl:element>
-			</xsl:otherwise>
-		      </xsl:choose>
-		    </xsl:for-each>
+			    </xsl:otherwise>
+			  </xsl:choose>
+			</xsl:for-each>
+		      </xsl:otherwise>
+		    </xsl:choose>
 		  </xsl:element>
 		</xsl:element>
 	      </xsl:template>
@@ -109,7 +121,17 @@
 		    <xsl:element name="h3">
 		      <xsl:text>&quot;%DB%&quot;</xsl:text>
 		    </xsl:element>
-		    <xsl:apply-templates select="//table"/>
+		    <xsl:choose>
+		      <xsl:when test="sql/error">
+			  <xsl:element name="p">
+			    <xsl:attribute name="class">error</xsl:attribute>
+			    <xsl:value-of select="concat('&quot;',sql/error,'&quot;')"/>
+			  </xsl:element>
+		      </xsl:when>
+		      <xsl:otherwise>
+			<xsl:apply-templates select="//table"/>
+		      </xsl:otherwise>
+		    </xsl:choose>
 		  </xsl:element>
 		</xsl:element>
 	      </xsl:template>
@@ -144,6 +166,12 @@
 			  <xsl:value-of select="text()"/>
 			</xsl:element>
 		      </xsl:for-each>
+		    </xsl:when>
+		    <xsl:when test="not(entry)">
+		      <xsl:element name="p">
+			<xsl:attribute name="class">error</xsl:attribute>
+			<xsl:text>Empty result!</xsl:text>
+		      </xsl:element>
 		    </xsl:when>
 		    <xsl:otherwise>
 		      <xsl:element name="table">
