@@ -406,7 +406,7 @@ dd {
 
 img {
  /* margin: 10px 10px 20px 20px; */
- border:none
+ border:none;
  max-height:80%;
  max-width:80%;
  height:auto;
@@ -425,9 +425,9 @@ img {
 }
 
 input,textarea,select {
+  background-color:#eeeeee;
 }
 .additor {
-  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;

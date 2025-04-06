@@ -392,6 +392,8 @@
 ;;; pie transform
 ;;;
 
+;; TODO: yank images as base64 https://github.com/abo-abo/org-download/issues/131
+
 (defvar pie-filename-pie
   (concat (getenv "HOME") "/tmp/emacs.pie")
   "")

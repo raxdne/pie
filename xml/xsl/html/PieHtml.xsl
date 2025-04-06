@@ -100,7 +100,7 @@
 	  <xsl:element name="span">
 	    <xsl:call-template name="MENUSET"/>
 	    <xsl:element name="a"> <!-- target for link in ToC -->
-	      <xsl:attribute name="name">
+	      <xsl:attribute name="id">
 		<xsl:value-of select="generate-id(.)"/>
 	      </xsl:attribute>
 	      <xsl:choose>
@@ -158,7 +158,7 @@
 	      <xsl:element name="b">
 		<xsl:element name="a">
 		  <xsl:call-template name="ADDSTYLE"/>
-		  <xsl:attribute name="name">
+		  <xsl:attribute name="id">
 		    <xsl:value-of select="generate-id(.)"/>
 		  </xsl:attribute>
 		  <xsl:value-of select="h"/>
@@ -202,6 +202,7 @@
   <xsl:template match="link">
     <xsl:param name="target" select="'_blank'"/>
     <xsl:element name="a">
+      <xsl:copy-of select="@id"/>
       <xsl:copy-of select="@class"/>
       <xsl:choose>
         <xsl:when test="@target">
@@ -214,11 +215,6 @@
         </xsl:otherwise>
       </xsl:choose>
       <xsl:choose>
-	<xsl:when test="@id">
-	  <xsl:attribute name="name">
-            <xsl:value-of select="@id"/>
-	  </xsl:attribute>
-	</xsl:when>
 	<xsl:when test="@href">
 	  <xsl:attribute name="href">
 	    <xsl:choose>
@@ -382,14 +378,11 @@
 	    </xsl:otherwise>
 	  </xsl:choose>
 	</xsl:variable>
-	<xsl:if test="@src">
-	  <xsl:element name="a">	<!-- anchor to jump on -->
-	    <xsl:attribute name="name">
-	      <xsl:value-of select="@src"/>
-	    </xsl:attribute>
-	  </xsl:element>
-	</xsl:if>
 	<xsl:element name="a">
+	  <xsl:attribute name="id">
+	    <!-- anchor to jump on -->
+	    <xsl:value-of select="generate-id()"/>
+	  </xsl:attribute>
 	  <xsl:attribute name="href">
 	    <xsl:value-of select="$str_src"/>
 	  </xsl:attribute>
