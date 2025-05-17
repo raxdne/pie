@@ -5,7 +5,7 @@
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%CGIRE%" cgi="re" default=""/>
   <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
-  <cxp:subst string="%CGITITLE%" cgi="title" default="YYY"/>
+  <cxp:subst string="%CGITITLE%" cgi="title" default="%CGIPATH%"/>
   <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:subst string="%CGIYEAR%" cgi="year" default="content"/>
   <cxp:subst string="%QUERY%" env="QUERY_STRING"/>

@@ -50,6 +50,7 @@ document.createUI = function () {
 	var urlParamsReset = new URLSearchParams(window.location.search);
 
 	urlParamsReset.delete('hl');
+	urlParamsReset.delete('title');
 	urlParamsReset.delete('pattern');
 	
 	var strQuery = urlParamsReset.toString();
@@ -133,6 +134,7 @@ document.createUI = function () {
 	    urlParamsTag.set('pattern',strPatternNew);
 	    // TODO:
 	    urlParamsTag.set('hl',event.target.innerText);
+	    urlParamsTag.set('title', event.target.innerText + ' ' + urlParams.get('path'));
 
 	    var strQuery = urlParamsTag.toString();
 	    if (strQuery == '') {

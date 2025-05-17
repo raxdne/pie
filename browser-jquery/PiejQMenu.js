@@ -80,6 +80,7 @@ function callbackSection(key, options) {
     [strLocator,strXPathBlock,strXPathGlobal] = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
 
     urlParams.delete('hl');
+    urlParams.delete('title');
     if (key == 'view') {
 	urlParams.delete('pattern');
 	urlParams.set('cxp','PiejQDefault');
@@ -89,6 +90,7 @@ function callbackSection(key, options) {
 	strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	//urlParams.set('re',strSelect);
+	urlParams.set('title',strSelect + ' ' + urlParams.get('path'));
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'google') {
@@ -148,6 +150,7 @@ function callbackContent(key, options) {
     var strHashNew = '';
 
     urlParams.delete('hl');
+    urlParams.delete('title');
     //urlParams.delete('re');
     
     if (key == 'frame') {
@@ -182,6 +185,7 @@ function callbackContent(key, options) {
 	}
 	urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	//urlParams.set('re',strSelect);
+	urlParams.set('title',strSelect + ' ' + urlParams.get('path'));
 	urlParams.set('hl',strSelect);
 	window.location.assign('?' + urlParams.toString());
     } else if (key == 'link') {
@@ -238,6 +242,7 @@ function callbackContent(key, options) {
 	    strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');
 	    urlParams.set('pattern',"child::*[contains(child::text(),'" + strSelect + "')]");
 	    //urlParams.set('re',strSelect);
+	    urlParams.set('title',strSelect + ' ' + urlParams.get('path'));
 	    urlParams.set('hl',strSelect);
 	} else if (key == 'search') {
 	    selection = window.getSelection();

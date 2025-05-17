@@ -238,7 +238,17 @@
 	  </xsl:attribute>
 	</xsl:otherwise>
       </xsl:choose>
-      <xsl:apply-templates/>
+      <xsl:choose>
+	<xsl:when test="@href">
+	  <xsl:apply-templates/>
+	</xsl:when>
+	<xsl:when test="string-length(text()) &gt; 80">
+	  <xsl:value-of select="concat(substring(text(),0,80),'...')"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="text()"/>
+	</xsl:otherwise>
+      </xsl:choose>
     </xsl:element>
   </xsl:template>
 

@@ -3,6 +3,10 @@
 
   <xsl:output method="text" encoding="UTF-8"/>
 
+  <xsl:strip-space elements="*"/>
+
+  <xsl:variable name="n_depth" select="2"/> <!-- default: 2 -->
+
 <xsl:variable name="newline">
 <!-- a newline xsl:text element -->
 <xsl:text>
@@ -12,25 +16,35 @@
   <xsl:template match="/">
 <xsl:text>[
 </xsl:text>
-<xsl:apply-templates select="descendant::h[child::date[@interval &gt; 1] and parent::section]|descendant::h[child::date[@iso] and parent::task[@class='target']]"/> <!-- descendant::section/child::h[child::date[@interval &gt; 1]]||descendant::task/child::h[parent::task[@class='target']] -->
+<xsl:apply-templates select="descendant::h[child::date[@interval &gt; 1] and parent::section]|descendant::h[child::date[@iso] and parent::task[@class='target']]"/> <!-- [@impact] descendant::section/child::h[child::date[@interval &gt; 1]]||descendant::task/child::h[parent::task[@class='target']] -->
 <xsl:text>{}]
 </xsl:text>
   </xsl:template>
   
+  <xsl:template name="DISPLAYTITLE">
+    <xsl:for-each select="descendant::*|text()">
+      <!--  <xsl:value-of select="concat(' ',position(),' ',name(),': ')"/> -->
+      <xsl:choose>
+	<xsl:when test="self::t"/>
+	<xsl:when test="self::date"/>
+	<xsl:when test="starts-with(.,'@')"/>
+	<xsl:when test="self::text()">
+	  <xsl:value-of select="."/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:call-template name="DISPLAYTITLE"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:template>
+  
   <xsl:template match="h">
     <xsl:variable name="str_title">
-      <xsl:if test="parent::section/parent::section/child::h">
-	<xsl:choose>
-	  <xsl:when test="parent::section/parent::section/child::h/child::link">
-	    <xsl:value-of select="concat(parent::section/parent::section/child::h/child::link/text(), ' :: ')"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="concat(parent::section/parent::section/child::h/child::text(), ' :: ')"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:if>
-      <xsl:for-each select="descendant-or-self::*[name(.) != 'htag' and name(.) != 't' and name(.) != 'date']">
-	<xsl:value-of select="child::text()"/> <!-- descendant::text()[not(parent::t)] -->
+      <xsl:for-each select="ancestor::section[position() &lt;= $n_depth]/child::h">
+	<xsl:if test="position() &gt; 1">
+	  <xsl:text> :: </xsl:text>
+	</xsl:if>
+	<xsl:call-template name="DISPLAYTITLE"/>
       </xsl:for-each>
     </xsl:variable>
 

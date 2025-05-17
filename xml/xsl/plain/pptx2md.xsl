@@ -84,7 +84,7 @@
   </xsl:template>
 
   <xsl:template match="a:tbl">
-    <xsl:value-of select="concat($newline,'&lt;csv&gt;',$newline)"/>
+    <xsl:value-of select="concat($newline,'```csv',$newline)"/>
     <xsl:for-each select="descendant::a:tr">
       <xsl:for-each select="descendant::a:tc">
 	<xsl:if test="position() &gt; 1">
@@ -94,7 +94,7 @@
       </xsl:for-each>
       <xsl:value-of select="$newline"/>
     </xsl:for-each>
-    <xsl:value-of select="concat('&lt;/csv&gt;',$newline)"/>
+    <xsl:value-of select="concat('```',$newline)"/>
   </xsl:template>
 
   <xsl:template name="MAINLOOP">
