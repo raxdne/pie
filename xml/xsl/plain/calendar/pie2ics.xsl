@@ -17,7 +17,7 @@
 
   <xsl:variable name="int_lmax" select="100" /> <!-- maximum length of an event summary -->
 
-  <xsl:variable name="ns_date" select="descendant::date[parent::h/parent::task[@class='target'] or parent::h/parent::*[@interval and @impact] or (parent::h/parent::task[@class='todo'] and ($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)))]" />
+  <xsl:variable name="ns_date" select="descendant::date[parent::*[contains(text(),'🎂')] or parent::h/parent::task[@class='target'] or parent::h/parent::*[@interval and @impact] or (parent::h/parent::task[@class='todo'] and ($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)))]" />
   <!-- or @interval &gt; 1  -->
   <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
 
@@ -47,7 +47,8 @@ END:STANDARD
 END:VTIMEZONE
 </xsl:text>
     <xsl:apply-templates select="$ns_date"/>
-<xsl:text>END:VCALENDAR</xsl:text>
+<xsl:text>END:VCALENDAR
+</xsl:text>
   </xsl:template>
   
   <xsl:template match="date">

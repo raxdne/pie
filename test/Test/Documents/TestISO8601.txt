@@ -220,6 +220,8 @@ R4/P1D/2022-12-20 Interval
 
 O2W/2022-W31-1 Offset
 
+O1D/2022-03-01 last day of previous month
+
 2022-11-01/O1Y1M1D Offset
 
 2022-11-01/O1D1M1Y No Offset (sort order)
@@ -229,3 +231,4 @@ O2W/2022-W31-1 Offset
 2022-W31-1T14:00:00/O1W No Offset (Time)
 
 1999-07-06/O10000D 10.000er
+

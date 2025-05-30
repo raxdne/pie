@@ -13,8 +13,6 @@ https://dencode.com/date
 
 20200417 11.00 Test
 
-18.04.2020 12.00 Test German Date Format
-
 1311186519.123 UNIX System time
 
 20200419 13.00 Test 3 2020-04-19 14.00 Test 4
@@ -41,6 +39,15 @@ a [AAA](picture.png) @mmm nnn
 
 20131010 12.00-12.63 H
 
+** Usual German Date Formats
+
+18.04.2020 12.00 Test
+
+1.4.2020 12.00 Test
+
+41.13.2020 12.00 Test
+
+
 ** Time zones
 
 2013-10-12T14:00:00Z Zulu valid
@@ -56,6 +63,12 @@ a [AAA](picture.png) @mmm nnn
 20131012T140000−0500 compact valid
 
 20131013T146300Z invalid minutes
+
+20131012T1 compact valid
+
+20131012T2 compact valid
+
+20131012T14 compact valid
 
 ** List of dates
 
@@ -127,6 +140,8 @@ R4/2022-12-20T13:00:00/2022-12-20T16:00:00/P1D Interval
 
 ** Date Offset
 
+handling of `O` similar to `P`
+
 2022-W31-1/O2W Offset
 
 O2W/2022-W31-1 Offset
@@ -140,3 +155,27 @@ O2W/2022-W31-1 Offset
 2022-W31-1T14:00:00/O1W No Offset (Time)
 
 1999-07-06/O10000D 10.000er
+
+2022-Q2/O1D
+
+** [Easter Cycle](https://en.wikipedia.org/wiki/Easter_cycle)
+
+`WEA` as Symbol for __W__eek of __Ea__ster
+
+2022WEA5 Good Friday
+
+2022-WEA-7 Easter Sunday
+
+2022-WEA-7/O1D Easter Monday
+
+2022-WEA-7/O39D Feast of the Ascension
+
+2022-WEA-7/O49D Pentecost
+
+2022-WEA-7/O50D Whit Monday or Pentecost Monday
+
+2022-WEA-7/O60D Feast of Corpus Christi
+
+** Birthday Markup using `🎂`
+
+R99/2002-01-01/P1Y 🎂 *2002 Meyer

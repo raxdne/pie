@@ -142,6 +142,11 @@
     <xsl:value-of select="$newline"/>
   </xsl:template>
 
+  <xsl:template match="block[@type=text/latex]">
+    <xsl:copy-of select="."/>
+    <xsl:value-of select="$newline"/>
+  </xsl:template>
+
   <xsl:template match="table">
     <xsl:value-of select="$newline"/>
     <xsl:text>\begin{center}</xsl:text>
