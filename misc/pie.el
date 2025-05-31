@@ -143,6 +143,46 @@
   ;;
   )
 
+;;;
+;;; insert markup for links
+;;;
+
+(global-set-key [C-f3] (lambda ()
+			 ""
+			 (interactive)
+			 (setq input (concat "[](?redir="
+					     (if (region-active-p)
+						 (buffer-substring (mark) (point))
+					       (if (thing-at-point 'word t)
+						   (thing-at-point 'word t)
+						 (current-kill 0))
+					       )
+					     ")")
+			       )
+			 (insert input)
+			 (left-char (- (length input) 1))
+			 )
+		)
+
+
+(global-set-key [C-f4] (lambda ()
+			 ""
+			 (interactive)
+			 (setq input (concat "[]("
+					     (if (region-active-p)
+						 (buffer-substring (mark) (point))
+					       (if (thing-at-point 'word t)
+						   (thing-at-point 'word t)
+						 (current-kill 0))
+					       )
+					     ")")
+			       )
+			 (insert input)
+			 (left-char (- (length input) 1))
+			 )
+		)
+
+
 (add-hook 'text-mode-hook 'pie-minor-mode)
 ;(add-hook 'text-mode-hook 'pie-minor-mode)
 ;(add-hook 'text-mode-hook 'outline-minor-mode)
