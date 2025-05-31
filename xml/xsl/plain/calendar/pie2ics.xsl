@@ -91,7 +91,10 @@ END:VTIMEZONE
 		<xsl:value-of select="concat(normalize-space(.),' ')"/>
 	      </xsl:otherwise>
 	    </xsl:choose>
-	  </xsl:for-each>	  
+	  </xsl:for-each>
+	  <xsl:if test="@i">
+	    <xsl:value-of select="concat('(',@i,'.)')"/>
+	  </xsl:if>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

@@ -178,4 +178,11 @@ O2W/2022-W31-1 Offset
 
 ** Birthday Markup using `🎂`
 
-R99/2002-01-01/P1Y 🎂 *2002 Meyer
+R/2002-01-01/P1Y 🎂 *2002 Meyer
+
+R10/2002-01-01/P1000D 🎂 *2002 Meyer Thousand Days
+
+** Symbol for Current Year `0000`
+
+00000101 First Day of the Year
+
