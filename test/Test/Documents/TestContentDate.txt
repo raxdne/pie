@@ -162,19 +162,19 @@ O2W/2022-W31-1 Offset
 
 `WEA` as Symbol for __W__eek of __Ea__ster
 
-2022WEA5 Good Friday
+2025WEA5 ⛪ Good Friday
 
-2022-WEA-7 Easter Sunday
+2025-WEA-7 ⛪ Easter Sunday
 
-2022-WEA-7/O1D Easter Monday
+2025-WEA-7/O1D ⛪ Easter Monday
 
-2022-WEA-7/O39D Feast of the Ascension
+2025-WEA-7/O39D ⛪ Feast of the Ascension
 
-2022-WEA-7/O49D Pentecost
+2025-WEA-7/O49D ⛪ Pentecost
 
-2022-WEA-7/O50D Whit Monday or Pentecost Monday
+2025-WEA-7/O50D ⛪ Whit Monday or Pentecost Monday
 
-2022-WEA-7/O60D Feast of Corpus Christi
+2025-WEA-7/O60D ⛪ Feast of Corpus Christi
 
 ** Birthday Markup using `🎂`
 
