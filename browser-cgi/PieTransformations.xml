@@ -549,7 +549,10 @@
     <pkg:transition id="period2json">
       <h>period2json</h>
       <make>
-	<xsl name="period2json.xsl"/>
+	<xsl name="period2json.xsl">
+	  <variable name="flag_todo" select="false()"/>
+	  <variable name="flag_target" select="true()"/>
+	</xsl>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2psp">
@@ -1321,6 +1324,7 @@
     <pkg:relation from="text/markdown" to="import"/>
     <pkg:relation from="text/plain" to="import"/>
     <pkg:relation from="application/pie+xml" to="import"/>
+    <pkg:relation from="application/pie+proc+xml" to="import"/>
     <pkg:relation from="import" to="application/pie+proc+xml"/>
     <pkg:relation from="text/csv" to="importcsv"/>
     <pkg:relation from="importcsv" to="application/pie+proc+xml"/>

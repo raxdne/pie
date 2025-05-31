@@ -7,6 +7,10 @@
 
   <xsl:variable name="n_depth" select="2"/> <!-- default: 2 -->
 
+  <xsl:variable name="flag_todo" select="false()"/> <!-- default: false() -->
+
+  <xsl:variable name="flag_target" select="true()"/> <!-- default: true() -->
+
 <xsl:variable name="newline">
 <!-- a newline xsl:text element -->
 <xsl:text>
@@ -16,7 +20,17 @@
   <xsl:template match="/">
 <xsl:text>[
 </xsl:text>
-<xsl:apply-templates select="descendant::h[child::date[@interval &gt; 1] and parent::section]|descendant::h[child::date[@iso] and parent::task[@class='target']]"/> <!-- [@impact] descendant::section/child::h[child::date[@interval &gt; 1]]||descendant::task/child::h[parent::task[@class='target']] -->
+      <xsl:choose>
+	<xsl:when test="$flag_todo">
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section) or (child::date[@iso or @interval] and parent::task)]"/>
+	</xsl:when>
+	<xsl:when test="$flag_target">
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section) or (child::date[@iso] and parent::task[@class='target'])]"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section)]"/>
+	</xsl:otherwise>
+      </xsl:choose>
 <xsl:text>{}]
 </xsl:text>
   </xsl:template>
@@ -29,7 +43,7 @@
 	<xsl:when test="self::date"/>
 	<xsl:when test="starts-with(.,'@')"/>
 	<xsl:when test="self::text()">
-	  <xsl:value-of select="."/>
+	  <xsl:value-of select="translate(.,'&quot;','_')"/>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:call-template name="DISPLAYTITLE"/>
@@ -40,7 +54,7 @@
   
   <xsl:template match="h">
     <xsl:variable name="str_title">
-      <xsl:for-each select="ancestor::section[position() &lt;= $n_depth]/child::h">
+      <xsl:for-each select="ancestor-or-self::*[position() &lt;= $n_depth]/child::h">
 	<xsl:if test="position() &gt; 1">
 	  <xsl:text> :: </xsl:text>
 	</xsl:if>

@@ -25,32 +25,51 @@ Date.prototype.getDateString = function () {
  * @return int
  */
 Date.prototype.getWeek = function (dowOffset) {
-/*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.epoch-calendar.com */
+    /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.epoch-calendar.com */
 
-	dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 0; //default dowOffset to zero
-	var newYear = new Date(this.getFullYear(),0,1);
-	var day = newYear.getDay() - dowOffset; //the day of week the year begins on
-	day = (day >= 0 ? day : day + 7);
-	var daynum = Math.floor((this.getTime() - newYear.getTime() - 
-	(this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
-	var weeknum;
-	//if the year starts before the middle of a week
-	if(day < 4) {
-		weeknum = Math.floor((daynum+day-1)/7) + 1;
-		if(weeknum > 52) {
-			nYear = new Date(this.getFullYear() + 1,0,1);
-			nday = nYear.getDay() - dowOffset;
-			nday = nday >= 0 ? nday : nday + 7;
-			/*if the next year starts before the middle of
- 			  the week, it is week #1 of that year*/
-			weeknum = nday < 4 ? 1 : 53;
-		}
+    var strResult = this.getFullYear();
+    
+    dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 0; //default dowOffset to zero
+    var newYear = new Date(this.getFullYear(),0,1);
+    var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+    day = (day >= 0 ? day : day + 7);
+    var daynum = Math.floor((this.getTime() - newYear.getTime() - 
+			     (this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
+    var weeknum;
+    //if the year starts before the middle of a week
+    if(day < 4) {
+	weeknum = Math.floor((daynum+day-1)/7) + 1;
+	if (weeknum > 52) {
+	    nYear = new Date(this.getFullYear() + 1,0,1);
+	    nday = nYear.getDay() - dowOffset;
+	    nday = nday >= 0 ? nday : nday + 7;
+	    /*if the next year starts before the middle of
+ 	      the week, it is week #1 of that year*/
+	    weeknum = nday < 4 ? 1 : 53;
+	    if (nday < 4) {
+		strResult = nYear.getFullYear().toString() + '-W01';
+	    }
+	    else {
+		strResult += '-W' + weeknum.toString();
+	    }
+	}
+	else if (weeknum < 10) {
+	    strResult += '-W0' + weeknum.toString();
 	}
 	else {
-		weeknum = Math.floor((daynum+day-1)/7);
+	    strResult += '-W' + weeknum.toString();
 	}
-	//return weeknum;
-    return (1900 + this.getYear()) + '-W' + weeknum;
+    }
+    else {
+	weeknum = Math.floor((daynum+day-1)/7);
+	if (weeknum < 10) {
+	    strResult += '-W0' + weeknum.toString();
+	}
+	else {
+	    strResult += '-W' + weeknum.toString();
+	}
+    }
+    return strResult;
 };
 
 
@@ -139,42 +158,18 @@ function ISO8601_parse(dt) {
 
 // s. https://developer.mozilla.org/en-US/docs/Web/SVG
 
-function objGanttChart (strId, dt_0, dt_1, scale) {
+function objGanttChart (strId) {
 
-    this.format_date = { year: 'numeric', month: 'numeric', day: 'numeric'};
-    
-    this.t_0 = ISO8601_parse(dt_0);
-
-    this.t_1 = ISO8601_parse(dt_1);
-
-    this.t_now = new Date().getTime();
-
-    if (scale == undefined || scale == null || scale < 10) {
-      this.scale_ = 20;
-    } else {
-      this.scale_ = scale;
+    if (strId === undefined || strId === null || strId.length < 3) {
+	window.alert('No usable id: ' + strId);
+	return null;
     }
-
-    // TODO: configure unit as hours, days, weeks, months, years
-    this.unit = (1000 * 60 * 60 * 24 * 7);
-
-    this.intCompress = -1; // TODO: deprecated? to be removed
-	
-    this.barbackground = '#aaffaa';
 
     this.id = strId;
-    this.svg = document.getElementById(this.id);
-    if (this.svg == null) {
-        this.svg = document.getElementsByTagName('body')[0].appendChild(document.createElementNS('http://www.w3.org/2000/svg','svg'));
-        this.svg.setAttribute('id',this.id);
+
+    if (this.clean() === null) {
+	return null;
     }
-
-    this.height = 100;
-    this.offset_draw = this.scale(4); // delta
-
-    this.compact = false;
-
-    this.clean();
     
     var dT = new DataTransfer();
 
@@ -189,15 +184,17 @@ function objGanttChart (strId, dt_0, dt_1, scale) {
 
 	var s = e.clipboardData.getData('text/plain');
 
-	if (s == undefined || s == '') {
+	if (s === undefined || s === null || s == '') {
 	    window.console.log('onpaste: ', 'undefined');
 	} else {
-	    self.clean();
-	    window.console.log('onpaste: ', s);
-	    self.append(self.parseCsvInput(s));
-	    // TODO: check self.isHistogram()
-	    //self.appendHistogram();
-	    self.draw();
+	    //window.console.log('onpaste: ', s);
+	    if (self.clean() === null) {
+	    } else {
+		self.append(self.parseCsvInput(s));
+		// TODO: check self.isHistogram()
+		//self.appendHistogram();
+		self.draw();
+	    }
 	}
     };
     
@@ -207,67 +204,130 @@ function objGanttChart (strId, dt_0, dt_1, scale) {
 }
 
 
-objGanttChart.prototype.switchCompact = function () {
+objGanttChart.prototype.switchCompact = function (v) {
 
-    this.compact = ! this.compact;
+    if (v === undefined) {
+	this.compact = ! this.compact;
+    } else if (typeof(v)  === 'string') {
+	this.switchCompact(Number(v));
+    } else if (typeof(v)  === 'boolean') {
+	this.compact = v;
+    } else if (Math.abs(v) > 0.1) {
+	this.compact = true;
+	this.t_epsilon = v * this.unit;
+	window.console.log('t_epsilon = ', this.t_epsilon);
+    }
     
     return this.compact;
 }
 
 
+objGanttChart.prototype.switchLength = function (v) {
+
+    if (v === undefined) {
+    } else if (typeof(v)  === 'string') {
+	this.switchLength(Number(v));
+    } else if (typeof(v)  === 'number') {
+	if (Math.abs(v) < 0.1) {
+	    this.t_length = -1;
+	} else {
+	    this.t_length = v * this.unit;
+	}
+	window.console.log('t_length = ', this.t_length);
+    } else {
+    }
+}
+
+
 objGanttChart.prototype.scale = function (v) {
 
-    if (v == undefined) {
-	return this.scale_;
+    if (v === undefined) {
+	return this.scaleFactor;
     }
-    return Math.round(v * this.scale_);
+
+    return Math.round(v * this.scaleFactor);
 }
 
 
 objGanttChart.prototype.setHeight = function (v) {
 
-    if (v == undefined) {
+    if (v === undefined) {
     } else {
 	this.height = Math.round(v);
     }
+    window.console.log('SVG height: ' + this.height);
+    
     return this.height;
 }
 
 
+//
+// init procedure
+//
 objGanttChart.prototype.clean = function () {
 
+    var urlParams = new URLSearchParams(document.location.search);
+
     this.svg = document.getElementById(this.id);
-    if (this.svg == undefined) {
-	window.console.warn('No SVG element found!');
+    if (this.svg === null) {
+	window.console.warn('No existing SVG element found!');
+        this.svg = document.getElementsByTagName('body')[0].appendChild(document.createElementNS('http://www.w3.org/2000/svg','svg'));
+	if (this.svg === null) {
+	    window.alert('Not able to create new SVG element!');
+	    return null;
+	} else {
+            this.svg.setAttribute('id',this.id);
+	}
     } else {
 	window.console.log('SVG id is ' + this.id);
-	
-	this.box = new Array();
-
-	this.items = new Array();
-	
-	this.y_n = this.scale();
-
-	if (this.svg.children == undefined || this.svg.children.length < 1) {
-	    window.console.log('No SVG child to remove!');
-	} else {
-	    while (this.svg.firstChild) {
-		// Remove elements from DOM
-		this.svg.removeChild(this.svg.firstChild);
-	    }
+	while (this.svg.firstChild) {
+	    // Remove elements from DOM
+	    this.svg.removeChild(this.svg.firstChild);
 	}
-
-	//var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-	//g.setAttribute('transform','scale(0.5)');
-	//this.svg.appendChild(g);
-
-	var s = document.createElementNS('http://www.w3.org/2000/svg','style');
-	s.setAttribute('type',"text/css");
-	s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + this.scale(0.5) + 'pt; }'));
-	this.svg.prepend(s);
-
-	window.console.log(this.svg);
     }
+    
+    this.t_now = new Date().getTime();
+    this.t_0 = undefined;
+    this.t_1 = undefined;
+
+    this.box = new Array();
+    this.items = new Array();
+    
+    this.scaleFactor = 20;
+    this.y_n = this.scale();
+
+    this.format_date = { year: 'numeric', month: 'numeric', day: 'numeric'};
+
+    // TODO: configure unit as hours, days, weeks, months, years
+    this.unit = (1000 * 60 * 60 * 24 * 7 * 1);
+
+    if (urlParams.has("c")) {
+	this.switchCompact(urlParams.get("c"));
+    } else {
+	this.switchCompact(false);
+    }
+      
+    if (urlParams.has("l")) {
+	this.switchLength(urlParams.get("l"));
+    } else {
+	this.switchLength(-1);
+    }
+
+     //this.intCompress = -1; // TODO: deprecated? to be removed
+
+    this.barbackground = '#aaffaa';
+
+    this.height = 100;
+    this.offset_draw = this.scale(4); // delta
+
+    //var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    //g.setAttribute('transform','scale(0.5)');
+    //this.svg.appendChild(g);
+
+    var s = document.createElementNS('http://www.w3.org/2000/svg','style');
+    s.setAttribute('type',"text/css");
+    s.appendChild(document.createTextNode('svg { font-family: Arial; font-size: ' + this.scale(0.5) + 'pt; border: 1px solid #cccccc}'));
+    this.svg.prepend(s);
 
     return this;
 }
@@ -277,6 +337,17 @@ objGanttChart.prototype.setBegin = function (t) {
 
     this.t_0 = ISO8601_parse(t);
     
+    // adjust to first day of a week
+    dow = new Date(this.t_0).getDay();
+    //window.console.log('dow: ', dow + ' ' + new Date(this.t_0).toString());
+
+    // BUG: to be aligned with this.unit
+    if (dow == 0) {
+	this.t_0 += (1000 * 60 * 60 * 24 * 1);
+    } else {
+	this.t_0 -= (1000 * 60 * 60 * 24 * (dow - 1));
+    }
+
     console.log('Set Begin: ', new Date(this.t_0).getDateString());
     
     return this.t_0;
@@ -285,13 +356,26 @@ objGanttChart.prototype.setBegin = function (t) {
 
 objGanttChart.prototype.getBegin = function() {
 
-    return this.t_0;
+    if (this.t_0 === undefined) {
+	return 0;
+    } else {
+	return this.t_0;
+    }
 }
 
 objGanttChart.prototype.setEnd = function (t) {
 
     this.t_1 = ISO8601_parse(t);
     
+    // adjust to last day of a week
+    dow = new Date(this.t_1).getDay();
+    //window.console.log('dow: ', dow + ' ' + new Date(this.t_1).toString());
+
+    // BUG: to be aligned with this.unit
+    if (dow == 0) {
+    } else {
+	this.t_1 += (1000 * 60 * 60 * 24 * (7 - dow));
+    }
     console.log('Set End: ', new Date(this.t_1).getDateString());
     
     return this.t_1;
@@ -300,30 +384,57 @@ objGanttChart.prototype.setEnd = function (t) {
 
 objGanttChart.prototype.getEnd = function() {
 
-    return this.t_1;
+    if (this.t_1 === undefined) {
+	return 0;
+    } else {
+	return this.t_1;
+    }
 }
 
 
 //
-// TODO: returns true if 'o' is currently running
+// returns true if 'o' is currently running (inside t_epsilon)
 //
 objGanttChart.prototype.isRunning = function (o) {
 
-    var t_epsilon = 2 * this.unit;
-    var f_result = false; // default result
-    
-    //return true;
-
-    if (o == undefined) {
+    if (o === undefined) {
 	//
-    } else if (o.hasOwnProperty("t_1")) {
-	if ((o.t_0 < (this.t_now + t_epsilon)) && (o.t_1 > (this.t_now - t_epsilon))) {
-	    return ! f_result;
+    } else if (this.compact && o.hasOwnProperty("done") && o.done == true) {
+	// default
+    } else if (o.hasOwnProperty("t_0")) {
+	if (o.hasOwnProperty("t_1")) {
+	    if ((o.t_0 < (this.t_now + this.t_epsilon)) && (o.t_1 > (this.t_now - this.t_epsilon))) {
+		return true;
+	    }
+	} else if (Math.abs(this.t_now - o.t_0) < this.t_epsilon) {
+	    return true;
 	}
-    } else if (Math.abs(this.t_now - o.t_0) < t_epsilon) {
-	return ! f_result;
     }
-    return f_result;
+    return false;
+}
+
+
+//
+// TODO: returns true if 'o' is longer than self.t_length
+//
+objGanttChart.prototype.isLong = function (o) {
+
+    if (o === undefined) {
+	return false;
+    } else if (this.t_length === undefined || this.t_length < 1) {
+	//
+    } else if (o.hasOwnProperty("t_0")) {
+	if (o.hasOwnProperty("t_1")) {
+	    if ((o.t_1 - o.t_0) < this.t_length) {
+		return false;
+	    }
+	} else {
+	    // t_0 only
+	}
+    } else if (o.hasOwnProperty("t_1")) {
+	// t_1 only
+    }
+    return true;
 }
 
 
@@ -332,7 +443,7 @@ objGanttChart.prototype.isRunning = function (o) {
 //
 objGanttChart.prototype.isOutOfScope = function (o) {
 
-    if (o == undefined) {
+    if (o === undefined) {
 	//
     } else if (o.hasOwnProperty("t_0")) {
 	if (o.hasOwnProperty("t_1")) {
@@ -417,20 +528,6 @@ objGanttChart.prototype.toString = function() {
 }
 
 
-objGanttChart.prototype.switchCompress = function (intArg) {
-
-    if (intArg == undefined) {
-	//
-    } else {
-	this.intCompress = intArg;
-	this.append({dt_0: this.intCompress, dt_length: 1, title: 'Cut', color: '#ffff88', vertical: true});
-    }
-    //console.log('intCompress: ', this.intCompress);
-    
-    return this.intCompress;
-}
-
-
 objGanttChart.prototype.addLabel = function (argT,argStr) {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -474,30 +571,41 @@ objGanttChart.prototype.append = function (args) {
 
     //window.console.log(args);
 
-    if (typeof args === 'object' && args.length == undefined) {
+    if (typeof args === 'object' && args.length === undefined) {
 	this.append([args]);
     } else {
 	for (var i = 0; i < args.length; i++) {
 	    if (typeof args[i] === 'object') {
 		if (args[i].hasOwnProperty("title") && typeof args[i].title === 'string' && args[i].title.length > 0) {		
 		    if (args[i].hasOwnProperty("dt_0")) {
+
 			args[i].t_0 = ISO8601_parse(args[i].dt_0);
 			if (args[i].t_0 > 0) {
+			    // valid value
+			    if (this.t_0 === undefined || args[i].t_0 < this.t_0) {
+				this.setBegin(args[i].dt_0);
+			    }
 			} else {
-			    delete args[i].t_0; // no longer required
+			    delete args[i].t_0; // invalid value, not required
 			}
+
 			if (args[i].hasOwnProperty("dt_1")) {
 			    args[i].t_1 = ISO8601_parse(args[i].dt_1);
 			    if (args[i].t_1 > 0) {
+				// valid value
 				args[i].t_length = args[i].t_1 - args[i].t_0;
+				if (this.t_1 === undefined || this.t_1 < args[i].t_1) {
+				    this.setEnd(args[i].dt_1);
+				}
 			    } else {
-				delete args[i].t_1; // no longer required
+				delete args[i].t_1; // invalid value, not required
 			    }
 			} else if (args[i].hasOwnProperty("dt_length")) {
 			    args[i].t_1 = args[i].t_0 + args[i].dt_length * this.unit;
 			} else {
 			    // milestone
 			}
+
 		    } else if (args[i].hasOwnProperty("dt_1") && args[i].hasOwnProperty("dt_length")) {
 			args[i].t_0 = args[i].t_1 - args[i].dt_length * this.unit;
 		    } else {
@@ -509,11 +617,20 @@ objGanttChart.prototype.append = function (args) {
 		    delete args[i].dt_1; // no longer required
 		    delete args[i].dt_length; // no longer required
 		    
-		    window.console.log(args[i]);
+		    //window.console.log(args[i]);
 		    this.items.push(args[i]);
+		} else if (args[i].hasOwnProperty("dt_0") && args[i].hasOwnProperty("dt_1")) {
+		    // no title -> begin and end only
+		    window.console.log('set interval: ' + args[i].dt_0 + ' ... ' + args[i].dt_1);
+		    this.setBegin(args[i].dt_0);
+		    this.setEnd(args[i].dt_1);
+
 		}
 	    }
 	}
+	// REQ: add some space before this.t_0  and after this.t_1
+	//this.setBegin(this.getBegin() - this.scale(4));
+
 	// TODO: append hruler
 	this.items.push({});
     }
@@ -522,6 +639,8 @@ objGanttChart.prototype.append = function (args) {
 
 
 objGanttChart.prototype.preDraw = function() {
+
+    this.setHeight(this.scale(this.items.length + 10));
 
     //window.console.log(arguments);
     now = new Date(this.t_now);
@@ -604,7 +723,9 @@ objGanttChart.prototype.getSvg = function(li) {
     if (typeof li === 'object'
 	&& (li.hasOwnProperty("t_0") || li.hasOwnProperty("t_1"))
 	&& li.hasOwnProperty("title")
-	&& ((! this.compact || (li.hasOwnProperty("class") || this.isRunning(li))) || li.hasOwnProperty("vertical"))) {
+	&& this.isLong(li)
+	&& (! this.compact || this.isRunning(li) || li.hasOwnProperty("vertical"))
+       ) {
 	
 	var f;
 
@@ -646,7 +767,7 @@ objGanttChart.prototype.getSvg = function(li) {
 	    
 	    var h = this.scale();
 
-	    if (li.hasOwnProperty("newline") && li.newline == false && this.intCompress == -1) {
+	    if (li.hasOwnProperty("newline") && li.newline == false) {
 		// keep same line
 	    } else {
 		//this.y_n += 1.35 * this.scale;
@@ -720,16 +841,12 @@ objGanttChart.prototype.getSvg = function(li) {
 	
 	} else {
 
-	    if (this.isOutOfScope(li)) {
-		window.console.log('skipping ' + li);
+	    if (this.isOutOfScope(li) || (this.compact && this.isRunning(li) == false)) {
+		window.console.log('skipping milestone ' + li);
 		return null;
-	    }
-	    
-	    window.console.log('milestone ' + this.date2grid(li.t_0));
-
-	    if (li.t_0 < this.t_0) {
-		// not visible
 	    } else {
+		window.console.log('milestone ' + this.date2grid(li.t_0));
+		
 		//this.y_n -= this.scale(1.35);
 		g_x = this.scale(this.date2grid(li.t_0));
 
@@ -741,17 +858,13 @@ objGanttChart.prototype.getSvg = function(li) {
 		tx.appendChild(document.createTextNode(li.title));
 		f.appendChild(tx);
 
-		title = document.createElementNS('http://www.w3.org/2000/svg','title');
-		title.appendChild(document.createTextNode(li.title));
-		f.appendChild(title);
-		
 		g.appendChild(f);
 		this.y_n += this.scale(1.35);
 		tip += '\n(' + new Date(li.t_0).getDateString() + ')';	    
 	    }
 	}
 
-	if (li.hasOwnProperty("done") && li.done) {
+	if (li.hasOwnProperty("done") && li.done && ! li.title.includes('✔')) {
 	    //window.console.log('done ');
 	    g.appendChild(this.getSvgDone(g_x + this.scale(1),this.y_n - this.scale(1)));
 	}
@@ -863,30 +976,33 @@ objGanttChart.prototype.getSvg = function(li) {
 
 objGanttChart.prototype.draw = function() {
 
+    if (this.svg === undefined || this.svg === null) {
+	window.alert('No SVG element prepared!');
+	return null;
+    }
+	
     if (arguments.length < 1) {
-	// init
-	//this.clean();
+	// init recursion
 	this.preDraw();
 	this.draw(this.items);
 	this.appendVLines();
 	//this.appendHLines();
 	this.postDraw();
 	
-	if (this.svg != null) {
-	    this.svg.setAttribute('width', this.scale(Math.ceil(this.date2grid(this.getEnd()))));
-	    this.svg.setAttribute('height', this.height + this.scale(4));
-	}
-
+	const w = this.scale(Math.ceil(this.date2grid(this.getEnd())));
+	const h = this.height + this.scale(4);
+	
+	window.console.log('svg width: ' + w);
+	this.svg.setAttribute('width', w);
+	window.console.log('svg height: ' + h);
+	this.svg.setAttribute('height', h);
     } else {
 
-	if (this.svg == undefined || this.svg == null) {
-	    //this.svg = this.getSvg(arguments[i]);
-	}
+	var g = this.svg.querySelectorAll('*[name*="draw"]')[0];
 	
-	var g = document.getElementById('draw');
-	if (g == undefined || g == null) {
+	if (g === undefined || g === null) {
 	    g = document.createElementNS('http://www.w3.org/2000/svg','g');
-	    g.setAttribute('id', 'draw');
+	    g.setAttribute('name', 'draw');
 	    g.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
 	    this.svg.appendChild(g);
 	}
@@ -897,11 +1013,7 @@ objGanttChart.prototype.draw = function() {
 
 	    // REQ: display images
 
-	    if (this.intCompress > -1 && arguments[i].hasOwnProperty("done") && arguments[i].done) {
-		continue;	    
-	    // } else if (this.isOutOfDisplay(arguments[i].t_0)) {
-	    // 	arguments[i].t_0 = this.t_0;
-	    } else if (typeof arguments[i] === 'object' && arguments[i] instanceof Array) {
+	    if (typeof arguments[i] === 'object' && arguments[i] instanceof Array) {
 		window.console.log('Array');
 		for (var j = 0; j < arguments[i].length; j++) {
 		    this.draw(arguments[i][j]);
@@ -915,10 +1027,7 @@ objGanttChart.prototype.draw = function() {
             // TODO: g.appendChild(this.getSvgHruler(this.y_n));
 	    this.h += this.y_n + this.scale(2);
 	}
-	
-	//window.console.log('items: ' + this.items.toString());
-    }
-    
+    }    
     return this;
 }
 
@@ -1036,7 +1145,7 @@ objGanttChart.prototype.getSvgFlag = function(x,y) {
 objGanttChart.prototype.appendVLines = function () {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('id', 'vlines');
+    g.setAttribute('name', 'vlines');
     var d_0 = new Date(this.getBegin());
     // TODO: align to begin of same week
     //g.setAttribute('transform','translate(' + -this.scale(1/4) + ',' + (0) + ')');
@@ -1099,7 +1208,7 @@ objGanttChart.prototype.appendVLines = function () {
 objGanttChart.prototype.appendHLines = function () {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('id', 'hlines');
+    g.setAttribute('name', 'hlines');
     g.setAttribute('transform','translate(' + 0 + ',' + this.scale(1/4) + ')');
     
     var j = Math.floor(this.height / this.scale()) + 1
@@ -1176,9 +1285,10 @@ objGanttChart.prototype.getInput = function (strUrl) {
     request.open("GET", strUrl, false);
     
     request.addEventListener('load', function(event) {
+	
 	if (request.status >= 200 && request.status < 300) {
-	    if (request.responseText == undefined || request.responseText.length < 1) {
-		window.console.error('empty ' + request.responseText);
+	    if (request.responseText === undefined || request.responseText.length < 1) {
+		window.console.warn('empty content:' + strUrl);
 	    } else {
 		var list;
 
@@ -1186,7 +1296,7 @@ objGanttChart.prototype.getInput = function (strUrl) {
 		try {
 		    list = JSON.parse(request.responseText); // try to parse as JSON first
 
-		    if (list == undefined) {
+		    if (list === undefined) {
 			window.console.error('JSON ' + request.responseText + '');
 		    } else if (list.length < 1) {
 			window.console.error('empty JSON ' + request.responseText + '');
@@ -1200,13 +1310,13 @@ objGanttChart.prototype.getInput = function (strUrl) {
 
 		    list = self.parseCsvInput(request.responseText); // try to parse as CSV
 			
-		    if (list == undefined) {
+		    if (list === undefined) {
 			window.console.error('CSV format');
 		    } else if (list.length < 1) {
 			window.console.error('empty CSV ' + request.responseText + '');
 		    } else {
-			self.append(list);
 			//self.clean();
+			self.append(list);
 			//self.draw();
 		    }
 		}

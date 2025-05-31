@@ -232,6 +232,9 @@ function callbackContent(key, options) {
 	    urlParams.delete('pattern');
 	    urlParams.delete('re');
 	    urlParams.set('cxp','PiejQEditor');
+	} else if (key == 'gantt') {
+	    urlParams.set('cxp','PiejQGanttChart');
+	    //urlParams.set('c','5');
 	} else if (key == 'calendar') {
 	    urlParams.set('cxp','PiejQCalendar');
 	    strHashNew = '#yesterday';
@@ -324,6 +327,7 @@ $(function(){
 		    //"link": {name: "Link list", icon: "link"},
 		    //"sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
+		    "gantt": {name: "Gantt Chart", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
 		    "kanban": {name: "Kanban", icon: "tags"},
@@ -366,6 +370,7 @@ $(function(){
 		    "link": {name: "Link list", icon: "link"},
 		    "sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
+		    "gantt": {name: "Gantt Chart", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    //"calendar_month": {name: "CalendarMonth", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
@@ -452,6 +457,7 @@ $(function(){
 		    //"link": {name: "Link list", icon: "link"},
 		    "sep5": "---------",
 		    "layout": {name: "Layout", icon: ""},
+		    "gantt": {name: "Gantt Chart", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
 		    "kanban": {name: "Kanban", icon: "tags"},
@@ -488,6 +494,7 @@ $(function(){
 		    "link": {name: "Link list", icon: "link"},
 		    "sep3": "---------",
 		    "layout": {name: "Layout", icon: ""},
+		    "gantt": {name: "Gantt Chart", icon: ""},
 		    "calendar": {name: "Calendar", icon: ""},
 		    "backlog": {name: "Backlog", icon: ""},
 		    "kanban": {name: "Kanban", icon: "tags"},

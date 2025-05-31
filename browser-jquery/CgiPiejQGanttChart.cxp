@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      
+    <style>
+      svg {border: 1px solid #cccccc; padding: 0 0 0 0; margin: 0; background: #ffffff;}
+      *.hbar {fill: #aaffaa}
+      *.vbar {fill: #eeeeee; stroke-width: 0;}
+      *.polygon {fill: #aaaaff}
+      *.cw {fill: #ffcccc; stroke-width: 0;}
+    </style>
+
+      <body>
+	<script type="text/javascript" src="?spath=myGanttChart.js">// /pie/examples/GanttChart/ </script>
+        <div id="ui">
+          <div id="content_YYY">
+            <cxp:xhtml>
+  <body>
+    <!-- 
+    <h1><a href="?%QUERY%" target="_blank">My Dashboard</a></h1>
+    -->
+    
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" id="gantt_diagram"/> <!--  transform="scale(0.5) -->
+
+    <script type="text/javascript">
+
+      var urlParams = new URLSearchParams(document.location.search);
+
+      var c = new objGanttChart('gantt_diagram');
+
+      objGanttChart.prototype.preDraw_ = function() {
+
+	  return this;
+      }
+
+      objGanttChart.prototype.postDraw_ = function() {
+
+	  return this;
+      }
+
+      // REQ: c.getConfig("/cxproc/exe?redir=config.json");
+      //c.setBegin('2024-09-16');
+      //c.setHeight(1750+500);
+      
+      //c.switchCompact(3);
+      //c.switchLength(30);
+
+      c.getInput("/cxproc/exe?redir=legend.json");
+      c.getInput("/cxproc/exe?path=%CGIPATH%&amp;cxp=Format&amp;b=application/json%2Bgantt&amp;pattern=%CGITAG%");
+      //window.console.log(c.toString());
+      c.draw();      
+
+    </script>
+
+  </body>
+
+            </cxp:xhtml>
+            <hr/>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+        <a name="bottom"/>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

@@ -15,107 +15,64 @@
 
       var today = new Date();
       
-      objGanttChart.prototype.preDraw = function() {
+      objGanttChart.prototype.preDraw_ = function() {
 
 	  window.console.log('Pre ');
 
-	  for (var y = today.getYear() + 1900 - 1; y < today.getYear() + 1900 + 1; y++) {
-	      //window.console.log('Year: ' + y);
-	      this.append({start: d(y,today.getMonth()+1,today.getDate()), length: 1, title: 'Current Week ' + y, color: '#ffcccc', vertical: true});
-	      for (var w = 2; w < 53; w += 4) {
-		  this.addLabel(cw(y,w),'CW' + w + '/' + y);
-	      }
-	  }
-	  this.y_n += 5 * this.grid;
-	  
 	  return this;
       }
 
-      objGanttChart.prototype.postDraw = function() {
+      objGanttChart.prototype.postDraw_ = function() {
 
 	  window.console.log('Post ');
 
 	  this.appendHLines();
 	  this.appendVLines();
-	  this.appendHistogram();
+	  //this.appendHistogram();
 	  
 	  return this;
       }
 
-      function cw(y,w) {
-	  return ((y - 2021) * 52 + w);
-      }
-      
-      function d(y,m,d) {
-	  
-	  var date = new Date(y,m,d);
-	  date.setHours(0, 0, 0, 0);
-
-	  // Thursday in current week decides the year.
-	  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-	  
-	  // January 4 is always in week 1.
-	  var week1 = new Date(date.getFullYear(), 0, 4);
-
-	  // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-	  var w = 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-	  
-	  return cw(y,w);
-      }
-      
       var urlParams = new URLSearchParams(document.location.search);
     
-      var c = new objGanttChart('gantt_diagram',0,0,20);
+      var c = new objGanttChart('gantt_diagram');
       
       //c.shift(cw(2021,5));
 
       c.append(
-	  {start: 10, length: 4, title: 'Project A / WP5010: Transfer Data'},
-	  {start: 13, end: 17, title: 'Project A / WP5020: Test Data', tip: 'Regression Tests'},
-	  {start: cw(2021,15), end: cw(2021,17), title: 'Project A / WP5030: Transfer Data'},
-	  {start: cw(2021,19), end: d(2021,8,9), title: 'Project A / WP5040: Transfer Data'},
-	  {start:  d(2021,8,9), end: d(2021,8,29), title: 'Project A / WP5050: Validate Data'},
-	  {start: 10, length: 15, color: '#ffcccc', title: 'Project A: Migration', url : "?path=abc.txt"},
-	  {start: 23, title: 'Project A: Go Live'},);
-
-      c.append(
-	  {color: '#ccffcc'},
-	  {start:  4, length: 4, title: 'Software Project: Release 6'},
-	  {start: 10, length: 5, title: 'Software Project: Release 7', newline: false},
-	  {start: 13, length: 6, height: 7, title: 'Software Project: Release 8'},
-	  {start: 17, length: 7, color: '#ffaaaa', title: 'Software Project: Release 9'},
-	  {start: 10, length: 8, title: 'Software Project: Process Definition'});
-
-      c.append(
-	  {color: '#ccccff'},
-	  {posx: 26, posy: 10, title: 'Link', url: "http://www.heise.de/"},
-	  {start: 16, length: 6, title: 'Software Update: 7'},
-	  {start: 20, title: 'Software Update: Go Live'},
-	  {start: 10, length: 6, title: 'Software Update: Strategy'},
+	  [
+	      {
+		  "_comment": "2024-Q1","dt_0": "2024-01-01","dt_1": "2024-03-31","title": "“Problem Analysis” "},
+	      {
+		  "_comment": "2024-W10","dt_0": "2024-03-04","dt_1": "2024-03-10","title": "“Problem Definition” "},
+	      {
+		  "_comment": "2024-Q2","dt_0": "2024-04-01","dt_1": "2024-06-30","title": "“System Design” "},
+	      {
+		  "_comment": "O14D/2024-05-31","dt_0": "2024-05-17","title": "Solution proposals created by Project Teams  ✔","done": true},
+	      {
+		  "_comment": "2024-Q3","dt_0": "2024-07-01","dt_1": "2024-09-30","title": "“System Analysis” "},
+	      {
+		  "_comment": "2024-Q4","dt_0": "2024-10-01","dt_1": "2024-12-31","title": "“System Verification” "},
+	      {
+		  "_comment": "O14D/2024-12-31","dt_0": "2024-12-17","title": "Solution is tested by Key users "},
+	      {
+		  "_comment": "2024-W50","dt_0": "2024-12-09","dt_1": "2024-12-15","title": "“Decision” "},
+	      {
+		  "_comment": "2024-W50-5","dt_0": "2024-12-13","title": "Solution proposal is approved by Management "},
+	      {
+		  "_comment": "2025-Q1/2025-Q2","dt_0": "2025-01-01","dt_1": "2025-06-30","title": "“Prototyping”  ✔","done": true},
+	      {}]
       );
 
-      c.append(
-	  {color: '#ccccff'},
-	  {start: 5, length: 1, title: 'Test', vertical: true},
-	  {start: cw(2021,30), length: 6, title: 'Holidays 2021', vertical: true},
-	  {start: cw(2022,30), length: 6, title: 'Holidays 2022', vertical: true},
-      );
+      //c.switchCompact(4);
 
-      if (urlParams.has('c')) {
-        if (urlParams.get('c') > 0) {
-          c.switchCompress(urlParams.get('c'));
-        } else {
-          c.switchCompress(d(today.getYear()+1900,today.getMonth()+1,today.getDate()));
-        }
-      }
-
-      c.reDraw();      
+      c.draw();      
 
       // Ctrl+V
       
       //c.append(c.parseInput('1;2;AAA\n4;5;BBB\n6;7;CCC'));
 
-//      c.getInput('/WorkGanttChart/myGanttDemo.csv');
+//      c.getInput('myGanttDemo.csv');
 
 //      c.getInput('/WorkGanttChart/myGanttDemo.json');
 
