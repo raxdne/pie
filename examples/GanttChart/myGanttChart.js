@@ -299,21 +299,23 @@ objGanttChart.prototype.clean = function () {
     this.format_date = { year: 'numeric', month: 'numeric', day: 'numeric'};
 
     // TODO: configure unit as hours, days, weeks, months, years
-    this.unit = (1000 * 60 * 60 * 24 * 7 * 1);
+    if (urlParams.has("s")) {
+ 	this.unit = (1000 * 60 * 60 * 24 * Math.abs(Number(urlParams.get("s"))));
+   } else {
+	this.unit = (1000 * 60 * 60 * 24 * 7 * 1);
+    }
 
     if (urlParams.has("c")) {
 	this.switchCompact(urlParams.get("c"));
     } else {
 	this.switchCompact(false);
     }
-      
+
     if (urlParams.has("l")) {
 	this.switchLength(urlParams.get("l"));
     } else {
 	this.switchLength(-1);
     }
-
-     //this.intCompress = -1; // TODO: deprecated? to be removed
 
     this.barbackground = '#aaffaa';
 
