@@ -776,7 +776,7 @@
 	</xml>
       </make>
     </pkg:transition>
-    <pkg:transition id="docx2plain">
+    <pkg:transition id="docx2txt">
       <h>docx2plain</h>
       <make>
 	<plain>
@@ -784,6 +784,19 @@
 	    <file name="PATH" verbosity="5"/>
 	  </xml>
 	  <xsl name="docx2txt.xsl">
+	    <variable name="str_path">PATH</variable>
+	  </xsl>
+	</plain>
+      </make>
+    </pkg:transition>
+    <pkg:transition id="docx2plain">
+      <h>docx2plain</h>
+      <make>
+	<plain>
+	  <xml locator="yes">
+	    <file name="PATH" verbosity="5"/>
+	  </xml>
+	  <xsl name="docx2plain.xsl">
 	    <variable name="str_path">PATH</variable>
 	  </xsl>
 	</plain>
@@ -1227,7 +1240,9 @@
     <pkg:relation from="application/vnd.oasis.opendocument.text" to="importodt"/>
     <pkg:relation from="importodt" to="application/pie+proc+xml"/>
     <pkg:relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="docx2plain"/>
-    <pkg:relation from="docx2plain" to="text/plain+import"/>
+    <pkg:relation from="docx2plain" to="text/plain"/>
+    <pkg:relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="docx2txt"/>
+    <pkg:relation from="docx2txt" to="text/plain+import"/>
     <pkg:relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="docx2md"/>
     <pkg:relation from="docx2md" to="text/markdown"/>
     <pkg:relation from="application/vnd.openxmlformats-officedocument.wordprocessingml.document" to="importdocx"/>

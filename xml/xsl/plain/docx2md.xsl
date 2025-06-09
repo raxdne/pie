@@ -7,6 +7,8 @@
   
   <xsl:variable name="str_path"></xsl:variable>
 
+  <xsl:variable name="flag_embed" select="true()"/> <!-- default: true() -->
+
   <!-- header structure with templates 'Heading' 'berschrift' -->
 
   <xsl:variable name="newline">
@@ -149,16 +151,24 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="w:r[w:rPr/w:b]">
-    <xsl:value-of select="concat('__',w:t,'__')"/>
-  </xsl:template>
-
-  <xsl:template match="w:r[w:rPr/w:i]">
-    <xsl:value-of select="concat('_',w:t,'_')"/>
-  </xsl:template>
-
-  <xsl:template match="w:r[contains(w:rPr/w:rFonts/attribute::w:ascii,'Courier') or contains(w:rPr/w:rFonts/attribute::w:ascii,'Monospace')]">
-    <xsl:value-of select="concat('`',w:t,'`')"/>
+  <xsl:template match="w:r">
+    <xsl:choose>
+      <xsl:when test="w:rPr/w:b">
+	<xsl:value-of select="concat('__',w:t,'__')"/>
+      </xsl:when>
+      <xsl:when test="w:rPr/w:i">
+	<xsl:value-of select="concat('_',w:t,'_')"/>
+      </xsl:when>
+      <xsl:when test="contains(w:rPr/w:rFonts/attribute::w:ascii,'Courier') or contains(w:rPr/w:rFonts/attribute::w:ascii,'Monospace')">
+	<xsl:value-of select="concat('`',w:t,'`')"/>
+      </xsl:when>
+      <xsl:when test="w:t=' '">
+	<xsl:value-of select="' '"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="w:hyperlink">
@@ -185,6 +195,10 @@
     <xsl:value-of select="'	'"/>
   </xsl:template>
 
+  <xsl:template match="w:br">
+    <xsl:value-of select="$newpar"/>
+  </xsl:template>
+
   <xsl:template match="w:tbl">
     <xsl:value-of select="concat($newline,'```csv',$newline)"/>
     <xsl:for-each select="descendant::w:tr">
@@ -206,12 +220,18 @@
     <xsl:variable name="path_image">
       <xsl:value-of select="//file[@name='document.xml.rels']/child::*[1]/child::*[name()='Relationship' and @Id=$id_image]/@Target"/>
     </xsl:variable>
-    <xsl:for-each select="//file[@name=substring-after($path_image,'/')]">
-      <xsl:value-of select="concat('; Fig. ',$id_image)"/>
-      <xsl:if test="child::base64">
-	<xsl:value-of select="concat($newpar,'data:',@type,';base64,',child::base64,$newpar)"/>
-      </xsl:if>
-    </xsl:for-each>
+    <xsl:choose>
+      <xsl:when test="$flag_embed and //file[@name=substring-after($path_image,'/')]">
+	<xsl:for-each select="//file[@name=substring-after($path_image,'/')]">
+	  <xsl:if test="child::base64">
+	    <xsl:value-of select="concat($newpar,'data:',@type,';base64,',child::base64,$newpar)"/>
+	  </xsl:if>
+	</xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'![',$id_image,'](?redir=',$path_image,')',$newpar)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="w:object">
