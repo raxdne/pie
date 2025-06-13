@@ -657,7 +657,6 @@ objGanttChart.prototype.preDraw = function() {
 	this.append({dt_0: dt_y, dt_length: 1, title: 'Current Week in ' + y, class: 'cw', vertical: true});
     }
 
-
     var i = this.date2grid(this.t_now);
     var x_i = this.scale(i);
 	
@@ -789,7 +788,7 @@ objGanttChart.prototype.getSvg = function(li) {
 		//window.console.log('hbar ');
 		f.setAttribute('y',this.y_n);
 		f.setAttribute('height',h);
-		f.setAttribute('rx',5);
+		f.setAttribute('rx',3);
 	    }
 	    
 	    f.setAttribute('width',l_x);
@@ -855,8 +854,9 @@ objGanttChart.prototype.getSvg = function(li) {
 		f = this.getSvgPolygon(g_x,this.y_n + this.scale(1/2));
 		
 		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-		tx.setAttribute('x', g_x + this.scale(1/2) + 2);
+		tx.setAttribute('x', g_x - this.scale(1/2) - 5);
 		tx.setAttribute('y',this.y_n + this.scale() - 5);
+		tx.setAttribute('text-anchor', "end");
 		tx.appendChild(document.createTextNode(li.title));
 		f.appendChild(tx);
 

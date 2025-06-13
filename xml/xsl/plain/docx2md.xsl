@@ -75,22 +75,28 @@
   </xsl:template>
 
   <xsl:template match="w:p[w:pPr/w:numPr]">
-    <xsl:call-template name="ENUM">
-      <xsl:with-param name="level" select="w:pPr/w:numPr/w:ilvl/@w:val"/>
-      <xsl:with-param name="str_markup">
-	<xsl:if test="w:r/w:rPr/w:strike">
-	  <xsl:text>;</xsl:text>
-	</xsl:if>
-	<xsl:choose>
-	  <xsl:when test="contains('38',w:pPr/w:numPr/w:numId/@w:val)"> <!-- BUG: string value is not portable -->
-	    <xsl:text>-</xsl:text>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:text>-</xsl:text>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:with-param>
-    </xsl:call-template>
+    <xsl:variable name="level" select="w:pPr/w:numPr/w:ilvl/@w:val"/>
+    <xsl:variable name="schema_enum" select="w:pPr/w:numPr/w:numId/@w:val"/>
+    <xsl:variable name="abstractNumId" select="//w:numbering/w:num[@w:numId=$schema_enum]/w:abstractNumId/@w:val"/>
+    <!--
+    <xsl:value-of select="concat('Level: ',$level, ' Schema: ',$schema_enum,' abstractNumId: ',$abstractNumId,'&#10;')"/>
+    -->
+    <xsl:for-each select="//w:numbering/w:abstractNum[@w:abstractNumId=$abstractNumId]/w:lvl[@w:ilvl &lt;= $level]">
+      <xsl:choose>
+	<xsl:when test="contains('decimal lowerRoman lowerLetter',w:numFmt/@w:val) and position() = last()">
+	  <xsl:value-of select="'1) '"/>
+	</xsl:when>
+	<xsl:when test="contains('decimal lowerRoman lowerLetter',w:numFmt/@w:val)">
+	  <xsl:value-of select="'   '"/>
+	</xsl:when>
+	<xsl:when test="position() = last()">
+	  <xsl:value-of select="'- '"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="'  '"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
     <xsl:apply-templates/>
     <xsl:value-of select="$newline"/>
   </xsl:template>
@@ -107,31 +113,6 @@
 	</xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:text> </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="ENUM">
-    <xsl:param name="level"/>
-    <xsl:param name="str_markup" select="'-'"/>
-    <xsl:choose>
-      <xsl:when test="$level &gt; 0">
-	<xsl:choose>
-	  <xsl:when test="$str_markup = '1)'">
-	    <xsl:text>   </xsl:text>		<!-- BUG: spacing depends on type of parent enum -->
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:text>  </xsl:text>
-	  </xsl:otherwise>
-	</xsl:choose>
-	<xsl:call-template name="ENUM">
-	  <xsl:with-param name="level" select="$level - 1"/>
-	  <xsl:with-param name="str_markup" select="$str_markup"/>
-	</xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="$str_markup"/>
 	<xsl:text> </xsl:text>
       </xsl:otherwise>
     </xsl:choose>

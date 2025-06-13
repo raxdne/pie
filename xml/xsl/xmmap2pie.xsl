@@ -86,10 +86,13 @@
 
   <xsl:template match="ap:Topic">
     <xsl:choose>
-      <xsl:when test="ap:Text[starts-with(@PlainText,'TEST: ')]">
+      <xsl:when test="ap:Text[starts-with(@PlainText,'TODO: ') or starts-with(@PlainText,'TEST: ') or starts-with(@PlainText,'REQ: ') or starts-with(@PlainText,'BUG: ')]">
 	<xsl:element name="task">
+	  <xsl:attribute name="class">
+	    <xsl:value-of select="translate(substring-before(ap:Text/@PlainText,': '),'TODNREQABUGS','todnreqabugs')" />
+	  </xsl:attribute>
 	  <xsl:element name="h">
-	    <xsl:value-of select="substring-after(ap:Text/@PlainText,'TEST: ')"/>
+	    <xsl:value-of select="substring-after(ap:Text/@PlainText,': ')"/>
 	  </xsl:element>
 	  <xsl:apply-templates select="ap:OneImage"/>
           <xsl:if test="$flag_folded or not(ap:TopicViewGroup/ap:Collapsed[@Collapsed='true'])">

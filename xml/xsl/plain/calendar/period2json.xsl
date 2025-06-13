@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
+  <xsl:import href="../../Utils.xsl"/>
+  
   <xsl:output method="text" encoding="UTF-8"/>
 
   <xsl:strip-space elements="*"/>
@@ -11,6 +13,8 @@
 
   <xsl:variable name="flag_target" select="true()"/> <!-- default: true() -->
 
+  <xsl:variable name="int_lmax" select="-1" /> <!-- default: -1 maximum length of an event summary -->
+  
 <xsl:variable name="newline">
 <!-- a newline xsl:text element -->
 <xsl:text>
@@ -22,13 +26,13 @@
 </xsl:text>
       <xsl:choose>
 	<xsl:when test="$flag_todo">
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section) or (child::date[@iso or @interval] and parent::task)]"/>
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section[not(@state='done' or @done='yes')]) or (child::date[@interval &gt; 5] and parent::task[@impact and not(@state='done' or @done='yes')]) or (child::date[@iso] and parent::task[@class='target'])]"/>
 	</xsl:when>
 	<xsl:when test="$flag_target">
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section) or (child::date[@iso] and parent::task[@class='target'])]"/>
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section[not(@state='done' or @done='yes')]) or (child::date[@iso] and parent::task[@class='target' and not(@state='done' or @done='yes')])]"/>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section)]"/>
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section[not(@state='done' or @done='yes')])]"/>
 	</xsl:otherwise>
       </xsl:choose>
 <xsl:text>{}]
@@ -43,7 +47,7 @@
 	<xsl:when test="self::date"/>
 	<xsl:when test="starts-with(.,'@')"/>
 	<xsl:when test="self::text()">
-	  <xsl:value-of select="translate(.,'&quot;','_')"/>
+	  <xsl:value-of select="translate(substring(.,1,$int_lmax),'&quot;','_')"/>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:call-template name="DISPLAYTITLE"/>
@@ -54,6 +58,9 @@
   
   <xsl:template match="h">
     <xsl:variable name="str_title">
+      <xsl:for-each select="parent::task[@class]">
+	<xsl:call-template name="FORMATTASKPREFIX"/>
+      </xsl:for-each>
       <xsl:for-each select="ancestor-or-self::*[position() &lt;= $n_depth]/child::h">
 	<xsl:if test="position() &gt; 1">
 	  <xsl:text> :: </xsl:text>
