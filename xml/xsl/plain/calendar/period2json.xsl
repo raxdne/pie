@@ -58,9 +58,11 @@
   
   <xsl:template match="h">
     <xsl:variable name="str_title">
+      <!--
       <xsl:for-each select="parent::task[@class]">
 	<xsl:call-template name="FORMATTASKPREFIX"/>
       </xsl:for-each>
+      -->
       <xsl:for-each select="ancestor-or-self::*[position() &lt;= $n_depth]/child::h">
 	<xsl:if test="position() &gt; 1">
 	  <xsl:text> :: </xsl:text>
@@ -113,14 +115,21 @@
 	    <xsl:value-of select="concat('&quot;','title','&quot;',': ','&quot;',$str_title,'&quot;')"/>
 	  </xsl:otherwise>
 	</xsl:choose>
+	<xsl:choose>
+	  <xsl:when test="parent::h/parent::task[attribute::class]">
+	    <xsl:value-of select="concat(',','&quot;','class','&quot;',': ','&quot;',parent::h/parent::task/attribute::class,'&quot;')"/>
+	  </xsl:when>
+	  <xsl:when test="ancestor::*[attribute::impact]">
+	    <xsl:value-of select="concat(',','&quot;','class','&quot;',': ','&quot;','h',ancestor::*[attribute::impact][1]/attribute::impact,'&quot;')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
 	<xsl:if test="ancestor::*[attribute::done = 'yes']">
 	  <xsl:value-of select="concat(',','&quot;','done','&quot;',': ','true')"/>
 	</xsl:if>
 	<xsl:if test="ancestor::*[attribute::impact]">
 	  <xsl:value-of select="concat(',','&quot;','flag','&quot;',': ','true')"/>
-	</xsl:if>
-	<xsl:if test="ancestor::*[attribute::impact]">
-	  <xsl:value-of select="concat(',','&quot;','class','&quot;',': ','&quot;','h',ancestor::*[attribute::impact][1]/attribute::impact,'&quot;')"/>
 	</xsl:if>
 	<xsl:value-of select="concat($str_url,'},',$newline)"/>
     </xsl:for-each>

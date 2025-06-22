@@ -135,7 +135,11 @@ function ISO8601_parse(dt) {
     var t_result = 0;
     
     if (typeof dt === 'string') {
-	if (dt.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
+	if (dt.match(/[0-9]{4}-*[0-9]{2}-*[0-9]{2}T[0-9:]+[A-Z]*/)) {
+	    t_result = ISO8601_parse(dt.split("T")[0]);
+	} else if (dt.match(/[0-9]{4}[0-9]{2}[0-9]{2}/)) {
+            t_result = ISO8601_parse(dt.slice(0,4) + '-' + dt.slice(4,6) + '-' + dt.slice(6,8)); // UTC time
+	} else if (dt.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
             t_result = Date.parse(dt); // UTC time
 	} else if (dt.match(/[0-9]{4}-W[0-9]{2}-[0-9]/)) {
 	    // TODO: ISO week + day of week
@@ -190,7 +194,23 @@ function objGanttChart (strId) {
 	    //window.console.log('onpaste: ', s);
 	    if (self.clean() === null) {
 	    } else {
-		self.append(self.parseCsvInput(s));
+
+		list = self.parseIcsInput(s); // try to parse as ICS
+
+		if (list === undefined || list.length < 1) {
+		    window.console.error('empty ICS ' + s + '');
+
+		    list = self.parseCsvInput(s); // try to parse as CSV
+		    if (list === undefined || list.length < 1) {
+			window.console.error('empty CSV ' + s + '');
+		    } else {
+			//self.clean();
+			self.append(list);
+		    }
+		} else {
+		    //self.clean();
+		    self.append(list);
+		}
 		// TODO: check self.isHistogram()
 		//self.appendHistogram();
 		self.draw();
@@ -626,7 +646,52 @@ objGanttChart.prototype.append = function (args) {
 		    window.console.log('set interval: ' + args[i].dt_0 + ' ... ' + args[i].dt_1);
 		    this.setBegin(args[i].dt_0);
 		    this.setEnd(args[i].dt_1);
+		} else if (args[i].hasOwnProperty("SUMMARY") && typeof args[i].SUMMARY === 'string' && args[i].SUMMARY.length > 0) {		
+		    if (args[i].hasOwnProperty("DTSTART") && args[i].hasOwnProperty("DTEND")) {
 
+			args[i].title = args[i].SUMMARY;
+			delete args[i].SUMMARY; // no longer required
+
+			args[i].t_0 = ISO8601_parse(args[i].DTSTART);
+			if (args[i].t_0 > 0) {
+			    // valid value
+			    if (this.t_0 === undefined || args[i].t_0 < this.t_0) {
+				this.setBegin(args[i].DTSTART);
+			    }
+			} else {
+			    delete args[i].t_0; // invalid value, not required
+			}
+			delete args[i].DTSTART; // no longer required
+
+			args[i].t_1 = ISO8601_parse(args[i].DTEND);
+			if (args[i].t_1 > 0) {
+			    // valid value
+			    args[i].t_length = args[i].t_1 - args[i].t_0;
+			    if (this.t_1 === undefined || this.t_1 < args[i].t_1) {
+				this.setEnd(args[i].DTEND);
+			    }
+			} else {
+			    delete args[i].t_1; // invalid value, not required
+			}
+			delete args[i].DTEND; // no longer required
+
+			if (args[i].t_1 - args[i].t_0 > (24 * 60 * 60 * 1000)) {
+			    this.items.push(args[i]);
+			} else {
+			    window.console.log('ICS ignoring: ' + args[i]);
+			}
+		    } else {
+			// REQ: this.getSvgHruler(this.y_n);
+			window.console.error(args[i]);
+			continue;
+		    }
+		    
+		    //window.console.log(args[i]);
+		} else if (args[i].hasOwnProperty("DTSTART") && args[i].hasOwnProperty("DTEND")) {
+		    // no title -> begin and end only
+		    window.console.log('set interval: ' + args[i].DTSTART + ' ... ' + args[i].DTEND);
+		    this.setBegin(args[i].DTSTART);
+		    this.setEnd(args[i].DTEND);
 		}
 	    }
 	}
@@ -636,6 +701,65 @@ objGanttChart.prototype.append = function (args) {
 	// TODO: append hruler
 	this.items.push({});
     }
+    return this;
+}
+
+
+function compareByStart(a,b) {
+    
+    if (a.hasOwnProperty('t_0')) {
+	if (b.hasOwnProperty('t_0')) {
+	    window.console.log('compare: ' + (a.t_0 - b.t_0));
+	    if (a.t_0 < b.t_0) {
+		return -1;
+	    } else if (a.t_0 > b.t_0) {
+		return 1;
+	    } else {
+		return 0;
+	    }
+	} else if (b.hasOwnProperty('t_1')) {
+	    if (a.t_0 < b.t_1) {
+		return -1;
+	    } else if (a.t_1 > b.t_0) {
+		return 1;
+	    } else {
+		return 0;
+	    }
+	} else {
+	    return 1;
+	}
+    } else if (a.hasOwnProperty('t_1')) {
+	if (b.hasOwnProperty('t_0')) {
+	    if (a.t_1 < b.t_0) {
+		return -1;
+	    } else if (a.t_1 > b.t_0) {
+		return 1;
+	    } else {
+		return 0;
+	    }
+	} else if (b.hasOwnProperty('t_1')) {
+	    if (a.t_1 < b.t_1) {
+		return -1;
+	    } else if (a.t_1 > b.t_1) {
+		return 1;
+	    } else {
+		return 0;
+	    }
+	} else {
+	    return -1;
+	}
+    } else if (b.hasOwnProperty('t_0')) {
+	//return -1;
+    }
+    return NaN;
+}
+
+
+objGanttChart.prototype.sort = function() {
+
+    //window.console.log('before sort: ' + this.items);
+    this.items.sort(compareByStart);
+
     return this;
 }
 
@@ -665,7 +789,7 @@ objGanttChart.prototype.preDraw = function() {
     l.setAttribute('y1',0);
     l.setAttribute('x2',x_i);
     l.setAttribute('y2',this.height);
-    l.setAttribute('stroke','rgb(256,0,0)');
+    l.setAttribute('stroke','rgb(255,0,0)');
     l.setAttribute('stroke-width','.75');
     this.svg.appendChild(l);
     
@@ -793,14 +917,6 @@ objGanttChart.prototype.getSvg = function(li) {
 	    
 	    f.setAttribute('width',l_x);
 
-	    if (li.hasOwnProperty("class")) {
-		f.setAttribute('class', li.class);
-	    } else if (li.hasOwnProperty("fill")) {
-		f.setAttribute('fill',li.fill);
-	    } else {
-		f.setAttribute('fill',this.barbackground);
-	    }
-
 	    if (li.hasOwnProperty("flag") && li.flag) {
 		//g.appendChild(this.getSvgFlag(g_x + l_x - 5, this.y_n - this.scale(0.2)));
 	    }
@@ -858,7 +974,7 @@ objGanttChart.prototype.getSvg = function(li) {
 		tx.setAttribute('y',this.y_n + this.scale() - 5);
 		tx.setAttribute('text-anchor', "end");
 		tx.appendChild(document.createTextNode(li.title));
-		f.appendChild(tx);
+		g.appendChild(tx);
 
 		g.appendChild(f);
 		this.y_n += this.scale(1.35);
@@ -873,16 +989,21 @@ objGanttChart.prototype.getSvg = function(li) {
 
 	if (f != undefined) {
 	    
-	    if (li.hasOwnProperty("color")) {
+	    if (li.hasOwnProperty("class")) {1
+		f.setAttribute('class', li.class);
+	    } else if (li.hasOwnProperty("border")) {
+		f.setAttribute('stroke',li.border);
+		f.setAttribute('stroke-width',1.0);
+	    } else if (li.hasOwnProperty("fill")) {
+		f.setAttribute('fill',li.fill);
+	    } else if (li.hasOwnProperty("color")) { // TODO: 'fill' or 'color'
 		f.setAttribute('fill',li.color);
+	    } else {
+		f.setAttribute('fill',this.barbackground);
 	    }
 
-	    f.setAttribute('stroke-width','.5');
-	    
 	    if (li.hasOwnProperty("url")) {
 		f.setAttribute('stroke','#0000ff');
-	    } else {
-		f.setAttribute('stroke','#000000');
 	    }
 
 	    if (li.hasOwnProperty("tip")) {
@@ -1080,7 +1201,7 @@ objGanttChart.prototype.getSvgHruler = function(y) {
 objGanttChart.prototype.getSvgPolygon = function(x,y) {
 
     var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('class','polygon');
+    //g.setAttribute('class','polygon');
 
     f = document.createElementNS('http://www.w3.org/2000/svg','polygon');
     var half = this.scale(1/2);
@@ -1230,6 +1351,39 @@ objGanttChart.prototype.appendHLines = function () {
 }
 
 
+
+//
+// 
+//
+objGanttChart.prototype.parseIcsInput = function(strInput) {
+
+    const lines = strInput.split('\n');
+    const events = [];
+    let event;
+    
+    for (let i = 0; i < lines.length; i++) {
+	const line = lines[i].trim();
+	if (line === 'BEGIN:VEVENT') {
+	    event = {};
+	} else if (line === 'END:VEVENT') {
+	    if (event.hasOwnProperty('SUMMARY') && event.hasOwnProperty('DTSTART') && event.hasOwnProperty('DTEND')) {
+		events.push(event);
+	    }
+	} else if (event) {
+	    const match = /^([A-Z]+)(;[A-Z]+=[A-Z]+)*:(.*)$/.exec(line);
+	    if (match) {
+		if (match[1] == 'DTSTART' || match[1] == 'DTEND' || match[1] == 'SUMMARY') {
+		    event[match[1]] = match[3];
+		}
+	    }
+	}
+    }
+    window.console.log('ICS events: ', events);
+    
+    return events;
+}
+
+
 objGanttChart.prototype.appendForm = function (strInput) {
 
     // TODO: textarea for input of CSV
@@ -1310,12 +1464,19 @@ objGanttChart.prototype.getInput = function (strUrl) {
 		} catch (e) {
 		    window.console.error('JSON.parse(' + e + ')');
 
-		    list = self.parseCsvInput(request.responseText); // try to parse as CSV
-			
-		    if (list === undefined) {
-			window.console.error('CSV format');
-		    } else if (list.length < 1) {
-			window.console.error('empty CSV ' + request.responseText + '');
+		    list = self.parseIcsInput(request.responseText); // try to parse as ICS
+
+		    if (list === undefined || list.length < 1) {
+			window.console.error('empty ICS ' + request.responseText + '');
+
+			list = self.parseCsvInput(request.responseText); // try to parse as CSV
+			if (list === undefined || list.length < 1) {
+			    window.console.error('empty CSV ' + request.responseText + '');
+			} else {
+			    //self.clean();
+			    self.append(list);
+			    //self.draw();
+			}
 		    } else {
 			//self.clean();
 			self.append(list);

@@ -8,8 +8,8 @@
     <style>
       svg {border: 1px solid #cccccc; padding: 0 0 0 0; margin: 0; background: #ffffff;}
       *.hbar {fill: #aaffaa}
-      *.vbar {fill: #eeeeee; stroke-width: 0;}
-      *.polygon {fill: #aaaaff}
+      *.vbar {fill: #eeeeee}
+      polygon {fill: #aaaaff}
       *.cw {fill: #ffcccc; stroke-width: 0;}
     </style>
 

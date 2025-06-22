@@ -40,41 +40,30 @@
       //c.shift(cw(2021,5));
 
       c.append(
-	  [
-	      {
-		  "_comment": "2024-Q1","dt_0": "2024-01-01","dt_1": "2024-03-31","title": "“Problem Analysis” "},
-	      {
-		  "_comment": "2024-W10","dt_0": "2024-03-04","dt_1": "2024-03-10","title": "“Problem Definition” "},
-	      {
-		  "_comment": "2024-Q2","dt_0": "2024-04-01","dt_1": "2024-06-30","title": "“System Design” "},
-	      {
-		  "_comment": "O14D/2024-05-31","dt_0": "2024-05-17","title": "Solution proposals created by Project Teams  ✔","done": true},
-	      {
-		  "_comment": "2024-Q3","dt_0": "2024-07-01","dt_1": "2024-09-30","title": "“System Analysis” "},
-	      {
-		  "_comment": "2024-Q4","dt_0": "2024-10-01","dt_1": "2024-12-31","title": "“System Verification” "},
-	      {
-		  "_comment": "O14D/2024-12-31","dt_0": "2024-12-17","title": "Solution is tested by Key users "},
-	      {
-		  "_comment": "2024-W50","dt_0": "2024-12-09","dt_1": "2024-12-15","title": "“Decision” "},
-	      {
-		  "_comment": "2024-W50-5","dt_0": "2024-12-13","title": "Solution proposal is approved by Management "},
-	      {
-		  "_comment": "2025-Q1/2025-Q2","dt_0": "2025-01-01","dt_1": "2025-06-30","title": "“Prototyping”  ✔","done": true},
-	      {}]
+      	  [
+      	      {"_comment": "2024-Q1","dt_0": "2024-01-01","dt_1": "2024-03-31","title": "“Problem Analysis” "},
+      	      {"_comment": "2024-Q2","dt_0": "2024-04-01","dt_1": "2024-06-30","title": "“System Design” "},
+      	      {"_comment": "O14D/2024-05-31","dt_0": "2024-05-17","title": "Solution proposals created by Project Teams  ✔","done": true},
+      	      {"_comment": "2024-W50","dt_0": "2024-12-09","dt_1": "2024-12-15","title": "“Decision” "},
+      	      {"_comment": "2024-Q3","dt_0": "2024-07-01","dt_1": "2024-09-30","title": "“System Analysis” "},
+      	      {"_comment": "2024-Q4","dt_0": "2024-10-01","dt_1": "2024-12-31","title": "“System Verification” "},
+      	      {"_comment": "2024-W50-5","dt_0": "2024-12-13","title": "Solution proposal is approved by Management "},
+      	      {"_comment": "O14D/2024-12-31","dt_0": "2024-12-17","title": "Solution is tested by Key users "},
+      	      {"_comment": "2024-W10","dt_0": "2024-03-04","dt_1": "2024-03-10","title": "“Problem Definition” "},
+      	      {"_comment": "2025-Q1/2025-Q2","dt_0": "2025-01-01","dt_1": "2025-06-30","title": "“Prototyping”  ✔","done": true}
+	  ]
       );
 
       //c.switchCompact(4);
 
-      c.draw();      
-
       // Ctrl+V
       
       //c.append(c.parseInput('1;2;AAA\n4;5;BBB\n6;7;CCC'));
+      //c.getInput('myGanttDemo.csv');
+      //c.getInput('myGanttDemo.ics');
 
-//      c.getInput('myGanttDemo.csv');
-
-//      c.getInput('/WorkGanttChart/myGanttDemo.json');
+      c.sort();      
+      c.draw();      
 
    </script>
   </body>
