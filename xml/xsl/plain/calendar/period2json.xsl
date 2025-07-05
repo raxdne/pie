@@ -11,6 +11,8 @@
 
   <xsl:variable name="flag_todo" select="false()"/> <!-- default: false() -->
 
+  <xsl:variable name="flag_prefix" select="false()"/> <!-- default: false() -->
+
   <xsl:variable name="flag_target" select="true()"/> <!-- default: true() -->
 
   <xsl:variable name="int_lmax" select="-1" /> <!-- default: -1 maximum length of an event summary -->
@@ -58,11 +60,11 @@
   
   <xsl:template match="h">
     <xsl:variable name="str_title">
-      <!--
-      <xsl:for-each select="parent::task[@class]">
-	<xsl:call-template name="FORMATTASKPREFIX"/>
-      </xsl:for-each>
-      -->
+      <xsl:if test="$flag_prefix">
+	<xsl:for-each select="parent::task[@class]">
+	  <xsl:call-template name="FORMATTASKPREFIX"/>
+	</xsl:for-each>
+      </xsl:if>
       <xsl:for-each select="ancestor-or-self::*[position() &lt;= $n_depth]/child::h">
 	<xsl:if test="position() &gt; 1">
 	  <xsl:text> :: </xsl:text>

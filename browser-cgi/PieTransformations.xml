@@ -551,6 +551,7 @@
       <make>
 	<xsl name="period2json.xsl">
 	  <variable name="flag_todo" select="false()"/>
+	  <variable name="flag_prefix" select="false()"/>
 	  <variable name="flag_target" select="true()"/>
 	  <variable name="int_lmax" select="80" />
 	</xsl>

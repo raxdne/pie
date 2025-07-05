@@ -823,18 +823,51 @@ objGanttChart.prototype.preDraw = function() {
 }
 
 
+//
+// change fill color by clicking on shapes
+//
+function clickOnShape (event) {
+
+    const strClass = 'sel';
+
+    if ( ! event.ctrlKey) {
+	// ignoring
+    } else if (this.getAttribute('class') == strClass) {
+	if (this.getAttribute('classb') != undefined) {
+	    this.setAttribute('class', this.getAttribute('classb'));
+	    this.removeAttribute('classb');
+	} else {
+	    this.removeAttribute('class');
+	}
+    } else if (this.getAttribute('class') != undefined) {
+	this.setAttribute('classb', this.getAttribute('class'));
+	this.setAttribute('class', strClass);
+    } else {
+	this.setAttribute('class', strClass);
+    }
+}
+
+
+objGanttChart.prototype.addEventListener = function(strTagName) {
+
+    const list = document.getElementsByTagName(strTagName);
+    
+    for (i=0; i<list.length; i++) {
+	list[i].addEventListener('click', clickOnShape);
+    }
+    return this;
+}
+
+
 objGanttChart.prototype.postDraw = function() {
 
-    //window.console.log(arguments);
+    window.console.log('Post ');
+
+    // REQ: select by element class?
+    this.addEventListener('rect');
+    this.addEventListener('polygon');
     
     return this;
-
-	  window.console.log('Post ');
-
-	  //this.appendHLines();
-	  this.appendVLines();
-	  //this.appendHistogram();
-	  
 }
 
 
@@ -855,14 +888,6 @@ objGanttChart.prototype.getSvg = function(li) {
 	var f;
 
 	var tip = li.title;
-
-	var a = document.createElementNS('http://www.w3.org/2000/svg','a');
-	if (li.hasOwnProperty("url")) {
-	    a.setAttribute('href', li.url);
-	    a.setAttribute('target', 'blank');
-	}
-	g.appendChild(a);
-	g = a;
 
 	var g_x = 0;
 	
@@ -934,12 +959,20 @@ objGanttChart.prototype.getSvg = function(li) {
 		    f.setAttribute('class','vbar');
 		}
 	    } else {
-		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+
+		var a = document.createElementNS('http://www.w3.org/2000/svg','a');
+		if (li.hasOwnProperty("url")) {
+		    a.setAttribute('href', li.url);
+		    a.setAttribute('target', 'blank');
+		}
+
+		var tx = document.createElementNS('http://www.w3.org/2000/svg','text');
 		tx.setAttribute('x', g_x + 4);
 		tx.setAttribute('y',this.y_n + this.scale() - 5);
 		tx.appendChild(document.createTextNode(li.title));
 		
-		g.appendChild(tx);
+		a.appendChild(tx);
+		g.appendChild(a);
 	    }
 	    
 	    if (li.hasOwnProperty("vertical") && li.vertical) {

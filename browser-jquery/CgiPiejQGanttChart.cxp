@@ -11,6 +11,8 @@
       *.vbar {fill: #eeeeee}
       polygon {fill: #aaaaff}
       *.cw {fill: #ffcccc; stroke-width: 0;}
+      rect {cursor: pointer;}
+      *.sel {fill: #ccccff;}
     </style>
 
       <body>
@@ -51,6 +53,7 @@
       c.getInput("/cxproc/exe?path=%CGIPATH%&amp;cxp=Format&amp;b=application/json%2Bgantt&amp;pattern=%CGITAG%");
       //window.console.log(c.toString());
       //c.setBegin('2025-09-16');
+      //c.sort();      
       c.draw();      
       //c.shift(1500,0);
 
