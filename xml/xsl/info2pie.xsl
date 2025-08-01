@@ -28,7 +28,7 @@
 	      <xsl:text></xsl:text>
           </xsl:element>
           <xsl:element name="p">
-            <xsl:value-of select="concat('Compiled on ',cxp:compilation/@platform,' at ',cxp:compilation/@date,' as ','&quot;',cxp:compilation/@lang,'&quot;')"/>
+            <xsl:value-of select="concat('Compiled on ',cxp:compilation/@platform,' on ',cxp:compilation/@date)"/> <!-- ,' as ','&quot;',cxp:compilation/@lang,'&quot;' -->
 	    <xsl:if test="cxp:compilation/@legacy = 'yes'">
 	      <xsl:text>, with legacy features</xsl:text>
 	    </xsl:if>
