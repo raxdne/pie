@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
-  <cxp:subst string="%CGIPATH%" cgi="path"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" search="yes"/>
   <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
   <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
   <cxp:subst string="%CGIRE%" cgi="re" default=""/>

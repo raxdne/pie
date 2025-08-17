@@ -550,10 +550,11 @@
       <h>period2json</h>
       <make>
 	<xsl name="period2json.xsl">
+	  <variable name="flag_prefix" select="true()"/>
 	  <variable name="flag_todo" select="false()"/>
-	  <variable name="flag_prefix" select="false()"/>
 	  <variable name="flag_target" select="true()"/>
 	  <variable name="int_lmax" select="80" />
+	  <variable name="int_dmax" select="4" />
 	</xsl>
       </make>
     </pkg:transition>
@@ -828,7 +829,9 @@
 		  <xml locator="yes">
 		    <file name="PATH" verbosity="5"/>
 		  </xml>
-		  <xsl name="pptx2md.xsl"/>
+		  <xsl name="pptx2md.xsl">
+		    <variable name="flag_embed" select="true()" />
+		  </xsl>
 		</plain>
 	      </import>
 	    </pie>
@@ -1172,13 +1175,27 @@
     <pkg:transition id="ics2pie">
       <h>ics2pie</h>
       <make>
-	<xsl name="xCal2pie.xsl"/>
+	<xml xpath="no">
+	  <pie tags="yes" date="yes" figure="no" offset="yes" validation="yes">
+	    <import type="cxp">
+	      <xml>
+		<xml locator="no">
+		  <file name="PATH" verbosity="5"/>
+		</xml>
+		<xsl name="xCal2pie.xsl"/>
+	      </xml>
+	    </import>
+	  </pie>
+	</xml>
       </make>
     </pkg:transition>
     <pkg:transition id="pie2ics">
       <h>pie2ics</h>
       <make>
-	<xsl name="pie2ics.xsl"/>
+	<xsl name="pie2ics.xsl">
+	  <variable name="flag_interval" select="false()" />
+	  <variable name="int_delta" select="7*4" />
+	</xsl>
       </make>
     </pkg:transition>
     <pkg:transition id="vcf2pie">

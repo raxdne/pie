@@ -9,13 +9,15 @@
 
   <xsl:variable name="n_depth" select="2"/> <!-- default: 2 -->
 
-  <xsl:variable name="flag_todo" select="false()"/> <!-- default: false() -->
-
   <xsl:variable name="flag_prefix" select="false()"/> <!-- default: false() -->
+
+  <xsl:variable name="flag_todo" select="false()"/> <!-- default: false() -->
 
   <xsl:variable name="flag_target" select="true()"/> <!-- default: true() -->
 
   <xsl:variable name="int_lmax" select="-1" /> <!-- default: -1 maximum length of an event summary -->
+  
+  <xsl:variable name="int_dmax" select="4" /> <!-- default: 4 maximum length of an event -->
   
 <xsl:variable name="newline">
 <!-- a newline xsl:text element -->
@@ -27,14 +29,14 @@
 <xsl:text>[
 </xsl:text>
       <xsl:choose>
-	<xsl:when test="$flag_todo">
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section[not(@state='done' or @done='yes')]) or (child::date[@interval &gt; 5] and parent::task[@impact and not(@state='done' or @done='yes')]) or (child::date[@iso] and parent::task[@class='target'])]"/>
+	<xsl:when test="$flag_todo and $flag_target">
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; $int_dmax or ancestor-or-self::*[@impact]] and parent::*[(name()='section' or name() = 'task') and not(@state='done') and not(@done='yes')]) or parent::task[@class='target' and not(@state='done') and not(@done='yes')]]"/>
 	</xsl:when>
 	<xsl:when test="$flag_target">
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section[not(@state='done' or @done='yes')]) or (child::date[@iso] and parent::task[@class='target' and not(@state='done' or @done='yes')])]"/>
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; $int_dmax or ancestor-or-self::*[@impact]] and parent::section[not(@state='done') and not(@done='yes')]) or parent::task[@class='target' and not(@state='done') and not(@done='yes')]]"/>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; 1] and parent::section[not(@state='done' or @done='yes')])]"/>
+	  <xsl:apply-templates select="descendant::h[child::date[@interval &gt; $int_dmax or ancestor-or-self::*[@impact]] and parent::section[not(@state='done') and not(@done='yes')]]"/>
 	</xsl:otherwise>
       </xsl:choose>
 <xsl:text>{}]
@@ -49,7 +51,7 @@
 	<xsl:when test="self::date"/>
 	<xsl:when test="starts-with(.,'@')"/>
 	<xsl:when test="self::text()">
-	  <xsl:value-of select="translate(substring(.,1,$int_lmax),'&quot;','_')"/>
+	  <xsl:value-of select="."/>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:call-template name="DISPLAYTITLE"/>
@@ -110,11 +112,27 @@
 	  <xsl:when test="@interval">
 	    <xsl:value-of select="concat('&quot;','dt_0','&quot;',': ','&quot;',@begin,'&quot;',',')"/>
 	    <xsl:value-of select="concat('&quot;',  'dt_1','&quot;',': ','&quot;',@end,  '&quot;',',')"/>
-	    <xsl:value-of select="concat('&quot;','title','&quot;',': ','&quot;',$str_title,'&quot;')"/>
+	    <xsl:value-of select="concat('&quot;','title','&quot;',': ')"/>
+	    <xsl:choose>
+	      <xsl:when test="$int_lmax &lt; 1">
+		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;','_'),'&quot;')"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;','_'),'&quot;')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:value-of select="concat('&quot;','dt_0','&quot;',': ','&quot;',@iso,'&quot;',',')"/>
-	    <xsl:value-of select="concat('&quot;','title','&quot;',': ','&quot;',$str_title,'&quot;')"/>
+	    <xsl:value-of select="concat('&quot;','title','&quot;',': ')"/>
+	    <xsl:choose>
+	      <xsl:when test="$int_lmax &lt; 1">
+		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;','_'),'&quot;')"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;','_'),'&quot;')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
 	  </xsl:otherwise>
 	</xsl:choose>
 	<xsl:choose>
