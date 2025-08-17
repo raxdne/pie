@@ -53,6 +53,28 @@
 
 ;+ </cxproc/exe?file=Test/Documents/TestContent.html&cxp=html2pie>
 
+** Redirection
+
+<?redir=TestContent*>
+<?redir=TestContent.md>
+</r/TestContent.md>
+
+<?redir=TestContent.md&cxp=PieUiDefault>
+
+<?redir=TestContent.md&xsl=pie2html>
+
+<?redir=Tux.png>
+
+<?redir=NonExisting.png>
+
+</v/Documents/TestContent.md>
+</v/Documents/TestContent.odt&xpath=%2Fdescendant-or-self%3A%3A*[%40bxpath+%3D+"%2F*%2F*[1]%2F*[1]%2F*[2]%2F*[8]"]>
+
+
+** Search
+
+<?path=Tux.*>
+
 ** Processing of XML text files
 
 *** PIE | #pieTag

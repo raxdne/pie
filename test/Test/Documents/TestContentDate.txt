@@ -162,19 +162,19 @@ O2W/2022-W31-1 Offset
 
 `WEA` as Symbol for __W__eek of __Ea__ster
 
-2025WEA5 ⛪ Good Friday
+0000WEA5 ⛪ Good Friday
 
-2025-WEA-7 ⛪ Easter Sunday
+0000-WEA-7 ⛪ Easter Sunday
 
-2025-WEA-7/O1D ⛪ Easter Monday
+0000-WEA-7/O1D ⛪ Easter Monday
 
-2025-WEA-7/O39D ⛪ Feast of the Ascension
+0000-WEA-7/O39D ⛪ Feast of the Ascension
 
-2025-WEA-7/O49D ⛪ Pentecost
+0000-WEA-7/O49D ⛪ Pentecost
 
-2025-WEA-7/O50D ⛪ Whit Monday or Pentecost Monday
+0000-WEA-7/O50D ⛪ Whit Monday or Pentecost Monday
 
-2025-WEA-7/O60D ⛪ Feast of Corpus Christi
+0000-WEA-7/O60D ⛪ Feast of Corpus Christi
 
 ** Birthday Markup using `🎂`
 
@@ -185,4 +185,19 @@ R10/2002-01-01/P1000D 🎂 *2002 Meyer Thousand Days
 ** Symbol for Current Year `0000`
 
 00000101 First Day of the Year
+
+00001224 Christmas Evening
+
+00001225 Christmas
+
+00001226 Christmas
+
+00001227 Christmas
+
+00001231 Last Day of the Year
+
+0000-Q1 First Quarter
+
+0000-111 111th Day
+
 
