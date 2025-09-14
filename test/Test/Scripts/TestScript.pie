@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <pie>
+  <!-- <script> is a shortcut for <import type="script"> -->
 	<section>
 		<h>Test <script>Date();</script></h>
 		<p>This is a Test: <script>5*5;</script> : postfix</p>
@@ -10,7 +11,9 @@
 		<p>Embedded</p>
 		<p>Embedded</p>
 	</section>
-	
+
+	<script name="TestScriptPlainFile.js"/>
+
 	<import type="script">
 
 var A = 'XYZ';

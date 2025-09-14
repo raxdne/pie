@@ -1,7 +1,16 @@
 
 * Test Table
 
-Pre Table
+Pre Table 1
+
+<csv>
+D;E;H
+1;2;3
+</csv>
+
+Post Table 1
+
+Pre Table 2
 
 <csv>
 D;E&F&G;H
@@ -11,4 +20,4 @@ Tag;@ttt;#yyy
 Date;2025-01-01;End
 </csv>
 
-Post Table
+Post Table 2
