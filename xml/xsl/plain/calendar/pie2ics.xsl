@@ -9,11 +9,11 @@
 
   <xsl:variable name="flag_todo" select="false()" /> <!-- default: false() handle task elements as ordinary VEVENT -->
 
-  <xsl:variable name="flag_interval" select="false()" /> <!-- default: true() only dates with an interval/period -->
+  <xsl:variable name="flag_interval" select="true()" /> <!-- default: true() only dates with an interval/period -->
 
   <xsl:variable name="str_ctime" select="concat(translate(/pie/meta/@ctime2,'-:',''),'Z')" />
 
-  <xsl:variable name="int_delta" select="7*8" /> <!-- time period in days to filter events, if value "-1" no filtering -->
+  <xsl:variable name="int_delta" select="-1" /> <!-- time period in days to filter events, if value "-1" no filtering -->
 
   <xsl:variable name="int_lmax" select="60" /> <!-- maximum length of an event summary -->
 
@@ -26,9 +26,15 @@
 PRODID:-//CXPROC PIE Calendar//DE
 VERSION:2.0
 METHOD:PUBLISH
-X-WR-CALNAME:cxproc
-X-WR-TIMEZONE:Europe/Berlin
-BEGIN:VTIMEZONE
+</xsl:text>
+<xsl:value-of select="concat('X-WR-CALNAME:','cxproc','&#10;')"/>
+<xsl:value-of select="concat('X-WR-TIMEZONE:','Europe/Berlin','&#10;')"/>
+<xsl:value-of select="concat('COMMENT:ns_date = ',count($ns_date),'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:int_delta = ',$int_delta,'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:flag_todo = ',$flag_todo,'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:flag_interval = ',$flag_interval,'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:int_lmax = ',$int_lmax,'&#10;')"/>
+<xsl:text>BEGIN:VTIMEZONE
 TZID:Europe/Berlin
 BEGIN:DAYLIGHT
 TZOFFSETFROM:+0100
@@ -105,7 +111,7 @@ END:VTIMEZONE
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="$flag_interval and not(attribute::interval) and not(ancestor-or-self::*[attribute::impact] = 1)"/>
+   <!-- <xsl:when test="$flag_interval and not(attribute::interval) and not(ancestor-or-self::*[attribute::impact] = 1)"/> -->
       
    <!-- <xsl:when test="not(ancestor-or-self::*/attribute::impact)"/> -->
       
@@ -138,7 +144,7 @@ END:VTODO
 </xsl:text>
       </xsl:when>
 
-      <xsl:when test="parent::h/parent::task|parent::p/parent::section|parent::p/parent::list/parent::task|self::*[attribute::interval &gt; 1]|ancestor::*[attribute::impact &lt; 3]">
+      <xsl:otherwise>
     <xsl:text>BEGIN:VEVENT
 CREATED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
 LAST-MODIFIED:</xsl:text><xsl:value-of select="$str_ctime" /><xsl:text>
@@ -152,14 +158,9 @@ UID:</xsl:text><xsl:value-of select="generate-id(.)" /><xsl:text>
 <xsl:text>TRANSP:OPAQUE
 END:VEVENT
 </xsl:text>
-      </xsl:when>
-
-      <xsl:otherwise>
       </xsl:otherwise>
 
     </xsl:choose>
   </xsl:template>
-  
-  <xsl:template match="*"/>
 
 </xsl:stylesheet>
