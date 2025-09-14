@@ -51,6 +51,22 @@ function addShortcuts(objEditor,strPath) {
 	}
     });
 
+    objEditor.commands.addCommand({
+	name: 'myCommand',
+	bindKey: {win: 'Ctrl-Y',  mac: 'Command-Y'},
+	exec: function(objEditor) {
+	    //objEditor.copyLinesDown();
+	    var row = objEditor.selection.getCursor().row;
+	    var e = objEditor.session.getLength();
+	    
+	    objEditor.scrollToLine(e, true, true, function () {});
+	    objEditor.gotoLine(e, 0, true);
+	    // Insert the line below the current row
+	    objEditor.session.insert({ row: e, column: 0 }, objEditor.session.getLine(row));
+	},
+	readOnly: false, // false if this command should not apply in readOnly mode
+	//scrollIntoView: "cursor", // control how cursor is scolled into view after the command
+    });
 }
 
 
