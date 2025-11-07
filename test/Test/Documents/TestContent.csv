@@ -27,6 +27,10 @@ D;E &#x1234; F;456
 K;L &#1234; M
 N;O &#x; P
 
+"ABC";"D;;;E";";FGH";"IJK;;"
+
+HIJ ""XYZ"";"RST;UVW","MNO"
+
 * 2020-11-12 table header 2 with date
 2020-11-02;table row with date
 
