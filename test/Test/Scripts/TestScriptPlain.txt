@@ -49,3 +49,9 @@ B = script="a++;a"
 C = script="c=++a;c"
 
 D = script="++c"
+
+* Test Script File
+
+#import("TestScriptPlainFile.js")
+
+AAA

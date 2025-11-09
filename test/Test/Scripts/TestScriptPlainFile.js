@@ -5,7 +5,7 @@ var objNow = Date();
 var strResult = '';
 
 function abc (iArg) {
-  strResult += 'PREFIX ' + iArg + ' SUFFIX' + '\n';
+    strResult += 'PREFIX ' + iArg.toString() + ' SUFFIX' + '\n';
 }
 
 
