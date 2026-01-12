@@ -55,6 +55,11 @@
 	      <xsl:text>true</xsl:text>
 	    </xsl:attribute>
 	  </xsl:if>
+	  <xsl:if test="font[@NAME = 'Courier']">
+        <xsl:attribute name="Name">
+	      <xsl:text>Courier New</xsl:text>
+	    </xsl:attribute>
+	  </xsl:if>
         </xsl:element>
       </xsl:element>
       <xsl:if test="@BACKGROUND_COLOR">

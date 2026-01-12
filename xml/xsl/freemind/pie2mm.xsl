@@ -269,7 +269,7 @@
     <xsl:if test="$flag_p">
       <xsl:element name="node">
         <xsl:attribute name="TEXT">
-          <xsl:apply-templates/>
+          <xsl:value-of select="."/>
         </xsl:attribute>
 	<xsl:element name="font">
           <xsl:attribute name="NAME">

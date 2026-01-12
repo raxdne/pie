@@ -9,7 +9,7 @@
   <!--  -->
   <xsl:variable name="int_delta" select="0"/>
   <!--  -->
-  <xsl:variable name="ns_task" select="/descendant::task[not(@state='done') and not(@done='yes') and ($int_delta = 0 or child::h[child::date[@diff &lt; $int_delta] or not(child::date)])]"/>
+  <xsl:variable name="ns_task" select="/descendant::task[not(ancestor-or-self::*[@state='done']) and not(ancestor-or-self::*[@done='yes']) and ($int_delta = 0 or child::h[child::date[@diff &lt; $int_delta] or not(child::date)])]"/>
 
   <xsl:output method="html"/>
   

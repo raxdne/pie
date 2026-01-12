@@ -17,7 +17,7 @@
 
   <xsl:variable name="int_lmax" select="-1" /> <!-- default: -1 maximum length of an event summary -->
   
-  <xsl:variable name="int_dmax" select="4" /> <!-- default: 4 maximum length of an event -->
+  <xsl:variable name="int_dmin" select="4" /> <!-- default: 4 minimum length of an event -->
   
 <xsl:variable name="newline">
 <!-- a newline xsl:text element -->
@@ -30,13 +30,13 @@
 </xsl:text>
       <xsl:choose>
 	<xsl:when test="$flag_todo and $flag_target">
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; $int_dmax or ancestor-or-self::*[@impact]] and parent::*[(name()='section' or name() = 'task') and not(@state='done') and not(@done='yes')]) or parent::task[@class='target' and not(@state='done') and not(@done='yes')]]"/>
+	  <xsl:apply-templates select="descendant::p[child::date[@interval &gt; $int_dmin] and not(@state='done') and not(@done='yes')]|descendant::h[(child::date[@interval &gt; $int_dmin] and parent::*[(name()='section' or name() = 'task') and not(@state='done') and not(@done='yes')]) or parent::task[@class='target' and not(@state='done') and not(@done='yes')]]"/>
 	</xsl:when>
 	<xsl:when test="$flag_target">
-	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; $int_dmax or ancestor-or-self::*[@impact]] and parent::section[not(@state='done') and not(@done='yes')]) or parent::task[@class='target' and not(@state='done') and not(@done='yes')]]"/>
+	  <xsl:apply-templates select="descendant::h[(child::date[@interval &gt; $int_dmin] and parent::section[not(@state='done') and not(@done='yes')]) or parent::task[@class='target' and not(@state='done') and not(@done='yes')]]"/>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:apply-templates select="descendant::h[child::date[@interval &gt; $int_dmax or ancestor-or-self::*[@impact]] and parent::section[not(@state='done') and not(@done='yes')]]"/>
+	  <xsl:apply-templates select="descendant::h[child::date[@interval &gt; $int_dmin] and parent::section[not(@state='done') and not(@done='yes')]]"/>
 	</xsl:otherwise>
       </xsl:choose>
 <xsl:text>{}]
@@ -60,6 +60,52 @@
     </xsl:for-each>
   </xsl:template>
   
+  <xsl:template match="p">
+    <xsl:variable name="str_title">
+      <xsl:value-of select="text()"/>
+    </xsl:variable>
+    <xsl:for-each select="date">
+	<xsl:value-of select="concat('{',$newline)"/>
+	<xsl:value-of select="concat('&quot;','_comment','&quot;',': ','&quot;',text(),'&quot;',',')"/>
+	<xsl:choose>
+	  <xsl:when test="@interval">
+	    <xsl:value-of select="concat('&quot;','dt_0','&quot;',': ','&quot;',@begin,'&quot;',',')"/>
+	    <xsl:value-of select="concat('&quot;',  'dt_1','&quot;',': ','&quot;',@end,  '&quot;',',')"/>
+	    <xsl:value-of select="concat('&quot;','title','&quot;',': ')"/>
+	    <xsl:choose>
+	      <xsl:when test="$int_lmax &lt; 1">
+		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="concat('&quot;','dt_0','&quot;',': ','&quot;',@iso,'&quot;',',')"/>
+	    <xsl:value-of select="concat('&quot;','title','&quot;',': ')"/>
+	    <xsl:choose>
+	      <xsl:when test="$int_lmax &lt; 1">
+		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:otherwise>
+	</xsl:choose>
+
+	<xsl:if test="ancestor::*[attribute::done = 'yes']">
+	  <xsl:value-of select="concat(',','&quot;','done','&quot;',': ','true')"/>
+	</xsl:if>
+	<xsl:if test="ancestor::*[attribute::impact]">
+	  <xsl:value-of select="concat(',','&quot;','flag','&quot;',': ','true')"/>
+	</xsl:if>
+
+	<xsl:value-of select="concat('},',$newline)"/>
+    </xsl:for-each>
+  </xsl:template>
+  
   <xsl:template match="h">
     <xsl:variable name="str_title">
       <xsl:if test="$flag_prefix">
@@ -67,7 +113,7 @@
 	  <xsl:call-template name="FORMATTASKPREFIX"/>
 	</xsl:for-each>
       </xsl:if>
-      <xsl:for-each select="ancestor-or-self::*[position() &lt;= $n_depth]/child::h">
+      <xsl:for-each select="ancestor-or-self::*[position() &lt;= $n_depth]/child::h|parent::p">
 	<xsl:if test="position() &gt; 1">
 	  <xsl:text> :: </xsl:text>
 	</xsl:if>
@@ -115,10 +161,10 @@
 	    <xsl:value-of select="concat('&quot;','title','&quot;',': ')"/>
 	    <xsl:choose>
 	      <xsl:when test="$int_lmax &lt; 1">
-		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;','_'),'&quot;')"/>
+		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
 	      </xsl:when>
 	      <xsl:otherwise>
-		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;','_'),'&quot;')"/>
+		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
 	      </xsl:otherwise>
 	    </xsl:choose>
 	  </xsl:when>
@@ -127,15 +173,18 @@
 	    <xsl:value-of select="concat('&quot;','title','&quot;',': ')"/>
 	    <xsl:choose>
 	      <xsl:when test="$int_lmax &lt; 1">
-		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;','_'),'&quot;')"/>
+		<xsl:value-of select="concat('&quot;',translate($str_title,'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
 	      </xsl:when>
 	      <xsl:otherwise>
-		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;','_'),'&quot;')"/>
+		<xsl:value-of select="concat('&quot;',translate(substring($str_title,1,$int_lmax),'&quot;&#x201C;&#x201D;&#x201E;&#x201F;&#x005C;','_____/'),'&quot;')"/>
 	      </xsl:otherwise>
 	    </xsl:choose>
 	  </xsl:otherwise>
 	</xsl:choose>
 	<xsl:choose>
+	  <xsl:when test="parent::p">
+	    <xsl:value-of select="concat(',','&quot;','class','&quot;',': ','&quot;','par','&quot;')"/>
+	  </xsl:when>
 	  <xsl:when test="parent::h/parent::task[attribute::class]">
 	    <xsl:value-of select="concat(',','&quot;','class','&quot;',': ','&quot;',parent::h/parent::task/attribute::class,'&quot;')"/>
 	  </xsl:when>
