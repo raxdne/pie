@@ -3,6 +3,8 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/package/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
 
+  <!-- http://officeopenxml.com/prSlide-footer.php -->
+ 
   <xsl:import href="docx2md.xsl"/>
 
   <xsl:output method="text" encoding="UTF-8"/>
@@ -53,6 +55,7 @@
 	<xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise>
+	<xsl:if test="a:pPr/@lvl">
 	<xsl:call-template name="ENUM">
 	  <xsl:with-param name="level" select="a:pPr/@lvl - 1"/>
 	  <xsl:with-param name="str_markup">
@@ -66,6 +69,7 @@
 	    </xsl:choose>
 	  </xsl:with-param>
 	</xsl:call-template>
+	</xsl:if>
 	<xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose>

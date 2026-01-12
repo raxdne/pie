@@ -150,33 +150,45 @@
 (global-set-key [C-f3] (lambda ()
 			 ""
 			 (interactive)
-			 (setq input (concat "[](?redir="
-					     (if (region-active-p)
-						 (buffer-substring (mark) (point))
-					       (if (thing-at-point 'word t)
-						   (thing-at-point 'word t)
-						 (current-kill 0))
-					       )
-					     ")")
-			       )
+			 (setq
+			  pattern (if (region-active-p)
+				      (buffer-substring (mark) (point))
+				    (if (thing-at-point 'word t)
+					(thing-at-point 'word t)
+				      (current-kill 0))
+				    )
+			  input (concat "[" pattern "](/r/" pattern ")")
+			  )
 			 (insert input)
 			 (left-char (- (length input) 1))
 			 )
 		)
 
 
+(defun pie-dehexify-string (string)
+  "TODO: improve!"
+  (string-replace "%28" "("
+		  (string-replace "%29" ")"
+				  (string-replace "+" " "
+						  (string-replace "%2C" ","
+								  (string-replace "%20" " "
+										  string)))))
+  )
+;; (pie-dehexify-string "A%20B%29")
+
+
 (global-set-key [C-f4] (lambda ()
 			 ""
 			 (interactive)
-			 (setq input (concat "[]("
-					     (if (region-active-p)
-						 (buffer-substring (mark) (point))
-					       (if (thing-at-point 'word t)
-						   (thing-at-point 'word t)
-						 (current-kill 0))
-					       )
-					     ")")
-			       )
+			 (setq
+			  pattern (if (region-active-p)
+				      (buffer-substring (mark) (point))
+				    (if (thing-at-point 'word t)
+					(thing-at-point 'word t)
+				      (current-kill 0))
+				    )
+			  input (concat "[" (pie-dehexify-string pattern) "](" pattern ")")
+			  )
 			 (insert input)
 			 (left-char (- (length input) 1))
 			 )

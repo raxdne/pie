@@ -378,6 +378,9 @@
 			<xsl:value-of select="."/>
                       </xsl:element>
 		    </xsl:when>
+		    <xsl:when test="name() = 'strong' or name() = 'em'">
+		      <xsl:copy-of select="."/>
+		    </xsl:when>
 		    <xsl:when test="self::text()">
 		      <xsl:value-of select="."/>
 		    </xsl:when>
