@@ -9,10 +9,14 @@
 // https://github.com/EvanHahn/HumanizeDuration.js
 // https://www.epoch-calendar.com/javascript_calendar/index.html
 
+var locale = 'de-DE';
+const optionsWithWeekday = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+
 // default format for Dates
 Date.prototype.getDateString = function () {
 
     //return this.toLocaleDateString('de-DE', { year: 'numeric', month: 'numeric', day: 'numeric'});
+    //return this.toLocaleDateString(locale,optionsWithWeekday))
     return this.toISOString().substring(0,10);
 }
 
@@ -29,7 +33,7 @@ Date.prototype.getWeek = function (dowOffset) {
 
     var strResult = this.getFullYear();
     
-    dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 0; //default dowOffset to zero
+    dowOffset = (typeof dowOffset === 'number') ? dowOffset : 0; //default dowOffset to zero
     var newYear = new Date(this.getFullYear(),0,1);
     var day = newYear.getDay() - dowOffset; //the day of week the year begins on
     day = (day >= 0 ? day : day + 7);
@@ -228,9 +232,9 @@ objGanttChart.prototype.switchCompact = function (v) {
 
     if (v === undefined) {
 	this.compact = ! this.compact;
-    } else if (typeof(v)  === 'string') {
+    } else if (typeof v === 'string') {
 	this.switchCompact(Number(v));
-    } else if (typeof(v)  === 'boolean') {
+    } else if (typeof v === 'boolean') {
 	this.compact = v;
     } else if (Math.abs(v) > 0.1) {
 	this.compact = true;
@@ -245,9 +249,9 @@ objGanttChart.prototype.switchCompact = function (v) {
 objGanttChart.prototype.switchLength = function (v) {
 
     if (v === undefined) {
-    } else if (typeof(v)  === 'string') {
+    } else if (typeof v === 'string') {
 	this.switchLength(Number(v));
-    } else if (typeof(v)  === 'number') {
+    } else if (typeof v === 'number') {
 	if (Math.abs(v) < 0.1) {
 	    this.t_length = -1;
 	} else {
@@ -766,19 +770,18 @@ objGanttChart.prototype.sort = function() {
 
 objGanttChart.prototype.preDraw = function() {
 
-    this.setHeight(this.scale(this.items.length + 10));
+    this.setHeight(this.scale(this.items.length * 1.25));
 
     //window.console.log(arguments);
     now = new Date(this.t_now);
     var mon = now.getMonth();
     var dom = now.getDate();
     
-    for (var y = 2024; y < 2027; y++) {
-	var dt_y = new Date(y,mon,dom);
+    for (var y = now.getFullYear(), j=-1; j < 5; j++) {
+	var dt_y = new Date(y+j,mon,dom);
 
 	dt_y.setDate(dt_y.getDate() - (dt_y.getDay() === 0 ? 7 : dt_y.getDay()) + 1); // fix to previous Monday
-	
-	this.append({dt_0: dt_y, dt_length: 1, title: 'Current Week in ' + y, class: 'cw', vertical: true});
+	this.append({dt_0: dt_y, dt_length: 1, title: 'Current Week in ' + (y+j), class: 'cw', vertical: true});
     }
 
     var i = this.date2grid(this.t_now);
@@ -1330,25 +1333,19 @@ objGanttChart.prototype.appendVLines = function () {
 
 	var d = new Date(t_i);
 
-	var g_text = document.createElementNS('http://www.w3.org/2000/svg','g');
-	g_text.setAttribute('transform','rotate(-90,' + (this.scale(i) + 5) + ',' + this.scale(1/10) + ')');
-
-	tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-	tx.setAttribute('x', this.scale(i));
-	tx.setAttribute('y', this.scale(1/2));
-	tx.setAttribute('text-anchor', 'end');
-	
-	//tx.appendChild(document.createTextNode(i));
 	if (this.unit > (1000 * 60 * 60 * 24)) {
 	    if (j % 4 == 0) {
-		tx.appendChild(document.createTextNode(d.getWeek()));
-		//tx.appendChild(document.createTextNode(d.toLocaleDateString('de-DE', this.format_date)));
+		var g_text = document.createElementNS('http://www.w3.org/2000/svg','g');
+		g_text.setAttribute('transform','translate(' + (this.scale(i + 0.75)) + ' ' + this.scale(3.5) + ')');
+		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+		tx.setAttribute('transform','rotate(-90)');
+		tx.appendChild(document.createTextNode(d.getWeek(1)));
+		g_text.appendChild(tx);
+		g.appendChild(g_text);
 	    }
 	} else {
-	    tx.appendChild(document.createTextNode(d.toLocaleDateString('de-DE', this.format_date)));
+	    tx.appendChild(document.createTextNode(d.getDateString()));
 	}
-	g_text.appendChild(tx);
-	g.appendChild(g_text);
 	
 
 	//tt = document.createElementNS('http://www.w3.org/2000/svg','title');
