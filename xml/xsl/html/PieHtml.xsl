@@ -216,20 +216,30 @@
       </xsl:choose>
       <xsl:choose>
 	<xsl:when test="@href">
-	  <xsl:attribute name="href">
-	    <xsl:choose>
-	      <xsl:when test="starts-with(@href,'#')">
-		<!-- local link only -->
+	  <xsl:choose>
+	    <xsl:when test="starts-with(@href,'#')">
+	      <!-- local link only -->
+	      <xsl:attribute name="href">
 		<xsl:value-of select="@href"/>
-	      </xsl:when>
-	      <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'mailto:') or starts-with(@href,'tel:') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:when test="starts-with(@href,'data:')">
+	      <xsl:copy-of select="@href"/>
+	      <xsl:attribute name="download">
+		<xsl:value-of select="'content.bin'"/>
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'mailto:') or starts-with(@href,'tel:') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+	      <xsl:attribute name="href">
 		<xsl:value-of select="@href"/>
-	      </xsl:when>
-	      <xsl:otherwise>
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:attribute name="href">
 		<xsl:value-of select="concat($str_link_prefix,'/',@href)"/>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:attribute>
+	      </xsl:attribute>
+	    </xsl:otherwise>
+	  </xsl:choose>
 	</xsl:when>
 	<xsl:otherwise>
 	  <!-- without href attribute -->

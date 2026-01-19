@@ -222,7 +222,13 @@
     <xsl:variable name="path_object">
       <xsl:value-of select="//file[@name='document.xml.rels']/child::*[1]/child::*[name()='Relationship' and @Id=$id_object]/@Target"/>
     </xsl:variable>
-    <xsl:value-of select="concat($newpar,'[OLE Object](?path=',$str_path,'/',$path_object,')',$newpar)"/>
+    <xsl:value-of select="concat($newpar,'[📁](')"/>
+    <xsl:if test="$flag_embed">
+      <xsl:for-each select="//file[@name = substring-after($path_object,'embeddings/')]/base64">
+	<xsl:value-of select="concat('data:',@type,';base64,',.)"/>
+      </xsl:for-each>
+    </xsl:if>
+    <xsl:value-of select="concat(')',$newpar)"/>
   </xsl:template>
 
   <xsl:template match="w:instrText"/>
