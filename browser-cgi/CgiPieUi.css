@@ -51,6 +51,22 @@ li.ui-dir-file {
  vertical-align: middle;
 }
 
+li.ui-dir-file-1 {
+  background-color:#FDE4D0;
+  fill:#FDE4D0;
+ padding: 0.3em 1em 0.3em 1em;
+ list-style: none;
+ vertical-align: middle;
+}
+
+li.ui-dir-file-2 {
+  background-color:#CEEBFC;
+  fill:#CEEBFC;
+ padding: 0.3em 1em 0.3em 1em;
+ list-style: none;
+ vertical-align: middle;
+}
+
 li.ui-tab {
  background: #c7d3fc;
  border: 1px solid #2f6fab;

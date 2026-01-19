@@ -357,15 +357,30 @@
 		<xsl:copy-of select="self::node()"/>
 	      </xsl:when>
 	      <xsl:otherwise>
-		<xsl:attribute name="class">ui-dir-file</xsl:attribute>
+		<xsl:copy-of select="@style|@title|parent::p/@class"/>
+		<xsl:attribute name="class">
+		  <xsl:choose>
+		    <xsl:when test="@impact">
+                      <xsl:value-of select="concat('ui-dir-file-',@impact)"/>
+		    </xsl:when>
+		    <xsl:when test="@class">
+                      <xsl:value-of select="@class"/>
+		    </xsl:when>
+		    <xsl:otherwise>
+		      <xsl:text>ui-dir-file</xsl:text>
+		    </xsl:otherwise>
+		  </xsl:choose>
+		</xsl:attribute>
 		<xsl:copy-of select="child::img[@src]"/>
 		<xsl:for-each select="child::node()|child::text()">
 		  <xsl:choose>
 		    <xsl:when test="name() = 'link'">
                       <xsl:element name="a">
-			<xsl:copy-of select="@class|@style|@title|parent::p/@class"/>
 			<xsl:attribute name="target">
 			  <xsl:choose>
+			    <xsl:when test="ancestor::file[@name = 'shortcuts.md'] and not(starts-with(@href,'/'))">
+                              <xsl:value-of select="'_blank'"/>
+			    </xsl:when>
 			    <xsl:when test="@target">
                               <xsl:value-of select="@target"/>
 			    </xsl:when>

@@ -551,10 +551,10 @@
       <make>
 	<xsl name="period2json.xsl">
 	  <variable name="flag_prefix" select="true()"/>
-	  <variable name="flag_todo" select="false()"/>
+	  <variable name="flag_todo" select="true()"/>
 	  <variable name="flag_target" select="true()"/>
 	  <variable name="int_lmax" select="80" />
-	  <variable name="int_dmax" select="2" />
+	  <variable name="int_dmin" select="4" />
 	</xsl>
       </make>
     </pkg:transition>

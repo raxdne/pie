@@ -8,7 +8,10 @@
         <div id="ui">
 	  <h1>REPL of Server-side JavaScript</h1>
           <div id="content">
-	    <pre id="strValue">Press Ctrl+S to evaluate the input!</pre>
+	    <pre id="strValue">Press Ctrl+S to evaluate the input!
+
+new Date(1735686000000).toLocaleString('de-DE');
+</pre>
             <form method="post" accept-charset="UTF-8">
               <!-- this form is needed for reference only -->
             </form>
