@@ -202,6 +202,8 @@ function callbackContent(key, options) {
 	if (confirm('Translate "' + strSelect + '"?')) {
 	    window.open('https://www.deepl.com/translator#de/en/' + strSelect);
 	}
+    } else if (key == 'unhide') {
+	$('section').css({'display': ''});
     } else {
 
 	// actions to change the URL
@@ -313,6 +315,7 @@ $(function(){
 		    "document": {name: "Document", icon: "document"},
 		    "sep1": "---------",
 		    "reload": {name: "Reload", icon: "reload"},
+		    "unhide": {name: "Unhide", icon: "unhide"},
 		    "editor": {name: "Editor", icon: "edit"},
 		    "sep2": "---------",
 		    "contextYear": {name: "Context Year", icon: "link"},
@@ -350,6 +353,7 @@ $(function(){
 		    "document": {name: "Document", icon: "document"},
 		    "sep1": "---------",
 		    "reload": {name: "Reload", icon: "reload"},
+		    "unhide": {name: "Unhide", icon: "unhide"},
 		    "editor": {name: "Editor", icon: "edit"},
 		    "popout": {name: "Pop out", icon: ""},
 		    "frame": {name: "Scope", icon: ""},
