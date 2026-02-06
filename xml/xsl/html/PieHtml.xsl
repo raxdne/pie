@@ -215,6 +215,11 @@
         </xsl:otherwise>
       </xsl:choose>
       <xsl:choose>
+        <xsl:when test="@name">
+	  <xsl:attribute name="id">
+	    <xsl:value-of select="@name"/>
+	  </xsl:attribute>
+        </xsl:when>
 	<xsl:when test="@href">
 	  <xsl:choose>
 	    <xsl:when test="starts-with(@href,'#')">
