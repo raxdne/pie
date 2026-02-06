@@ -146,8 +146,10 @@ function ISO8601_parse(dt) {
 	} else if (dt.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
             t_result = Date.parse(dt); // UTC time
 	} else if (dt.match(/[0-9]{4}-W[0-9]{2}-[0-9]/)) {
-	    // TODO: ISO week + day of week
+	    // ISO week + day of week
 	    var d = dt.split(/-/);
+	    d[1] = d[1].replace(/W/,'');
+	    t_result = ISO8601_parse(getDateOfIsoWeek(d[1],d[0])) + d[2] * 3600 * 24 * 1000;
 	} else if (dt.match(/[0-9]{4}-W[0-9]{2}/)) {
 	    // ISO week
 	    var d = dt.split(/-W/);
@@ -770,7 +772,7 @@ objGanttChart.prototype.sort = function() {
 
 objGanttChart.prototype.preDraw = function() {
 
-    this.setHeight(this.scale(this.items.length * 1.25));
+    this.setHeight(this.scale(this.items.length * 1.5));
 
     //window.console.log(arguments);
     now = new Date(this.t_now);
