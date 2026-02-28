@@ -15,9 +15,10 @@
       *.vbar {fill: #eeeeee}
       polygon {fill: #aaaaff}
       *.cw {fill: #ffcccc; stroke-width: 0;}
-      *.sel {fill: #ccccff;}
-      *.todo {fill: #f0f2f4;}
-      *.test {fill: #f0f2f4;}
+      *.sel {fill: #ff4444;}
+      *.todo {fill: #4cb1c5;}
+      *.test {fill: #4cb1c5;}
+      *.target {fill: #4cb1c5;}
     </style>
 
 	<script type="text/javascript" src="?spath=myGanttChart.js">// /pie/examples/GanttChart/ </script>
@@ -53,7 +54,8 @@
       c.getInput("/cxproc/exe?redir=legend.json");
       c.getInput("/cxproc/exe?path=%CGIPATH%&amp;cxp=Format&amp;b=application/json%2Bgantt&amp;pattern=%CGITAG%");
       //c.append([{"dt_0": "2024-11-01", "dt_1": "2027-04-01"}]);
-      //c.sort();      
+      //c.sort();
+      //c.setScaleFactor(5);
       c.draw();      
       //c.shift(1500,0);
 

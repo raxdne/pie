@@ -242,6 +242,8 @@ objGanttChart.prototype.switchCompact = function (v) {
 	this.compact = true;
 	this.t_epsilon = v * this.unit;
 	window.console.log('t_epsilon = ', this.t_epsilon);
+    } else {
+	this.compact = false;
     }
     
     return this.compact;
@@ -254,13 +256,14 @@ objGanttChart.prototype.switchLength = function (v) {
     } else if (typeof v === 'string') {
 	this.switchLength(Number(v));
     } else if (typeof v === 'number') {
-	if (Math.abs(v) < 0.1) {
+	if (Math.abs(v) < 0.1 || Math.abs(v) > 52) {
 	    this.t_length = -1;
 	} else {
 	    this.t_length = v * this.unit;
 	}
 	window.console.log('t_length = ', this.t_length);
     } else {
+      this.t_length = -1;
     }
 }
 
@@ -284,6 +287,19 @@ objGanttChart.prototype.setHeight = function (v) {
     window.console.log('SVG height: ' + this.height);
     
     return this.height;
+}
+
+
+objGanttChart.prototype.setScaleFactor = function (v) {
+
+    if (v === undefined || v === null || ! typeof v === 'number' || v < 3.0 || v > 50.0) {
+	this.scaleFactor = 20;
+    } else {
+	this.scaleFactor = Math.round(v);
+    }
+    window.console.log('SVG scaleFactor: ' + this.scaleFactor);
+    
+    return this.scaleFactor;
 }
 
 
@@ -319,8 +335,8 @@ objGanttChart.prototype.clean = function () {
     this.box = new Array();
     this.items = new Array();
     
-    this.scaleFactor = 20;
-    this.y_n = this.scale();
+    this.setScaleFactor(urlParams.get("f"));
+    this.y_n = this.scale(4);
 
     this.format_date = { year: 'numeric', month: 'numeric', day: 'numeric'};
 
@@ -331,20 +347,9 @@ objGanttChart.prototype.clean = function () {
 	this.unit = (1000 * 60 * 60 * 24 * 7 * 1);
     }
 
-    if (urlParams.has("c")) {
-	this.switchCompact(urlParams.get("c"));
-    } else {
-	this.switchCompact(false);
-    }
-
-    if (urlParams.has("l")) {
-	this.switchLength(urlParams.get("l"));
-    } else {
-	this.switchLength(-1);
-    }
-
+    this.switchCompact(urlParams.get("c"));
+    this.switchLength(urlParams.get("l"));
     this.barbackground = '#aaffaa';
-
     this.height = 100;
     this.offset_draw = this.scale(4); // delta
 
@@ -373,10 +378,11 @@ objGanttChart.prototype.setBegin = function (t) {
     if (dow == 0) {
 	this.t_0 += (1000 * 60 * 60 * 24 * 1);
     } else {
-	this.t_0 -= (1000 * 60 * 60 * 24 * (dow - 1));
+	// REQ: change to Date.UTC() ?
+	this.t_0 -= (1000 * 60 * 60 * 24 * (dow - 1.25)); // to avoid impact of timezone
     }
 
-    console.log('Set Begin: ', new Date(this.t_0).getDateString());
+    console.log('Set Begin: ', new Date(this.t_0).toString());
     
     return this.t_0;
 }
@@ -420,6 +426,25 @@ objGanttChart.prototype.getEnd = function() {
 }
 
 
+objGanttChart.prototype.getNumberOfHorizontalItems = function() {
+
+    var i = 0;
+    
+    if (this.items === undefined || ! typeof this.items === 'list') {
+	// ignoring
+    } else {
+	for (const value of this.items) {
+	    if (value.hasOwnProperty("vertical")) {
+		// ignoring
+	    } else {
+		i += 1;
+	    }
+	}
+    }
+    return i;
+}
+
+
 //
 // returns true if 'o' is currently running (inside t_epsilon)
 //
@@ -450,6 +475,8 @@ objGanttChart.prototype.isLong = function (o) {
     if (o === undefined) {
 	return false;
     } else if (this.t_length === undefined || this.t_length < 1) {
+	//
+    } else if (o.hasOwnProperty("vertical")) {
 	//
     } else if (o.hasOwnProperty("t_0")) {
 	if (o.hasOwnProperty("t_1")) {
@@ -772,7 +799,7 @@ objGanttChart.prototype.sort = function() {
 
 objGanttChart.prototype.preDraw = function() {
 
-    this.setHeight(this.scale(this.items.length * 1.5));
+    this.setHeight(this.scale(this.getNumberOfHorizontalItems() * 1.5));
 
     //window.console.log(arguments);
     now = new Date(this.t_now);
@@ -937,18 +964,18 @@ objGanttChart.prototype.getSvg = function(li) {
 	    if (li.hasOwnProperty("vertical") && li.vertical) {
 		//window.console.log('vbar ');
 		f.setAttribute('y',0);
-		f.setAttribute('height',this.height - this.offset_draw);
+		f.setAttribute('height',this.height);
 	    } else {
 		//window.console.log('hbar ');
 		f.setAttribute('y',this.y_n);
 		f.setAttribute('height',h);
-		f.setAttribute('rx',3);
+		f.setAttribute('rx',this.scale(0.1));
 	    }
 	    
 	    f.setAttribute('width',l_x);
 
 	    if (li.hasOwnProperty("flag") && li.flag) {
-		//g.appendChild(this.getSvgFlag(g_x + l_x - 5, this.y_n - this.scale(0.2)));
+		g.appendChild(this.getSvgFlag(g_x + l_x - 5, this.y_n + this.scale(0.2)));
 	    }
 
 	    if (li.hasOwnProperty("opacity")) {
@@ -973,7 +1000,7 @@ objGanttChart.prototype.getSvg = function(li) {
 
 		var tx = document.createElementNS('http://www.w3.org/2000/svg','text');
 		tx.setAttribute('x', g_x + 4);
-		tx.setAttribute('y',this.y_n + this.scale() - 5);
+		tx.setAttribute('y',this.y_n + this.scale(0.73));
 		tx.appendChild(document.createTextNode(li.title));
 		
 		a.appendChild(tx);
@@ -1009,9 +1036,9 @@ objGanttChart.prototype.getSvg = function(li) {
 		
 		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
 		tx.setAttribute('x', g_x - this.scale(1/2) - 5);
-		tx.setAttribute('y',this.y_n + this.scale() - 5);
+		tx.setAttribute('y',this.y_n + this.scale(0.73));
 		tx.setAttribute('text-anchor', "end");
-		tx.appendChild(document.createTextNode(li.title));
+		tx.appendChild(document.createTextNode(li.title + ' (' + new Date(li.t_0).getDateString() + ')'));
 		g.appendChild(tx);
 
 		g.appendChild(f);
@@ -1150,7 +1177,7 @@ objGanttChart.prototype.draw = function() {
 	//this.appendHLines();
 	this.postDraw();
 	
-	const w = this.scale(Math.ceil(this.date2grid(this.getEnd())));
+	const w = this.scale(Math.ceil(this.date2grid(this.getEnd()) + 10));
 	const h = this.height + this.scale(4);
 	
 	window.console.log('svg width: ' + w);
@@ -1164,7 +1191,7 @@ objGanttChart.prototype.draw = function() {
 	if (g === undefined || g === null) {
 	    g = document.createElementNS('http://www.w3.org/2000/svg','g');
 	    g.setAttribute('name', 'draw');
-	    g.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
+	    //g.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
 	    this.svg.appendChild(g);
 	}
 
@@ -1264,19 +1291,19 @@ objGanttChart.prototype.getSvgFlag = function(x,y) {
     
     f = document.createElementNS('http://www.w3.org/2000/svg','rect');
     f.setAttribute('x',x);
-    f.setAttribute('y',y-20);
-    f.setAttribute('height',10);
-    f.setAttribute('width',15);
-    f.setAttribute('rx',1);
-    f.setAttribute('fill','red');
-    //f.setAttribute('stroke','blue');
+    f.setAttribute('y',y - this.scale(1));
+    f.setAttribute('height',this.scale(0.5));
+    f.setAttribute('width',this.scale(1));
+    f.setAttribute('rx',this.scale(0.1));
+    f.setAttribute('fill','yellow');
+    f.setAttribute('stroke','blue');
     g.appendChild(f);
 
     f = document.createElementNS('http://www.w3.org/2000/svg','line');
     f.setAttribute('x1',x);
     f.setAttribute('y1',y);
     f.setAttribute('x2',x);
-    f.setAttribute('y2',y-22);
+    f.setAttribute('y2',y - this.scale(1));
     //f.setAttribute('fill','red');
     f.setAttribute('stroke','black');
     f.setAttribute('stroke-width','2');
