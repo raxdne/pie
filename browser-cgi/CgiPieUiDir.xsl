@@ -135,6 +135,7 @@
                 </xsl:attribute>
               </xsl:otherwise>
             </xsl:choose>
+	        <xsl:text>&#x1F4C2; </xsl:text>
             <xsl:value-of select="@name"/>
             <xsl:text>/</xsl:text>
           </xsl:element>
@@ -371,7 +372,12 @@
 		    </xsl:otherwise>
 		  </xsl:choose>
 		</xsl:attribute>
-		<xsl:copy-of select="child::img[@src]"/>
+		<xsl:for-each select="child::img[@src and position() = 1]">
+                  <xsl:element name="{name()}">
+		    <xsl:copy-of select="@src"/>
+		    <xsl:attribute name="class">dir</xsl:attribute>
+		  </xsl:element>
+		</xsl:for-each>
 		<xsl:for-each select="child::node()|child::text()">
 		  <xsl:choose>
 		    <xsl:when test="name() = 'link'">

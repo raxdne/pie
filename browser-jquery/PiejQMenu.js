@@ -148,7 +148,8 @@ function callbackContent(key, options) {
     
     var urlParams = new URLSearchParams(document.location.search);
     var strHashNew = '';
-
+    var fOpen = false;
+    
     urlParams.delete('hl');
     urlParams.delete('title');
     //urlParams.delete('re');
@@ -203,7 +204,8 @@ function callbackContent(key, options) {
 	    window.open('https://www.deepl.com/translator#de/en/' + strSelect);
 	}
     } else if (key == 'unhide') {
-	$('section').css({'display': ''});
+	$('section').css({'display': 'revert'});
+	$('img').css({'display': 'revert'});
     } else {
 
 	// actions to change the URL
@@ -237,6 +239,7 @@ function callbackContent(key, options) {
 	} else if (key == 'gantt') {
 	    urlParams.set('cxp','PiejQGanttChart');
 	    //urlParams.set('c','5');
+	    fOpen = true;
 	} else if (key == 'calendar') {
 	    urlParams.set('cxp','PiejQCalendar');
 	    strHashNew = '#yesterday';
@@ -283,7 +286,11 @@ function callbackContent(key, options) {
 	var strQuery = '?' + urlParams.toString();
 
 	putsConsole('New URL: ' + strQuery + strHashNew);
-	window.location.assign(strQuery + strHashNew);
+	if (fOpen) {
+	    window.open(strQuery + strHashNew);
+	} else {
+	    window.location.assign(strQuery + strHashNew);
+	}
     }
 }
 		    

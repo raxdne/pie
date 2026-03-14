@@ -18,7 +18,10 @@
   <xsl:variable name="int_lmax" select="60" /> <!-- maximum length of an event summary -->
 
   <xsl:variable name="ns_date" select="descendant::date[(parent::*[contains(text(),'🏠') or contains(text(),'🎂') or contains(text(),'⛪')] or parent::h/parent::task[@class='target'] or parent::h/parent::*[@interval and @impact] or (parent::h/parent::task[@class='todo' or @class='test'])) and ($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta))]" />
-  <!-- or @interval &gt; 1  -->
+  <!--
+  <xsl:variable name="ns_date" select="descendant::date[(($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta))) or parent::h/parent::*[(contains(text(),'🏠') or contains(text(),'🎂') or contains(text(),'⛪') or @class='target' or (@interval and @impact))]]" />
+      -->
+  <!-- descendant::date[(($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta))) or parent::h/parent::*[(contains(text(),'🏠') or contains(text(),'🎂') or contains(text(),'⛪') or @class='target')]]  -->
   <!-- TODO: or parent::*/children::tag[text() = '#today'] #scope -->
 
   <xsl:template match="/">
@@ -29,11 +32,6 @@ METHOD:PUBLISH
 </xsl:text>
 <xsl:value-of select="concat('X-WR-CALNAME:','cxproc','&#10;')"/>
 <xsl:value-of select="concat('X-WR-TIMEZONE:','Europe/Berlin','&#10;')"/>
-<xsl:value-of select="concat('COMMENT:ns_date = ',count($ns_date),'&#10;')"/>
-<xsl:value-of select="concat('COMMENT:int_delta = ',$int_delta,'&#10;')"/>
-<xsl:value-of select="concat('COMMENT:flag_todo = ',$flag_todo,'&#10;')"/>
-<xsl:value-of select="concat('COMMENT:flag_interval = ',$flag_interval,'&#10;')"/>
-<xsl:value-of select="concat('COMMENT:int_lmax = ',$int_lmax,'&#10;')"/>
 <xsl:text>BEGIN:VTIMEZONE
 TZID:Europe/Berlin
 BEGIN:DAYLIGHT
@@ -53,6 +51,11 @@ END:STANDARD
 END:VTIMEZONE
 </xsl:text>
     <xsl:apply-templates select="$ns_date"/>
+<xsl:value-of select="concat('COMMENT:ns_date = ',count($ns_date),'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:int_delta = ',$int_delta,'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:flag_todo = ',$flag_todo,'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:flag_interval = ',$flag_interval,'&#10;')"/>
+<xsl:value-of select="concat('COMMENT:int_lmax = ',$int_lmax,'&#10;')"/>
 <xsl:text>END:VCALENDAR
 </xsl:text>
   </xsl:template>
