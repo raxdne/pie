@@ -26,6 +26,12 @@ paragraph ++
 
 paragraph ✔ ++
 
+DONE: already done
+
+TODO: to be done
+
+DONE: already done
+
 ** Header +++
 
 TTT

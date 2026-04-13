@@ -16,3 +16,10 @@ List
 1) ![Test](/Test/Pictures/Tux.png)
 1) ![Test](/Test/Pictures/Tux.png) Post
 
+
+![Abc](abc.png)
+
+Fig. def.png Def
+
+Fig. Hij
+
