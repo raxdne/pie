@@ -328,6 +328,20 @@
     </xsl:variable>
 
     <xsl:choose>
+      <xsl:when test="child::base64/child::l"> <!-- embedd base64 encoding in img -->
+	<xsl:element name="{$name_element}">
+	  <xsl:element name="img">
+	    <xsl:attribute name="src">
+	      <xsl:for-each select="child::base64">
+		<xsl:value-of select="concat('data:',attribute::type,';base64,')"/>
+		<xsl:for-each select="child::l">
+		  <xsl:value-of select="."/>
+		  </xsl:for-each>
+	      </xsl:for-each>
+	    </xsl:attribute>
+	  </xsl:element>
+	</xsl:element>
+      </xsl:when>
       <xsl:when test="parent::section and child::list">
 	<xsl:element name="div">
 	  <xsl:call-template name="CLASSATRIBUTE"/>
@@ -385,7 +399,12 @@
 	<xsl:element name="{name()}">
 	  <xsl:copy-of select="@*"/>
 	  <xsl:attribute name="src">
-	    <xsl:value-of select="concat('data:',child::base64/attribute::type,';base64,',child::base64/child::text())"/>
+	      <xsl:for-each select="child::base64">
+		<xsl:value-of select="concat('data:',attribute::type,';base64,')"/>
+		<xsl:for-each select="child::l">
+		  <xsl:value-of select="."/>
+		  </xsl:for-each>
+	      </xsl:for-each>
 	  </xsl:attribute>
 	</xsl:element>
       </xsl:when>

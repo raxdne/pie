@@ -118,8 +118,7 @@ function callbackSection(key, options) {
 		}
 	    } else {
 		// global XPath defined, keep path
-		//urlParams.set('xpath',strXPathBlock);
-		urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock + '"]');
+		urlParams.set('xpath',strXPathGlobal);
 	    }
 	} else {
 	    if (strPathContext == '') {
@@ -127,7 +126,6 @@ function callbackSection(key, options) {
 	    } else {
 		// new path and XPath for block defined
 		urlParams.set('path',strPathContext);
-		//urlParams.set('xpath',strXPathBlock);
 		urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock + '"]');
 		urlParams.set('cxp','PiejQDefault');
 	    }
