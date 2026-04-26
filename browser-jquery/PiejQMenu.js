@@ -67,7 +67,7 @@ function callbackSection(key, options) {
     var urlParams = new URLSearchParams(document.location.search);
     var strXPathBlock;
     var strXPathGlobal;
-    var strLocator;
+    var strPathContext;
 	
     var m = "clicked: " + key;
     putsConsole(m); 
@@ -77,7 +77,7 @@ function callbackSection(key, options) {
 	return;
     }
     
-    [strLocator,strXPathBlock,strXPathGlobal] = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
+    [strPathContext,strXPathBlock,strXPathGlobal] = RFC1738Decode(options.$trigger.attr("name")).split(/:/);
 
     urlParams.delete('hl');
     urlParams.delete('title');
@@ -110,22 +110,24 @@ function callbackSection(key, options) {
 	urlParams.delete('re');
 	if (strXPathBlock == '') {
 	    if (strXPathGlobal == '') {
-		if (strLocator == '') {
+		if (strPathContext == '') {
 		    // empty
 		} else {
 		    urlParams.delete('xpath');
-		    urlParams.set('path',strLocator);
+		    urlParams.set('path',strPathContext);
 		}
 	    } else {
 		// global XPath defined, keep path
-		urlParams.set('xpath','/descendant-or-self::*[@xpath = "' + strXPathGlobal + '"]');
+		//urlParams.set('xpath',strXPathBlock);
+		urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock + '"]');
 	    }
 	} else {
-	    if (strLocator == '') {
+	    if (strPathContext == '') {
 		// empty
 	    } else {
 		// new path and XPath for block defined
-		urlParams.set('path',strLocator);
+		urlParams.set('path',strPathContext);
+		//urlParams.set('xpath',strXPathBlock);
 		urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock + '"]');
 		urlParams.set('cxp','PiejQDefault');
 	    }
@@ -135,7 +137,27 @@ function callbackSection(key, options) {
     } else if (key == 'hide') {
 	options.$trigger.parent().parent().css({'display': 'none'});
     } else if (key == 'up') {
-	urlParams.set('xpath','/descendant-or-self::*[@bxpath = "' + strXPathBlock.replace(/\/[^\/]+$/,'') + '"]');
+	if (strXPathBlock == '') {
+	    if (strXPathGlobal == '') {
+		if (strPathContext == '') {
+		    // empty
+		} else {
+		    urlParams.delete('xpath');
+		    urlParams.set('path',strPathContext);
+		}
+	    } else {
+		// global XPath defined, keep path
+		urlParams.set('xpath',strXPathGlobal.replace(/\/[^\/]+$/,''));
+	    }
+	} else {
+	    if (strPathContext == '') {
+		// empty
+	    } else {
+		// new path and XPath for block defined
+		urlParams.set('path',strPathContext);
+		urlParams.set('xpath', strXPathGlobal.replace(/\/[^\/]+$/,''));
+	    }
+	}
 	window.location.assign('?' + urlParams.toString());
     }
 }
@@ -244,7 +266,7 @@ function callbackContent(key, options) {
 	    urlParams.set('cxp','PiejQCalendar');
 	    strHashNew = '#yesterday';
 	} else if (key == 'calendar_month') {
-	    //window.location.assign(strLocator.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
+	    //window.location.assign(strPathContext.replace(/(jQ|Ui)[a-z]+/i,'jQCalendar').concat('&context=month'));
 	} else if (key == 'selection') {
 	    selection = window.getSelection();
 	    strSelect = selection.toString().replace(/^\s+/,'').replace(/\s+$/,'');

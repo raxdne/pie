@@ -148,7 +148,7 @@
     <pkg:stelle id="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disposition="attachement;filename=cxproc.xml">
       <h>MS Office Excel (XML)</h>
       <make>
-	<xml locator="no">
+	<xml>
 	  <file name="PATH" verbosity="5"/>
 	</xml>
       </make>
@@ -657,11 +657,12 @@
       <h>import</h>
       <make>
 	<xml>
-	  <xml>
-	    <pie tags="yes" todo="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
-	      <import name="PATH" locator="yes" subst="yes" />
+	  <xml locator="yes">
+	    <pie tags="yes" todo="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" embed="no">
+	      <import name="PATH" subst="yes"/>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -669,7 +670,7 @@
       <h>importmm</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
+	  <xml locator="yes">
 	    <pie tags="no" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes">
 	      <import type="cxp">
 		<xml>
@@ -690,8 +691,8 @@
       <h>importxmmap</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
-	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
+	  <xml locator="yes">
+	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" embed="no">
 	      <import type="cxp">
 		<xml>
 		  <xml locator="yes">
@@ -710,8 +711,8 @@
       <h>importodt</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
-	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
+	  <xml locator="yes">
+	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" embed="no">
 	      <import type="cxp">
 		<plain>
 		  <xml locator="yes">
@@ -741,8 +742,8 @@
       <h>importodp</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
-	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
+	  <xml locator="yes">
+	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" embed="no">
 	      <import type="cxp">
 		<plain>
 		  <xml locator="yes">
@@ -761,8 +762,8 @@
       <h>importdocx</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
-	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
+	  <xml locator="yes">
+	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" embed="no">
 	      <import type="cxp">
 		<plain type="text/markdown">
 		  <xml>
@@ -822,8 +823,8 @@
       <h>importpptx</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
-	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" xpath="XPATH" embed="no">
+	  <xml locator="yes">
+	    <pie tags="yes" pattern="TAG" regexp="RE" figure="yes" offset="yes" validation="yes" embed="no">
 	      <import type="cxp" >
 		<plain type="text/markdown">
 		  <xml locator="yes">
@@ -855,11 +856,12 @@
       <h>importcsv</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
-	    <pie tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes" xpath="XPATH" embed="no">
+	  <xml locator="yes">
+	    <pie tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes" embed="no">
 	      <import name="PATH" locator="yes" type="csv"/>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -867,11 +869,12 @@
       <h>importcal</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
+	  <xml locator="yes">
 	    <pie tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes">
 	      <import name="PATH" locator="yes" type="log"/>
 	    </pie>
 	  </xml>
+	  <xpath select="XPATH"/>
 	</xml>
       </make>
     </pkg:transition>
@@ -879,7 +882,7 @@
       <h>importvcard</h>
       <make>
 	<xml>
-	  <xml xpath="yes">
+	  <xml locator="yes">
 	    <pie tags="yes" pattern="TAG" regexp="RE" figure="no" offset="yes" validation="yes">
 	      <import type="cxp">
 		<xml>
@@ -938,7 +941,7 @@
 	    -->
 	    <col id="content" name="Content">
 	      <xml>
-		<xml xpath="yes">
+		<xml locator="yes">
 		  <file name="PATH" locator="yes" verbosity="4"/>
 		  <xsl name="mm2pie.xsl"/>
 		</xml>
@@ -956,7 +959,7 @@
 	  <calendar columns="yes">
 	    <col id="content">
 	      <xml>
-		<xml xpath="yes">
+		<xml locator="yes">
 		  <pie figure="no" tags="yes" validation="yes">
 		    <import name="PATH" locator="yes" type="log"/>
 		  </pie>
@@ -1175,11 +1178,11 @@
     <pkg:transition id="ics2pie">
       <h>ics2pie</h>
       <make>
-	<xml xpath="no">
+	<xml>
 	  <pie tags="yes" date="yes" figure="no" offset="yes" validation="yes">
 	    <import type="cxp">
 	      <xml>
-		<xml locator="no">
+		<xml>
 		  <file name="PATH" verbosity="5"/>
 		</xml>
 		<xsl name="xCal2pie.xsl"/>
