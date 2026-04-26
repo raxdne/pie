@@ -328,15 +328,22 @@
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="child::base64/child::l"> <!-- embedd base64 encoding in img -->
+      <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
 	<xsl:element name="{$name_element}">
 	  <xsl:element name="img">
 	    <xsl:attribute name="src">
 	      <xsl:for-each select="child::base64">
 		<xsl:value-of select="concat('data:',attribute::type,';base64,')"/>
-		<xsl:for-each select="child::l">
-		  <xsl:value-of select="."/>
-		  </xsl:for-each>
+		<xsl:choose>
+		  <xsl:when test="child::l"> <!-- single lines -->
+		    <xsl:for-each select="child::l">
+		      <xsl:value-of select="."/>
+		    </xsl:for-each>
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:value-of select="text()"/>
+		  </xsl:otherwise>
+		</xsl:choose>
 	      </xsl:for-each>
 	    </xsl:attribute>
 	  </xsl:element>
@@ -396,16 +403,24 @@
   <xsl:template match="img">
     <xsl:choose>
       <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
-	<xsl:element name="{name()}">
-	  <xsl:copy-of select="@*"/>
-	  <xsl:attribute name="src">
+	<xsl:element name="{$name_element}">
+	  <xsl:element name="img">
+	    <xsl:attribute name="src">
 	      <xsl:for-each select="child::base64">
 		<xsl:value-of select="concat('data:',attribute::type,';base64,')"/>
-		<xsl:for-each select="child::l">
-		  <xsl:value-of select="."/>
-		  </xsl:for-each>
+		<xsl:choose>
+		  <xsl:when test="child::l"> <!-- single lines -->
+		    <xsl:for-each select="child::l">
+		      <xsl:value-of select="."/>
+		    </xsl:for-each>
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:value-of select="text()"/>
+		  </xsl:otherwise>
+		</xsl:choose>
 	      </xsl:for-each>
-	  </xsl:attribute>
+	    </xsl:attribute>
+	  </xsl:element>
 	</xsl:element>
       </xsl:when>
       <xsl:otherwise>		<!-- build a href -->
