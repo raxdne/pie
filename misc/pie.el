@@ -28,6 +28,7 @@
       (require 'speedbar)
       (speedbar-add-supported-extension ".txt")
       (speedbar-add-supported-extension ".pie")
+      (speedbar-add-supported-extension ".md")
       (require 'goto-addr)
       )
   )
@@ -74,19 +75,207 @@
 
   (if (buffer-file-name)
       (if (string= (file-name-extension (buffer-file-name)) "txt")
-	  (pie-plain-minor-mode)
-	(if (string= (file-name-extension (buffer-file-name)) "pie")
-	    (pie-xml-minor-mode)
-	  (message "Unknown extension")
+	  (progn
+	    (pie-plain-minor-mode)
+	    (end-of-buffer))
+	(if (string= (file-name-extension (buffer-file-name)) "md")
+	    (progn
+	      (pie-markdown-minor-mode)
+	      (end-of-buffer))
+	  (if (string= (file-name-extension (buffer-file-name)) "pie")
+	      (pie-xml-minor-mode)
+	    (message "Unknown extension")
+	    )
 	  )
 	)
-    (pie-plain-minor-mode)
     )
+
+  (local-set-key "\e1"
+		 (lambda () ""
+		   (interactive)
+		   (insert "[]()")
+		   (backward-char 3)))
+
+  (local-set-key "\e2"
+		 (lambda () ""
+		   (interactive)
+		   (let ((begin-region (mark))
+			 (end-region (point)))
+		     (if (> (- end-region begin-region) 0)
+			 (progn
+			   (goto-char begin-region)
+			   (insert "“")
+			   (goto-char (+ end-region 1))
+			   (insert "”")
+					;(goto-char end-region)
+			   )
+		       (progn
+			 (insert "“”")
+			 (backward-char 1)
+			 )
+		       )
+		     )
+		   )
+		 )
+
+  (local-set-key [S-f2] (lambda ()
+			  "inserts current date as ISO 8601"
+			  (interactive)
+			  (insert (format-time-string "%Y-%m-%d"))
+			  )
+		 )
+
+  (local-set-key [C-f2] (lambda ()
+			  "inserts current date as ISO 8601 week"
+			  (interactive)
+			  (insert (format-time-string "%Y-W%V-%u"))
+			  )
+		 )
+
+  (local-set-key [M-f2]
+		 (lambda ()
+		   "inserts current time as ISO 8601"
+		   (interactive)
+		   (insert (format-time-string "%Y-%m-%dT%H:%M:00CET"))
+		   )
+		 )
+
+  ;;
   )
 
+;;;
+;;; insert markup for links
+;;;
+
+(defun pie-hexify-string (string)
+  "TODO: improve!"
+  (string-replace "%28" "("
+		  (string-replace ")" "%29"
+				  (string-replace " " "+"
+						  (string-replace "," "%2C"
+								  (string-replace " " "%20"
+										  string)))))
+  )
+;; (pie-hexify-string "A B,")
+
+
+(defun pie-dehexify-string (string)
+  "TODO: improve!"
+  (string-replace "%28" "("
+		  (string-replace "%29" ")"
+				  (string-replace "+" " "
+						  (string-replace "%2C" ","
+								  (string-replace "/" " > "
+										  (string-replace "%20" " "
+										  string))))))
+  )
+;; (pie-dehexify-string "A%20B%29/BB/C")
+
+(global-set-key [C-f3] (lambda ()
+			 ""
+			 (interactive)
+			 (setq
+			  pattern (if (region-active-p)
+				      (buffer-substring (mark) (point))
+				    (if (thing-at-point 'word t)
+					(thing-at-point 'word t)
+				      (current-kill 0))
+				    )
+			  input (concat "[" (pie-dehexify-string pattern) "](" (if (not (string-search "/" pattern)) "/r/") (pie-hexify-string pattern) ")")
+			  )
+			 (insert input)
+			 (left-char (- (length input) 1))
+			 )
+		)
+;; https://www.abc.de/ 
+;; image.png 
+
 (add-hook 'text-mode-hook 'pie-minor-mode)
+;(add-hook 'text-mode-hook 'pie-minor-mode)
 ;(add-hook 'text-mode-hook 'outline-minor-mode)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; pie font lock
+;;;
+
+(defvar pie-font-lock-keywords
+  '(     ; Reihenfolge ist wichtig
+    ;; CPP-Anweisungen
+    ("^[;]*#(import|subst).*$" . 'font-lock-keyword-face)
+    ;; Kommentare
+    ("^;+.*$" . 'font-lock-comment-face)
+    ;; Todo
+    ("\\(TODO\\|DONE\\|TEST\\|BUG\\|TARGET\\|REQ\\):" 1 'font-lock-doc-markup-face)
+    ;; Abb
+    ("\\(Abb\\|ABB\\|Fig\\|FIG\\)\\[\\.:\\]" 1 'font-lock-doc-markup-face)
+    ;; Tags
+    ("[@#][a-zA-ZäöüÄÖÜß\\-_]+" . 'font-lock-doc-markup-face)
+    )
+  "Keywords for cxproc/PIE"
+  )
+
+(font-lock-add-keywords 'text-mode pie-font-lock-keywords)
+(font-lock-add-keywords 'text-mode '(("^ *[\\*%]+.*$" . font-lock-function-name-face)))
+(font-lock-add-keywords 'markdown-mode pie-font-lock-keywords)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; pie markdown
+;;;
+
+(defvar pie-markdown-imenu-generic-expression
+  '(
+    ("Sections" "^[#]+ .*" 0)
+    ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
+					;("Remarks"  "^[;]+.*"  0)
+					;("Markups"  "^[#]+.*"   0)
+    ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
+  "Imenu generic expression for PIE mode.  See `imenu-generic-expression'.")
+
+(defun pie-markdown-minor-mode ()
+  "This is the markdown text mode for PIE."
+
+  (interactive)
+  ;;
+  (auto-fill-mode -1)
+  ;(setq fill-column 70)
+  ;;
+  (line-number-mode 1)
+  (column-number-mode 1)
+  ;;
+  (local-set-key    [S-f1] 'pie-plain-insert-task)
+  ;;
+  (local-set-key [C-f1] 'pie-plain-toggle-todo)
+  (if window-system
+      (progn
+	;; font-lock 
+	;(font-lock-mode t)
+	;(font-lock-fontify-buffer)
+	;; BUG: font-lock isnt active first time
+	;;
+	(goto-address-mode)
+	;;  (goto-address-fontify)
+	;;
+	;; imenu
+	;; sonst entsprechend imenu-example--* anpassen
+	(set (make-local-variable 'imenu-generic-expression)
+	     pie-markdown-imenu-generic-expression)
+	(setq
+	 imenu-case-fold-search nil
+	 speedbar-tag-hierarchy-method '(speedbar-trim-words-tag-hierarchy)
+	 )
+	)
+    (progn				; Text-Modus
+      )
+    )
+  (set (make-local-variable 'pie-mode-enabled) t)
+  (message "'pie-markdown-minor-mode' loaded")
+;  (run-mode-hooks 'text-mode-hook)
+  )
+;; (pie-markdown-minor-mode)
+
+(add-hook 'markdown-mode-hook 'pie-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -97,79 +286,21 @@
   '(
     ("Sections" "^[*%]+.*" 0)
     ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
-    ("Remarks"  "^[;]+.*"  0)
-    ("Markups"  "^[#]+.*"   0)
+    ;("Remarks"  "^[;]+.*"  0)
+    ;("Markups"  "^[#]+.*"   0)
     ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
   "Imenu generic expression for PIE mode.  See `imenu-generic-expression'.")
-
-
-(defvar pie-plain-font-lock-keywords
-  '(     ; Reihenfolge ist wichtig
-   ;; section
-   ("^ *[\*%]+.*$" . font-lock-function-name-face)
-   ;; CPP-Anweisungen
-   ("^[ ;]*#+.*$" . font-lock-keyword-face)
-   ;; Kommentare
-   ("^ *;+.*$" . font-lock-comment-face)
-					; cite
-					;("\\[[a-zA-Z0-9\,\-]*\\]" . font-lock-variable-name-face)
-   ;; Todo
-   ("TODO:" . font-lock-reference-face)
-   ("TEST:" . font-lock-reference-face)
-   ("BUG:" . font-lock-reference-face)
-   ("TARGET:" . font-lock-reference-face)
-   ("REQ:" . font-lock-reference-face)
-   ("DONE:" . font-lock-reference-face)
-   ;; Abb
-   ("[Aa][Bb][Bb][\\.:]" . font-lock-reference-face)
-   ("[Ff][Ig][Gg][\\.:]" . font-lock-reference-face)
-   ;; Tab
-					;("[Tt][Aa][Bb][\\.:]" . font-lock-reference-face)
-   ;; Tags
-   ("[@#][a-zA-ZäöüÄÖÜß\\-_]+" . font-lock-reference-face)
-   ;; Aufzaehlungen
-   ("^ *[\-\+]+" . font-lock-variable-name-face)
-   ;; quotes
-   ("[><]+" . font-lock-variable-name-face)
-					; ldots
-					;("\\.\\.\\." . font-lock-variable-name-face)
-					; i.d.R.
-					;("i\\. *d\\. *R\\." . font-lock-variable-name-face)
-					; z.B.
-					;("z\\. *B\\." . font-lock-variable-name-face)
-					; d.h.
-					;("d\\. *h\\." . font-lock-variable-name-face)
-   )
-  "font-lock expressions for PIE mode.  See `'.")
-
 
 (defun pie-plain-minor-mode ()
   "This is the plain text mode for PIE."
 
   (interactive)
   ;;
-  (auto-fill-mode 1)
+  (auto-fill-mode -1)
   ;(setq fill-column 70)
   ;;
   (line-number-mode 1)
   (column-number-mode 1)
-  ;;
-  ;; fügt deutsche Anführungszeichen ein
-  (local-set-key "\e1"
-		 (lambda () ""
-		   (interactive)
-		   ;;(insert "><")
-		   (insert "‚‘")
-		   (backward-char 1)))
-  ;; fügt deutsche doppelte Anführungszeichen ein
-  (local-set-key "\e2"
-		 (lambda () ""
-		   (interactive)
-		   ;;(insert ">><<")
-		   ;;(insert "„“")
-		   ;;(insert ">><<")
-		   (insert "“”")
-		   (backward-char 1)))
   ;;
   (local-set-key    [S-f1] 'pie-plain-insert-task)
   ;;
@@ -178,11 +309,10 @@
       (progn
 	;; font-lock
 	(font-lock-mode t)
-	(setq font-lock-keywords pie-plain-font-lock-keywords)
 	(font-lock-fontify-buffer)
 	;; BUG: font-lock isnt active first time
 	;;
-	(goto-address)
+	(goto-address-mode)
 	;;  (goto-address-fontify)
 	;;
 	;; imenu
@@ -231,27 +361,6 @@
 ;; (pie-plain-toggle-todo)
 
 
-(defun pie-plain-insert-task ()
-  "insert a task element"
-  (interactive)
-  ;;
-  (setq pie-position (point))
-  (setq pie-task-date-str
-	(read-from-minibuffer "date: "))
-  (setq pie-task-h-str
-	(read-from-minibuffer "h: "))
-  ;;
-  (insert (concat "TODO: "
-		  (if (> (length pie-task-date-str) 0)
-		      (concat pie-task-date-str " ")
-		    )
-		  pie-task-h-str " | \n\n")
-	  )
-					;(goto-char (match-end 0))
-  (previous-line 2)
-  )
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 (defun pie-alphabet ()
@@ -273,6 +382,8 @@
 ;;; pie XML
 ;;;
 
+;(font-lock-add-keywords 'xml-mode pie-plain-font-lock-keywords)
+
 (defun pie-xml-minor-mode ()
   ""
   (interactive)
@@ -290,19 +401,6 @@
   (line-number-mode 1)
   (column-number-mode 1)
   ;;
-  ;; fügt deutsche Anführungszeichen ein
-  (local-set-key "\e1"
-		 (lambda () ""
-		   (interactive)
-		   (insert "‚‘")
-		   (backward-char 1)))
-  ;; fügt deutsche doppelte Anführungszeichen ein
-  (local-set-key "\e2"
-		 (lambda () ""
-		   (interactive)
-		   (insert "„“")
-		   (backward-char 1)))
-
   ;(local-set-key    [f7] 'browse-url-of-buffer)
   (local-set-key    [S-f1] 'pie-xml-insert-task)
 
@@ -318,26 +416,20 @@
   ;;
   (setq pie-position (point))
   (setq pie-task-date-str
-	(read-from-minibuffer "date="))
-  (setq pie-task-effort-str
-	(read-from-minibuffer "effort="))
+	(read-from-minibuffer "date: "))
   (setq pie-task-h-str
 	(read-from-minibuffer "h: "))
   ;;
-  (insert (concat "<task"
+  (insert (concat "<task>\n"
+		  "  <h>"
 		  (if (> (length pie-task-date-str) 0)
-		      (concat " date=\"" pie-task-date-str "\"")
+		      (concat "<date>" pie-task-date-str "</date> ")
 		    )
-		  (if (> (length pie-task-effort-str) 0)
-		      (concat " effort=\"" pie-task-effort-str "\"")
-		    )
-		  ">\n"
-		  "  <h>" pie-task-h-str "</h>\n"
-		  "  <contact idref=\"\"/>\n"
+		  pie-task-h-str "</h>\n"
 		  "</task>\n")
 	  )
   (indent-region pie-position (point) nil)
-  (re-search-backward "idref=\\\"" nil t)
+  (re-search-backward "<date>" nil t)
   (goto-char (match-end 0))
   )
 
@@ -346,6 +438,8 @@
 ;;;
 ;;; pie transform
 ;;;
+
+;; TODO: yank images as base64 https://github.com/abo-abo/org-download/issues/131
 
 (defvar pie-filename-pie
   (concat (getenv "HOME") "/tmp/emacs.pie")
@@ -749,6 +843,137 @@
 				     (insert " ✔"))
 			  )
   t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-reject] '("✘" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " ✘"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-mail] '("Mail" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " \\u1F4E7"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-chat] '("Chat" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " \\u1F5EA"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-tel] '("Telephone" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert " \\u1F4DE"))
+			  )
+  t
+  )
+
+(define-key-after
+  (lookup-key global-map [menu-bar tools])
+  [current-insert-marker] '("Insert Marker" . (lambda ()
+				     ""
+				     (interactive)
+				     (insert "\n\n➽\n\n"))
+			  )
+  t
+  )
+
+
+(defun pie-file-base64 ()
+  ""
+  
+  (interactive)
+
+  (let ((ext nil)
+	(buf (get-buffer-create "* base64 *"))
+	(cmd (read-shell-command "Run command: " "base64 -w 80 ")))
+    
+    (message cmd)
+    (setq ext (file-name-extension (car (last (split-string cmd)))))
+    (switch-to-buffer buf)
+    (erase-buffer)
+    (insert (if (member ext '( "jpg" "jpeg"))
+		"data:image/jpeg;base64,"
+	      (if (member ext '("tif" "tiff"))
+		  "data:image/tiff;base64,"
+		(if (member ext '("gif" "png" "bmp"))
+		    (format "data:image/%s;base64," ext)
+		  ;; TODO: add other MIME types
+		  "data:type/unknown;base64,"))))
+    (shell-command cmd buf)
+    (switch-to-buffer (other-buffer))
+    (insert-buffer buf)
+    )
+  )
+;; (pie-file-base64)
+
+
+(defun pie-text-to-markdown ()
+  "transforms a plain text to markdown format and saves buffer as new file (see also 'pie/misc/pietext2markdown.py')"
+  
+  (interactive)
+
+  (let ((file-a (buffer-file-name))
+	(file-b (concat (file-name-base (buffer-file-name)) ".md"))
+	(list-of-substs '(("^;*\[\\\\+\\\\-\]\\{5\\}\s" . "        - ")
+			 ("^;*\[\\\\+\\\\-\]\\{4\\}\s" . "      - ")
+			 ("^;*\[\\\\+\\\\-\]\\{3\\}\s" . "    - ")
+			 ("^;*\[\\\\+\\\\-\]\\{2\\}\s" . "  - ")
+			 ("^;*\[\\\\+\\\\-\]\s" . "- ")
+			 ("^;*\[\\\\*\\\\%\]\\{5\\}\s" . "##### ")
+			 ("^;*\[\\\\*\\\\%\]\\{4\\}\s" . "#### ")
+			 ("^;*\[\\\\*\\\\%\]\\{3\\}\s" . "### ")
+			 ("^;*\[\\\\*\\\\%\]\\{2\\}\s" . "## ")
+			 ("^;*\[\\\\*\\\\%\]\s" . "# ")
+			 (">>" . "„")
+			 ("<<" . "“")
+			 ("^#begin_of_skip" . "<skip>\n")
+			 ("^#end_of_skip" . "</skip>\n")
+			 ("^<pre>" . "~~~\n")
+			 ("^#begin_of_pre" . "~~~\n")
+			 ("^</pre>" . "~~~\n")
+			 ("^#end_of_pre" . "~~~\n")
+			 ("^#begin_of_script" . "<script>\n")
+			 ("^#end_of_script" . "</script>\n")
+			 ("^#begin_of_csv" . "<csv>\n")
+			 ("^#end_of_csv" . "</csv>\n")
+			 ("|\\([^|\\\n]+\\)|\\([^|\\\n]+\\)*|" . "[\\2](\\1)")
+			 ("|\\{1,5\\}\s" . " @")
+			 ;; specific tags
+			 ;;("#(john|lisa)" . "@\\1")
+			 ;;("\n\n" . "\n")
+			 ("\n\n\\( *\\-\\)" . "\n\\1")
+			 )
+		       ))
+
+    (while list-of-substs
+      (beginning-of-buffer)
+      (replace-regexp (car (car list-of-substs)) (cdr (car list-of-substs)))
+      (setq list-of-substs (cdr list-of-substs))
+      )
+    
+    (write-file file-b t)
+    (markdown-mode)
+    ;; provide a comparison
+    (ediff-files file-a file-b)
+    )
   )
 
 (provide 'pie)

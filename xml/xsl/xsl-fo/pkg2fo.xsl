@@ -20,7 +20,7 @@
       </fo:page-sequence>
     </fo:root>
   </xsl:template>
-  <xsl:template match="transition|state">
+  <xsl:template match="pkg:transition|pkg:state">
     <xsl:element name="fo:block" xsl:use-attribute-sets="paragraph header">
       <xsl:attribute name="font-size">
         <xsl:choose>

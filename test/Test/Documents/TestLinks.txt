@@ -1,8 +1,17 @@
-; Speicherung <TestLinks.txt 18.8.2013 17:54:18 developer>
+; Speicherung <TestLinks.txt 14.9.2025 08:46:23 developer>
 
 * Link Test
 
+mailto:abc@web.de
+
+mailto:dummy@gmail.com
+
+tel:+18999203820
+
 Search engines http://www.google.de http://www.froogle.de http://www.metager.de
+
+<csv>pre;http://www.zdf.de;mailto:abc@web.de;post
+</csv>
 
 Auskunft
 
@@ -36,3 +45,30 @@ DICT http://dict.tu-chemnitz.de http://www.leo.org/cgi-bin/dict-search http://ww
 Linux
 http://www.linuxtoday.com/ http://slashdot.org/
 
+http://www.abc.de/?AAA=B--B&DDD=
+
+AA++
+
+AA ++
+
+AA++
+
+AA +++  
+
+** [#Tag](http://www.dummy.ch/)
+
+** [#anchor](id:abc)
+
+** A [](id:def)
+ 
+** BB
+
+`<Test>`
+
+[Groß Bestendorf](https://de.wikipedia.org/wiki/Dobrocin_%28Ma%C5%82dyty%29#Besitz_und_Struktur_des_Gutes)
+
+[http://www.abc.de/](http://www.abc.de/)
+
+<http://www.def.de/>
+
+http://www.ghi.de/

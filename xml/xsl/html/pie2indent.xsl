@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PieHtml.xsl"/>
+
+  <!-- use HTML 'ol' or 'ul' element -->
+  <xsl:variable name="flag_enum" select="false()"/>
+  
+  <!-- maximum depthfor output -->
+  <xsl:variable name="int_depth" select="-1"/>
+
   <xsl:output method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"/>
+
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:element name="body">
@@ -9,12 +17,14 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="pie">
     <xsl:element name="ul">
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="section|task">
+
+  <xsl:template match="section|task|fig">
     <xsl:element name="li">
       <xsl:call-template name="ADDSTYLE">
         <xsl:with-param name="flag_background" select="false()"/>
@@ -32,7 +42,8 @@
       </xsl:choose>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="table">	<!-- TODO: transform table to list -->
+
+  <xsl:template match="tableYYY">	<!-- TODO: transform table to list -->
     <xsl:for-each select="tr[1]/*">
       <xsl:variable name="int_col" select="position()"/>
       <xsl:choose>
@@ -67,10 +78,11 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
+
   <xsl:template match="list">
     <xsl:if test="child::node()">
       <xsl:choose>
-        <xsl:when test="@enum = 'yes'">
+        <xsl:when test="$flag_enum and @enum = 'yes'">
           <!-- numerated list -->
           <xsl:element name="ol">
             <xsl:apply-templates/>
@@ -85,25 +97,35 @@
       </xsl:choose>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="task">
     <xsl:element name="li">
       <xsl:call-template name="FORMATTASK"/>
       <xsl:apply-templates select="*[not(name()='h')]"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="p">
     <!-- para -->
-    <xsl:element name="li">
-      <xsl:call-template name="ADDSTYLE">
-        <xsl:with-param name="flag_background" select="false()"/>
-      </xsl:call-template>
+    <xsl:if test="$int_depth &lt; 0 or count(ancestor::p|ancestor::list|ancestor::task|ancestor::section) &lt;= $int_depth">
+      <xsl:element name="li">
+	<xsl:apply-templates/>
+      </xsl:element>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="tt">
+    <xsl:element name="i">	<!-- to avoid issues when copying into MS Powerpoint -->
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="*[@valid='no']">
+
+  <xsl:template match="*[@valid='no']|hr|img">
     <!-- ignore this elements -->
   </xsl:template>
+
   <xsl:template match="meta|pre">
     <!-- ignore this elements -->
   </xsl:template>
+  
 </xsl:stylesheet>

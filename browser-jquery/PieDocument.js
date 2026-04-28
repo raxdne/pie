@@ -23,12 +23,18 @@ document.createUI = function () {
     var urlParams = new URLSearchParams(document.location.search);
 
     if (urlParams.has('pattern')) {
-	$('#tags').css({'display': 'block'});
+	// $('#tags').css({'display': 'block'});
     }
     
     if (urlParams.has('hl')) {
 	// TODO: use clolor index for multiple selections (s. markTextStrRecursive)
-	$('span:contains(' + urlParams.get('hl') + ')').toggleClass('highlight',true);
+	//$('span:contains(' + urlParams.get('hl') + ')').toggleClass('highlight',true);
+
+	var strMark = '/' + urlParams.get('hl') + '/i';
+	var regexpMark = eval(strMark);
+ 	
+	putsConsole('Highlight: ' + strMark);
+	this.markTextStrRecursive(null,regexpMark);
     }
     
     if (urlParams.has('pos')) {
@@ -44,6 +50,7 @@ document.createUI = function () {
 	var urlParamsReset = new URLSearchParams(window.location.search);
 
 	urlParamsReset.delete('hl');
+	urlParamsReset.delete('title');
 	urlParamsReset.delete('pattern');
 	
 	var strQuery = urlParamsReset.toString();
@@ -57,23 +64,10 @@ document.createUI = function () {
     //
     // https://stackoverflow.com/questions/16190455/how-to-detect-controlclick-in-javascript-from-an-onclick-div-attribute
     //
-    $('*.tag,*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target').on('click change', function (event) {
-	var strElement = 't';
+    $('*.tag,*.htag,*.htag-todo,*.htag-done,*.htag-test,*.htag-bug,*.htag-req,*.htag-target,span.date').on('click change', function (event) {
 	var strPattern;
-	var strValue;
+	var strPatternNew;
 
-	if (event.target instanceof HTMLInputElement) {
-	    strValue = event.target.value;
-	} else {
-	    var strClass = event.target.getAttribute("class");
-
-	    if (strClass.match(/^htag-.+/)) { // map combined class name to usable tag
-	        strValue = strClass.replace(/^htag-/, '#');
-	    } else {
-	        strValue = event.target.innerText;
-	    }
-	}
-	
 	var urlParamsTag = new URLSearchParams(document.location.search);
 	
 	if (urlParamsTag.has('pattern')) {
@@ -83,33 +77,53 @@ document.createUI = function () {
 	}
 	putsConsole('Old pattern: ' + strPattern);
 	
-	if (strValue == undefined || strValue == '') {
+	if (event.target instanceof HTMLInputElement) {
+	    strPatternNew = "t[contains(text(),'" + event.target.innerText + "')]";
+	} else {
+	    var strClass = event.target.getAttribute("class");
+
+	    if (strClass.match(/^htag-.+/)) { // map combined class name to usable tag
+		strPatternNew = "t[contains(text(),'" + strClass.replace(/^htag-/, '#') + "')]";
+	    } else if (strClass.match(/^htag$/)) {
+		strPatternNew = "(tag[contains(text(),'" + event.target.innerText + "')]|htag[contains(text(),'" + event.target.innerText + "')]|t[contains(text(),'" + event.target.innerText + "')])";
+	    } else if (strClass.match(/date/)) {
+		var strISO = event.target.getAttribute("title");
+		
+		if (strISO == undefined || strISO == '') {
+	            putsConsole('No ISO date found');
+		} else {
+		    strPatternNew = "date[contains(text(),'" + event.target.getAttribute("title") + "') or @iso = '" + event.target.getAttribute("title") + "']";
+		}
+	    } else {
+		strPatternNew = "t[contains(text(),'" + event.target.innerText + "')]";
+	    }
+	}
+	
+	if (strPatternNew == undefined || strPatternNew == '') {
 	    putsConsole('Empty');
-	} else if (strPattern == strValue) {
+	} else if (strPattern == strPatternNew) {
 	    putsConsole('No update (same value)');
 	} else { // something selected
-	    var strPatternNew;
 	    var strUrlNew;
 
-	    putsConsole('New pattern: ' + strValue);
-	    strPatternNew = strElement + "[contains(text(),'" + strValue + "')]";
+	    putsConsole('New Pattern: ' + strPatternNew);
 
 	    if (event.ctrlKey) {
-	        putsConsole(strValue + '<CRTL>' + ' logical OR');
+	        putsConsole('<CRTL>' + ' logical OR');
 		if (strPattern == '') {
 		    // no combination
 		} else {
 		    strPatternNew = '(' + strPattern + ' or ' + strPatternNew + ')';
 		}
 	    } else if (event.altKey) {
-	        putsConsole(strValue + '<ALT>' + ' logical AND');
+	        putsConsole('<ALT>' + ' logical AND');
 		if (strPattern == '') {
 		    // no combination
 		} else {
 		    strPatternNew = '(' + strPattern + ' and ' + strPatternNew + ')';
 		}
 	    } else if (event.shiftKey) {
-	        putsConsole(strValue + '<SHIFT>' + ' logical AND NOT');
+	        putsConsole('<SHIFT>' + ' logical AND NOT');
 		if (strPattern == '') {
 		    strPatternNew = 'not(' + strPatternNew + ')'; // BUG: 
 		} else {
@@ -118,7 +132,9 @@ document.createUI = function () {
 	    }
 
 	    urlParamsTag.set('pattern',strPatternNew);
-	    //urlParamsTag.set('hl',strValue);
+	    // TODO:
+	    urlParamsTag.set('hl',event.target.innerText);
+	    urlParamsTag.set('title', event.target.innerText + ' ' + urlParams.get('path'));
 
 	    var strQuery = urlParamsTag.toString();
 	    if (strQuery == '') {
@@ -131,6 +147,14 @@ document.createUI = function () {
 	    window.location.assign(strUrlNew);
 	}
     });
+
+    $(".localTable").tablesorter({
+	theme : 'ice',
+	widgets: ["filter"],
+	widgetOptions : {
+	    filter_ignoreCase : true
+	}
+  });
 }
 
 
@@ -167,6 +191,10 @@ document.markTextStrRecursive = function (node,regexp) {
 
     var i;
 
+    if (node == undefined || node == null) {
+	node = this.documentElement;
+    }
+    
     for (i=0; node && i<node.childNodes.length; i++) {
 	if (node.childNodes[i] && node.childNodes[i].nodeType == 3) { // Node.TEXT_NODE
 	    if (node.childNodes[i].nodeValue && node.childNodes[i].nodeValue.match(regexp)) {
@@ -182,7 +210,8 @@ document.markTextStrRecursive = function (node,regexp) {
 // 		    node.setAttribute('bstyle','');
 // 		}
 		// TODO: highlight string only <div class="hl">TEST</div>
-		node.style.backgroundColor = this.arrColorMarker[this.intColorIndex];
+		//node.style.backgroundColor = this.arrColorMarker[this.intColorIndex];
+		node.classList.add('highlight');
 	    }
 	}
 	else if (node.childNodes[i].nodeType == 1) { // Node.ELEMENT_NODE

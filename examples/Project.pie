@@ -26,10 +26,9 @@
       </task>
       <task date="2009" impact="2">
         <h>This is a Task in 2009</h>
-        <contact idref="mr_a"/>
-        <contact idref="ms_b">
-          <p>20130521: ggg</p>
-        </contact>
+        <p>20130521: ggg</p>
+        <htag>mr_a</htag>
+        <htag>ms_b</htag>
       </task>
       <task date="20131010" impact="2" done="1">
         <h>This is a done Task in 2013</h>
@@ -43,8 +42,8 @@
       <h>Sub project 2</h>
       <task>
         <h>Kick off meeting</h>
-        <contact idref="mr_a"/>
-        <contact idref="mr_d"/>
+        <htag>mr_a</htag>
+        <htag>mr_d</htag>
       </task>
       <section type="slide">
         <h>Test slide</h>
@@ -103,8 +102,8 @@
           <h>
             <link href=".">Kick off meeting</link>
           </h>
-          <contact idref="mr_a"/>
-          <contact idref="mr_d"/>
+          <htag>mr_a</htag>
+          <htag>mr_d</htag>
         </task>
       </section>
     </section>

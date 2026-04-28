@@ -7,6 +7,10 @@
 
   <xsl:import href="PieHtml.xsl"/>
 
+  <!--  -->
+  <xsl:variable name="flag_simplified" select="false()"/>
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <!-- -->
   <xsl:variable name="file_css" select="''"/>
   <!-- cancel tree -->
@@ -19,16 +23,18 @@
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
   <xsl:variable name="level_hidden" select="0"/>
-
+  <!--  -->
   <xsl:variable name="flag_llist"  select="false()"/>
-
+  <!--  -->
   <xsl:variable name="flag_tags"  select="false()"/>
-
-  <xsl:variable name="str_tag"  select="''"/>
-
+  <!--  -->
+  <xsl:variable name="str_tag"></xsl:variable>
+  <!--  -->
   <xsl:variable name="toc_display"  select="'none'"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="'.'"/>
+  <!--  -->
+  <xsl:variable name="str_title" select="''"/>
 
   <xsl:output 
     method="html"
@@ -40,7 +46,9 @@
     <xsl:choose>
       <xsl:when test="true()">
         <xsl:element name="html">
-          <xsl:call-template name="HEADER"/>
+	  <xsl:if test="$flag_header">
+            <xsl:call-template name="HEADER"/>
+	  </xsl:if>
           <xsl:element name="body">
             <xsl:if test="$flag_toc">
               <xsl:call-template name="PIETOC">

@@ -3,7 +3,6 @@
   <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
   <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
@@ -14,27 +13,32 @@
             <form method="post" accept-charset="UTF-8">
               <!-- this form is needed for reference only -->
             </form>
-            <div id="strContent" style="margin:5px; height: 85%;">Empty</div>
+            <div id="strContent" style="margin:5px; height: 85%; border:1px solid black;">Empty</div>
            </div>
           <p align="right">Powered by <a target="_blank" href="http://ace.c9.io/">ACE</a></p>
         </div>
             <script language="Javascript" type="text/javascript"> 
 var editor = ace.edit("strContent");
 
-// editor.setFontSize(12);
+//editor.setFontSize(12+1);
 editor.setTheme("ace/theme/katzenmilch");
+editor.focus();
 
 requestContent(editor,'%SCRIPT%?%QUERY%');
 
 addShortcuts(editor,'%CGIPATH%');
 // editor.execCommand("showKeyboardShortcuts")
+//editor.gotoLine(-1);
 
 // TODO: Syntax Highlighting + Code Folding https://ace.c9.io/#nav=higlighter
     
-// TODO: ask for saving content when page is left
-// $( window ).unload(function() {
-//   alert( "Handler for .unload() called." );
-// });
+$( window ).on( "beforeunload", function() {
+if ($('#flagChange').text().match(/\*$/) == null) {
+  // no content changes made
+} else {
+  return "Handler for `unload` called.";
+}
+});
 
 $('#strContent').after(getToolsStr('editor'));
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:import href="../xsl/html/PieHtml.xsl"/>
+  <xsl:import href="../xml/xsl/html/PieHtml.xsl"/>
   <xsl:variable name="file_css" select="'/pie/non-js/CgiPieUi.css'"/>
 <!-- file:///H:/opt/cxproc/contrib/pie/html/ -->
 <!--  -->
@@ -106,7 +106,7 @@
       <xsl:when test="substring-before(@name,'~')"/>
       <xsl:when test="starts-with(@name,'_')"/>
       <xsl:when test="starts-with(@name,'.') and not(@name = '.svn')"/>
-      <xsl:when test="@ext='txt' or @ext='mm' or @ext='pie' or @ext='csv' or @ext='cal' or @ext='gcal'">
+      <xsl:when test="@ext='txt' or @ext='mm' or @ext='pie' or @ext='csv'">
         <!-- Template content using cxproc -->
         <xsl:element name="option">
           <xsl:attribute name="value">

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="3">
+  <cxp:image to="-" frame="100x100">
+    <cxp:image src="Tux.jpg"/>
+  </cxp:image>
+</cxp:make>

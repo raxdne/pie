@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:description>Plain Calendar</cxp:description>
+  <cxp:subst string="%YEAR%" cgi="year" now="Year"/>
+  <cxp:plain name="-">
+    
+    <cxp:xml>
+      <cxp:calendar year="%YEAR%" type="day"/>
+    </cxp:xml>
+    
+    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+      
+      <xsl:output encoding="UTF-8" method="text"/>
+
+      <xsl:template match="year">
+	<xsl:value-of select="concat('* ',@ad,'&#10;&#10;')"/>
+	<xsl:apply-templates/>
+      </xsl:template>
+
+      <xsl:template match="month">
+	<xsl:value-of select="concat('** ',@name,'&#10;&#10;')"/>
+	<xsl:apply-templates/>
+      </xsl:template>
+      
+      <xsl:template match="day">
+	<xsl:value-of select="concat('*** ',../../@ad,'-',../@nr,'-',@om,'&#10;&#10;')"/>
+	<xsl:apply-templates/>
+      </xsl:template>
+      
+      <xsl:template match="meta"/>
+      
+    </xsl:stylesheet>
+
+  </cxp:plain>
+</cxp:make>

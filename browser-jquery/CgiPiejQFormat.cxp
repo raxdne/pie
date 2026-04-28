@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
-  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
-  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
-  <cxp:subst string="%CGIPATH%" cgi="path"/>
-  <cxp:subst string="%CGIPATHDIR%" dir="%CGIPATH%"/>
-  <cxp:subst string="%CGIXPATH%" cgi="xpath" default="/*"/>
-  <cxp:subst string="%CGITAG%" cgi="pattern" default=""/>
-  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
-  <cxp:subst string="%START%" type="%CGIPATH%"/>
-  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
-  <cxp:subst string="%ROOT%" env="CXP_ROOT"/>
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
   <cxp:xhtml name="-">
     <html>
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
@@ -68,6 +59,14 @@
 			</xsl:element>
 			<xsl:element name="td">
 			  <xsl:text>%CGITAG%</xsl:text> <!-- TODO: input element for tag? -->
+			</xsl:element>
+		      </xsl:element>
+		      <xsl:element name="tr">
+			<xsl:element name="td">
+			  <xsl:text>RegExp</xsl:text>
+			</xsl:element>
+			<xsl:element name="td">
+			  <xsl:text>%CGIRE%</xsl:text>
 			</xsl:element>
 		      </xsl:element>
 		      <xsl:if test="@mtime">
@@ -133,6 +132,14 @@
 			  </xsl:element>
 			</xsl:element>
 		      </xsl:if>
+		      <xsl:element name="tr">
+			<xsl:element name="td">
+			  <xsl:text>XML DOM Stat</xsl:text>
+			</xsl:element>
+			<xsl:element name="td">
+			  <a href="?xsl=pie2stat&amp;path=%CGIPATH%">stat</a>
+			</xsl:element>
+		      </xsl:element>
 		    </xsl:element>
 		  </xsl:element>
 		</xsl:template>
@@ -149,13 +156,14 @@
               </cxp:xml>
               <cxp:xsl name="CgiMenuTransformations.xsl">
                 <cxp:variable name="type" select="'%START%'"/>
-                <cxp:variable name="str_path" select="'%CGIPATH%'"/>
-                <cxp:variable name="str_xpath" select="'%CGIXPATH%'"/>
-                <cxp:variable name="str_tag" select="'%CGITAG%'" />
+                <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+                <cxp:variable name="str_xpath">%CGIXPATH%</cxp:variable>
+		<cxp:variable name="str_tag">%CGITAG%</cxp:variable>
+		<cxp:variable name="str_re">%CGIRE%</cxp:variable>
               </cxp:xsl>
             </cxp:xhtml>
 			<hr/>
-            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", "%CGIRE%", %TAGTIME%</p>
           </div>
         </div>
       </body>

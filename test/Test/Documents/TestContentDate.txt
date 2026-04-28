@@ -1,0 +1,232 @@
+
+* Test of date/time detection
+
+s. https://en.wikipedia.org/wiki/ISO_8601
+
+https://dencode.com/date
+
+2020 Year
+
+202004 YearMonth mailto:me@myself.org
+
+20200401 YearMonthDay
+
+20200417 11.00 Test
+
+1311186519.123 UNIX System time
+
+20200419 13.00 Test 3 2020-04-19 14.00 Test 4
+
+Iteration 20200419,22,24 15.00 Test 5
+
+a [AAA](picture.png) @mmm nnn
+
+20131010 15.00 E
+
+20131010 11.00 A
+
+20131010 13.00 C
+
+20131010 12.00 B
+
+20131010 2.00 B
+
+20131010 0.00 B
+
+20131010 14.00 D
+
+20131011 14.00-16.00 F
+
+20131010 12.00-12.63 H
+
+** Usual German Date Formats
+
+18.04.2020 12.00 Test
+
+1.4.2020 12.00 Test
+
+41.13.2020 12.00 Test
+
+
+** Time zones
+
+2013-10-12T14:00:00Z Zulu valid
+
+2013-10-12T14:00:00+05:00 TTT
+
+2013-10-12T14:00:00−05:00 TTT
+
+2013-10-12T14:00:00CST China Standard Time
+
+2013-10-12T14:00:00IST India Standard Time
+
+20131012T140000−0500 compact valid
+
+20131013T146300Z invalid minutes
+
+20131012T1 compact valid
+
+20131012T2 compact valid
+
+20131012T14 compact valid
+
+** List of dates
+
+20131010,12,14,1103 an implicite list
+
+20131011,20131014,20130114 not an implicite list
+
+2013-10-11,10-14,01-14 not a list at all
+
+** ISO Ordinal date
+
+2022-010 valid Ordinal
+
+2022-199T11.5
+
+2022-299T11:22:33+04
+
+2022-399 invalid
+
+** ISO Calendar Weeks
+
+2022-W29-5
+
+2020-W22
+
+2020-W12-3
+
+2020-W54
+
+2020-W32-8
+
+** ISO Calendar Interval
+
+2013-10-11/2013-11-11 YYY
+
+2013-10-12T14:00:00CST/2013-10-14T14:00:00CET TTT
+
+2013-10-12T14:00:00CST/P1Y4D
+
+2022-08-01/2022-08-07 Interval
+
+20220901/20220907 Interval
+
+2022-W31-1/2022-W31-5 Interval
+
+2022-W31-1/P2W Interval
+
+P3W/2022-11-01 Interval
+
+*** Invalid Intervals
+
+2022-W31-1/P-2W invalid Interval
+
+P-3W/2022-11-01 invalid Interval
+
+** ISO Time Interval
+
+2022-W31-1T13:00:00/PT1H Interval
+
+2022-W31-1T14:00:00/PT66M Interval
+
+2022-W31-4T13:00:00/PT2,5H Interval
+
+*** Invalid Time Intervals
+
+2022-W31-1T14:00:00/PT-6M Interval
+
+** ISO Calendar Recurrence
+
+R3/2022-W31-1/P2W Interval
+
+R3/2022-W41-1T13:00:00/P2D Interval
+
+R7/P3W/2022-11-01 Interval
+
+R4/P1D/2022-12-20 Interval
+
+R4/2022-12-20T13:00:00/2022-12-20T16:00:00/P1D Interval
+
+*** Invalid Recurrences
+
+R-4/P1D/2022-12-20 invalid Interval
+
+** Date Offset
+
+handling of `O` similar to `P`
+
+2022-W31-1/O2W Offset
+
+O2W/2022-W31-1 Offset
+
+2022-11-01/O1Y1M1D Offset
+
+2022-11-01/O1D1M1Y No Offset (sort order)
+
+2022-W31-1T13:00:00/O1D No Offset (Time)
+
+2022-W31-1T14:00:00/O1W No Offset (Time)
+
+1999-07-06/O10000D 10.000er
+
+2022-Q2/O1D
+
+*** Invalid Offsets
+
+2022-11-01/O1D1M1Y No Offset (sort order)
+
+2022-W31-1/O-2W invalid Offset
+
+2022-W31-1/O-2D invalid Offset
+
+2022-W31-1/O-9M invalid Offset
+
+
+** [Easter Cycle](https://en.wikipedia.org/wiki/Easter_cycle)
+
+`WEA` as Symbol for __W__eek of __Ea__ster
+
+O46D/0000-WEA-7 ⛪ Ash Wednesday
+
+O7D/0000-WEA-7 ⛪ Palm Sunday
+
+0000WEA5 ⛪ Good Friday
+
+0000-WEA-7 ⛪ Easter Sunday
+
+0000-WEA-7/O1D ⛪ Easter Monday
+
+0000-WEA-7/O39D ⛪ Feast of the Ascension
+
+0000-WEA-7/O49D ⛪ Pentecost
+
+0000-WEA-7/O50D ⛪ Whit Monday or Pentecost Monday
+
+0000-WEA-7/O60D ⛪ Feast of Corpus Christi
+
+** Birthday Markup using `🎂`
+
+R/2002-01-01/P1Y 🎂 *2002 Meyer
+
+R10/2002-01-01/P1000D 🎂 *2002 Meyer Thousand Days
+
+** Symbol for Current Year `0000`
+
+00000101 First Day of the Year
+
+00001224 Christmas Evening
+
+00001225 Christmas
+
+00001226 Christmas
+
+00001227 Christmas
+
+00001231 Last Day of the Year
+
+0000-Q1 First Quarter
+
+0000-111 111th Day
+
+

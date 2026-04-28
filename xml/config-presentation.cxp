@@ -31,7 +31,7 @@
         </cxp:xml>
       </cxp:pathtable>
       <cxp:xsl name="XmlPathTableCxp.xsl">
-        <cxp:variable name="str_path" select="'%SOURCE%'"/>
+        <cxp:variable name="str_path">%SOURCE%</cxp:variable>
       </cxp:xsl>
       <!--  -->
       <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">

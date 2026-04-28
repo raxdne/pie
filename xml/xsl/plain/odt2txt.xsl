@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:php="http://php.net/xsl" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dc="urn:oasis:names:dc" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="xhtml php xsl office style text table draw fo xlink">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:php="http://php.net/xsl" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dc="urn:oasis:names:dc" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" exclude-result-prefixes="xhtml php xsl office style text table draw fo xlink">
 
   <xsl:output method="text" encoding="UTF-8"/>
+
+  <xsl:variable name="str_path" select="''" />
 
 <xsl:variable name="tabsep">
 <xsl:text>;</xsl:text>
@@ -21,10 +23,25 @@
 </xsl:variable>
   
   <xsl:template match="/">
-    <xsl:value-of select="concat(';; ',pie/file[@type='application/openoffice']/archive/file[@name='meta.xml'],$newpar)"/>
+    <xsl:choose>
+      <xsl:when test="string-length($str_path) &gt; 0">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+      </xsl:when>
+      <xsl:when test="pie/file/@name">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- no locator found -->
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:choose>
       <xsl:when test="pie//file/archive/file[@name = 'content.xml']/office:document-content">
 	<xsl:element name="pie" xmlns="http://www.tenbusch.info/cxproc/">
+	  <!--
+	  <xsl:for-each select="/descendant::file[@name='thumbnail.png']">
+	    <xsl:value-of select="concat($newpar,'data:',@type,';base64,',base64,$newpar)"/>
+	    </xsl:for-each>
+	    -->
 	  <xsl:apply-templates select="pie//file/archive/file[@name = 'content.xml']/office:document-content/office:body/office:text"/>
 	</xsl:element>
       </xsl:when>
@@ -64,6 +81,21 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="text:span">
+    <xsl:variable name="str_style" select="@text:style-name"/>
+    <xsl:choose>
+      <xsl:when test="ancestor::office:document-content[descendant::style:style[@style:name = $str_style and child::style:text-properties[@style:font-weight-complex='bold']]]">
+	<xsl:value-of select="concat('___',.,'___')"/>
+      </xsl:when>
+      <xsl:when test="ancestor::office:document-content[descendant::style:style[@style:name = $str_style and child::style:text-properties[@style:font-style-complex='italic']]]">
+	<xsl:value-of select="concat('__',.,'__')"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat('',.,'')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="text:p">
     <xsl:apply-templates/>
     <xsl:value-of select="$newpar"/>
@@ -88,6 +120,23 @@
     <xsl:value-of select="$newpar"/>
   </xsl:template>
 
+  <xsl:template match="draw:frame">
+    <xsl:variable name="str_name" select="substring-after(descendant::draw:image/@xlink:href,'/')"/>
+    <xsl:variable name="str_title" select="descendant::text:p"/>
+    <xsl:variable name="node_file" select="/descendant::file[@name=$str_name]"/>
+    <xsl:choose>
+      <xsl:when test="string-length($str_title) &gt; 0 and $node_file[@type and @name and child::base64]">
+	<xsl:value-of select="concat($newpar,'![',$str_title,']','(data:',$node_file/@type,';base64,',$node_file/base64,')',$newpar)"/>
+      </xsl:when>
+      <xsl:when test="$node_file[@type and @name and child::base64]">
+	<xsl:value-of select="concat($newpar,'data:',$node_file/@type,';base64,',$node_file/base64,$newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'; image ',$str_title,' ',$str_name,$newpar)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
   <xsl:template name="ENUM">
     <xsl:param name="level"/>
     <xsl:param name="str_markup" select="' '"/>
@@ -106,10 +155,10 @@
   </xsl:template>
 
   <xsl:template match="table:table">
-    <xsl:value-of select="concat('#begin_of_csv',$newline)"/>
+    <xsl:value-of select="concat('&lt;csv&gt;',$newline)"/>
     <xsl:value-of select="concat('sep=',$tabsep,$newline)"/>
     <xsl:apply-templates select="table:table-row"/>
-    <xsl:value-of select="concat('#end_of_csv',$newline)"/>
+    <xsl:value-of select="concat('&lt;/csv&gt;',$newline)"/>
   </xsl:template>
 
   <xsl:template match="table:table-row">

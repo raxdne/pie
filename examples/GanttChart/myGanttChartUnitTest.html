@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="myGanttChart.js"></script>
+    <link rel="stylesheet" type="text/css" href="/pie/html/pie.css"/>
+    <title>Dashboard Unit Tests</title>
+
+    <script type="text/javascript">
+
+      function test (index,strComment,strArg) {
+        var b = document.getElementsByTagName('body')[0];
+        var p = document.createElement('pre');
+    
+   	var t = document.createTextNode('TEST ' + index + ': "' + strComment + '" ' + strArg);
+	p.appendChild(t);
+	b.appendChild(p);
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>Dashboard Unit Tests</h1>
+    
+    <script type="text/javascript">
+
+      function UnitTests() {
+
+	  var i = 0;
+	  var d;
+	  
+	  d = new Date(2024,11,1);
+	  test(i++, 'ISO8601_parse', d.getTime() + ' == ' + ISO8601_parse('2024-12-01'));
+	  
+	  d = new Date(2025,0,6);
+	  test(i++, 'ISO8601_parse', d.getTime() + ' == ' + ISO8601_parse('2025-W02'));
+	  
+	  d = new Date(2025,0,6);
+	  test(i++, 'getDateOfIsoWeek', d + ' == ' + getDateOfIsoWeek(2,2025));
+	  
+	  var x = new objGanttChart('test-' + i);
+
+	  test(i++, 'dt_0 == ', x.getBegin());
+
+	  test(i++, 'dt_1 == ', x.getEnd());
+
+	  test(i++, 'cleanup', typeof x.clean() === 'object');
+
+	  x.setBegin('2024-07-03');
+	  x.setEnd('2026-06-30');
+	  x.draw();
+
+	  test(i++, 'string', x.toString());
+
+	  test(i++, 'grid', 1 + ' == ' + x.delta2grid(1000*60*60*24*7));
+
+	  dt_0 = ISO8601_parse('2024-07-01');
+	  dt_1 = ISO8601_parse('2025-12-01');
+	  
+	  test(i++, 'grid', x.date2grid(dt_1) + ' == ' + x.delta2grid(dt_1 - dt_0));
+	  
+	  test(i++, 'grid date', x.grid2date(x.date2grid(dt_1)));
+	  
+	  test(i++, 'grid', ' == ' + x.grid2date(x.delta2grid(9)));
+	  
+	  test(i++, 'grid delta', (dt_1 - dt_0) + ' == ' + x.grid2delta(x.delta2grid(dt_1 - dt_0)));
+	  
+	  test(i++, 'grid delta negative', (dt_0 - dt_1) + ' == ' + x.grid2delta(x.delta2grid(dt_0 - dt_1)));
+      
+	  x = new objGanttChart('test-' + i);
+	  for (var m = 0; m < 12; m++) {
+	      // BUG: starts at end of previous month
+	      x.append([{dt_0: new Date(2025,m,1), title: 'MS ' + (m+1)},{dt_0: new Date(2025,m,1), dt_1: new Date(2025,m+1,0), title: 'Month ' + (m+1)}]);
+	  }
+	  x.append([{dt_0: '2025-01-01', dt_1: '2025-12-31', title: 'Year 2025'}]);
+	  // TODO: x.append({week_0: '2024-W03', week_1: '2024-W07', title: 'MS 1'});
+	  x.append({dt_0: '2024-12-09', title: 'MS 1'});
+	  x.append([{dt_0: '2025-02-02', dt_1: '2025-03-23', title: 'Bar 2'},{dt_0: '2025-02-09', title: 'MS 2'}]);
+	  x.append({dt_0: '2024-12-01', dt_1: '2024-12-31', title: 'Bar v', vertical: true, fill: '#ff0000'});
+	  x.draw();
+	  test(i++, 'svg period + milestone', x.svg.outerHTML);
+
+	  return;
+      }
+      
+      UnitTests();
+      
+    </script>
+    <!--
+
+2025-01-01;2025-01-22;P1
+2025-01-22;;MS1
+      -->
+  </body>
+</html>

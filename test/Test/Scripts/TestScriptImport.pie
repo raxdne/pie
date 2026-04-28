@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pie>
+  <import type="script" name="TestScriptImport.js"/>
+
+  <import type="script">
+    r = abc('AAA');
+    
+    r += abc('BBB');
+  </import>
+</pie>

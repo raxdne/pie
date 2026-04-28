@@ -2,21 +2,29 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:import href="PiePlain.xsl"/>
   <xsl:output method="text" encoding="UTF-8"/>
-  <xsl:variable name="str_tagtime" select="''"/>
-  <xsl:variable name="newpar">
-    <xsl:text>
 
-</xsl:text>
-  </xsl:variable>
+  <xsl:variable name="str_path"></xsl:variable>
+
+  <xsl:variable name="str_tagtime"></xsl:variable>
+
   <xsl:template match="/">
-    <xsl:apply-templates/>
-  </xsl:template>
-  <xsl:template match="pie">
+    <xsl:choose>
+      <xsl:when test="string-length($str_path) &gt; 0">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', $str_path, $newpar)"/>
+      </xsl:when>
+      <xsl:when test="pie/file/@name">
+	<xsl:value-of select="concat($newpar,'ORIGIN: ', pie/file/@prefix,'/',pie/file/@name, $newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- no locator found -->
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:call-template name="TAGTIME">
       <xsl:with-param name="str_tagtime" select="concat('; ',$str_tagtime,$newpar)"/>
     </xsl:call-template>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="node()|text()|comment()"/>
   </xsl:template>
+  
   <xsl:template match="h">
     <xsl:if test="parent::section">
       <xsl:for-each select="ancestor::section">
@@ -24,43 +32,56 @@
       </xsl:for-each>
       <xsl:text> </xsl:text>
     </xsl:if>
-    <xsl:call-template name="DATESTRING"/>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="node()|text()|comment()"/>
   </xsl:template>
   
   <xsl:template match="section">
     <xsl:apply-templates select="h"/>
-    <xsl:if test="attribute::assignee">
-      <xsl:value-of select="concat(' @',attribute::assignee)"/>
-    </xsl:if>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
-    <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
+    <xsl:apply-templates select="*[not(name(.) = 'h')]|text()|comment()"/>
   </xsl:template>
   
   <xsl:template match="task">
     <xsl:call-template name="FORMATTASK"/>
-    <xsl:call-template name="FORMATIMPACT"/>
     <xsl:value-of select="$newpar"/>
-    <xsl:apply-templates select="*[not(name()='h')]"/>
+    <xsl:apply-templates select="*[not(name()='h')]|text()|comment()"/>
   </xsl:template>
 
   <xsl:template match="list">
-    <xsl:if test="name(parent::*) = 'p'">
-      <xsl:value-of select="$newpar"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:choose>
+      <xsl:when test="parent::p">
+	<xsl:value-of select="$newpar"/>
+      </xsl:when>
+      <xsl:when test="parent::list">
+	<xsl:value-of select="$newpar"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!--  -->
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates select="node()|text()|comment()"/>
   </xsl:template>
 
   <xsl:template match="p">
     <xsl:call-template name="FORMATPREFIX"/>
-    <xsl:apply-templates/>
-    <xsl:call-template name="FORMATIMPACT"/>
-    <xsl:value-of select="$newpar"/>
+    <xsl:apply-templates select="text()|child::*[not(name() = 'list')]"/>
+    <xsl:apply-templates select="child::list"/>
+    <xsl:choose>
+      <xsl:when test="child::list[position() = last()]">
+	<!--  -->
+      </xsl:when>
+      <xsl:when test="preceding-sibling::list">
+	<!--  -->
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$newpar"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="table">
-    <xsl:text>#begin_of_csv
+    <xsl:value-of select="$newpar"/>
+    <xsl:text>&lt;csv&gt;
 </xsl:text>
     <xsl:for-each select="tr">
       <xsl:for-each select="th|td"> <!-- TODO: use header markup -->
@@ -69,11 +90,13 @@
       <xsl:text>
 </xsl:text>
     </xsl:for-each>
-    <xsl:text>#end_of_csv
+    <xsl:text>&lt;/csv&gt;
     
 </xsl:text>
   </xsl:template>
+
   <xsl:template match="pre">
+    <xsl:value-of select="$newpar"/>
     <xsl:text>
 #begin_of_pre
 </xsl:text>
@@ -83,7 +106,9 @@
 </xsl:text>
     <xsl:value-of select="$newpar"/>
   </xsl:template>
+
   <xsl:template match="t|meta">
     <!-- ignore normal text nodes -->
   </xsl:template>
+
 </xsl:stylesheet>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
+  <cxp:subst string="%CGIDELTA%" cgi="delta" default="0"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+        <div id="ui">
+          <div id="content">
+            <cxp:xhtml>
+              <cxp:xml eval="yes">
+		<cxp:include name="PieTransformation.cxp" search="yes"/>
+              </cxp:xml>
+	      <cxp:xsl name="OpenTasks.xsl" valid="no"/> <!-- include REQ/TEST/TARGET/DONE ? -->
+              <cxp:xsl name="TodoKanban.xsl">
+                <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
+		<cxp:variable name="flag_done" select="false()"/>
+		<cxp:variable name="int_delta" select="%CGIDELTA%"/>
+              </cxp:xsl>
+            </cxp:xhtml>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+        <a id="bottom"/>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

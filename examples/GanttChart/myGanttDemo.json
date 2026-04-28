@@ -1,0 +1,7 @@
+[
+    {"posx": 4, "posy": 8, "url": "http://www.example.com/", "title": "ABCDE: Schedule"},
+    {"start": 5, "end": 16, "height": 2, "title": "ABCDE: Release 4 ✔"},
+    {"start": 14, "end": 20, "height": 2, "title": "ABCDE: Release 5"},
+    {"start": 23, "end": 25, "height": 7, "title": "ABCDE: Release 6"},
+    {"start": 11, "title": "ABCDE: Release 7 Demo"}
+]

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%TRASHDIR%" env="CXP_TRASH" default="Trash"/>
+  <cxp:subst string="%CGITARGET%" cgi="to" default="%TRASHDIR%"/>
+  <cxp:subst string="%CGIPATH%" cgi="path" search="no"/>
+  <cxp:subst string="%CGIDIR%" dir="%CGIPATH%"/>
+  <cxp:copy from="%CGIPATH%" to="%CGITARGET%/%CGIDIR%" search="no" delete="yes"/>
+</cxp:make>

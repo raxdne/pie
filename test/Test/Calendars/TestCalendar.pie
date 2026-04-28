@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pie>
-	<section>
-		<h>Test dates</h>
-		<p>First of April ... <date>2020-04-01</date></p>
-		<p>Weekdays <date>2020*w15wed</date></p>
-		<p impact="2">Sequence of dates <date>20200501,05,11,0602</date></p>
-		<p>Range of dates <date>20200515#19</date></p>
-		<p>Range with steps <date>20200515#0615.4</date></p>
-		<p>Repeat <date>x5</date></p>
-		<p>relative dates <date>20200501+44</date></p>
-		<p>Days <date>20200630</date></p>
-		<p>Months <date>202006</date></p>
-		<p>Years <date>2020</date></p>
-		<section>
-			<h>UTC dates</h>
-			<p>UTC Time <date>20200701Z13:01:05</date></p>
-		</section>
-		<section>
-			<h>German dates</h>
-			<p><date>2.1.2020</date> AAA</p>
-			<p><date>3.01.2020</date> BBB</p>
-			<p><date>04.1.2020</date> CCC</p>
-			<p><date>05.01.2020</date> DDD</p>
-		</section>
-		<section>
-			<h>Christian calendar (relative to Easter) dates</h>
-			<p>before <date>2020@e-15</date></p>
-			<p impact="1">Sunday <date>2020@e</date></p>
-			<p><date>2020@e+15</date> after</p>
-		</section>
-	</section>
+  <section>
+    <h>Test dates</h>
+    <p>First of April ... <date>2020-04-01</date></p>
+    <p>Weekdays <date>2020*w15wed</date></p>
+    <p impact="2">Sequence of dates <date>20200501,05,11,0602</date></p>
+    <p>Range of dates <date>20200515#19</date></p>
+    <p>Range with steps <date>20200515#0615.4</date></p>
+    <p>Repeat <date>x5</date></p>
+    <p>relative dates <date>20200501+44</date></p>
+    <p>Days <date>20200630</date></p>
+    <p>Months <date>202006</date></p>
+    <p>Years <date>2020</date></p>
+    <section>
+      <h>UTC dates</h>
+      <p>UTC Time <date>20200701T13:01:05UTC</date></p>
+    </section>
+    <section>
+      <h>German dates</h>
+      <p><date>2.1.2020</date> AAA</p>
+      <p><date>3.01.2020</date> BBB</p>
+      <p><date>04.1.2020</date> CCC</p>
+      <p><date>05.01.2020</date> DDD</p>
+    </section>
+    <section>
+      <h>Christian calendar (relative to Easter) dates</h>
+      <p>before <date>2020@e-15</date></p>
+      <p impact="1">Sunday <date>2020@e</date></p>
+      <p><date>2020@e+15</date> after</p>
+    </section>
+  </section>
 </pie>

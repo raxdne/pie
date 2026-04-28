@@ -26,33 +26,59 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
   <!-- ignore all elements with an id and valid="no" -->
 
-  <xsl:template match="@*|node()">
+  <xsl:template match="/pie">
+    <xsl:element name="{name()}">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+      
+  <xsl:template match="section">
     <xsl:choose>
       <!-- in valids -->
-      <xsl:when test="self::task[@done or @class = 'done' or @state = 'done']"/>
-      <xsl:when test="self::h[parent::section]">
-	<xsl:element name="{name()}">
-	  <xsl:value-of select="text()"/>
-	</xsl:element>
-      </xsl:when>
-      <xsl:when test="self::task">
-	<xsl:element name="{name()}">
-	  <xsl:copy-of select="@*|h"/>
-	</xsl:element>
-      </xsl:when>
-      <xsl:when test="self::section">
-        <xsl:copy>
-          <xsl:apply-templates select="@*|node()"/>
-        </xsl:copy>
-      </xsl:when>
+      <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@hidden"/>
+      <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
       <xsl:otherwise>
-        <xsl:apply-templates />
+	<xsl:element name="{name()}">
+	  <xsl:element name="h">
+	    <xsl:copy-of select="child::h/attribute::*|child::h/child::node()[not(name()='date')]|child::h/child::text()"/>
+	  </xsl:element>
+	  <xsl:apply-templates select="child::block|child::section|child::task|child::list|child::p"/>
+	</xsl:element>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
       
+  <xsl:template match="task">
+    <xsl:choose>
+      <!-- in valids -->
+      <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@hidden"/>
+      <!-- <xsl:when test="@class = 'bug' or @class = 'req'"/> -->
+      <xsl:when test="@done or @class = 'done' or @state = 'done'"/>
+      <xsl:otherwise>
+	<xsl:element name="{name()}">
+	  <xsl:copy-of select="attribute::*|child::h"/>
+          <xsl:apply-templates select="child::node()[not(name()='h')]"/>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="node()">
+    <xsl:choose>
+      <!-- in valids -->
+      <xsl:when test="@state = 'rejected'"/>
+      <xsl:when test="@hidden"/>
+      <xsl:when test="@valid = 'no'"/>
+      <xsl:when test="self::meta">
+	<xsl:copy-of select="." />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates /> 
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+      
+
 </xsl:stylesheet>
-
-
-
-

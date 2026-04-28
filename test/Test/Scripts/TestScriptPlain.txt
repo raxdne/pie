@@ -11,30 +11,47 @@ This is an script error: script="ABC;" : postfix
 
 Embedded
 
-#begin_of_script
+<script>
 
 var A = 'XYZ';
 
 A + A + A;
-#end_of_script
+</script>
 
 Embedded
 
-#begin_of_script
+<script>
 
 var B = 128;
 
 B + B;
-#end_of_script
+</script>
 
 Embedded
 
-#begin_of_script
+<script>
 
 var strResult = '';
 var t = Date();
 
-for (i=0; i<100; i++) {
+for (i=0; i<10; i++) {
     strResult = strResult + '* M' + i.toString() + '\n\n';
-    strResult = strResult + 'TODO: ' + t.toString() + ' testing | abc\n\n';
+    strResult = strResult + 'TODO: ' + t.toString() + ' testing #abc\n\n';
 }
+</script>
+
+* Test Script Accumulator
+
+A = script="var a = 1;a"
+
+B = script="a++;a"
+
+C = script="c=++a;c"
+
+D = script="++c"
+
+* Test Script File
+
+#import("TestScriptPlainFile.js")
+
+AAA

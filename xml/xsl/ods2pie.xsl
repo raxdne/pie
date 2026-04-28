@@ -19,7 +19,7 @@
 	<xsl:value-of select="@table:name"/>
       </xsl:element>
       <xsl:element name="table">
-	<xsl:for-each select="table:table-row">
+	<xsl:for-each select="descendant::table:table-row">
           <xsl:element name="tr">
 	    <xsl:for-each select="table:table-cell">
 	      <xsl:call-template name="repeatColumn"/>
@@ -29,6 +29,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="*"/>
 
   <xsl:template name="repeatColumn">

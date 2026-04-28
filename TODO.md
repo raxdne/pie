@@ -21,6 +21,12 @@ TODO: consolidate use of cxp:variable ✔
 - "file_norm|file_plain" ✔
 - flag_form
 
+BUG: caching of Browser, XHTTP Requests and ACE ++
+
+### Mobile
+
+TODO: update jquery-mobile UI #v1 ++
+
 ### Calendar
 
 BUG: Navigation using `PiejQMenu.js` (s. `pie/browser-jquery/TestPieDate.html`)  #v1 ++
@@ -31,8 +37,9 @@ TODO: remove `PieDate.js` and improve `PieCalendar.js`
 
 BUG: use of flocator/fxpath for “Scope” #v1 ++ ✔
 
-BUG: flocator/fxpath for “Scope” in DOCX etc #v1 ++
-- xml/pie[@context="abc.docx"]/import
+BUG: flocator/fxpath for “Scope” in DOCX etc #v1 ✔ ++
+- `xml/pie/block[@context="abc.docx"]
+- markup in plain text (same as `TAGS`) `ORIGIN:abc.docx`
 
 BUG: filtering using tags which contain '#' char #v1 ++ ✔
 
@@ -40,6 +47,7 @@ REQ: structure as mindmap (3D.js) #v2
 - text visualization using Data-Driven Documents (tree etc)
 
 REQ: content statistics (chars, words, histogram)
+- `/pie/meta/statistics/[chars|words|histogram]` #v1
 
 REQ: local images in fig.
 
@@ -61,15 +69,22 @@ BUG: “Cleanup” makes DONE to TODO without CSS
 
 REQ: upload of files
 
-REQ: search and search index (tipue?)  #v1 ++
+REQ: search (search index?)  #v1 ++
 - `?cxp=search&name=ABC.txt`
 - `?cxp=search&pattern=DEF`
 
+REQ: search in office formats
+
 ### Editor
+
+REQ: embedd structured WYSIWYG Editor (HTML5, mappable to PIE/XML) #v2
+- https://www.google.com/search?q=javascript+wysiwyg+editor+open+source
+- https://github.com/alohaeditor/Aloha-Editor http://aloha-editor.org/
+- https://github.com/codex-team/editor.js
 
 REQ: syntax highlighting for PIE text in ACE  #v1 ++
 
-REQ: common shortcuts  #v1 ++
+REQ: more common shortcuts  #v1 ++
 
 [Comparison of JavaScript-based source code editors](http://en.wikipedia.org/wiki/Comparison_of_JavaScript-based_source_code_editors)
 
@@ -126,7 +141,6 @@ plan
     - table of content
     - tags
     - links
-    - list of contacts
   - setTop
   - resetTop
 - context dropdown menu
@@ -216,6 +230,10 @@ TODO: update „pptx2txt.xsl“
 xlsx2pie.xsl
 - concatenate all "xl\worksheets\sheet*.xml"
 
+REQ: support [YAML format](https://en.wikipedia.org/wiki/YAML) `pie2yaml.xsl`
+
+REQ: support JSON format `pie2json.xsl`
+
 ## CXP code
 
 TODO: line2pie.cxp line-oriented import
@@ -254,6 +272,65 @@ Serial letter
 
 - XSLT with document(XML)
 
+
+
+pie2mm.xsl: handling of nested lists (s. mm2xmmap.xsl)
+
+Macros and Highlighting for different Editors/Tools
+
+- ACE
+
+- AutoHotkey
+
+- Notepad++
+
+* cxp_calendar
+
+Configuration
+
+- detect local TAGS first (to overrule global hashtags)
+
+recognize calendar weeks for dates ([ISO standard 8601](https://en.wikipedia.org/wiki/ISO_8601)) 2022-W35
+
+- https://en.wikipedia.org/wiki/ISO_week_date
+
+find PI “tag-regexp” (“TAGS”) on top level of pie/block
+
+append task/t not to a parent list
+
+BUG: ampersant in CSV line
+
+<csv>
+*Protocol;Host;Path;Content;File;XPath;Archive;Locator;DB;Query
+HTTP[S]://;www.test.com;dir/sub/;;test.txt;
+HTTP[S]://;www.test.com;cxproc/exe;text/plain;;;;;;?search=test.txt cxp=
+HTTP[S]://;www.test.com;dir/sub;zip;;;archive.zip;/sub/test.txt;;;
+FTP[S]://;
+FILE://;
+MEM://;
+–;–;c:\Temp;;abc.zip;;;/sub/test.txt;;
+–;–;c:\Temp;;abc.db3;;;;;?SELECT * FROM directory
+–;
+</csv>
+
+
+“URL -> Content” => `https://localhost/cxproc/exe`
+
+“URL -> Database -> SQL Query -> Content” => `https://localhost/Test/Database.db3`->Database Node->`?SELECT * FROM directory`
+
+“URL -> Archive Path -> Content”
+
+- `https://localhost/Test/Arcive.zip`->Archive Node->`Test/Text.txt`
+
+- `https://localhost/Test/Archive.zip`->Archive Node->`Test/Archive.zip`->Archive Node->`Test/Text.txt`
+
+“Directory -> Content”
+
+“Directory -> File -> Archive -> Archive Path -> Content”
+
+“Directory -> File -> Database -> SQL Query -> Content”
+
+
 ## Inspiration
 
 [impress.js](https://github.com/impress/impress.js/): It’s a presentation tool inspired by the idea behind
@@ -281,3 +358,4 @@ but keeps all your important events and tasks always visible on your desktop.
 [Semantic web](http://microformats.org/wiki/microformats2) ++
 
 [reStructuredText](https://en.wikipedia.org/wiki/ReStructuredText) (RST, ReST, or reST) is a file format for textual data used primarily in the Python programming language community for technical documentation.
+

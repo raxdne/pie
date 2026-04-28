@@ -132,7 +132,7 @@
 			  <xsl:element name="td">
 			    <xsl:element name="a">
                               <xsl:attribute name="href">
-				<xsl:value-of select="concat('?','path=','%CGIPATH%')" />
+				<xsl:value-of select="concat('?','%CGIPATH%')" />
 				<xsl:for-each select="ancestor::dir[@urlname]">
 				  <xsl:value-of select="concat('/',@urlname)" />
 				</xsl:for-each>

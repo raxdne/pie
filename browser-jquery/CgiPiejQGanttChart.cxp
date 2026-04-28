@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
+  <cxp:subst string="%CGIEND%" cgi="t_1" default="'2027-09-16'"/>
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      
+      <body>
+    <style>
+      svg {border: 1px solid #cccccc; padding: 0 0 0 0; margin: 0; background: #ffffff;}
+      rect {cursor: pointer;}
+      rect.bar {fill: #aaffaa; stroke: #888888; stroke-width: 0.75;}
+      *.hbar {fill: #aaffaa}
+      *.vbar {fill: #eeeeee}
+      polygon {fill: #aaaaff}
+      *.cw {fill: #ffcccc; stroke-width: 0;}
+      *.sel {fill: #ff4444;}
+      *.todo {fill: #4cb1c5;}
+      *.test {fill: #4cb1c5;}
+      *.target {fill: #4cb1c5;}
+    </style>
+
+	<script type="text/javascript" src="?spath=myGanttChart.js">// /pie/examples/GanttChart/ </script>
+        <div id="ui">
+          <div id="content">
+    
+    <svg version="1.1" baseProfile="full" id="gantt_diagram"/>
+
+    <script type="text/javascript">
+
+      var urlParams = new URLSearchParams(document.location.search);
+
+      var c = new objGanttChart('gantt_diagram');
+
+      objGanttChart.prototype.preDraw_ = function() {
+
+	  return this;
+      }
+
+      objGanttChart.prototype.postDraw_ = function() {
+
+	  return this;
+      }
+
+      // REQ: c.getConfig("/cxproc/exe?redir=config.json");
+      //c.setHeight(1750+500);
+      
+      //c.switchCompact(3);
+      //c.switchLength(30);
+      //c.setBegin('2025-09-16');
+      //c.setEnd(%CGIEND%);
+     
+      c.getInput("/cxproc/exe?redir=legend.json");
+      c.getInput("/cxproc/exe?path=%CGIPATH%&amp;cxp=Format&amp;b=application/json%2Bgantt&amp;pattern=%CGITAG%");
+      //c.append([{"dt_0": "2024-11-01", "dt_1": "2027-04-01"}]);
+      //c.sort();
+      //c.setScaleFactor(5);
+      c.draw();      
+      //c.shift(1500,0);
+
+    </script>
+
+            <hr/>
+            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+          </div>
+        </div>
+        <a id="bottom"/>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>

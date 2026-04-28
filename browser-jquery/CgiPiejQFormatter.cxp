@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:xhtml name="-">
+    <html>
+      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <body>
+	<script type="text/javascript" src="/ace/js/ace.js">//..</script>
+        <div id="ui">
+	  <h1>Server-side Markdown Formatter</h1>
+          <div id="content">
+	    <div id="strValue">Press Ctrl+S to format and Ctrl+E to convert the input!</div>
+            <form method="post" accept-charset="UTF-8">
+              <!-- this form is needed for reference only -->
+            </form>
+            <div id="strContent" style="margin:5px; height: 50%; border:1px solid black;"/>
+          </div>
+          <p align="right">Powered by <a target="_blank" href="http://ace.c9.io/">ACE</a> and <a target="_blank" href="https://github.com/commonmark/cmark">libcmark</a></p>
+        </div>
+            <script language="Javascript" type="text/javascript"> 
+var editor = ace.edit("strContent");
+editor.setTheme("ace/theme/katzenmilch");
+editor.getSession().setMode("ace/mode/markdown");
+$('#strContent').after(getToolsStr('editor'));
+editor.focus();
+
+var strContent = localStorage.getItem('strContent');
+if (strContent == undefined) {
+  editor.setValue('# BBB');
+} else {
+  editor.setValue(strContent);
+}
+
+editor.commands.addCommand({
+  name: 'myFormatCommand',
+  bindKey: {linux: 'Ctrl-S',  win: 'Ctrl-S',  mac: 'Command-S'},
+  exec: function(objEditor) {
+    //alert(objEditor.getValue());
+    localStorage.setItem('strContent', objEditor.getValue());
+    formatMarkdown(objEditor);
+    $('html, body').animate({scrollTop:  1000}, 'slow');
+  },
+  readOnly: false // false if this command should not apply in readOnly mode
+  });
+    
+editor.commands.addCommand({
+  name: 'myEvalCommand',
+  bindKey: {linux: 'Ctrl-E',  win: 'Ctrl-E',  mac: 'Command-E'},
+  exec: function(objEditor) {
+    //alert(objEditor.getValue());
+    localStorage.setItem('strContent', objEditor.getValue());
+    formatPlain(objEditor);
+    $('html, body').animate({scrollTop:  1000}, 'slow');
+  },
+  readOnly: false // false if this command should not apply in readOnly mode
+  });
+
+$( window ).on( "beforeunload", function() {
+  return "Handler for `unload` called.";
+});
+</script>
+      </body>
+   </html>
+  </cxp:xhtml>
+</cxp:make>

@@ -53,9 +53,9 @@ dog's back.
     <p><link href="http://www.abcd.de/">TODO: ABC</link></p>
     <p><link href="http://www.abcd.de/">TODO: 2020-04-02 ABC</link></p>
     <p>TODO:<date>2020-04-02</date><link href="http://www.abcd.de/">ABC</link></p>
-    <p>TODO: <link href="http://www.abcd.de/">ABC</link> ||| me you</p>
-    <p><link href="http://www.abcd.de/">ABC</link> ||| me you</p>
-    <p><link href="http://www.abcd.de/">ABC || he her</link></p>
+    <p>TODO: <link href="http://www.abcd.de/">ABC</link> @me @you +++</p>
+    <p><link href="http://www.abcd.de/">ABC</link> @me @you +++</p>
+    <p><link href="http://www.abcd.de/">ABC @he @her ++</link></p>
   </section>
       <section impact="2">
         <h>AAA <htag>@vvv</htag></h>
@@ -82,7 +82,7 @@ dog's back.
           <link href="http://www.demo.org/test/">TEST</link>
         </h>
         <p>text only <date>2020-03-09</date> <htag>@may</htag></p>
-        <p>text only <date>2020-03-09Z12:00:00</date> timezone <date>2020-03-09</date> date</p>
+        <p>text only <date>2020-03-09T12:00:00Z</date> timezone <date>2020-03-09</date> date</p>
         <p>
           <link href="tel:+0123456789">tel:+0123456789</link>
           <htag>@james</htag>

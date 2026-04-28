@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rpt="http://openoffice.org/2005/report" xmlns:rdfa="http://docs.oasis-open.org/opendocument/meta/rdfa#" xmlns:office="http://openoffice.org/2000/office" xmlns:style="http://openoffice.org/2000/style" xmlns:text="http://openoffice.org/2000/text" xmlns:table="http://openoffice.org/2000/table" xmlns:draw="http://openoffice.org/2000/drawing" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:meta="http://openoffice.org/2000/meta" xmlns:number="http://openoffice.org/2000/datastyle" xmlns:svg="http://www.w3.org/2000/svg" xmlns:chart="http://openoffice.org/2000/chart" xmlns:dr3d="http://openoffice.org/2000/dr3d" xmlns:form="http://openoffice.org/2000/form" xmlns:script="http://openoffice.org/2000/script" xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003" version="1.0">
+  <!-- \todo combined refactoring CgiPiejQDir -->
+
+  <xsl:output method="html" encoding="UTF-8"/>
   <!--  -->
   <xsl:variable name="length_link" select="15"/>
   <!--  -->
@@ -8,7 +11,7 @@
   <xsl:variable name="str_frame" select="'piemain'"/>
   <!--  -->
   <xsl:variable name="write" select="'yes'"/>
-  <xsl:output method="html" encoding="UTF-8"/>
+
   <xsl:template match="/pie">
     <!-- URL encoded path names -->
     <xsl:variable name="str_path_top">
@@ -40,47 +43,62 @@
     </xsl:variable>
     <xsl:element name="html">
       <xsl:element name="body">
-        <!--  -->
-        <xsl:element name="ul">
-          <xsl:attribute name="class">ui-dir</xsl:attribute>
-          <xsl:element name="li">
-            <xsl:attribute name="class">ui-dir-path</xsl:attribute>
+	<xsl:choose>
+          <xsl:when test="child::dir/child::file[@name = 'index.cxp']">
+	    <!-- there is a 'index.cxp' file, redirect to it via javascript -->
+            <xsl:element name="script">
+	      <xsl:value-of select="concat('document.location = &quot;/',$str_path_top,'/index.cxp&quot;;')"/>
+	    </xsl:element>
+          </xsl:when>
+          <xsl:otherwise>
             <!--  -->
-            <xsl:call-template name="DIRPATHLINKS">
-              <xsl:with-param name="dir_path">
-                <xsl:value-of select="concat($str_path_top,'/')"/>
-              </xsl:with-param>
-              <xsl:with-param name="dir_path_view">
-                <xsl:value-of select="concat($str_path_top_view,'/')"/>
-              </xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="DIRACTIONS">
-              <xsl:with-param name="dir_path">
-                <xsl:value-of select="$str_path_top"/>
-              </xsl:with-param>
-            </xsl:call-template>
+            <xsl:element name="ul">
+              <xsl:attribute name="class">ui-dir</xsl:attribute>
+              <xsl:element name="li">
+		<xsl:attribute name="class">ui-dir-path</xsl:attribute>
+		<!--  -->
+		<xsl:call-template name="DIRPATHLINKS">
+		  <xsl:with-param name="dir_path">
+                    <xsl:value-of select="concat($str_path_top,'/')"/>
+		  </xsl:with-param>
+		  <xsl:with-param name="dir_path_view">
+                    <xsl:value-of select="concat($str_path_top_view,'/')"/>
+		  </xsl:with-param>
+		</xsl:call-template>
+		<xsl:call-template name="DIRACTIONS">
+		  <xsl:with-param name="dir_path">
+                    <xsl:value-of select="$str_path_top"/>
+		  </xsl:with-param>
+		</xsl:call-template>
+              </xsl:element>
+              <xsl:element name="li">
+		<xsl:attribute name="class">hr</xsl:attribute>
+		<xsl:element name="hr"/>
+	      </xsl:element>
+	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']"> <!-- ignoring symlinks -->
+		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
+		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
+		<xsl:with-param name="path_prefix">
+		  <xsl:value-of select="$str_path_top"/>
+		</xsl:with-param>
+              </xsl:apply-templates>
             </xsl:element>
-          <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']">
-            <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
-            <xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
-            <xsl:with-param name="path_prefix">
-              <xsl:value-of select="$str_path_top"/>
-            </xsl:with-param>
-          </xsl:apply-templates>
-        </xsl:element>
-        <xsl:element name="p">
-          <xsl:attribute name="align">right</xsl:attribute>
-          <xsl:element name="a">
-            <xsl:attribute name="target"><xsl:value-of select="$str_frame"/></xsl:attribute>
-            <xsl:attribute name="href">
-              <xsl:value-of select="concat('?','cxp=PieUiPowered')"/>
-            </xsl:attribute>
-            <xsl:text>Powered by ...</xsl:text>
-          </xsl:element>
-        </xsl:element>
+            <xsl:element name="p">
+              <xsl:attribute name="align">right</xsl:attribute>
+              <xsl:element name="a">
+		<xsl:attribute name="target"><xsl:value-of select="$str_frame"/></xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','cxp=PieUiPowered')"/>
+		</xsl:attribute>
+		<xsl:text>Powered by ...</xsl:text>
+              </xsl:element>
+            </xsl:element>
+	  </xsl:otherwise>
+	</xsl:choose>
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="dir">
     <!--  -->
     <xsl:param name="path_prefix" select="''"/>
@@ -117,6 +135,7 @@
                 </xsl:attribute>
               </xsl:otherwise>
             </xsl:choose>
+	        <xsl:text>&#x1F4C2; </xsl:text>
             <xsl:value-of select="@name"/>
             <xsl:text>/</xsl:text>
           </xsl:element>
@@ -132,6 +151,31 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+  <xsl:template match="link">
+    <xsl:element name="li">
+      <xsl:attribute name="class">ui-dir-link</xsl:attribute>
+      <xsl:element name="a">
+        <xsl:attribute name="target">_blank</xsl:attribute>
+	<xsl:choose>
+	  <xsl:when test="child::dir">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('/',@urlname)"/>
+            </xsl:attribute>
+	  </xsl:when>
+	  <xsl:when test="child::file">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('/',@urlname)"/>
+            </xsl:attribute>
+	  </xsl:when>
+          <xsl:otherwise>
+	  </xsl:otherwise>
+	</xsl:choose>
+        <xsl:value-of select="@name"/>
+      </xsl:element>
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template match="file">
     <!--  -->
     <xsl:param name="path_prefix" select="''"/>
@@ -274,218 +318,256 @@
               <xsl:value-of select="@name"/>
             </xsl:attribute>
             <xsl:attribute name="href">
-              <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQDefault')"/>
+              <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=Format','&amp;','b=text/csv')"/>
             </xsl:attribute>
               <xsl:value-of select="translate(substring-before(@name,concat('.',@ext)),'_',' ')"/>
           </xsl:element>
         </xsl:element>
       </xsl:when>
-      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='tdv' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image) or @ext='cal' or @ext='gcal'">
+      <xsl:when test="@ext='fitx'">
+        <xsl:element name="li">
+          <xsl:attribute name="class">ui-dir-file</xsl:attribute>
+          <xsl:element name="a">
+            <xsl:attribute name="target">
+              <xsl:value-of select="$str_frame"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="@name"/>
+            </xsl:attribute>
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=Format','&amp;','b=text/html')"/>
+            </xsl:attribute>
+              <xsl:value-of select="translate(substring-before(@name,concat('.',@ext)),'_',' ')"/>
+          </xsl:element>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="@name = 'shortcuts.pie' or @name = 'shortcuts.md' or @name = 'shortcuts.txt'">
+        <!-- list of links in shortcut file -->
+        <xsl:copy-of select="descendant::script"/>
+	<xsl:if test="count(preceding-sibling::file) &gt; 2"> <!-- parent::dir/child::file -->
+          <xsl:element name="li">
+	    <xsl:attribute name="class">hr</xsl:attribute>
+            <xsl:element name="hr"/>
+	  </xsl:element>
+	</xsl:if>
+        <xsl:for-each select="descendant::p[not(ancestor-or-self::*[@valid='no'])]|descendant::hr">
+          <xsl:element name="li">
+            <xsl:choose>
+	      <xsl:when test="name() = 'hr'">
+		<xsl:attribute name="class">hr</xsl:attribute>
+		<xsl:copy-of select="self::node()"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:copy-of select="@style|@title|parent::p/@class"/>
+		<xsl:attribute name="class">
+		  <xsl:choose>
+		    <xsl:when test="@impact">
+                      <xsl:value-of select="concat('ui-dir-file-',@impact)"/>
+		    </xsl:when>
+		    <xsl:when test="@class">
+                      <xsl:value-of select="@class"/>
+		    </xsl:when>
+		    <xsl:otherwise>
+		      <xsl:text>ui-dir-file</xsl:text>
+		    </xsl:otherwise>
+		  </xsl:choose>
+		</xsl:attribute>
+		<xsl:for-each select="child::img[@src and position() = 1]">
+                  <xsl:element name="{name()}">
+		    <xsl:copy-of select="@src"/>
+		    <xsl:attribute name="class">dir</xsl:attribute>
+		  </xsl:element>
+		</xsl:for-each>
+		<xsl:for-each select="child::node()|child::text()">
+		  <xsl:choose>
+		    <xsl:when test="name() = 'link'">
+                      <xsl:element name="a">
+			<xsl:attribute name="target">
+			  <xsl:choose>
+			    <xsl:when test="ancestor::file[@name = 'shortcuts.md'] and not(starts-with(@href,'/'))">
+                              <xsl:value-of select="'_blank'"/>
+			    </xsl:when>
+			    <xsl:when test="@target">
+                              <xsl:value-of select="@target"/>
+			    </xsl:when>
+			    <xsl:otherwise>
+                              <xsl:value-of select="$str_frame"/>
+			    </xsl:otherwise>
+			  </xsl:choose>
+			</xsl:attribute>
+			<xsl:copy-of select="@href"/>
+			<xsl:value-of select="."/>
+                      </xsl:element>
+		    </xsl:when>
+		    <xsl:when test="name() = 'strong' or name() = 'em'">
+		      <xsl:copy-of select="."/>
+		    </xsl:when>
+		    <xsl:when test="self::text()">
+		      <xsl:value-of select="."/>
+		    </xsl:when>
+		    <xsl:otherwise>
+		    </xsl:otherwise>
+		  </xsl:choose>
+		</xsl:for-each>
+	      </xsl:otherwise>
+            </xsl:choose>
+	  </xsl:element>
+        </xsl:for-each>
+	<xsl:if test="count(following-sibling::file) &gt; 3"> <!-- parent::dir/child::file -->
+          <xsl:element name="li">
+	    <xsl:attribute name="class">hr</xsl:attribute>
+            <xsl:element name="hr"/>
+	  </xsl:element>
+	</xsl:if>
+      </xsl:when>
+      <xsl:when test="@name = 'shortcuts.html'">
+        <!-- list of links in shortcut file -->
+        <xsl:for-each select="descendant::ul[@class='shortcuts']/li">
+          <xsl:element name="{name()}">
+            <xsl:attribute name="class">ui-dir-file</xsl:attribute>
+            <xsl:copy-of select="@*|*"/>
+	  </xsl:element>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:when test="@ext='docx' or @ext='pptx' or @ext='xlsx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='txt' or @ext='md' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='pie' or @ext='cxp' or @ext='log' or @ext='vcf' or @ext='csv' or @ext='ics' or (contains(@type,'image') and image)">
         <!-- dynamic content using cxproc -->
-        <xsl:choose>
-          <xsl:when test="@name = 'shortcuts.pie'">
-            <!-- list of links in shortcut file -->
-            <xsl:copy-of select="descendant::script"/>
-            <!-- <xsl:element name="hr"/> -->
-            <xsl:for-each select="descendant::p[not(ancestor-or-self::*[@valid='no'])]">
-              <xsl:element name="li">
-                <xsl:attribute name="class">ui-dir-file</xsl:attribute>
-                <xsl:copy-of select="child::img[@src]"/>
-                <xsl:element name="a">
-                  <xsl:copy-of select="@class"/>
-                  <xsl:copy-of select="@style"/>
-                  <xsl:copy-of select="@title"/>
-                  <xsl:attribute name="target">
-                    <xsl:choose>
-                      <xsl:when test="child::link/@target">
-                        <xsl:value-of select="child::link/@target"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="$str_frame"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:attribute>
-                  <xsl:copy-of select="child::link/@href"/>
-                  <xsl:value-of select="normalize-space(child::link)"/>
-                  <xsl:if test="@target and not(@target = $str_frame)">
-                    <xsl:text>&#x1429;</xsl:text>
+        <!-- single link to named file -->
+        <xsl:element name="li">
+          <xsl:attribute name="class">ui-dir-file</xsl:attribute>
+          <xsl:element name="a">
+            <xsl:attribute name="class">cxp</xsl:attribute>
+            <xsl:attribute name="target">
+              <xsl:value-of select="$str_frame"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:choose>
+                <xsl:when test="contains(@type,'image') and image/size">
+                  <!-- all images -->
+                  <xsl:value-of select="concat(@name,' (',image/size/@col,'x',image/size/@row,'): ',image/comment/@value)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@name"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="href">
+              <xsl:choose>
+                <xsl:when test="contains(@type,'image') and child::image">
+                  <!-- all images -->
+                  <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
+                </xsl:when>
+                <xsl:when test="@ext='ics'">
+                  <!-- edit form for this type of files -->
+                  <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
+                </xsl:when>
+                <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='log' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='xlsx' or @ext='odt' or @ext='ods' or @ext='odp' or @ext='csv'">
+                  <!--  or @ext='html' -->
+                  <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
+                </xsl:when>
+                <xsl:when test="@ext='cxp'">
+                  <xsl:value-of select="concat('/',$str_path)"/>
+                  <xsl:if test="cxp:make/cxp:description/@anchor">
+                    <xsl:value-of select="concat('#',cxp:make/cxp:description/@anchor)"/>
                   </xsl:if>
-                </xsl:element>
-                <xsl:value-of select="normalize-space(text())"/>
-              </xsl:element>
-            </xsl:for-each>
-            <!-- <xsl:element name="hr"/> -->
-          </xsl:when>
-          <xsl:when test="@name = 'shortcuts.txt'">
-            <!-- list of links in shortcut file -->
-            <xsl:for-each select="pie//*[(name()='link' or (name()='p' and not(child::*))) and not(parent::*[@valid='no']) and not(@valid='no')]">
-              <xsl:element name="li">
-                <xsl:attribute name="class">ui-dir-file</xsl:attribute>
-                <xsl:element name="a">
-                  <xsl:attribute name="target">
-                    <xsl:text>piemain</xsl:text>
-		  </xsl:attribute>
-                  <xsl:attribute name="href">
-                    <xsl:choose>
-                      <xsl:when test="@target">
-                        <xsl:value-of select="@target"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="."/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:attribute>
-                  <xsl:value-of select="substring(.,-20,100)"/>
-                </xsl:element>
-              </xsl:element>
-            </xsl:for-each>
-            <!-- <xsl:element name="hr"/> -->
-          </xsl:when>
-          <xsl:otherwise>
-            <!-- single link to named file -->
-            <xsl:element name="li">
-              <xsl:attribute name="class">ui-dir-file</xsl:attribute>
-              <xsl:element name="a">
-                <xsl:attribute name="class">cxp</xsl:attribute>
-                <xsl:attribute name="target">
-                  <xsl:value-of select="$str_frame"/>
-                </xsl:attribute>
-                <xsl:attribute name="title">
-                  <xsl:choose>
-                    <xsl:when test="contains(@type,'image') and image/size">
-                      <!-- all images -->
-                      <xsl:value-of select="concat(@name,' (',image/size/@col,'x',image/size/@row,'): ',image/comment/@value)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="@name"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:attribute>
-                <xsl:attribute name="href">
-                  <xsl:choose>
-                    <xsl:when test="contains(@type,'image') and child::image">
-                      <!-- all images -->
-                      <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
-                    </xsl:when>
-                    <xsl:when test="@ext='cal' or @ext='gcal' or @ext='tdv' or @ext='ics'">
-                      <!-- edit form for this type of files -->
-                      <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
-                    </xsl:when>
-                    <xsl:when test="@ext='csv'">
-                      <!--  -->
-                      <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
-                      <!-- <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=csv')"/> -->
-                    </xsl:when>
-                    <xsl:when test="@ext='txt' or @ext='md' or @ext='mm' or @ext='pie' or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
-                      <!--  or @ext='html' -->
-                      <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
-                    </xsl:when>
-                    <xsl:when test="@ext='cxp'">
-                      <xsl:value-of select="concat('/',$str_path)"/>
-                      <xsl:if test="cxp:make/cxp:description/@anchor">
-                        <xsl:value-of select="concat('#',cxp:make/cxp:description/@anchor)"/>
-                      </xsl:if>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="concat('?path=',$str_path)"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  <!--
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat('?path=',$str_path)"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <!--
                   <xsl:if test="@write='no'">
-                    <xsl:value-of select="concat('&amp;','write=no')"/>
+                  <xsl:value-of select="concat('&amp;','write=no')"/>
                   </xsl:if>
--->
-                </xsl:attribute>
+	      -->
+            </xsl:attribute>
+            <xsl:choose>
+              <xsl:when test="contains(@type,'image')">
+                <!-- all images -->
+                <xsl:value-of select="substring-before(@name,'.')"/>
+              </xsl:when>
+              <xsl:when test="@ext='xmind'">
+                <!-- xmap-content/sheet/topic/title -->
                 <xsl:choose>
-                  <xsl:when test="contains(@type,'image')">
-                    <!-- all images -->
-                    <xsl:value-of select="substring-before(@name,'.')"/>
-                  </xsl:when>
-                  <xsl:when test="@ext='xmind'">
-                    <!-- xmap-content/sheet/topic/title -->
-                    <xsl:choose>
-                      <xsl:when test="true()">
-                        <xsl:value-of select="substring(normalize-space(descendant::*[name()='title']),1,50)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:when test="@ext='mm'">
-                    <!--  or @ext='html' -->
-                    <xsl:choose>
-                      <xsl:when test="map/node[1]/@TEXT">
-                        <xsl:value-of select="substring(map/node[1]/@TEXT,1,50)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:when test="@ext='mmap' or @ext='xmmap'">
-                    <!--  -->
-                    <xsl:choose>
-                      <xsl:when test="ap:Map/ap:OneTopic/ap:Topic/ap:Text/@PlainText">
-                        <xsl:value-of select="normalize-space(ap:Map/ap:OneTopic/ap:Topic/ap:Text/@PlainText)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:when test="@ext='cxp'">
-                    <!--  -->
-                    <xsl:choose>
-                      <xsl:when test="cxp:make/cxp:description">
-                        <xsl:choose>
-                          <xsl:when test="cxp:make/cxp:description/@icon">
-                            <xsl:element name="img">
-                              <xsl:attribute name="src">
-                                <xsl:value-of select="cxp:make/cxp:description/@icon"/>
-                              </xsl:attribute>
-                              <xsl:attribute name="title">
-                                <xsl:value-of select="cxp:make/cxp:description"/>
-                              </xsl:attribute>
-                            </xsl:element>
-                            <xsl:text> </xsl:text>
-                            <xsl:value-of select="cxp:make/cxp:description"/>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <xsl:value-of select="cxp:make/cxp:description"/>
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:when>
-                      <xsl:when test="make/description">
-                        <xsl:value-of select="make/description"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:when test="@ext='pie' or @ext='txt' or @ext='html' or @ext='odt' or @ext='docx'">
-                    <!--  -->
-                    <xsl:choose>
-                      <xsl:when test="pie//section[1]/h">
-                        <xsl:value-of select="substring(pie//section[1]/h,1,50)"/>
-                      </xsl:when>
-                      <xsl:when test="pie//p[1]">
-                        <xsl:value-of select="substring(pie//p[1],1,50)"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-			<xsl:value-of select="translate(substring(substring-before(@name,concat('.',@ext)),1,50),'_',' ')"/>
-                      </xsl:otherwise>
-                    </xsl:choose>
+                  <xsl:when test="true()">
+                    <xsl:value-of select="substring(normalize-space(descendant::*[name()='title']),1,50)"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="translate(substring(substring-before(@name,concat('.',@ext)),1,50),'_-','  ')"/>
+                    <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
                   </xsl:otherwise>
                 </xsl:choose>
-              </xsl:element>
-		</xsl:element>
-          </xsl:otherwise>
-        </xsl:choose>
+              </xsl:when>
+              <xsl:when test="@ext='mm'">
+                <!--  or @ext='html' -->
+                <xsl:choose>
+                  <xsl:when test="map/node[1]/@TEXT">
+                    <xsl:value-of select="substring(map/node[1]/@TEXT,1,50)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="@ext='mmap' or @ext='xmmap'">
+                <!--  -->
+                <xsl:choose>
+                  <xsl:when test="ap:Map/ap:OneTopic/ap:Topic/ap:Text/@PlainText">
+                    <xsl:value-of select="normalize-space(ap:Map/ap:OneTopic/ap:Topic/ap:Text/@PlainText)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="@ext='cxp'">
+                <!--  -->
+                <xsl:choose>
+                  <xsl:when test="cxp:make/cxp:description">
+                    <xsl:choose>
+                      <xsl:when test="cxp:make/cxp:description/@icon">
+                        <xsl:element name="img">
+                          <xsl:attribute name="src">
+                            <xsl:value-of select="cxp:make/cxp:description/@icon"/>
+                          </xsl:attribute>
+                          <xsl:attribute name="title">
+                            <xsl:value-of select="cxp:make/cxp:description"/>
+                          </xsl:attribute>
+                        </xsl:element>
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="cxp:make/cxp:description"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="cxp:make/cxp:description"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:when>
+                  <xsl:when test="make/description">
+                    <xsl:value-of select="make/description"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="substring-before(@name,concat('.',@ext))"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="@ext='pie' or @ext='txt' or @ext='html' or @ext='odt' or @ext='docx' or @ext='log'">
+                <!--  -->
+                <xsl:choose>
+                  <xsl:when test="pie//section[1]/h">
+                    <xsl:value-of select="substring(pie//section[1]/h,1,50)"/>
+                  </xsl:when>
+                  <xsl:when test="pie//p[1]">
+                    <xsl:value-of select="substring(pie//p[1],1,50)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+		    <xsl:value-of select="translate(substring(substring-before(@name,concat('.',@ext)),1,50),'_',' ')"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="translate(substring(substring-before(@name,concat('.',@ext)),1,50),'_-','  ')"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:element>
+	</xsl:element>
       </xsl:when>
       <xsl:when test="contains(@type,'json')">
         <xsl:variable name="file_header">
@@ -577,6 +659,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="DIRACTIONS">
     <!--  -->
     <xsl:param name="dir_path" select="''"/>
@@ -610,6 +693,7 @@
       <xsl:text> ☜</xsl:text>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="DIRPATHLINKS">
     <!--  -->
     <xsl:param name="dir_done" select="''"/>
@@ -736,6 +820,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="LINKTEXT">
     <xsl:param name="str_path" select="''"/>
     <xsl:choose>
@@ -752,4 +837,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  
 </xsl:stylesheet>

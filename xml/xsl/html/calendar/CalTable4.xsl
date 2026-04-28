@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cxp="http://www.tenbusch.info/cxproc" version="1.0">
   <xsl:import href="../../Utils.xsl"/>
   <xsl:import href="../PieHtml.xsl"/>
+
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <xsl:variable name="dir_icons" select="'../html/icons'"/>
+  <!--  -->
   <xsl:variable name="flag_tips" select="true()"/>
   <!--  -->
   <xsl:variable name="file_css" select="'pie.css'"/>
-'"/>
+  <!--  -->
   <xsl:variable name="file_cxp" select="''"/>
   <!--  -->
-  <xsl:variable name="node_cols" select="/calendar/meta/calendar/col[@id]"/>
+  <xsl:variable name="node_cols" select="/calendar/meta/cxp:calendar/cxp:col[@id]"/>
   <xsl:variable name="id_cols" select="$node_cols/@id"/>
   <xsl:variable name="context" select="'Day'"/>
   <!--  -->
@@ -19,9 +23,9 @@
   <xsl:variable name="nowDay" select="0"/>
   <!--  -->
   <xsl:variable name="listDays" select="''"/>
-  <!--  -->
-  <!--  -->
+  
   <xsl:output encoding="UTF-8" method="html" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" media-type="text/html"/>
+
   <xsl:template match="/">
     <xsl:element name="html">
       <xsl:call-template name="HEADER"/>
@@ -30,6 +34,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="calendar">
     <!--  -->
     <xsl:element name="table">
@@ -64,19 +69,20 @@
             <xsl:apply-templates/>
           </xsl:when>
           <xsl:when test="$context='Year'">
-            <xsl:apply-templates select="/calendar/year[@ad=$nowYear]"/>
+            <xsl:apply-templates select="year[@ad=$nowYear]"/>
           </xsl:when>
           <xsl:when test="$context='Day'">
-            <xsl:apply-templates select="/calendar/year[@ad=$nowYear]//day[@oy=$nowDay]"/>
+            <xsl:apply-templates select="year[@ad=$nowYear]//day[@oy=$nowDay]"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- default context is 'Month' -->
-            <xsl:apply-templates select="/calendar/year[@ad=$nowYear]/month[@nr=$nowMonth]"/>
+            <xsl:apply-templates select="year[@ad=$nowYear]/month[@nr=$nowMonth]"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="year">
     <xsl:element name="tr">
       <xsl:element name="th">
@@ -103,6 +109,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="month">
     <xsl:element name="tr">
       <xsl:element name="th">
@@ -143,6 +150,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="week">
     <xsl:element name="tr">
       <xsl:element name="th">
@@ -181,6 +189,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="day">
     <xsl:variable name="cw" select="@cw"/>
     <xsl:variable name="ow" select="number(@ow)"/>
@@ -218,6 +227,7 @@
       </xsl:if>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="p">
     <xsl:choose>
       <xsl:when test="name(parent::node()) = 'list'">
@@ -230,7 +240,6 @@
         <!-- par with hstr -->
         <xsl:element name="p">
           <xsl:copy-of select="@class"/>
-          <xsl:call-template name="TIMESTRING"/>
           <xsl:element name="i">
             <xsl:value-of select="@hstr"/>
           </xsl:element>
@@ -241,18 +250,19 @@
         <!-- para -->
         <xsl:element name="p">
           <xsl:copy-of select="@class"/>
-          <xsl:call-template name="TIMESTRING"/>
           <xsl:apply-templates/>
         </xsl:element>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="task">
     <xsl:call-template name="TASK">
       <xsl:with-param name="flag_ancestor" select="true()"/>
       <xsl:with-param name="flag_line" select="true()"/>
     </xsl:call-template>
   </xsl:template>
+
   <xsl:template match="section">
     <xsl:element name="p">
       <xsl:attribute name="class">project</xsl:attribute>
@@ -269,6 +279,7 @@
       <xsl:value-of select="concat(@hstr,h)"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="LINE">
     <xsl:param name="pwd"/>
     <xsl:param name="class">summary</xsl:param>
@@ -279,7 +290,7 @@
           <xsl:attribute name="class">
             <!-- set class of cells -->
             <xsl:choose>
-              <xsl:when test="$pwd/col[@name=$id_col]/*[@free = 'yes']">
+              <xsl:when test="$pwd/col[@idref=$id_col]/*[@free = 'yes']">
                 <xsl:text>sat</xsl:text>
               </xsl:when>
               <xsl:otherwise>
@@ -304,7 +315,7 @@
             </xsl:attribute>
           </xsl:element>
         </xsl:if>
-        <xsl:apply-templates select="$pwd/col[@name=$id_col]/*">
+        <xsl:apply-templates select="$pwd/col[@idref=$id_col]/*">
           <xsl:sort select="@hour"/>
           <xsl:sort select="@minute"/>
           <xsl:sort select="@hour-end"/>
@@ -315,6 +326,7 @@
       </xsl:element>
     </xsl:for-each>
   </xsl:template>
+
   <xsl:template name="NAVI">
     <xsl:variable name="nextDay">
       <!-- day value for next button -->
@@ -551,6 +563,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="FORMFILTER">
     <xsl:element name="table">
       <xsl:element name="tr">
@@ -599,6 +612,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="FORMICON">
     <xsl:param name="anchor"/>
     <xsl:param name="icon"/>
@@ -698,6 +712,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template name="SEPICONS">
     <xsl:element name="td">
       <xsl:attribute name="class">
@@ -705,11 +720,14 @@
       </xsl:attribute>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="meta">
     <xsl:if test="count(error/*) &gt; 0">
       <xsl:element name="h2">Calendar Errors</xsl:element>
       <xsl:apply-templates select="error/*"/>
     </xsl:if>
   </xsl:template>
+
   <xsl:template match="col"/>
+  
 </xsl:stylesheet>

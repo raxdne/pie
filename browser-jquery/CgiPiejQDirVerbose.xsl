@@ -7,6 +7,7 @@
   <!--  -->
   <xsl:variable name="write" select="'yes'"/>
   <xsl:output method="html" encoding="UTF-8"/>
+
   <xsl:template match="/pie">
     <xsl:element name="html">
       <xsl:element name="body">
@@ -25,9 +26,12 @@
               <xsl:element name="th">Title</xsl:element>
               <xsl:element name="th">File name</xsl:element>
               <xsl:element name="th">Edit</xsl:element>
+              <xsl:element name="th">Meta</xsl:element>
               <xsl:element name="th">Byte</xsl:element>
               <xsl:element name="th">MTime</xsl:element>
               <xsl:element name="th">MIME</xsl:element>
+              <xsl:element name="th">Archive</xsl:element>
+              <xsl:element name="th">Cache</xsl:element>
               <xsl:element name="th">Trash</xsl:element>
 	    </xsl:element>
 	  </xsl:element>
@@ -40,6 +44,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+  
   <xsl:template match="file">
     <!--  -->
     <xsl:variable name="str_path">
@@ -51,6 +56,9 @@
       </xsl:for-each>
       <xsl:value-of select="@urlname" />
     </xsl:variable>
+
+    <xsl:variable name="flag_write" select="attribute::write='yes' and parent::dir[attribute::write='yes'] and not(ancestor::archive)"/>
+
     <xsl:choose>
       <xsl:when test="@name = ''"/>
       <xsl:when test="@hidden = 'yes'"/>
@@ -184,19 +192,9 @@
                     <!-- all images -->
                     <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=image')"/>
                   </xsl:when>
-                  <xsl:when test="@ext='cal' or @ext='gcal' or @ext='tdv' or @ext='ics'">
-                    <!-- edit form for this type of files -->
-                    <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=PiejQCalendar','&amp;','sub=calendar#today')"/>
-                  </xsl:when>
-                  <xsl:when test="starts-with(@type,'text/') or @ext='vcf' or @ext='mm' or @ext='mmap' or @ext='xmmap' or @ext='xmind' or @ext='docx' or @ext='pptx' or @ext='odt' or @ext='ods' or @ext='odp'">
-                    <xsl:value-of select="concat('?path=',$str_path,'&amp;','cxp=',$str_cxp_default)"/>
-                  </xsl:when>
-                  <xsl:when test="@ext='cxp'">
+		  <xsl:when test="@ext='html'">
                     <xsl:value-of select="concat('/',$str_path)"/>
-                    <xsl:if test="cxp:make/cxp:description/@anchor">
-                      <xsl:value-of select="concat('#',cxp:make/cxp:description/@anchor)"/>
-                    </xsl:if>
-                  </xsl:when>
+		  </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="concat('?path=',$str_path)"/>
                   </xsl:otherwise>
@@ -277,7 +275,7 @@
 	    </xsl:element>
 	  </xsl:element>
 	  <xsl:element name="td">
-	    <xsl:if test="@ext='pie' or @ext='mm' or @ext='cxp' or starts-with(@type,'text')">
+	    <xsl:if test="$flag_write and (@ext='pie' or @ext='mm' or @ext='cxp' or starts-with(@type,'text'))">
 	      <xsl:element name="a">
 		<xsl:attribute name="class">cxp</xsl:attribute>
 		<xsl:attribute name="title">
@@ -286,9 +284,21 @@
 		<xsl:attribute name="href">
 		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=PiejQEditor')"/>
 		</xsl:attribute>
-		<xsl:text> [Edit]</xsl:text>
+		<xsl:text>[Edit]</xsl:text>
 	      </xsl:element>
 	    </xsl:if>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:element name="a">
+	      <xsl:attribute name="class">cxp</xsl:attribute>
+	      <xsl:attribute name="title">
+		<xsl:value-of select="@name"/>
+	      </xsl:attribute>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=PiejQFormat')"/>
+	      </xsl:attribute>
+	      <xsl:text>[Meta]</xsl:text>
+	    </xsl:element>
 	  </xsl:element>
 	  <xsl:element name="td">
 	    <xsl:value-of select="@size"/>
@@ -300,16 +310,46 @@
 	    <xsl:value-of select="@type"/>
 	  </xsl:element>
 	  <xsl:element name="td">
-	    <xsl:element name="a">
-	      <xsl:attribute name="class">cxp</xsl:attribute>
-	      <xsl:attribute name="title">
-		<xsl:value-of select="@name"/>
-	      </xsl:attribute>
-	      <xsl:attribute name="href">
-		<xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Trash')"/>
-	      </xsl:attribute>
-	      <xsl:text> [Trash]</xsl:text>
-	    </xsl:element>
+	    <xsl:if test="$flag_write">
+	      <xsl:element name="a">
+		<xsl:attribute name="class">cxp</xsl:attribute>
+		<xsl:attribute name="title">
+		  <xsl:value-of select="@name"/>
+		</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=MoveFileTo&amp;to=Archive')"/>
+		</xsl:attribute>
+		<xsl:text>[Archive]</xsl:text>
+	      </xsl:element>
+	    </xsl:if>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:if test="$flag_write">
+	      <xsl:element name="a">
+		<xsl:attribute name="class">cxp</xsl:attribute>
+		<xsl:attribute name="title">
+		  <xsl:value-of select="@name"/>
+		</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=Cache')"/>
+		</xsl:attribute>
+		<xsl:text>[Cache]</xsl:text>
+	      </xsl:element>
+	    </xsl:if>
+	  </xsl:element>
+	  <xsl:element name="td">
+	    <xsl:if test="$flag_write">
+	      <xsl:element name="a">
+		<xsl:attribute name="class">cxp</xsl:attribute>
+		<xsl:attribute name="title">
+		  <xsl:value-of select="@name"/>
+		</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('?','path=',$str_path,'&amp;','cxp=MoveFileTo')"/>
+		</xsl:attribute>
+		<xsl:text>[Trash]</xsl:text>
+	      </xsl:element>
+	    </xsl:if>
 	  </xsl:element>
 	</xsl:element>
       </xsl:otherwise>

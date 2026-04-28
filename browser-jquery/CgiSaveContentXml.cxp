@@ -4,9 +4,8 @@
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:subst string="%CONTENT%" cgi="strContent" encoding="rfc1738"/>
   <cxp:subst string="%TAGTIME%" now="%Y%m%d_%H%M%S"/>
-  <cxp:subst string="%BACKUPFILE%" to="%BACKUPDIR%%CGIPATH%_%TAGTIME%"/>
   <!-- make a backup copy first -->
-  <cxp:copy from="%CGIPATH%" to="%BACKUPFILE%"/>
+  <cxp:copy from="%CGIPATH%" to="%BACKUPDIR%%CGIPATH%_%TAGTIME%"/>
   <!-- save content into plain text file -->
   <cxp:plain name="%CGIPATH%" response="OK">%CONTENT%</cxp:plain>
 </cxp:make>

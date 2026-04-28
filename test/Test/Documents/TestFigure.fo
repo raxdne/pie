@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+  <fo:layout-master-set>
+    <fo:simple-page-master master-name="first" page-height="29.7cm" page-width="21cm" margin-top="1cm" margin-bottom="2cm" margin-left="2.5cm" margin-right="2.5cm">
+      <fo:region-body margin-top="1cm"/>
+      <fo:region-before extent="1cm"/>
+      <fo:region-after extent="1.5cm"/>
+    </fo:simple-page-master>
+    <fo:simple-page-master master-name="rest" page-height="29.7cm" page-width="21cm" margin-top="1cm" margin-bottom="2cm" margin-left="2.5cm" margin-right="2.5cm">
+      <fo:region-body margin-top="1cm"/>
+      <fo:region-before extent="1cm"/>
+      <fo:region-after extent="1.5cm"/>
+    </fo:simple-page-master>
+    <fo:page-sequence-master master-name="basicPSM">
+      <fo:repeatable-page-master-alternatives>
+        <fo:conditional-page-master-reference master-reference="first" page-position="first"/>
+        <fo:conditional-page-master-reference master-reference="rest" page-position="rest"/>
+        <fo:conditional-page-master-reference master-reference="rest"/>
+      </fo:repeatable-page-master-alternatives>
+    </fo:page-sequence-master>
+  </fo:layout-master-set>
+  <fo:page-sequence master-reference="basicPSM">
+    <fo:static-content flow-name="xsl-region-before">
+      <fo:block text-align="end" font-size="10pt" font-family="serif" line-height="14pt"/>
+    </fo:static-content>
+    <fo:flow flow-name="xsl-region-body">
+      <!--begin: pie-->
+      <!--begin: block-->
+      <!--begin: block-->
+      <!--begin: section-->
+      <fo:block font-family="serif" font-size="14pt" hyphenate="false" margin-bottom="10pt" text-align="left" xml:lang="de" font-weight="bold" keep-with-next="always" margin-top="10pt" page-break-before="always">Test Figures</fo:block>
+      <fo:block-container font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="10pt" text-align="justify" xml:lang="de">
+        <fo:block margin="10pt" text-align="center">
+          <fo:external-graphic src="?redir=Tux.png"/>
+        </fo:block>
+        <fo:block margin="10pt" text-align="center"><fo:inline text-decoration="underline">Abb.:</fo:inline> Test</fo:block>
+      </fo:block-container>
+      <fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="justify" xml:lang="de">Pre <fo:block margin="10pt" text-align="center"><fo:external-graphic src="?redir=Tux.png"/></fo:block> Post</fo:block>
+      <fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="justify" xml:lang="de">Pre <fo:block margin="10pt" text-align="center"><fo:external-graphic src="../Pictures/Tux.png"/></fo:block></fo:block>
+      <fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="justify" xml:lang="de"><fo:block margin="10pt" text-align="center"><fo:external-graphic src="/Test/Pictures/Tux.png"/></fo:block> Post</fo:block>
+      <fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="justify" xml:lang="de">
+        <fo:inline color="#0000ff" text-decoration="none">
+          <fo:basic-link external-destination="?redir=Tux.png">Test</fo:basic-link>
+        </fo:inline>
+      </fo:block>
+      <!--begin: section-->
+      <fo:block font-family="serif" font-size="12pt" hyphenate="false" margin-bottom="10pt" text-align="left" xml:lang="de" font-weight="bold" keep-with-next="always" margin-top="10pt" page-break-before="auto">
+        <fo:block margin="10pt" text-align="center">
+          <fo:external-graphic src="/Test/Pictures/Tux.png"/>
+        </fo:block>
+      </fo:block>
+      <fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="justify" xml:lang="de">List<fo:block space-before="6pt"><fo:list-block><fo:list-item><fo:list-item-label start-indent="body-start() - 14pt"><fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="left" xml:lang="de">1.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start() + 4pt"><fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="left" xml:lang="de" background-color="#ffffff">Pre <fo:block margin="10pt" text-align="center"><fo:external-graphic src="../Pictures/Tux.png"/></fo:block></fo:block></fo:list-item-body></fo:list-item><fo:list-item><fo:list-item-label start-indent="body-start() - 14pt"><fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="left" xml:lang="de">2.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start() + 4pt"><fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="left" xml:lang="de" background-color="#ffffff"><fo:block margin="10pt" text-align="center"><fo:external-graphic src="/Test/Pictures/Tux.png"/></fo:block></fo:block></fo:list-item-body></fo:list-item><fo:list-item><fo:list-item-label start-indent="body-start() - 14pt"><fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="left" xml:lang="de">3.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start() + 4pt"><fo:block font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="5pt" text-align="left" xml:lang="de" background-color="#ffffff"><fo:block margin="10pt" text-align="center"><fo:external-graphic src="/Test/Pictures/Tux.png"/></fo:block> Post</fo:block></fo:list-item-body></fo:list-item></fo:list-block></fo:block></fo:block>
+      <!--end: section-->
+      <!--begin: section-->
+      <fo:block font-family="serif" font-size="12pt" hyphenate="false" margin-bottom="10pt" text-align="left" xml:lang="de" font-weight="bold" keep-with-next="always" margin-top="10pt" page-break-before="auto">Embed</fo:block>
+      <fo:block-container font-family="serif" font-size="11pt" hyphenate="true" margin-bottom="10pt" text-align="justify" xml:lang="de">
+        <fo:block margin="10pt" text-align="center">
+          <fo:external-graphic src="t.png"/>
+        </fo:block>
+        <fo:block margin="10pt" text-align="center"><fo:inline text-decoration="underline">Abb.:</fo:inline> ttt</fo:block>
+      </fo:block-container>
+      <!--end: section-->
+      <!--end: section-->
+      <!--end: block-->
+      <!--end: block-->
+      <!--end: pie-->
+    </fo:flow>
+  </fo:page-sequence>
+</fo:root>

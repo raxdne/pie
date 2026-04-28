@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
-  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
-  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
   <cxp:subst string="%CGIDEPTH%" cgi="depth" default="1"/>
-  <cxp:subst string="%CGIPATH%" cgi="path" default=""/>
-  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:xhtml name="-">
     <html>
-      <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <meta http-equiv="cache-control" content="no-cache"/>
+      <meta http-equiv="pragma" content="no-cache"/>
+      <link rel="stylesheet" type="text/css" href="/pie/html/pie.css"/>
+      <link rel="stylesheet" type="text/css" href="/pie/non-js/CgiPieUi.css" />
+      <link rel="stylesheet" type="text/css" href="/jquery/jquery-ui/jquery-ui.css" />
+      <link rel="stylesheet" type="text/css" href="/jquery/tablesorter/css/style.css"/>
+      <script type="text/javascript" src="/jquery/jquery.js">// not empty!!!</script>
+      <script type="text/javascript" src="/jquery/jquery-ui/jquery-ui.js">// not empty!!!</script>
+      <script type="text/javascript" src="/jquery/tablesorter/jquery.tablesorter.js">// not empty!!!</script> 
+      <script type="text/javascript" src="/jquery/tablesorter/jquery.metadata.js">// not empty!!!</script>
       <body>
 	<script type="text/javascript">$(document).ready(function() { $("#localTable").tablesorter(); } );</script> 
         <div id="ui">
           <div id="content">
+	    <h2>%CGIPATH%</h2>
             <cxp:xhtml>
               <cxp:xml>
 		<cxp:dir depth="%CGIDEPTH%" verbosity="2" urlencode="yes">

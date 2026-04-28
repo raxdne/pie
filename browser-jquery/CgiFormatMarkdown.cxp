@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <cxp:subst string="%CONTENT%" argv="2" cgi="strContent" default=""/>
+  <cxp:subst string="%TAGTIME%" now="%Y%m%dT%H%M%S"/>
+  <cxp:subst string="%BACKUPDIR%" env="CXP_BACKUPS" default="Backup/"/>
+  <cxp:plain name="%BACKUPDIR%/%TAGTIME%.md">%CONTENT%</cxp:plain>
+  <cxp:xhtml name="-">
+    <cxp:xml>
+      <cxp:pie>
+	<import type="markdown">%CONTENT%</import>
+      </cxp:pie>
+    </cxp:xml>
+    <cxp:xsl name="pie2html.xsl">
+      <cxp:variable name="flag_toc" select="false()"/>
+      <cxp:variable name="flag_header" select="false()"/>
+      <cxp:variable name="flag_footer" select="false()"/>
+    </cxp:xsl>
+  </cxp:xhtml>
+</cxp:make>

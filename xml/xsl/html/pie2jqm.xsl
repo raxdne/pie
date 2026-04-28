@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  
   <xsl:import href="PieHtmlMobile.xsl"/>
   <!-- -->
   <xsl:variable name="file_css" select="''"/>
+  <!-- -->
+  <xsl:variable name="file_norm"></xsl:variable>
   <!-- cancel tree -->
   <xsl:variable name="flag_toc" select="true()"/>
   <!--  -->
-  <xsl:variable name="flag_header" select="true()"/>
+  <xsl:variable name="flag_header" select="false()"/>
   <!--  -->
-  <xsl:variable name="flag_footer" select="true()"/>
+  <xsl:variable name="flag_footer" select="false()"/>
   <!--  -->
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->

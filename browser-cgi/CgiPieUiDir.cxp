@@ -9,20 +9,20 @@
     <html>
       <cxp:xhtml>
         <cxp:xsl name="CgiPieUi.xsl">
-          <cxp:variable name="str_path" select="'%CGIPATH%'"/>
+          <cxp:variable name="str_path">%CGIPATH%</cxp:variable>
           <cxp:variable name="flag_header" select="true()"/>
         </cxp:xsl>
       </cxp:xhtml>
       <body>
         <cxp:xhtml>
           <cxp:xml>
-            <cxp:dir depth="1" verbosity="3" urlencode="yes">
+            <cxp:dir depth="1" verbosity="2" urlencode="yes">
               <cxp:dir name="%CGIPATH%"/>
             </cxp:dir>
           </cxp:xml>
           <cxp:xsl name="CgiPieUiDir.xsl">
             <cxp:variable name="write" select="'%CGIPERM%'"/>
-	    <cxp:variable name="str_cxp_default" select="'PiejQDefault'"/>
+	    <cxp:variable name="str_cxp_default" select="'PiejQDefault'"/> <!-- switch to legacy UI: 'PieUiDefault' -->
           </cxp:xsl>
         </cxp:xhtml>
       </body>

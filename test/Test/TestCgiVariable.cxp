@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="3">
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" log="4">
   <cxp:description>CGI/XSL Variable Test</cxp:description>
   <cxp:xhtml name="-">
     <cxp:xsl name="TestCgiVariable.xsl">
-      <cxp:variable name="test" cgi="id" default="'ABC'"/>
-      <cxp:variable name="server" env="SERVER_SOFTWARE" default="'Unknown'"/>
-      <cxp:variable name="time" now="'%Y-%m-%d'"/>
+      <cxp:variable name="test" cgi="id">, it's Me</cxp:variable>
+      <cxp:variable name="server" env="SERVER_SOFTWARE">Unknown</cxp:variable>
+      <cxp:variable name="time" now="'%Y-%m-%d'">1970-01-01</cxp:variable>
     </cxp:xsl>
   </cxp:xhtml>
 </cxp:make>

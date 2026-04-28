@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc">
+  <!-- \deprecated ? -->
   <cxp:subst string="%BACKUPDIR%" env="CXP_BACKUPS" default="Backup/"/>
   <cxp:subst string="%CGIPATH%" cgi="path"/>
   <cxp:subst string="%CONTENT%" cgi="strContent" encoding="rfc1738"/>

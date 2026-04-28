@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pkg="http://www.tenbusch.info/pkg" version="1.0">
   <xsl:import href="../Utils.xsl"/>
 
   <xsl:variable name="flag_fig" select="true()"/>
   <!--  -->
   <xsl:variable name="str_link_prefix" select="''"/>
-  <xsl:template match="pie">
-    <xsl:apply-templates/>
-  </xsl:template>
+  <!--  -->
+  <xsl:variable name="str_title" select="''"/>
+
+  <xsl:key name="list-date" match="date" use="@iso"/> <!--  -->
+
   <xsl:template name="METAVARS">
     <!-- for debugging only
     <xsl:comment>
@@ -25,6 +27,7 @@
     </xsl:comment>
       -->
   </xsl:template>
+
   <xsl:template match="author">
     <xsl:element name="center">
       <xsl:element name="i">
@@ -32,6 +35,7 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="block[@type = 'quote']">
     <xsl:element name="blockquote">
       <xsl:attribute name="class">
@@ -40,19 +44,39 @@
     <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template match="block[@type = 'text/html']">
+    <xsl:copy-of select="*"/>
+  </xsl:template>
+
   <xsl:template match="h">
     <xsl:copy-of select="@class"/>
-    <xsl:call-template name="DATESTRING"/>
     <xsl:apply-templates/>
   </xsl:template>
+
   <xsl:template match="htag|tag">
     <xsl:element name="span">
-      <xsl:attribute name="class">
-        <xsl:value-of select="name()"/>
-      </xsl:attribute>
+      <xsl:choose>
+	<xsl:when test="parent::link"/>
+	<xsl:otherwise>
+	  <xsl:attribute name="class">
+            <xsl:value-of select="name()"/>
+	  </xsl:attribute>
+	</xsl:otherwise>
+      </xsl:choose>
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template match="pkg:stelle|pkg:transition"> <!-- pkg elements -->
+    <xsl:element name="p">
+      <xsl:value-of select="h"/>
+    </xsl:element>
+    <xsl:element name="pre">
+      <xsl:copy-of select="make/*"/>
+    </xsl:element>
+  </xsl:template>
+
   <xsl:template match="section">
     <xsl:variable name="int_ancestors" select="count(ancestor-or-self::section)"/>
     <xsl:element name="section">
@@ -63,55 +87,43 @@
 	</xsl:attribute>
       </xsl:if>
       <xsl:if test="h">
-	<xsl:element name="div">
+	<xsl:element name="{concat('h',$int_ancestors)}">
 	  <xsl:attribute name="class">
 	    <xsl:text>header</xsl:text>
 	  </xsl:attribute>
-	  <xsl:element name="{concat('h',$int_ancestors)}">
-	    <xsl:call-template name="ADDSTYLE"/>
-	    <xsl:if test="@name">
-	      <xsl:element name="a">
-		<xsl:copy-of select="@name"/>
-	      </xsl:element>
-	    </xsl:if>
-	    <xsl:element name="span">
-	      <xsl:call-template name="MENUSET"/>
-	      <xsl:element name="a"> <!-- target for link in ToC -->
-	        <xsl:attribute name="name">
-		  <xsl:value-of select="generate-id(.)"/>
-		</xsl:attribute>
-		<xsl:choose>
-		  <xsl:when test="h/@hidden &gt; 0">
-		    <xsl:element name="i">
-		      <xsl:apply-templates select="h"/>
-		    </xsl:element>
-		  </xsl:when>
-		  <xsl:otherwise>
+	  <xsl:call-template name="ADDSTYLE"/>
+	  <xsl:if test="@name">
+	    <xsl:element name="a">
+	      <xsl:copy-of select="@name"/>
+	    </xsl:element>
+	  </xsl:if>
+	  <xsl:element name="span">
+	    <xsl:call-template name="MENUSET"/>
+	    <xsl:element name="a"> <!-- target for link in ToC -->
+	      <xsl:attribute name="id">
+		<xsl:value-of select="generate-id(.)"/>
+	      </xsl:attribute>
+	      <xsl:choose>
+		<xsl:when test="h/@hidden">
+		  <xsl:element name="i">
 		    <xsl:apply-templates select="h"/>
-		  </xsl:otherwise>
-		</xsl:choose>
-	      </xsl:element>
+		  </xsl:element>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:apply-templates select="h"/>
+		</xsl:otherwise>
+	      </xsl:choose>
 	    </xsl:element>
 	  </xsl:element>
 	</xsl:element>
       </xsl:if>
-      <xsl:choose>
-	<xsl:when test="$int_ancestors = 1">
-	  <!-- TODO: use a variable for block level -->
-	  <xsl:element name="div">
-	    <xsl:attribute name="class">block</xsl:attribute>
-	    <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
-	  </xsl:element>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
-	</xsl:otherwise>
-      </xsl:choose>
+      <xsl:apply-templates select="*[not(name(.) = 'h')]|text()"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="task">
     <xsl:choose>
-      <xsl:when test="name(parent::node()) = 'list'">
+      <xsl:when test="parent::list">
 	<!-- list item -->
 	<xsl:element name="li">
 	  <xsl:call-template name="TASK"/>
@@ -122,6 +134,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template match="section[@class='slide']">
     <!-- slide section -->
     <xsl:element name="center">
@@ -145,7 +158,7 @@
 	      <xsl:element name="b">
 		<xsl:element name="a">
 		  <xsl:call-template name="ADDSTYLE"/>
-		  <xsl:attribute name="name">
+		  <xsl:attribute name="id">
 		    <xsl:value-of select="generate-id(.)"/>
 		  </xsl:attribute>
 		  <xsl:value-of select="h"/>
@@ -156,7 +169,7 @@
 	  <xsl:element name="tr">
 	    <xsl:element name="td">
 	      <xsl:attribute name="align">left</xsl:attribute>
-	      <xsl:apply-templates select="*[not(name(.) = 'h')]"/>
+	      <xsl:apply-templates select="*[not(name(.) = 'h')]|text()"/>
 	    </xsl:element>
 	  </xsl:element>
 	</xsl:element>
@@ -170,332 +183,387 @@
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="list">
-    <xsl:if test="child::*[not(@hidden) or @hidden &lt;= $level_hidden]">
+    <xsl:choose>
+      <xsl:when test="@enum = 'yes'">
+	<xsl:element name="ol">
+	  <xsl:apply-templates/>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:element name="ul">
+	  <xsl:apply-templates/>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="link">
+    <xsl:param name="target" select="'_blank'"/>
+    <xsl:element name="a">
+      <xsl:copy-of select="@id"/>
+      <xsl:copy-of select="@class"/>
       <xsl:choose>
-	<xsl:when test="@enum = 'yes' or child::p[@enum = 'yes']">
-	  <!-- enumerated list -->
+        <xsl:when test="@target">
+	  <xsl:copy-of select="@target"/>
+        </xsl:when>
+        <xsl:otherwise>
+	  <xsl:attribute name="target">
+	    <xsl:value-of select="$target"/>
+	  </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+        <xsl:when test="@name">
+	  <xsl:attribute name="id">
+	    <xsl:value-of select="@name"/>
+	  </xsl:attribute>
+        </xsl:when>
+	<xsl:when test="@href">
 	  <xsl:choose>
-	    <xsl:when test="parent::list">
-	      <xsl:element name="li"> <!-- create an hidden item for child list -->
-		<xsl:attribute name="style">
-		  <xsl:text>list-style-type: none;</xsl:text>
-		</xsl:attribute>
-		<xsl:if test="preceding-sibling::*[position() = 1 and name() = 'p' and @state = 'done']">
-		  <xsl:attribute name="class">
-		    <xsl:text>done</xsl:text>
-		  </xsl:attribute>
-		</xsl:if>
-		<xsl:element name="ol">
-		  <xsl:apply-templates/>
-		</xsl:element>
-	      </xsl:element>
+	    <xsl:when test="starts-with(@href,'#')">
+	      <!-- local link only -->
+	      <xsl:attribute name="href">
+		<xsl:value-of select="@href"/>
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:when test="starts-with(@href,'data:')">
+	      <xsl:copy-of select="@href"/>
+	      <xsl:attribute name="download">
+		<xsl:value-of select="'content.bin'"/>
+	      </xsl:attribute>
+	    </xsl:when>
+	    <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'mailto:') or starts-with(@href,'tel:') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+	      <xsl:attribute name="href">
+		<xsl:value-of select="@href"/>
+	      </xsl:attribute>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <xsl:element name="ol">
-		<xsl:apply-templates/>
-	      </xsl:element>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat($str_link_prefix,'/',@href)"/>
+	      </xsl:attribute>
 	    </xsl:otherwise>
 	  </xsl:choose>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:choose>
-	    <xsl:when test="parent::list">
-	      <xsl:element name="li"> <!-- create an hidden item for child list -->
-		<xsl:attribute name="style">
-		  <xsl:text>list-style-type: none;</xsl:text>
-		</xsl:attribute>
-		<xsl:if test="preceding-sibling::*[position() = 1 and name() = 'p' and @state = 'done']">
-		  <xsl:attribute name="class">
-		    <xsl:text>done</xsl:text>
-		  </xsl:attribute>
-		</xsl:if>
-		<xsl:element name="ul">
-		  <xsl:apply-templates/>
-		</xsl:element>
-	      </xsl:element>
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:element name="ul">
-		<xsl:if test="preceding-sibling::*[position() = 1 and name() = 'p' and @state = 'done']">
-		  <xsl:attribute name="class">
-		    <xsl:text>done</xsl:text>
-		  </xsl:attribute>
-		</xsl:if>
-		<xsl:apply-templates/>
-	      </xsl:element>
-	    </xsl:otherwise>
-	  </xsl:choose>
+	  <!-- without href attribute -->
+	  <xsl:attribute name="href">
+	    <xsl:value-of select="text()"/>
+	  </xsl:attribute>
 	</xsl:otherwise>
       </xsl:choose>
-    </xsl:if>
-  </xsl:template>
-  <xsl:template match="link">
-    <xsl:param name="target" select="'mainframe'"/>
-    <xsl:element name="a">
-    <xsl:copy-of select="@class"/>
-    <xsl:if test="@href">
-	<xsl:attribute name="target">
-          <xsl:choose>
-            <xsl:when test="@target">
-              <xsl:value-of select="@target"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="$target"/>
-            </xsl:otherwise>
-          </xsl:choose>
-	</xsl:attribute>
-	<xsl:copy-of select="@href"/>
-      </xsl:if>
-      <xsl:apply-templates/>
+      <xsl:choose>
+	<xsl:when test="@href">
+	  <xsl:apply-templates/>
+	</xsl:when>
+	<xsl:when test="string-length(text()) &gt; 80">
+	  <xsl:value-of select="concat(substring(text(),0,80),'...')"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="text()"/>
+	</xsl:otherwise>
+      </xsl:choose>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="translation">
     <!-- ignore -->
   </xsl:template>
+
   <xsl:template match="abstract">
     <xsl:element name="p">
       <xsl:attribute name="class">
 	<xsl:value-of select="name()"/>
       </xsl:attribute>
+      <xsl:if test="@iso">
+	<xsl:attribute name="title">
+	  <xsl:value-of select="@iso"/>
+	</xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="span">
     <xsl:copy-of select="@class"/>
     <xsl:copy-of select="."/>
   </xsl:template>
-  <xsl:template match="b|u|i|date">
+
+  <xsl:template match="pre|code|hr">
+    <xsl:copy-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="em|strong">
+    <xsl:element name="{name()}">
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="date">
     <!-- map former elements to span -->
     <xsl:element name="span">
       <xsl:attribute name="class">
 	<xsl:value-of select="name()"/>
       </xsl:attribute>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template match="em|strong|tt">
-    <xsl:element name="{name()}">
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template match="p">
-    <xsl:if test="@name">
-      <xsl:element name="a">
-	<xsl:copy-of select="@name"/>
-      </xsl:element>
-    </xsl:if>
-    <xsl:choose>
-      <xsl:when test="parent::list">
-	<!-- list item -->
-	<xsl:choose>
-	  <xsl:when test="not(@hidden)">
-	    <!-- simple paragraph -->
-	    <xsl:element name="li">
-	      <xsl:call-template name="CLASSATRIBUTE"/>
-	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:if test="parent::list[@enum = 'yes']">
-		<xsl:attribute name="value">
-		  <xsl:value-of select="count(preceding-sibling::p) + 1"/>
-		</xsl:attribute>
-	      </xsl:if>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:when test="@hidden &lt;= $level_hidden">
-	    <!-- hidden paragraph -->
-	    <xsl:element name="li">
-	      <xsl:attribute name="class">hidden</xsl:attribute>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- really hidden paragraph -->
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:choose>
-	  <xsl:when test="not(@hidden)">
-	    <!-- simple paragraph -->
-	    <xsl:element name="p">
-	      <xsl:call-template name="CLASSATRIBUTE"/>
-	      <xsl:call-template name="ADDSTYLE"/>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:when test="@hidden &lt;= $level_hidden">
-	    <!-- hidden paragraph -->
-	    <xsl:element name="p">
-	      <xsl:attribute name="class">hidden</xsl:attribute>
-	      <xsl:apply-templates/>
-	      <xsl:call-template name="FORMATIMPACT"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- really hidden paragraph -->
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  <xsl:template match="pre">
-    <xsl:element name="pre">
-      <xsl:element name="code">
-	<xsl:copy-of select="text()"/>
-      </xsl:element>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template match="hr">
-    <xsl:copy-of select="."/>
-  </xsl:template>
-  <xsl:template match="img">
-    <xsl:if test="@src">
-      <xsl:element name="a">
-	<xsl:attribute name="name">
-	  <xsl:value-of select="@src"/>
+      <xsl:if test="@iso">
+	<xsl:attribute name="title">
+	  <xsl:value-of select="@iso"/>
 	</xsl:attribute>
-      </xsl:element>
-    </xsl:if>
-    <xsl:element name="{name()}">
-      <xsl:copy-of select="@*"/>
-      <xsl:attribute name="class">
-	<xsl:value-of select="'localsize'"/>
-      </xsl:attribute>
-      <xsl:attribute name="title">
-	<xsl:value-of select="@src"/>
-      </xsl:attribute>
-	<xsl:attribute name="alt">
-	<xsl:choose>
-	  <xsl:when test="parent::fig/child::h">
-	    <xsl:value-of select="parent::fig/child::h"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of select="@src"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="p">
+    <xsl:variable name="name_element">
       <xsl:choose>
-	<xsl:when test="$str_link_prefix='' or starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://') or starts-with(@src,'ftp://')">
-	  <xsl:attribute name="src">
-	    <xsl:value-of select="@src"/>
-	  </xsl:attribute>
+	<xsl:when test="parent::list">
+    	  <xsl:text>li</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:attribute name="src">
-	    <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
-	  </xsl:attribute>
+    	  <xsl:text>p</xsl:text>
 	</xsl:otherwise>
       </xsl:choose>
-    </xsl:element>
-  </xsl:template>
-  <xsl:template name="TABLEHEADER">
-    <!--  -->
-    <xsl:param name="numRows" select="-1"/>
-    <xsl:param name="numRowMax" select="-1"/>
-    <!--
-    <xsl:comment>
-      <xsl:value-of select="concat(' numRows = ',$numRows,', numRowMax = ',$numRowMax,' ')"/>
-      </xsl:comment>
-      -->
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="$numRows = 0"> <!-- end of list -->
-	<xsl:element name="thead">
-	  <xsl:element name="tr">
-	    <xsl:element name="th">
-	      <xsl:text>&#x2800;</xsl:text>
-	    </xsl:element>
-	    <xsl:for-each select="child::tr[position() = $numRowMax]/child::td">
-	      <xsl:element name="th">
-		<xsl:value-of select="position()"/>
-	      </xsl:element>
-	    </xsl:for-each>
+      <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
+	<xsl:element name="{$name_element}">
+	  <xsl:element name="img">
+	    <xsl:attribute name="src">
+	      <xsl:for-each select="child::base64">
+		<xsl:value-of select="concat('data:',attribute::type,';base64,')"/>
+		<xsl:choose>
+		  <xsl:when test="child::l"> <!-- single lines -->
+		    <xsl:for-each select="child::l">
+		      <xsl:value-of select="."/>
+		    </xsl:for-each>
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:value-of select="text()"/>
+		  </xsl:otherwise>
+		</xsl:choose>
+	      </xsl:for-each>
+	    </xsl:attribute>
 	  </xsl:element>
 	</xsl:element>
       </xsl:when>
+      <xsl:when test="parent::section and child::list">
+	<xsl:element name="div">
+	  <xsl:call-template name="CLASSATRIBUTE"/>
+	  <xsl:call-template name="ADDSTYLE"/>
+	  <xsl:choose>
+	    <xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
+	      <!-- simple paragraph -->
+	      <xsl:element name="{$name_element}">
+		<xsl:call-template name="CLASSATRIBUTE"/>
+		<xsl:call-template name="ADDSTYLE"/>
+		<xsl:if test="@hidden">
+		  <!-- hidden paragraph -->
+		  <xsl:attribute name="class">hidden</xsl:attribute>
+		</xsl:if>
+		<xsl:apply-templates select="*[not(name(.) = 'list')]|text()"/>
+		<xsl:apply-templates select="list"/>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:when test="child::list">
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <!-- really hidden paragraph -->
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:element>
+      </xsl:when>
       <xsl:otherwise>
-	<xsl:call-template name="TABLEHEADER"> <!-- recursion -->
-	  <xsl:with-param name="numRows">
-	    <xsl:choose>
-	      <xsl:when test="$numRows &lt; 0">
-		<xsl:value-of select="count(child::tr)"/> <!-- initial value -->
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="$numRows - 1"/> <!-- decrement value -->
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:with-param>
-	  <xsl:with-param name="numRowMax">
-	    <xsl:choose>
-	      <xsl:when test="$numRows &lt; 0">
-		<xsl:value-of select="count(child::tr)"/> <!-- initial value, last child -->
-	      </xsl:when>
-	      <xsl:when test="$numRowMax &lt; 0">
-		<xsl:value-of select="$numRows"/> <!-- initial value -->
-	      </xsl:when>
-	      <xsl:when test="count(child::tr[position() = $numRowMax]/child::td) &lt; count(child::tr[position() = $numRows]/child::td)">
-		<xsl:value-of select="$numRows"/> <!-- new maximum -->
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="$numRowMax"/> <!-- keep max value -->
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:with-param>
-	</xsl:call-template>
+	<xsl:choose>
+	  <xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
+	    <!-- simple paragraph -->
+	    <xsl:element name="{$name_element}">
+	      <xsl:call-template name="CLASSATRIBUTE"/>
+	      <xsl:call-template name="ADDSTYLE"/>
+	      <xsl:if test="@hidden">
+		<!-- hidden paragraph -->
+		<xsl:attribute name="class">hidden</xsl:attribute>
+	      </xsl:if>
+	      <xsl:apply-templates select="*[not(name(.) = 'list')]|text()"/>
+	      <xsl:apply-templates select="list"/>
+	    </xsl:element>
+	  </xsl:when>
+	  <xsl:when test="child::list">
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- really hidden paragraph -->
+	  </xsl:otherwise>
+	</xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+  <xsl:template match="img">
+    <xsl:choose>
+      <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
+	  <xsl:element name="img">
+	    <xsl:attribute name="src">
+	      <xsl:for-each select="child::base64">
+		<xsl:value-of select="concat('data:',attribute::type,';base64,')"/>
+		<xsl:choose>
+		  <xsl:when test="child::l"> <!-- single lines -->
+		    <xsl:for-each select="child::l">
+		      <xsl:value-of select="."/>
+		    </xsl:for-each>
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:value-of select="text()"/>
+		  </xsl:otherwise>
+		</xsl:choose>
+	      </xsl:for-each>
+	    </xsl:attribute>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>		<!-- build a href -->
+	<xsl:variable name="str_src">
+	  <xsl:choose>
+	    <xsl:when test="starts-with(@src,'/') or starts-with(@src,'?') or starts-with(@src,'http://') or starts-with(@src,'https://')">
+	      <xsl:value-of select="@src"/>
+	    </xsl:when>
+	    <xsl:when test="ancestor::block[@context]">
+	      <xsl:value-of select="concat('/',ancestor::block[@context][1]/@context,'/../',@src)"/> <!-- derive location from block context -->
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:value-of select="concat($str_link_prefix,'/',@src)"/>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:variable>
+	<xsl:element name="a">
+	  <xsl:attribute name="id">
+	    <!-- anchor to jump on -->
+	    <xsl:value-of select="generate-id()"/>
+	  </xsl:attribute>
+	  <xsl:attribute name="href">
+	    <xsl:value-of select="$str_src"/>
+	  </xsl:attribute>
+	  <xsl:attribute name="target">
+	    <xsl:value-of select="'blank'"/>
+	  </xsl:attribute>
+	  <xsl:element name="{name()}">
+	    <xsl:copy-of select="@*"/>
+	    <xsl:attribute name="class">
+	      <xsl:value-of select="'localsize'"/>
+	    </xsl:attribute>
+	    <xsl:attribute name="title">
+	      <xsl:choose>
+		<xsl:when test="@alt">
+		  <xsl:value-of select="@alt"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="$str_src"/>
+		</xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:attribute>
+	    <xsl:attribute name="alt">
+	      <xsl:choose>
+		<xsl:when test="parent::fig/child::h">
+		  <xsl:value-of select="parent::fig/child::h"/>
+		</xsl:when>
+		<xsl:when test="@alt">
+		  <xsl:value-of select="@alt"/>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="$str_src"/>
+		</xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:attribute>
+            <xsl:attribute name="src">
+	      <xsl:value-of select="$str_src"/>
+            </xsl:attribute>
+	  </xsl:element>
+	</xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="table">
+    <xsl:variable name="flag_cellnames" select="true()"/>
     <xsl:element name="center">
       <xsl:element name="table">
 	<xsl:attribute name="id">
-	  <xsl:text>localTable</xsl:text> <!-- TODO: handle multiple tables -->
+	  <xsl:value-of select="concat('table-',generate-id())"/>
 	</xsl:attribute>
 	<xsl:attribute name="class">
-	  <xsl:text>tablesorter</xsl:text>
+	  <xsl:text>localTable</xsl:text>
 	</xsl:attribute>
 	<xsl:attribute name="border">
 	  <xsl:text>1</xsl:text>
 	</xsl:attribute>
 	<xsl:copy-of select="@*"/>
 	<xsl:attribute name="width">90%</xsl:attribute>
-	<xsl:choose>
-	  <xsl:when test="thead">
-	    <!-- OK -->
-	    <xsl:copy-of select="*[not(name()='t')]"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:call-template name="TABLEHEADER"/>
-	    <tbody>
-	      <xsl:for-each select="tr">
+	<xsl:if test="$flag_cellnames">
+	  <xsl:for-each select="thead">
+	    <xsl:element name="{name()}">
+	      <xsl:for-each select="tr[1]">
 		<xsl:element name="{name()}">
-		  <xsl:call-template name="CLASSATRIBUTE"/>
-		  <xsl:element name="th">
-		    <xsl:value-of select="position()"/>
-		  </xsl:element>
-		  <xsl:for-each select="td|th">
-		    <xsl:element name="{name()}">
-		      <xsl:copy-of select="@*"/>
-		      <xsl:apply-templates select="*|text()"/>
-		    </xsl:element>
+		  <xsl:for-each select="th|td">
+		    <xsl:if test="position() = 1">
+		      <xsl:element name="{name()}">
+			<xsl:text>&#x2800;</xsl:text>
+		      </xsl:element>
+		    </xsl:if>
+		    <xsl:copy-of select="."/>
 		  </xsl:for-each>
 		</xsl:element>
 	      </xsl:for-each>
-	    </tbody>
+	    </xsl:element>
+	  </xsl:for-each>
+	</xsl:if>
+	<xsl:choose>
+	  <xsl:when test="child::tbody">
+	    <xsl:for-each select="tbody">
+	      <xsl:element name="{name()}">
+		<xsl:for-each select="tr">
+		  <xsl:element name="{name()}">
+		    <xsl:if test="$flag_cellnames">
+		      <xsl:element name="th">
+			<xsl:value-of select="position()"/>
+		      </xsl:element>
+		    </xsl:if>
+		    <xsl:for-each select="th|td">
+		      <xsl:element name="{name()}">
+			<xsl:copy-of select="@*"/>
+			<xsl:call-template name="CLASSATRIBUTE"/>
+			<xsl:apply-templates select="*|text()"/>
+		      </xsl:element>
+		    </xsl:for-each>
+		  </xsl:element>
+		</xsl:for-each>
+	      </xsl:element>
+	    </xsl:for-each>	    
+	  </xsl:when>
+	  <xsl:otherwise>
 	  </xsl:otherwise>
 	</xsl:choose>
+	<xsl:for-each select="tr">
+	  <xsl:element name="{name()}">
+	    <xsl:for-each select="th|td">
+	      <xsl:element name="{name()}">
+		<xsl:copy-of select="@*"/>
+		<xsl:call-template name="CLASSATRIBUTE"/>
+		<xsl:apply-templates select="*|text()"/>
+	      </xsl:element>
+	    </xsl:for-each>
+	  </xsl:element>
+	</xsl:for-each>
       </xsl:element>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="fig">
     <xsl:if test="$flag_fig and child::*">
       <xsl:choose>
 	<xsl:when test="not(@hidden) or @hidden &lt;= $level_hidden">
 	  <!-- normal figure -->
 	  <xsl:element name="center">
+	    <xsl:attribute name="class">figure</xsl:attribute>
 	    <xsl:apply-templates select="img"/>
 	    <xsl:if test="h">
 	      <xsl:element name="p">
@@ -529,6 +597,7 @@
       </xsl:choose>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="LISTCSS">
     <xsl:param name="list_css" select="''"/>
     <xsl:choose>
@@ -565,6 +634,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="LISTJS">
     <xsl:param name="list_js" select="''"/>
     <xsl:choose>
@@ -596,6 +666,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="HEADER">
     <xsl:param name="list_js" select="''"/>
     <xsl:element name="head">
@@ -623,14 +694,13 @@
 	  <xsl:text>no-cache</xsl:text>
 	</xsl:attribute>
       </xsl:element>
-      <!-- TODO: str_title -->
       <xsl:element name="title">
 	<xsl:choose>
-	  <xsl:when test="/pie/section/h">
-	    <xsl:value-of select="/pie/section/h"/>
+	  <xsl:when test="string-length($str_title) &gt; 0">
+	    <xsl:value-of select="$str_title"/>
 	  </xsl:when>
-	  <xsl:when test="/map/node[@TEXT]">
-	    <xsl:value-of select="/map/node/@TEXT"/>
+	  <xsl:when test="/pie/descendant::section[1]/h">
+	    <xsl:value-of select="/pie/descendant::section[1]/h"/>
 	  </xsl:when>
 	  <xsl:otherwise>
 	  </xsl:otherwise>
@@ -651,24 +721,23 @@
       </xsl:call-template>
      </xsl:element>
   </xsl:template>
+
   <xsl:template name="PIETAGCLOUD">
     <!--  -->
+    <xsl:if test="/pie/meta/t/t"> <!--  -->
       <xsl:variable name="int_space" select="5"/>
       <xsl:element name="div">
 	<xsl:attribute name="id">tags</xsl:attribute>
 	<xsl:attribute name="style">display:none</xsl:attribute>
 	<xsl:element name="p">
-	  <xsl:element name="button">
-	    <xsl:attribute name="id">tag_reset</xsl:attribute>
-	    <xsl:attribute name="type">button</xsl:attribute>
-	    <xsl:text>Reset Tags</xsl:text>
-	  </xsl:element>
 	  <xsl:element name="input">
+	    <xsl:attribute name="id">pattern</xsl:attribute>
+	    <xsl:attribute name="name">pattern</xsl:attribute>
 	    <xsl:attribute name="type">text</xsl:attribute>
-	    <xsl:attribute name="class">htag</xsl:attribute>
-	    <xsl:attribute name="maxlength">25</xsl:attribute>
-	    <xsl:attribute name="size">30</xsl:attribute>
+	    <xsl:attribute name="maxlength">50</xsl:attribute>
+	    <xsl:attribute name="size">50</xsl:attribute>
 	  </xsl:element>
+	  <xsl:element name="br"/>
 	  <xsl:for-each select="pie/meta/t/t"> <!--  -->
 	    <xsl:sort order="ascending" data-type="text" select="translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 	    <xsl:sort order="descending" data-type="number" select="@count"/>
@@ -695,6 +764,16 @@
                 </xsl:attribute>
 	      </xsl:if>
 	      <xsl:value-of select="."/>
+	    </xsl:element>
+	    <xsl:text> </xsl:text>
+	  </xsl:for-each>
+	  <!-- -->
+	  <xsl:for-each select="pie/descendant::date[generate-id(.) = generate-id(key('list-date',@iso))]">
+	    <xsl:sort order="ascending" data-type="number" select="@diff"/>
+	    <xsl:sort order="ascending" data-type="text" />
+	    <xsl:element name="span">
+	      <xsl:attribute name="class">date</xsl:attribute>
+	      <xsl:value-of select="@iso"/>
 	    </xsl:element>
 	    <xsl:text> </xsl:text>
 	  </xsl:for-each>
@@ -745,62 +824,71 @@
 	-->
 	<hr/>
       </xsl:element>
+    </xsl:if>
   </xsl:template>
-  <xsl:template match="script">
+
+  <xsl:template match="import[@type = 'script']">
     <!--  -->
-    <xsl:copy-of select="."/>
+    <xsl:element name="code">
+      <xsl:copy-of select="text()"/>
+    </xsl:element>
   </xsl:template>
+
   <xsl:template name="PIETOC">
     <xsl:param name="display" select="block"/>
     <xsl:if test="count(//section[child::h and not(ancestor::section[@valid='no'])]) &gt; 3">
-<!--
-      <xsl:element name="a">
-	<xsl:attribute name="href">
-	  <xsl:text>javascript:this.document.switchDisplay('toc')</xsl:text>
-	</xsl:attribute>
-	<xsl:attribute name="title">
-	  <xsl:text>Show Table of Contents</xsl:text>
-	</xsl:attribute>
-	<xsl:text>toc</xsl:text>
-      </xsl:element>
-      <xsl:text> </xsl:text>
--->
-      <xsl:element name="pre">
+      <xsl:element name="div">
 	<xsl:attribute name="id">toc</xsl:attribute>
 	<xsl:attribute name="style">
 	  <xsl:value-of select="concat('display:',$display)"/>
 	</xsl:attribute>
-	<xsl:for-each select="//section[h and not(ancestor-or-self::section[@valid='no']) and not(ancestor::meta)]">
-	  <xsl:for-each select="ancestor::section[h]">
-	    <xsl:text>   </xsl:text>
+	<xsl:element name="pre">
+	  <xsl:for-each select="//link[@id]">
+	    <xsl:element name="a">
+	      <xsl:attribute name="class">warning</xsl:attribute>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat('#',@id)"/>
+	      </xsl:attribute>
+              <xsl:value-of select="concat('',@id)"/>
+	    </xsl:element>
+	    <xsl:text> </xsl:text>
 	  </xsl:for-each>
-	  <xsl:element name="a">
-	    <xsl:attribute name="href">
-	      <xsl:value-of select="concat('#',generate-id(.))"/>
-	    </xsl:attribute>
-	    <xsl:value-of select="normalize-space(h)"/>
-	  </xsl:element>
 	  <xsl:value-of select="$newline"/>
-	</xsl:for-each>
-	<hr/>
+
+	  <xsl:for-each select="//section[h and not(ancestor-or-self::section[@valid='no']) and not(ancestor::meta)]">
+	    <xsl:variable name="str_id" select="child::h/child::link/attribute::id"/>
+	    <xsl:for-each select="ancestor::section[h]">
+	      <xsl:text>   </xsl:text>
+	    </xsl:for-each>
+	    <xsl:element name="a">
+	      <xsl:call-template name="MENUSET"/>
+	      <xsl:attribute name="href">
+		<xsl:value-of select="concat('#',generate-id(.))"/>
+	      </xsl:attribute>
+	      <xsl:for-each select="h">
+		<xsl:apply-templates select="text()|date/text()|link/text()|htag/text()"/>
+	      </xsl:for-each>
+	    </xsl:element>
+	    <xsl:if test="$str_id">
+	      <xsl:text> </xsl:text>
+	      <xsl:element name="a">
+		<xsl:attribute name="class">warning</xsl:attribute>
+		<xsl:attribute name="href">
+		  <xsl:value-of select="concat('#',$str_id)"/>
+		</xsl:attribute>
+		<xsl:value-of select="concat('',$str_id)"/>
+	      </xsl:element>
+	    </xsl:if>
+	    <xsl:value-of select="$newline"/>
+	  </xsl:for-each>
+	</xsl:element>
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="PIELINKLIST">
+    <xsl:param name="target" select="'_blank'"/>
     <xsl:if test="count(//link[not(ancestor::*[@valid='no']) and string-length(@href) &gt; 4]) &gt; 1">
-<!--
-      <hr/>
-      <xsl:element name="a">
-	<xsl:attribute name="href">
-	  <xsl:text>javascript:this.document.switchDisplay('links')</xsl:text>
-	</xsl:attribute>
-	<xsl:attribute name="title">
-	  <xsl:text>Show List of Links</xsl:text>
-	</xsl:attribute>
-	<xsl:text>links</xsl:text>
-      </xsl:element>
-      <xsl:text> </xsl:text>
--->
       <xsl:element name="div">
 	<xsl:attribute name="id">links</xsl:attribute>
 	<xsl:attribute name="style">display:none</xsl:attribute>
@@ -809,13 +897,26 @@
 	  <xsl:for-each select="//link[not(ancestor::*[@valid='no']) and string-length(@href) &gt; 4]">
 	    <xsl:element name="li">
 	      <xsl:element name="a">
+		<xsl:choose>
+		  <xsl:when test="@target">
+		    <xsl:copy-of select="@target"/>
+		  </xsl:when>
+		  <xsl:when test="starts-with(@href,'#')">
+		    <!-- local link only -->
+		  </xsl:when>
+		  <xsl:otherwise>
+		    <xsl:attribute name="target">
+		      <xsl:value-of select="$target"/>
+		    </xsl:attribute>
+		  </xsl:otherwise>
+		</xsl:choose>
 		<xsl:attribute name="href">
 		  <xsl:choose>
-		    <xsl:when test="starts-with(@href,'\\')">
-		      <xsl:value-of select="concat('file://',@href)"/>
+		    <xsl:when test="$str_link_prefix='' or starts-with(@href,'/') or starts-with(@href,'?') or starts-with(@href,'http://') or starts-with(@href,'https://') or starts-with(@href,'ftp://') or starts-with(@href,'onenote:') or starts-with(@href,'file://')">
+		      <xsl:value-of select="@href"/>
 		    </xsl:when>
 		    <xsl:otherwise>
-		      <xsl:value-of select="@href"/>
+		      <xsl:value-of select="concat($str_link_prefix,'/',@href)"/>
 		    </xsl:otherwise>
 		  </xsl:choose>
 		</xsl:attribute>
@@ -835,10 +936,10 @@
 	    </xsl:element>
 	  </xsl:for-each>
 	</xsl:element>
-	<hr/>
       </xsl:element>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="TAGMARKUP">
     <xsl:param name="str_mark"/>
     <xsl:variable name="str_tail" select="substring-after($str_mark,$str_tag)"/>
@@ -863,6 +964,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="ADDSTYLE">
     <xsl:param name="flag_background" select="true()"/>
     <xsl:if test="@color or @background">
@@ -894,30 +996,29 @@
       </xsl:attribute>
     </xsl:if>
   </xsl:template>
+
   <xsl:template name="MENUSET">
-    <xsl:choose>
-      <xsl:when test="@flocator">
-	<xsl:attribute name="name">
-	  <xsl:value-of select="concat(translate(@flocator,'\','/'),':',@fxpath,':',@xpath)"/>
-	</xsl:attribute>
-      </xsl:when>
-      <!--
-      <xsl:when test="string-length($file_norm) &gt; 0">
-	<xsl:attribute name="name">
-	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@xpath,':',@xpath)"/>
-	</xsl:attribute>
+    <xsl:attribute name="name">
+      <xsl:choose>
+	<xsl:when test="ancestor::block[@context]">
+	  <xsl:value-of select="concat(translate(ancestor::block[@context][1]/@context,'\','/'),':',@bxpath,':',@xpath)"/>
 	</xsl:when>
-	-->
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+	<xsl:when test="string-length($file_norm) &gt; 0">
+	  <xsl:value-of select="concat(translate($file_norm,'\','/'),':',@bxpath,':',@xpath)"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="concat('',':',':',@xpath)"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
     <xsl:attribute name="class">
       <xsl:value-of select="concat('context-menu-',name())"/>
     </xsl:attribute>
   </xsl:template>
+
   <xsl:template name="FORMATTOOLTIP">
     <xsl:param name="node"/>
-    <xsl:value-of select="concat(ancestor::*[@flocator and position() = 1]/@flocator,' ')"/>
+    <xsl:value-of select="concat(ancestor::*[@blocator and position() = 1]/@blocator,' ')"/>
     <xsl:for-each select="@*">
       <xsl:if test="not(contains(name(),'id')) and not(name()='hstr') and not(contains(name(),'xpath')) and not(contains(name(),'locator'))">
 	<xsl:value-of select="concat(name(),'=',.,' ')"/>
@@ -933,116 +1034,72 @@
       </xsl:call-template>
     </xsl:for-each>
   </xsl:template>
-  <xsl:template name="TIMESTRING">
-    <xsl:if test="@hour">
-      <xsl:value-of select="concat(@hour,'.',@minute)"/>
-      <xsl:if test="@hour-end">
-	<xsl:value-of select="concat('-',@hour-end,'.',@minute-end)"/>
-      </xsl:if>
-      <xsl:value-of select="concat('',' ')"/>
-    </xsl:if>
-  </xsl:template>
+
   <xsl:template name="CLASSATRIBUTE">
-    <xsl:attribute name="class">
-      <xsl:choose>
-	<xsl:when test="@state">
-	  <xsl:value-of select="concat(name(),'-',@state)"/>
-	</xsl:when>
-	<xsl:when test="@done">
-	  <xsl:value-of select="concat(name(),'-done')"/>
-	</xsl:when>
-	<xsl:when test="@impact">
-	  <xsl:value-of select="concat(name(),@impact)"/>
-	</xsl:when>
-	<xsl:when test="@class">
-	  <xsl:value-of select="@class"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:value-of select="name()"/>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
-  </xsl:template>
-  <xsl:template name="TASK">
-    <!-- callable for task element -->
-    <xsl:param name="flag_line" select="false()"/>
-    <xsl:param name="flag_ancestor" select="false()"/>
-    <xsl:element name="div">
-      <xsl:call-template name="CLASSATRIBUTE"/>
-      <xsl:call-template name="ADDSTYLE"/>
-      <xsl:attribute name="id">
-	<xsl:value-of select="translate(@xpath,'/*[]','_')"/>
-      </xsl:attribute>
-      <xsl:element name="span">
-	<xsl:call-template name="MENUSET"/>
-	  <xsl:if test="@name">
-	    <xsl:element name="a">
-	      <xsl:copy-of select="@name"/>
-	    </xsl:element>
-	  </xsl:if>
-	<xsl:if test="$flag_ancestor">
-	  <!--  -->
-	  <xsl:element name="i">
-	    <xsl:element name="a">
-	      <xsl:attribute name="title">
-		<xsl:call-template name="FORMATTOOLTIP">
-		  <xsl:with-param name="node" select="self::node()"/>
-		</xsl:call-template>
-	      </xsl:attribute>
-	      <xsl:choose>
-		<xsl:when test="@hstr">
-		  <xsl:value-of select="@hstr"/>
-		</xsl:when>
-		<xsl:otherwise>
-		  <xsl:for-each select="ancestor::section[position() &lt; 3]">
-		    <xsl:value-of select="h"/>
-		    <xsl:text>::</xsl:text>
-		  </xsl:for-each>
-		</xsl:otherwise>
-	      </xsl:choose>
-	    </xsl:element>
-	  </xsl:element>
-	</xsl:if>
-	<xsl:element name="span">
+    <xsl:copy-of select="@id|@name"/>
+    <xsl:choose>
+      <xsl:when test="@class">
+	<xsl:attribute name="class">
 	  <xsl:choose>
 	    <xsl:when test="@state">
-	      <xsl:attribute name="class">
-		<xsl:value-of select="concat('htag-',@state)"/>
-	      </xsl:attribute>
+	      <xsl:value-of select="concat(@class,'-',@state)"/>
 	    </xsl:when>
-	    <xsl:when test="@class">
-	      <xsl:attribute name="class">
-		<xsl:value-of select="concat('htag-',@class)"/>
-	      </xsl:attribute>
+	    <xsl:when test="@done">
+	      <xsl:value-of select="concat(@class,'-done')"/>
+	    </xsl:when>
+	    <xsl:when test="@impact">
+	      <xsl:value-of select="concat(@class,@impact)"/>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <xsl:attribute name="class">htag-todo</xsl:attribute>
+	      <xsl:value-of select="@class"/>
 	    </xsl:otherwise>
 	  </xsl:choose>
-	  <xsl:call-template name="FORMATTASKPREFIX"/>
-	</xsl:element>
+	</xsl:attribute>
+      </xsl:when>
+      <xsl:when test="@state">
+	<xsl:attribute name="class">
+	  <xsl:value-of select="concat(name(),'-',@state)"/>
+	</xsl:attribute>
+      </xsl:when>
+      <xsl:when test="@done">
+	<xsl:attribute name="class">
+	  <xsl:value-of select="concat(name(),'-done')"/>
+	</xsl:attribute>
+      </xsl:when>
+      <xsl:when test="@impact">
+	<xsl:attribute name="class">
+	  <xsl:value-of select="concat(name(),@impact)"/>
+	</xsl:attribute>
+      </xsl:when>
+      <xsl:when test="@name">
+	<xsl:attribute name="title">
+	  <xsl:value-of select="@name"/>
+	</xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="TASK">
+    <!-- callable for task element -->
+    <xsl:element name="div">
+      <xsl:call-template name="ADDSTYLE"/>
+      <xsl:call-template name="CLASSATRIBUTE"/>
+      <xsl:if test="@xpath">
+	<xsl:attribute name="id">
+	  <xsl:value-of select="translate(@xpath,'/*[]','_')"/>
+	</xsl:attribute>
+      </xsl:if>
+      <xsl:element name="p">
+	<xsl:call-template name="MENUSET"/>
+	<xsl:call-template name="FORMATTASKPREFIX"/>
 	<xsl:apply-templates select="h"/>
-	<xsl:call-template name="FORMATIMPACT"/>
-	<!--  -->
-	<xsl:if test="@effort">
-	  <xsl:text> / </xsl:text>
-	  <xsl:value-of select="@effort"/>
-	</xsl:if>
-	<!--  -->
-	<xsl:choose>
-	  <xsl:when test="count(child::*[not(name()='h')]) &gt; 0">
-	    <xsl:element name="div">
-	      <xsl:attribute name="style">margin: 5px 5px 5px 15px;</xsl:attribute>
-	      <!--  -->
-	      <xsl:apply-templates select="*[not(name()='h')]"/>
-	    </xsl:element>
-	  </xsl:when>
-	  <xsl:otherwise>
-	  </xsl:otherwise>
-	</xsl:choose>
       </xsl:element>
+      <xsl:apply-templates select="*[not(name()='h')]|text()"/>
     </xsl:element>
   </xsl:template>
+  
 <xsl:template name="CREATESTYLE">
     <xsl:element name="style">
       <!-- (progn (move-beginning-of-line 2)(insert-file "../../../html/pie.css")) -->
@@ -1059,8 +1116,9 @@
 
 body,table {
   background-color:#ffffff;
-  font-family: Arial,sans-serif;
+  /* font-family: Arial,sans-serif; */
   /* font-family:Courier; */
+  font: inherit;
   font-size:12px;
   margin: 5px 5px 5px 5px;
 }
@@ -1162,12 +1220,12 @@ a.geb {
 
 span.htag, span.htag-todo, span.htag-req, span.htag-bug, span.htag-test {
   border-radius: 5px;
-  background: #ffffaa;
+  color: #58a6fe;
 }
 
 span.htag-target {
   border-radius: 5px;
-  background: #ee4444;
+  background: #dd4444;
 }
 
 span.htag-bug {
@@ -1216,13 +1274,13 @@ td {
   margin-bottom:0px;
 }
 .c11 {
-  background-color:#ffcccc;
+  background-color:#ffdddd;
 }
 .c12 {
-  background-color:#eeffee;
+  background-color:#ddffdd;
 }
 .c21 {
-  background-color:#ffeeee;
+  background-color:#ffdddd;
 }
 .c22 {
   background-color:#ffffff;
@@ -1331,7 +1389,7 @@ span.tagRed {
 /* lists */
 ul, ol {
  margin: 0px 0px 0px 0px;
- padding: 0px 0px 0px 3em;
+ padding: 0px 0px 0px 2em;
 }
 
 ul {
@@ -1348,6 +1406,11 @@ li {
   */
   margin-left:0px;
   /* text-indent:0.1cm; */
+}
+.hr {
+  font-size:2%;
+  clear: both;
+  padding: 0px 5px 0px 5px ;
 }
 
 /* misc tags
@@ -1387,13 +1450,20 @@ li.hidden,p.hidden {
  font-size:120%;
 }
 
+/* fixed font */
+
+*.ace_editor {
+  font-family: monospace;
+}
+
 code, tt {
   margin: 0 2px;
   padding: 0 5px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   border: 1px solid #eaeaea;
   background-color: #f8f8f8;
   border-radius: 3px;
+  font-family: monospace;
 }
 
 pre code {
@@ -1402,21 +1472,18 @@ pre code {
   white-space: pre;
   border: none;
   background: transparent;
+  font-family: monospace;
 }
 
 pre {
   background-color: #f8f8f8;
-  border: 1px solid #cccccc;
-  font-size: 13px;
+  border: 1px solid #dddddd;
+  /* font-size: 13px; */
   line-height: 19px;
   overflow: auto;
   padding: 6px 10px;
   border-radius: 3px;
-}
-
-pre code, pre tt {
-  background-color: transparent;
-  border: none;
+  font-family: monospace;
 }
 
 dt {
@@ -1443,11 +1510,17 @@ dd {
 }
 
 img {
- margin: 10px 10px 20px 20px;
+ /* margin: 10px 10px 20px 20px; */
  border:none
 }
+.figure {
+ background-color:#eeeeee;
+ border-style:solid;
+ border-width:thin;
+ margin: 5px 5px 10px 10px;
+}
 .localsize {
-  /* width: 90%; */
+  /*width: 90%;*/
  margin: 5px 5px 10px 10px;
  border:none
 }
@@ -1455,7 +1528,7 @@ img {
 input,textarea,select {
 }
 .additor {
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1477,7 +1550,7 @@ span.pieTab {
 
 input.pieTab {
   vertical-align: top;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1486,7 +1559,7 @@ input.pieTab {
 
 select.pieTab {
   vertical-align: top;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1495,7 +1568,7 @@ select.pieTab {
 
 textarea.pieTab {
   vertical-align: top;
-  background-color:#EEEEEE;
+  background-color:#eeeeee;
   border-width:1px; 
   border-color:#BBBBBB;
   border-style:solid;
@@ -1510,36 +1583,62 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 *.task, *.todo, *.test, *.bug, *.req, *.target {
   background-color:#EEEEEE;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
-*.p1, *.h1, *.fig1, *.task1, *.tr1, *.section1 {
-  background-color:#ffcccc;
+*.p1, *.h1, *.fig1, *.task1, *.todo1, *.test1, *.bug1, *.req1, *.target1, *.tr1, *.th1, *.td1, *.section1 {
+  background-color:#ffffbb;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
-*.p2, *.h2, *.fig2, *.task2, *.tr2, *.section2 {
-  background-color:#ccffcc;
+*.p2, *.h2, *.fig2, *.task2, *.todo2, *.test2, *.bug2, *.req2, *.target2, *.tr2, *.th2, *.td2, *.section2 {
+  background-color:#ddffdd;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
-*.p3, *.h3, *.fig3, *.task3, *.tr3, *.section3 {
-  background-color:#ccccff;
+*.p3, *.h3, *.fig3, *.task3, *.todo3, *.test3, *.bug3, *.req3, *.target3, *.tr3, *.th3, *.td3, *.section3 {
+  background-color:#ddddff;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
+  margin: 1px 0px 1px 0px;
+  border-radius: 3px;
 }
 
-*.section-done,*.htag-done,*.task-done,*.p-done,*.h-done {
+*.p-done {
   color:#AAAAAA;
-  background-color:#EEEEEE;
+}
+
+*.section-done,*.htag-done,*.task-done, *.todo-done, *.test-done, *.bug-done, *.req-done, *.target-done,*.h-done {
+  color:#AAAAAA;
+  background-color:#eeeeee;
   padding: 1px;
-  margin: 2px 2px 0px 0px;
-/*  text-decoration:line-through; */
+  margin: 1px 0px 1px 0px;
+  border-radius: 3px;
+}
+
+span.context-menu-section {
+  font-weight:bold;
 }
 
 /* 
  */
-*.invalid, *.task-rejected {
+td > div.block {
+  padding: 3px;
+}
+
+tr:has(.th1, .td1) {
+  background-color:#ffffbb;
+}
+
+tr:has(.th2, .td2) {
+  background-color:#ddffdd;
+}
+
+/* 
+ */
+*.invalid, *.task-rejected, *.target-rejected, *.test-rejected, *.bug-rejected, *.req-rejected {
   text-decoration: line-through;
 }
 
@@ -1552,6 +1651,7 @@ p,ul,ol,li,div,td,th,address,blockquote,i,b,input {
 
 *.highlight {
   background-color:#88ff88;
+  padding: 1px;
 }
 
 /* text marker like styles
@@ -1595,7 +1695,9 @@ blockquote > :last-child {
 
    </xsl:element>
 </xsl:template>
+
   <xsl:template match="meta|t">
     <!-- ignore this elements -->
   </xsl:template>
+  
 </xsl:stylesheet>

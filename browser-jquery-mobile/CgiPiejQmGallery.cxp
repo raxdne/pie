@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" readonly="no">
-  <cxp:subst string="%QUERY%" env="QUERY_STRING"/>
-  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME"/>
-  <cxp:subst string="%CGIPATH%" cgi="path" default=""/>
-  <cxp:subst string="%CGIPERM%" cgi="write" default="yes"/>
+  <cxp:include name="CgiPiejQHead.cxp" search="yes"/>
   <cxp:xhtml name="-">
     <cxp:xml>
       <cxp:dir depth="9" verbosity="3" urlencode="yes">

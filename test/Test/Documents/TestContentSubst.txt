@@ -1,0 +1,22 @@
+
+#subst(r"(AAA|BBB)","http://localhost/$1/")
+
+* Subst
+
+AAA BBB AAA
+
+----
+
+#include("TestIncludeSubst.txt")
+
+----
+
+TODO: #review AAA
+
+----
+
+#import("TestIncludeSubst.txt")
+
+----
+
+	

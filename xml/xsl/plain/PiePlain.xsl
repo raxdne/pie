@@ -6,14 +6,69 @@
 
   <xsl:output method="text" encoding="UTF-8"/>
 
-<xsl:variable name="newpar">
-<xsl:text>
+  <xsl:template match="processing-instruction('regexp-tag')">
+    <xsl:value-of select="concat($newline,'TAGS: ',.,$newpar)"/>
+  </xsl:template>
 
-</xsl:text>
-</xsl:variable>
+  <xsl:template match="processing-instruction()">
+    <xsl:value-of select="concat('; ',name(),': ',.,$newpar)"/>
+  </xsl:template>
+  
+  <xsl:template match="htag|tag">
+    <xsl:value-of select="."/>
+  </xsl:template>
 
-  <xsl:template match="processing-instruction('tag-regexp')">
-    <xsl:value-of select="concat('TAGS: ',.,$newpar)"/>
+  <xsl:template match="link">
+    <xsl:choose>
+      <xsl:when test="starts-with(@href,'mailto:')">
+        <xsl:value-of select="@href"/>
+      </xsl:when>
+      <xsl:when test="not(@href) or @href = text()">
+        <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('[',.,'](',@href,')')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="import[@type = 'script']">
+    <xsl:choose>
+      <xsl:when test="parent::p|parent::h">
+	<xsl:value-of select="concat('script=','&quot;',text(),'&quot;')"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'&lt;script&gt;',$newline,text(),'&lt;/script&gt;',$newpar)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="img">
+    <xsl:choose>
+      <xsl:when test="parent::fig and child::base64">
+	<xsl:value-of select="concat($newpar,'![',@title,'](','data:',@type,';base64,',child::base64,')',$newpar)"/>
+      </xsl:when>
+       <xsl:when test="child::base64">
+	<xsl:value-of select="concat('data:',@type,';base64,',child::base64,$newline)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'![',@title,'](',@src,')',$newline)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="fig">
+    <xsl:choose>
+      <xsl:when test="child::img[starts-with(@src,'data:') and child::h]">
+	<xsl:value-of select="concat($newpar,'![',child::h,'](',child::img/@src,')',$newline)"/>
+      </xsl:when>
+       <xsl:when test="child::img[child::base64 and child::h]">
+	<xsl:value-of select="concat($newpar,'![',child::h,'](','data:',@type,';base64,',child::base64,')',$newpar)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="concat($newpar,'![',@title,'](',@src,')',$newline)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="hr">
@@ -22,7 +77,7 @@
 	<xsl:value-of select="$newpar"/>
   </xsl:template>
 
-  <xsl:template match="tt">
+  <xsl:template match="tt|code">
     <!-- para -->
         <xsl:text>`</xsl:text>
 	<xsl:value-of select="."/>
@@ -43,32 +98,6 @@
         <xsl:text>___</xsl:text>
   </xsl:template>
 
-  <xsl:template match="link">
-    <xsl:choose>
-      <xsl:when test="starts-with(@href,'mailto:')">
-        <xsl:value-of select="@href"/>
-      </xsl:when>
-      <xsl:when test="@href = .">
-        <xsl:value-of select="concat('&lt;',.,'&gt;')"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat('[',.,'](',@href,')')"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="img">
-    <xsl:value-of select="concat('![',@title,'](',@src,')',$newpar)"/>
-  </xsl:template>
-
-  <xsl:template match="fig">
-    <xsl:value-of select="concat('Fig. ![',h,'](',img/@src,')',$newpar)"/>
-  </xsl:template>
-
-  <xsl:template match="processing-instruction()">
-    <xsl:value-of select="concat('; ',.,$newpar)"/>
-  </xsl:template>
-  
   <xsl:template name="TAGTIME">
     <xsl:param name="str_tagtime" select="''"/>
 	<xsl:if test="not($str_tagtime = '')">
@@ -95,7 +124,7 @@
     <xsl:param name="str_spaces" select="'  '"/>
     <xsl:param name="flag_spacing" select="false()"/>
     <xsl:choose>
-      <xsl:when test="self::section">
+      <xsl:when test="self::section|self::task">
 	<xsl:if test="$flag_spacing">
           <xsl:value-of select="concat($str_prefix,$str_spaces,'│&#10;')"/>
 	</xsl:if>
@@ -108,8 +137,11 @@
 	    <xsl:text>└─</xsl:text>
 	  </xsl:otherwise>
 	</xsl:choose>
+	<xsl:if test="self::task">
+	  <xsl:call-template name="FORMATTASKPREFIX"/>
+	</xsl:if>
 	<xsl:value-of select="concat(' ',normalize-space(h),'&#10;')"/>
-	<xsl:for-each select="section[h]">
+	<xsl:for-each select="section[child::h]|task[@class = 'target' and child::h]">
 	  <xsl:call-template name="TREELINE">
 	    <xsl:with-param name="str_prefix">
 	      <xsl:choose>
@@ -129,7 +161,7 @@
 	</xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:for-each select="pie|block|section[h]">
+	<xsl:for-each select="pie|block|section[h]|task[@class = 'target' and child::h]">
 	  <xsl:call-template name="TREELINE">
 	    <xsl:with-param name="str_prefix">
 	      <xsl:value-of select="$str_prefix"/>
@@ -142,16 +174,6 @@
 	</xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="TIMESTRING">
-    <xsl:if test="@hour">
-      <xsl:value-of select="concat(@hour,'.',@minute)"/>
-      <xsl:if test="@hour-end">
-	<xsl:value-of select="concat('-',@hour-end,'.',@minute-end)"/>
-      </xsl:if>
-    <xsl:value-of select="concat('',' ')"/>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template name="FORMATPREFIX">

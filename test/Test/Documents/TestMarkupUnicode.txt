@@ -103,7 +103,7 @@ BALLOT_X ✗ \u2717
 
 HEAVY_BALLOT_X ✘ \u2718
 
-** |https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references|numeric character references|
+** [numeric character references](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references)
 
 invalid: &#; or &#x; or &#144;
 

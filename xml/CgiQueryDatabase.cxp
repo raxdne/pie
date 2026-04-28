@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cxp:make xmlns:cxp="http://www.tenbusch.info/cxproc" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" log="4">
+  <cxp:description>Query Sqlite</cxp:description>
+  <cxp:subst string="%SCRIPT%" env="SCRIPT_NAME" cgi="cxp"/>
+  <cxp:subst string="%DB%" argv="2" cgi="db"/>
+  <cxp:subst string="%QUERY%" argv="3" cgi="q" default="SELECT * FROM meta;"/> <!--  WHERE name LIKE '%tcl' -->
+  <cxp:subst string="%TAGTIME%" now="%Y-%m-%dT%H:%M:%S"/>
+  <cxp:system message="Query pattern '%QUERY%' in '%DB%'"/>
+  <cxp:xhtml name="-">
+    <html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="cache-control" content="no-cache"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" type="text/css" href="/jquery/jquery-ui/jquery-ui.css"/>
+  <link rel="stylesheet" type="text/css" href="/pie/html/pie.css"/>
+  <link rel="stylesheet" href="/jquery/tablesorter/css/style.css"/>
+  <script src="/jquery/jquery.js" type="text/javascript">//</script>
+  <script src="/jquery/tablesorter/jquery.tablesorter.js" type="text/javascript">//</script>
+
+<script type="text/javascript">
+  $(function() {
+
+  // initial sort set using sortList option
+  $("#resultTable").tablesorter({
+    theme : 'blue',
+    widgets: ["filter"],
+    widgetOptions : {
+      filter_ignoreCase : true
+    }
+    // sort on the first column and second column in ascending order
+    //sortList: [[0,0],[1,0]]
+  });
+
+  });
+</script>
+</head>    
+  
+      <body>
+        <div id="ui">
+
+	  <cxp:xhtml>
+	    <cxp:xml>
+	      <cxp:db name="%DB%"/>
+	      <cxp:query>SELECT * FROM queries;</cxp:query>
+	    </cxp:xml>
+	    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	      <xsl:output method="html"/>
+	      
+	      <xsl:template match="/">
+		<xsl:element name="html">
+		  <xsl:element name="body">
+		    <xsl:element name="h3">
+		      <xsl:text>&quot;Queries&quot;</xsl:text>
+		    </xsl:element>
+                    <xsl:for-each select="sql/table[1]">
+		      <xsl:choose>
+			<xsl:when test="error">
+			  <xsl:for-each select="error">
+			    <xsl:element name="p">
+			      <xsl:attribute name="class">error</xsl:attribute>
+			      <xsl:value-of select="concat('&quot;',../@query,'&quot;',' =&gt; ',text())"/>
+			    </xsl:element>
+			  </xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+			  <xsl:element name="pre">
+			    <xsl:text>SELECT path || name, mtime2 FROM directory WHERE name LIKE '%abc%' AND ext = 'pptx';&#10;</xsl:text>
+			    <xsl:for-each select="entry[query]">
+			      <xsl:value-of select="concat(query,'&#10;')"/>
+			    </xsl:for-each>
+			  </xsl:element>
+			</xsl:otherwise>
+		      </xsl:choose>
+		    </xsl:for-each>
+		  </xsl:element>
+		</xsl:element>
+	      </xsl:template>
+	    </xsl:stylesheet>
+	  </cxp:xhtml>
+
+          <cxp:xhtml>
+	    <cxp:xml>
+	      <cxp:db name="%DB%"/>
+	      <cxp:query>%QUERY%</cxp:query>
+	    </cxp:xml>
+	    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	      <xsl:output method="html"/>
+	      
+	      <xsl:variable name="flag_link" select="false()"/>
+	      
+	      <xsl:template match="/">
+		<xsl:element name="html">
+		  <xsl:element name="body">
+		    <xsl:element name="h3">
+		      <xsl:text>&quot;%DB%&quot;</xsl:text>
+		    </xsl:element>
+		    <xsl:choose>
+		      <xsl:when test="sql/error">
+			  <xsl:element name="p">
+			    <xsl:attribute name="class">error</xsl:attribute>
+			    <xsl:value-of select="concat('&quot;',sql/error,'&quot;')"/>
+			  </xsl:element>
+		      </xsl:when>
+		      <xsl:otherwise>
+			<xsl:apply-templates select="//table"/>
+		      </xsl:otherwise>
+		    </xsl:choose>
+		  </xsl:element>
+		</xsl:element>
+	      </xsl:template>
+
+	      <xsl:template match="table">
+		<xsl:element name="form">
+		  <xsl:element name="p">
+		    <xsl:element name="input">
+		      <xsl:attribute name="type">hidden</xsl:attribute>
+		      <xsl:attribute name="name">cxp</xsl:attribute>
+		      <xsl:attribute name="value">%SCRIPT%</xsl:attribute>
+		    </xsl:element>
+		    <xsl:element name="input">
+		      <xsl:attribute name="type">hidden</xsl:attribute>
+		      <xsl:attribute name="name">db</xsl:attribute>
+		      <xsl:attribute name="value">%DB%</xsl:attribute>
+		    </xsl:element>
+		    <xsl:element name="input">
+		      <xsl:attribute name="type">text</xsl:attribute>
+		      <xsl:attribute name="size">256</xsl:attribute>
+		      <xsl:attribute name="maxlength">256</xsl:attribute>
+		      <xsl:attribute name="id">q</xsl:attribute>
+		      <xsl:attribute name="name">q</xsl:attribute>
+		      <xsl:attribute name="value">%QUERY%</xsl:attribute>
+		    </xsl:element>
+		  </xsl:element>
+		  <xsl:choose>
+		    <xsl:when test="error">
+		      <xsl:for-each select="error">
+			<xsl:element name="p">
+			  <xsl:attribute name="class">error</xsl:attribute>
+			  <xsl:value-of select="text()"/>
+			</xsl:element>
+		      </xsl:for-each>
+		    </xsl:when>
+		    <xsl:when test="not(entry)">
+		      <xsl:element name="p">
+			<xsl:attribute name="class">error</xsl:attribute>
+			<xsl:text>Empty result!</xsl:text>
+		      </xsl:element>
+		    </xsl:when>
+		    <xsl:otherwise>
+		      <xsl:element name="table">
+			<xsl:attribute name="id">resultTable</xsl:attribute>
+			<xsl:attribute name="class">tablesorter</xsl:attribute>
+			<xsl:element name="thead">
+			  <xsl:element name="tr">
+			    <xsl:for-each select="declaration/column[@name]">
+			      <xsl:element name="th">
+				<xsl:value-of select="@name"/>
+			      </xsl:element>
+			    </xsl:for-each>
+			  </xsl:element>
+			</xsl:element>
+			<xsl:element name="tbody">
+			  <xsl:for-each select="entry[position() &lt; 5000]">
+			    <xsl:element name="tr">
+			      <xsl:for-each select="child::*">
+				<xsl:element name="td">
+				  <xsl:value-of select="."/>
+				</xsl:element>
+			      </xsl:for-each>
+			    </xsl:element>
+			  </xsl:for-each>
+			</xsl:element>
+		      </xsl:element>
+		    </xsl:otherwise>
+		  </xsl:choose>
+		</xsl:element>
+	      </xsl:template>
+
+	    </xsl:stylesheet>
+
+	  </cxp:xhtml>
+	  <p style="text-align:right">%TAGTIME%</p>
+	</div>
+      </body>
+    </html>
+  </cxp:xhtml>
+</cxp:make>
