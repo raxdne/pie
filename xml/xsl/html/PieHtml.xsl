@@ -403,7 +403,6 @@
   <xsl:template match="img">
     <xsl:choose>
       <xsl:when test="child::base64"> <!-- embedd base64 encoding in img -->
-	<xsl:element name="{$name_element}">
 	  <xsl:element name="img">
 	    <xsl:attribute name="src">
 	      <xsl:for-each select="child::base64">
@@ -420,7 +419,6 @@
 		</xsl:choose>
 	      </xsl:for-each>
 	    </xsl:attribute>
-	  </xsl:element>
 	</xsl:element>
       </xsl:when>
       <xsl:otherwise>		<!-- build a href -->
