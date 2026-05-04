@@ -75,7 +75,7 @@
 		<xsl:attribute name="class">hr</xsl:attribute>
 		<xsl:element name="hr"/>
 	      </xsl:element>
-	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file']"> <!-- ignoring symlinks -->
+	      <xsl:apply-templates select="child::dir/child::*[name() = 'dir' or name() = 'file' or name() = 'link']"> <!-- ignoring symlinks -->
 		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="name()"/>
 		<xsl:sort order="ascending" data-type="text" case-order="lower-first" select="@name"/>
 		<xsl:with-param name="path_prefix">
@@ -156,16 +156,30 @@
     <xsl:element name="li">
       <xsl:attribute name="class">ui-dir-link</xsl:attribute>
       <xsl:element name="a">
-        <xsl:attribute name="target">_blank</xsl:attribute>
 	<xsl:choose>
+	  <xsl:when test="child::error">
+            <xsl:attribute name="style">text-decoration: line-through;</xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="child::error"/>
+            </xsl:attribute>
+	  </xsl:when>
 	  <xsl:when test="child::dir">
             <xsl:attribute name="href">
-              <xsl:value-of select="concat('/',@urlname)"/>
+              <xsl:value-of select="concat('?path=',parent::dir/@urlprefix,parent::dir/@urlname,'/',child::dir/@urlprefix,child::dir/@urlname,'&amp;','cxp=PieUiDir')"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="concat(parent::dir/@urlprefix,parent::dir/@urlname,'/',child::dir/@urlprefix,child::dir/@urlname)"/>
             </xsl:attribute>
 	  </xsl:when>
 	  <xsl:when test="child::file">
+            <xsl:attribute name="target">
+              <xsl:value-of select="$str_frame"/>
+            </xsl:attribute>
             <xsl:attribute name="href">
-              <xsl:value-of select="concat('/',@urlname)"/>
+              <xsl:value-of select="concat('?path=',parent::dir/@urlprefix,parent::dir/@urlname,'/',child::file/@urlprefix,child::file/@urlname,'&amp;','cxp=',$str_cxp_default)"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="concat(parent::dir/@urlprefix,parent::dir/@urlname,'/',child::file/@urlprefix,child::file/@urlname)"/>
             </xsl:attribute>
 	  </xsl:when>
           <xsl:otherwise>

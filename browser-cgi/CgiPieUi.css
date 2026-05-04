@@ -45,6 +45,13 @@ li.ui-dir {
  font-weight:bold;
 }
 
+li.ui-dir-link {
+ padding: 0.3em 1em 0.3em 1em;
+ list-style: none;
+ vertical-align: middle;
+ font-style: italic;
+}
+
 li.ui-dir-file {
  padding: 0.3em 1em 0.3em 1em;
  list-style: none;
