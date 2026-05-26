@@ -183,6 +183,7 @@
 		  </xsl:for-each>
 		</xsl:when>
 		<xsl:otherwise>
+		  <xsl:value-of select="concat($newpar,'_Image: ',$str_media,'_',$newpar)"/>
 		</xsl:otherwise>
 	      </xsl:choose>
 	      <xsl:comment> No Media content</xsl:comment>

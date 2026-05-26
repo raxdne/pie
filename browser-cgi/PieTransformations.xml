@@ -771,6 +771,7 @@
 		  </xml>
 		  <xsl name="docx2md.xsl">
 		    <variable name="str_path">PATH</variable>
+		    <variable name="flag_embed" select="true()"/> 
 		  </xsl>
 		</plain>
 	      </import>
@@ -809,12 +810,13 @@
     <pkg:transition id="docx2md">
       <h>docx2md</h>
       <make>
-	<plain type="text/markdown">
+	<plain type="text/plain">
 	  <xml locator="yes">
 	    <file name="PATH" verbosity="5"/>
 	  </xml>
 	  <xsl name="docx2md.xsl">
 	    <variable name="str_path">PATH</variable>
+	    <variable name="flag_embed" select="true()"/> 
 	  </xsl>
 	</plain>
       </make>

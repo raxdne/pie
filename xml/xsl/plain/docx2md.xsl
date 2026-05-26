@@ -202,7 +202,7 @@
       <xsl:value-of select="//file[@name='document.xml.rels']/child::*[1]/child::*[name()='Relationship' and @Id=$id_image]/@Target"/>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="$flag_embed and //file[@name=substring-after($path_image,'/')]">
+      <xsl:when test="$flag_embed and //file[@name=substring-after($path_image,'/') and @size &lt; 3 * 1048576]">
 	<xsl:for-each select="//file[@name=substring-after($path_image,'/')]">
 	  <xsl:if test="child::base64">
 	    <xsl:value-of select="concat($newpar,'data:',@type,';base64,',child::base64,$newpar)"/>
@@ -210,7 +210,7 @@
 	</xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="concat($newpar,'![',$id_image,'](?redir=',$path_image,')',$newpar)"/>
+	<xsl:value-of select="concat($newpar,'_Image: ',$id_image,'_',$newpar)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
