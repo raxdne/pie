@@ -51,8 +51,8 @@
       //c.setBegin('2025-09-16');
       //c.setEnd(%CGIEND%);
      
-      c.getInput("/cxproc/exe?redir=legend.json");
       c.getInput("/cxproc/exe?path=%CGIPATH%&amp;cxp=Format&amp;b=application/json%2Bgantt&amp;pattern=%CGITAG%");
+      c.getInput("/cxproc/exe?redir=legend.json");
       //c.append([{"dt_0": "2024-11-01", "dt_1": "2027-04-01"}]);
       //c.sort();
       //c.setScaleFactor(5);

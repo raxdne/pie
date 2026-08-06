@@ -17,7 +17,7 @@
 
   <xsl:variable name="int_lmax" select="60" /> <!-- maximum length of an event summary -->
 
-  <xsl:variable name="ns_date" select="descendant::date[(parent::*[contains(text(),'🏠') or contains(text(),'🎂') or contains(text(),'⛪')] or parent::h/parent::task[@class='target'] or parent::h/parent::*[@interval and @impact] or (parent::h/parent::task[@class='todo' or @class='test'])) and ($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta))]" />
+  <xsl:variable name="ns_date" select="descendant::date[($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta)) and (parent::*[contains(.,'🏠') or contains(.,'🎂') or contains(.,'⛪')] or parent::h/parent::task[@class='target'] or parent::h/parent::*[@interval and @impact] or (parent::h/parent::task[@class='todo' or @class='test']))]" />
   <!--
   <xsl:variable name="ns_date" select="descendant::date[(($int_delta = -1 or (@diff &gt; -$int_delta and @diff &lt; $int_delta))) or parent::h/parent::*[(contains(text(),'🏠') or contains(text(),'🎂') or contains(text(),'⛪') or @class='target' or (@interval and @impact))]]" />
       -->

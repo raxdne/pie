@@ -209,6 +209,9 @@
 	  </xsl:if>
 	</xsl:for-each>
       </xsl:when>
+      <xsl:when test="parent::w:r/parent::w:p/following-sibling::w:p[1][child::w:r[starts-with(child::w:t,'Fig.')]]">
+	<xsl:value-of select="concat($newpar,'![',substring-after(parent::w:r/parent::w:p/following-sibling::w:p[1],'Fig.'),'](?redir=',$path_image,')',$newpar)"/>
+      </xsl:when>
       <xsl:otherwise>
 	<xsl:value-of select="concat($newpar,'_Image: ',$id_image,'_',$newpar)"/>
       </xsl:otherwise>

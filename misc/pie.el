@@ -161,15 +161,24 @@
 
 (defun pie-dehexify-string (string)
   "TODO: improve!"
+
   (string-replace "%28" "("
-		  (string-replace "%29" ")"
-				  (string-replace "+" " "
-						  (string-replace "%2C" ","
-								  (string-replace "/" " > "
-										  (string-replace "%20" " "
-										  string))))))
+		  (string-replace "%2D" "-"
+				  (string-replace "%29" ")"
+						  (replace-regexp-in-string "%\\(2C\\)+" ","
+									    (replace-regexp-in-string "%\\(2E\\)+" "."
+									    (replace-regexp-in-string "%\\(20\\|5F\\|2F\\)+" " "
+												      (replace-regexp-in-string "[\\+]+" " "
+																(replace-regexp-in-string "[\\&\\?/]+" " > "
+																			  (replace-regexp-in-string "^.*//" ""
+																						    string))))))
+				  )
+		  )
+	)
   )
+
 ;; (pie-dehexify-string "A%20B%29/BB/C")
+;; (pie-dehexify-string "http://A%20B%29/BB/C?deg=123")
 
 (global-set-key [C-f3] (lambda ()
 			 ""

@@ -287,7 +287,7 @@
 
   <xsl:template match="span">
     <xsl:copy-of select="@class"/>
-    <xsl:copy-of select="."/>
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="pre|code|hr">
