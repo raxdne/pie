@@ -678,22 +678,6 @@
 	  <xsl:text>cxproc PIE/XML</xsl:text>
 	</xsl:attribute>
       </xsl:element>
-      <xsl:element name="meta">
-	<xsl:attribute name="http-equiv">
-	  <xsl:text>cache-control</xsl:text>
-	</xsl:attribute>
-	<xsl:attribute name="content">
-	  <xsl:text>no-cache</xsl:text>
-	</xsl:attribute>
-      </xsl:element>
-      <xsl:element name="meta">
-	<xsl:attribute name="http-equiv">
-	  <xsl:text>pragma</xsl:text>
-	</xsl:attribute>
-	<xsl:attribute name="content">
-	  <xsl:text>no-cache</xsl:text>
-	</xsl:attribute>
-      </xsl:element>
       <xsl:element name="title">
 	<xsl:choose>
 	  <xsl:when test="string-length($str_title) &gt; 0">

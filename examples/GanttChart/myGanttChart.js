@@ -132,6 +132,24 @@ function getDateOfIsoWeek(week, year) {
 
 
 //
+// returns ISO8601 date string of timestamp
+//
+function ISO8601_format(t) {
+
+    var strResult = '';
+
+    if (t === undefined) {
+    } else {
+	dt = new Date(t);
+	strResult = dt.toISOString();
+	//strResult = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+    }
+    
+    return strResult.replace(/T.*$/,'');
+}
+
+
+//
 // returns timestamp of 'dt'
 //
 function ISO8601_parse(dt) {
@@ -898,6 +916,8 @@ objGanttChart.prototype.postDraw = function() {
     // REQ: select by element class?
     this.addEventListener('rect');
     this.addEventListener('polygon');
+
+    //window.console.log(this.getCsvOutput());
     
     return this;
 }
@@ -1172,8 +1192,8 @@ objGanttChart.prototype.draw = function() {
     if (arguments.length < 1) {
 	// init recursion
 	this.preDraw();
-	this.draw(this.items);
 	this.appendVLines();
+	this.draw(this.items);
 	//this.appendHLines();
 	this.postDraw();
 	
@@ -1186,13 +1206,22 @@ objGanttChart.prototype.draw = function() {
 	this.svg.setAttribute('height', h);
     } else {
 
-	var g = this.svg.querySelectorAll('*[name*="draw"]')[0];
+	var g_draw = this.svg.querySelectorAll('*[name*="draw"]')[0];
 	
-	if (g === undefined || g === null) {
-	    g = document.createElementNS('http://www.w3.org/2000/svg','g');
-	    g.setAttribute('name', 'draw');
-	    //g.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
-	    this.svg.appendChild(g);
+	if (g_draw === undefined || g_draw === null) {
+	    g_draw = document.createElementNS('http://www.w3.org/2000/svg','g');
+	    g_draw.setAttribute('name', 'draw');
+	    //g_draw.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
+	    this.svg.appendChild(g_draw);
+	}
+
+	var g_back = this.svg.querySelectorAll('*[name*="back"]')[0];
+	
+	if (g_back === undefined || g_back === null) {
+	    g_back = document.createElementNS('http://www.w3.org/2000/svg','g');
+	    g_back.setAttribute('name', 'back');
+	    //g_back.setAttribute('transform','translate(' + this.scale(0) + ',' + this.offset_draw + ')');
+	    this.svg.prepend(g_back);
 	}
 
 	for (var i = 0; i < arguments.length; i++) {
@@ -1207,12 +1236,12 @@ objGanttChart.prototype.draw = function() {
 		    this.draw(arguments[i][j]);
 		}
 	    } else if (arguments[i].hasOwnProperty("vertical") && arguments[i].vertical) {
-		g.prepend(this.getSvg(arguments[i]));
+		g_back.append(this.getSvg(arguments[i]));
 	    } else {
-		g.append(this.getSvg(arguments[i]));
+		g_draw.append(this.getSvg(arguments[i]));
 		this.h = this.y_n + this.scale(2);
 	    }
-            // TODO: g.appendChild(this.getSvgHruler(this.y_n));
+            // TODO: g_draw.appendChild(this.getSvgHruler(this.y_n));
 	    this.h += this.y_n + this.scale(2);
 	}
     }    
@@ -1455,9 +1484,28 @@ objGanttChart.prototype.getCsvForm = function (strInput) {
 }
 
 
-objGanttChart.prototype.getCsvOutput = function (strInput) {
+objGanttChart.prototype.getCsvOutput = function () {
 
     // TODO: format this.item as CSV
+
+    var i = 0;
+    var strResult = 'List of Items\n';
+    
+    if (this.items === undefined || ! typeof this.items === 'list') {
+	// ignoring
+    } else {
+
+    //return this.items;    
+
+	for (const value of this.items) {
+	    if (value.title === undefined) {
+	    } else {
+		strResult += ISO8601_format(value.t_0) + ';' + ISO8601_format(value.t_1) + ';' + value.title + '\n';
+	    }
+	    i += 1;
+	}
+    }
+    return strResult;    
 }
 
 
