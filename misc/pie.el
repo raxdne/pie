@@ -149,7 +149,7 @@
 
 (defun pie-hexify-string (string)
   "TODO: improve!"
-  (string-replace "%28" "("
+  (string-replace "(" "%28"
 		  (string-replace ")" "%29"
 				  (string-replace " " "+"
 						  (string-replace "," "%2C"
@@ -236,7 +236,7 @@
 (defvar pie-markdown-imenu-generic-expression
   '(
     ("Sections" "^[#]+ .*" 0)
-    ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
+    ("TODO"     "\\(TODO\\|DONE\\|TEST\\|BUG\\|TARGET\\|REQ\\):"   0)
 					;("Remarks"  "^[;]+.*"  0)
 					;("Markups"  "^[#]+.*"   0)
     ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
@@ -294,7 +294,7 @@
 (defvar pie-plain-imenu-generic-expression
   '(
     ("Sections" "^[*%]+.*" 0)
-    ("TODO"     "^\\(TODO|TEST|BUG|TARGET|REQ\\):.*"   0)
+    ("TODO"     "\\(TODO\\|DONE\\|TEST\\|BUG\\|TARGET\\|REQ\\):"   0)
     ;("Remarks"  "^[;]+.*"  0)
     ;("Markups"  "^[#]+.*"   0)
     ("Figures"  "^Abb\\.\\s-+\\([-A-Za-z0-9_.]+\\)\\s-*:" 1))
@@ -346,25 +346,33 @@
 (defun pie-plain-toggle-todo ()
   ""
   (interactive)
-  (let ((point-origin (point)))
-					;(forward-paragraph 1)
+  (let ((point-origin (point))
+	(list-of-tags-origin '("TODO: " "DONE: " "TEST: " "BUG: " "REQ: " "TARGET: " "TODO: "))
+	)
+
     (move-end-of-line 1)
-    (let ((point-end (point)))
-					;(forward-paragraph -1)
+
+    (let ((point-end (point))
+	  (list-of-tags list-of-tags-origin))
+
       (move-beginning-of-line 1)
-      (let ((point-begin (point)))
-	(if (re-search-forward "TODO: " point-end t)
-	    (replace-match "DONE: " nil nil)
-	  (progn (goto-char point-begin)
-		 (if (re-search-forward "DONE: " point-end t)
-		     (replace-match "TODO: " nil nil)
-		   (progn (goto-char point-begin)
-			  (insert "\nTODO: ")))
-		 )
-	  )
+      (if (re-search-forward "\\(TODO\\|DONE\\|TEST\\|BUG\\|TARGET\\|REQ\\):" point-end t)
+	  (progn
+	    ;; line starts with tag
+	    (while list-of-tags
+	      (move-beginning-of-line 1)
+	      (if (re-search-forward (car list-of-tags) point-end t)
+		  (progn
+		    (replace-match (car (cdr list-of-tags)) nil nil)
+		    (setq list-of-tags nil)
+		    )
+		(setq list-of-tags (cdr list-of-tags))
+		)
+	      )
+	    )
+	(insert (car list-of-tags-origin)) ; last list element
 	)
       )
-    (goto-char point-origin)
     )
   )
 ;; (pie-plain-toggle-todo)

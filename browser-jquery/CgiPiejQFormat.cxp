@@ -6,7 +6,7 @@
       <cxp:include name="CgiPiejQHead.xhtml" search="yes"/>
       <body>
         <div id="ui">
-          <div id="content-cm">
+          <div id="content">
 	    <cxp:xhtml>
 	      <cxp:xml>
 		<cxp:file name="%CGIPATH%" verbosity="3"/>

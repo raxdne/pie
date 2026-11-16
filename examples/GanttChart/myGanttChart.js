@@ -1,5 +1,5 @@
 //
-// myGanttChart (p) 2021,2022,2024 A. Tenbusch
+// myGanttChart (p) 2021,2022,2024,2026 A. Tenbusch
 //
 
 // TODO: #review `moment.js` https://day.js.org/en/
@@ -12,6 +12,8 @@
 var locale = 'de-DE';
 const optionsWithWeekday = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
+const dateSep = '/';
+
 // default format for Dates
 Date.prototype.getDateString = function () {
 
@@ -20,6 +22,14 @@ Date.prototype.getDateString = function () {
     return this.toISOString().substring(0,10);
 }
 
+
+// https://dev.to/hugo__df/add-days-to-a-date-in-vanilla-javascript-4p2l
+Date.prototype.addDays = function (days) {
+
+    const copy = new Date(Number(this));
+    copy.setDate(this.getDate() + days);
+    return copy;
+}
 
 /**
  * Returns the week number for this date.  dowOffset is the day of week the week
@@ -354,7 +364,7 @@ objGanttChart.prototype.clean = function () {
     this.items = new Array();
     
     this.setScaleFactor(urlParams.get("f"));
-    this.y_n = this.scale(4);
+    this.y_n = this.scale(1);
 
     this.format_date = { year: 'numeric', month: 'numeric', day: 'numeric'};
 
@@ -386,22 +396,25 @@ objGanttChart.prototype.clean = function () {
 
 objGanttChart.prototype.setBegin = function (t) {
 
-    this.t_0 = ISO8601_parse(t);
+    t_0 = ISO8601_parse(t);
     
-    // adjust to first day of a week
-    dow = new Date(this.t_0).getDay();
-    //window.console.log('dow: ', dow + ' ' + new Date(this.t_0).toString());
+    if (this.t_0 === undefined || t_0 < this.t_0) {
+	this.t_0 = t_0
+	
+	// adjust to first day of a week
+	dow = new Date(this.t_0).getDay();
+	//window.console.log('dow: ', dow + ' ' + new Date(this.t_0).toString());
 
-    // BUG: to be aligned with this.unit
-    if (dow == 0) {
-	this.t_0 += (1000 * 60 * 60 * 24 * 1);
-    } else {
-	// REQ: change to Date.UTC() ?
-	this.t_0 -= (1000 * 60 * 60 * 24 * (dow - 1.25)); // to avoid impact of timezone
+	// BUG: to be aligned with this.unit
+	if (dow == 0) {
+	    this.t_0 += (1000 * 60 * 60 * 24 * 1);
+	} else {
+	    // REQ: change to Date.UTC() ?
+	    this.t_0 -= (1000 * 60 * 60 * 24 * (dow - 1.25)); // to avoid impact of timezone
+	}
+	console.log('Set Begin: ', new Date(this.t_0).toString());
     }
 
-    console.log('Set Begin: ', new Date(this.t_0).toString());
-    
     return this.t_0;
 }
 
@@ -417,18 +430,22 @@ objGanttChart.prototype.getBegin = function() {
 
 objGanttChart.prototype.setEnd = function (t) {
 
-    this.t_1 = ISO8601_parse(t);
-    
-    // adjust to last day of a week
-    dow = new Date(this.t_1).getDay();
-    //window.console.log('dow: ', dow + ' ' + new Date(this.t_1).toString());
+    t_1 = ISO8601_parse(t);
 
-    // BUG: to be aligned with this.unit
-    if (dow == 0) {
-    } else {
-	this.t_1 += (1000 * 60 * 60 * 24 * (7 - dow));
+    if (this.t_1 === undefined || t_1 > this.t_1) {
+	this.t_1 = t_1
+	
+	// adjust to last day of a week
+	dow = new Date(this.t_1).getDay();
+	//window.console.log('dow: ', dow + ' ' + new Date(this.t_1).toString());
+
+	// BUG: to be aligned with this.unit
+	if (dow == 0) {
+	} else {
+	    this.t_1 += (1000 * 60 * 60 * 24 * (4 * 7 - dow));
+	}
+	console.log('Set End: ', new Date(this.t_1).getDateString());
     }
-    console.log('Set End: ', new Date(this.t_1).getDateString());
     
     return this.t_1;
 }
@@ -459,6 +476,8 @@ objGanttChart.prototype.getNumberOfHorizontalItems = function() {
 	    }
 	}
     }
+    i += 1;
+    
     return i;
 }
 
@@ -591,7 +610,7 @@ objGanttChart.prototype.toString = function() {
         strResult += this.box.toString() + '\n\n';
     }
     
-    strResult += new Date(this.t_0).getDateString() + ' .. ' + new Date(this.t_1).getDateString() + '\n\n';
+    strResult += new Date(this.t_0).getDateString() + dateSep + new Date(this.t_1).getDateString() + '\n\n';
     
     for (var i = 0; i < this.items.length; i++) {
 	strResult += i + ' ' + this.items[i].toString() + '\n\n';
@@ -677,6 +696,7 @@ objGanttChart.prototype.append = function (args) {
 			    args[i].t_1 = args[i].t_0 + args[i].dt_length * this.unit;
 			} else {
 			    // milestone
+			    this.setEnd(args[i].dt_0);
 			}
 
 		    } else if (args[i].hasOwnProperty("dt_1") && args[i].hasOwnProperty("dt_length")) {
@@ -956,7 +976,7 @@ objGanttChart.prototype.getSvg = function(li) {
 	    
 	    var l_x = 0;
 	    
-	    window.console.log('horizontal bar ' + this.date2grid(li.t_0) + ' -- ' + this.date2grid(li.t_1));
+	    window.console.log('horizontal bar ' + this.date2grid(li.t_0) + dateSep + this.date2grid(li.t_1));
 
 	    if (li.t_0 < this.t_0) {
 		// period starts before time frame of diagram
@@ -1033,7 +1053,7 @@ objGanttChart.prototype.getSvg = function(li) {
 		this.y_n += this.scale(1.35);
 	    }
 	    
-	    tip += '\n(' + new Date(li.t_0).getDateString() + ' .. ' + new Date(li.t_1).getDateString() + ' = ' + Math.round((li.t_1 - li.t_0) / this.unit) + ')';	    
+	    tip += '\n(' + new Date(li.t_0).getDateString() + dateSep + new Date(li.t_1).getDateString() + ' = ' + Math.round((li.t_1 - li.t_0) / this.unit) + ')';	    
 	// if (li.hasOwnProperty("tip")) {
 	//     tip += ', ' + li.tip;
 	// }
@@ -1041,30 +1061,28 @@ objGanttChart.prototype.getSvg = function(li) {
 	// tt.appendChild(document.createTextNode(tip));
 	// g.appendChild(tt);
 	
+	// } else if (this.isOutOfScope(li) || (this.compact && this.isRunning(li) == false)) {
+	//     window.console.log('skipping milestone ' + li);
+	//     return null;
 	} else {
+	    window.console.log('milestone ' + this.date2grid(li.t_0));
 
-	    if (this.isOutOfScope(li) || (this.compact && this.isRunning(li) == false)) {
-		window.console.log('skipping milestone ' + li);
-		return null;
-	    } else {
-		window.console.log('milestone ' + this.date2grid(li.t_0));
-		
-		//this.y_n -= this.scale(1.35);
-		g_x = this.scale(this.date2grid(li.t_0));
+	    g_x = this.scale(this.date2grid(li.t_0));
+	    
+	    //this.y_n -= this.scale(1.35);
 
-		f = this.getSvgPolygon(g_x,this.y_n + this.scale(1/2));
-		
-		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
-		tx.setAttribute('x', g_x - this.scale(1/2) - 5);
-		tx.setAttribute('y',this.y_n + this.scale(0.73));
-		tx.setAttribute('text-anchor', "end");
-		tx.appendChild(document.createTextNode(li.title + ' (' + new Date(li.t_0).getDateString() + ')'));
-		g.appendChild(tx);
+	    f = this.getSvgPolygon(g_x,this.y_n + this.scale(1/2));
+	    
+	    tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+	    tx.setAttribute('x', g_x - this.scale(1/2) - 5);
+	    tx.setAttribute('y',this.y_n + this.scale(0.73));
+	    tx.setAttribute('text-anchor', "end");
+	    tx.appendChild(document.createTextNode(li.title + ' (' + new Date(li.t_0).getDateString() + ')'));
+	    g.appendChild(tx);
 
-		g.appendChild(f);
-		this.y_n += this.scale(1.35);
-		tip += '\n(' + new Date(li.t_0).getDateString() + ')';	    
-	    }
+	    g.appendChild(f);
+	    this.y_n += this.scale(1.35);
+	    tip += '\n(' + new Date(li.t_0).getDateString() + ')';	    
 	}
 
 	if (li.hasOwnProperty("done") && li.done && ! li.title.includes('✔')) {
@@ -1100,7 +1118,7 @@ objGanttChart.prototype.getSvg = function(li) {
 	    
 	    if (false) {		
 
-	    var tip = li.title + '\n(' + new Date(li.t_0).getDateString() + ' .. ' + new Date(li.t_1).getDateString() + ' = ' + Math.round((li.t_1 - li.t_0) / this.unit) + ')';	    
+	    var tip = li.title + '\n(' + new Date(li.t_0).getDateString() + dateSep + new Date(li.t_1).getDateString() + ' = ' + Math.round((li.t_1 - li.t_0) / this.unit) + ')';	    
 	    //g.appendChild(f);
 
 
@@ -1398,6 +1416,9 @@ objGanttChart.prototype.appendVLines = function () {
 		tx = document.createElementNS('http://www.w3.org/2000/svg','text');
 		tx.setAttribute('transform','rotate(-90)');
 		tx.appendChild(document.createTextNode(d.getWeek(1)));
+		tt = document.createElementNS('http://www.w3.org/2000/svg','title');
+		tt.appendChild(document.createTextNode('(' + d.getDateString() + dateSep + d.addDays(6).getDateString() + ')'));
+		g_text.appendChild(tt);
 		g_text.appendChild(tx);
 		g.appendChild(g_text);
 	    }
