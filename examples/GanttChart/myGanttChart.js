@@ -894,6 +894,25 @@ objGanttChart.prototype.preDraw = function() {
 
 
 //
+// 
+//
+function downloadSvg(event) {
+
+  const serializer = new XMLSerializer();
+  const source = serializer.serializeToString(document.querySelector('#gantt_diagram'));
+  const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.querySelector('#download');
+
+  link.href = url;
+  link.download = 'gantt_diagram.svg';
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+
+//
 // change fill color by clicking on shapes
 //
 function clickOnShape (event) {

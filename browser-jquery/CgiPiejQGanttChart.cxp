@@ -62,7 +62,7 @@
     </script>
 
             <hr/>
-            <p style="text-align:right">"%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
+            <p style="text-align:right"><a id="download" href="" onclick="downloadSvg()">Download</a> "%ROOT%%CGIPATH%" — "%CGITAG%", %TAGTIME%</p>
           </div>
         </div>
         <a id="bottom"/>
